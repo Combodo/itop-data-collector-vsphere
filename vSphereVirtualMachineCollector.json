@@ -1,24 +1,24 @@
 {
-	"name": "Test 1",
-	"description": "A test synchro data source - version $version$",
-	"status": "implementation",
+	"name": "$prefix$:VirtualMachine",
+	"description": "$prefix$ Data Collector (v. $version$): Virtual Machines",
+	"status": "production",
 	"user_id": "$synchro_user$",
 	"notify_contact_id": "$contact_to_notify$",
-	"scope_class": "Server",
+	"scope_class": "VirtualMachine",
 	"database_table_name": "",
 	"scope_restriction": "",
-	"full_load_periodicity": "0",
+	"full_load_periodicity": "$full_load_interval$",
 	"reconciliation_policy": "use_attributes",
 	"action_on_zero": "create",
 	"action_on_one": "update",
 	"action_on_multiple": "error",
-	"delete_policy": "ignore",
-	"delete_policy_update": "",
+	"delete_policy": "update",
+	"delete_policy_update": "status:obsolete",
 	"delete_policy_retention": "0",
 	"attribute_list": [
 		{
 			"attcode": "applicationsolution_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -29,25 +29,8 @@
 			"friendlyname": "applicationsolution_list"
 		},
 		{
-			"attcode": "asset_number",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "asset_number"
-		},
-		{
-			"attcode": "brand_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "brand_id"
-		},
-		{
 			"attcode": "business_criticity",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -55,7 +38,7 @@
 		},
 		{
 			"attcode": "contacts_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -75,7 +58,7 @@
 		},
 		{
 			"attcode": "description",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -83,7 +66,7 @@
 		},
 		{
 			"attcode": "documents_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -92,32 +75,6 @@
 			"attribute_qualifier": "'",
 			"finalclass": "SynchroAttLinkSet",
 			"friendlyname": "documents_list"
-		},
-		{
-			"attcode": "enclosure_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "enclosure_id"
-		},
-		{
-			"attcode": "end_of_warranty",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "end_of_warranty"
-		},
-		{
-			"attcode": "location_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "location_id"
 		},
 		{
 			"attcode": "logicalvolumes_list",
@@ -140,17 +97,8 @@
 			"friendlyname": "managementip"
 		},
 		{
-			"attcode": "model_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "model_id"
-		},
-		{
 			"attcode": "move2production",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -165,30 +113,10 @@
 			"friendlyname": "name"
 		},
 		{
-			"attcode": "nb_u",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "nb_u"
-		},
-		{
-			"attcode": "networkdevice_list",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"row_separator": "|",
-			"attribute_separator": ";",
-			"value_separator": ":",
-			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "networkdevice_list"
-		},
-		{
 			"attcode": "org_id",
 			"update": "1",
 			"reconcile": "1",
-			"update_policy": "master_locked",
+			"update_policy": "write_if_empty",
 			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey",
 			"friendlyname": "org_id"
@@ -198,13 +126,13 @@
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
+			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey",
 			"friendlyname": "osfamily_id"
 		},
 		{
 			"attcode": "oslicence_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -221,26 +149,8 @@
 			"friendlyname": "osversion_id"
 		},
 		{
-			"attcode": "powerA_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "powerA_id"
-		},
-		{
-			"attcode": "powerB_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "powerB_id"
-		},
-		{
 			"attcode": "providercontracts_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -251,23 +161,6 @@
 			"friendlyname": "providercontracts_list"
 		},
 		{
-			"attcode": "purchase_date",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "purchase_date"
-		},
-		{
-			"attcode": "rack_id",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "rack_id"
-		},
-		{
 			"attcode": "ram",
 			"update": "1",
 			"reconcile": "0",
@@ -276,28 +169,8 @@
 			"friendlyname": "ram"
 		},
 		{
-			"attcode": "san_list",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"row_separator": "|",
-			"attribute_separator": ";",
-			"value_separator": ":",
-			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "san_list"
-		},
-		{
-			"attcode": "serialnumber",
-			"update": "1",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "serialnumber"
-		},
-		{
 			"attcode": "services_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -317,7 +190,7 @@
 		},
 		{
 			"attcode": "tickets_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -326,14 +199,18 @@
 			"attribute_qualifier": "'",
 			"finalclass": "SynchroAttLinkSet",
 			"friendlyname": "tickets_list"
+		},
+		{
+			"attcode": "virtualhost_id",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "name",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "virtualhost_id"
 		}
 	],
 	"user_delete_policy": "nobody",
 	"url_icon": "",
-	"url_application": "",
-	"friendlyname": "Test 1",
-	"user_id_friendlyname": "",
-	"user_id_finalclass_recall": "",
-	"notify_contact_id_friendlyname": " ",
-	"notify_contact_id_finalclass_recall": ""
+	"url_application": ""
 }

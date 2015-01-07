@@ -1,24 +1,24 @@
 {
-	"name": "vSphere:VMs",
-	"description": "Synchronize Virtual Machines from a vSphere inventory - version $version$",
-	"status": "implementation",
-	"user_id": "0",
-	"notify_contact_id": "0",
+	"name": "$prefix$:Server",
+	"description": "$prefix$ Data Collector (v. $version$): Physical Servers running an Hypervisor",
+	"status": "production",
+	"user_id": "$synchro_user$",
+	"notify_contact_id": "$contact_to_notify$",
 	"scope_class": "Server",
 	"database_table_name": "",
 	"scope_restriction": "",
-	"full_load_periodicity": "0",
+	"full_load_periodicity": "$full_load_interval$",
 	"reconciliation_policy": "use_attributes",
 	"action_on_zero": "create",
 	"action_on_one": "update",
 	"action_on_multiple": "error",
-	"delete_policy": "ignore",
-	"delete_policy_update": "",
+	"delete_policy": "update",
+	"delete_policy_update": "status:obsolete",
 	"delete_policy_retention": "0",
 	"attribute_list": [
 		{
 			"attcode": "applicationsolution_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -30,7 +30,7 @@
 		},
 		{
 			"attcode": "asset_number",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -41,13 +41,13 @@
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
+			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey",
 			"friendlyname": "brand_id"
 		},
 		{
 			"attcode": "business_criticity",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -55,7 +55,7 @@
 		},
 		{
 			"attcode": "contacts_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -75,7 +75,7 @@
 		},
 		{
 			"attcode": "description",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -83,7 +83,7 @@
 		},
 		{
 			"attcode": "documents_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -95,7 +95,7 @@
 		},
 		{
 			"attcode": "enclosure_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -104,7 +104,7 @@
 		},
 		{
 			"attcode": "end_of_warranty",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -112,7 +112,7 @@
 		},
 		{
 			"attcode": "location_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -121,7 +121,7 @@
 		},
 		{
 			"attcode": "logicalvolumes_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -150,7 +150,7 @@
 		},
 		{
 			"attcode": "move2production",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -166,7 +166,7 @@
 		},
 		{
 			"attcode": "nb_u",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -174,7 +174,7 @@
 		},
 		{
 			"attcode": "networkdevice_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -188,7 +188,7 @@
 			"attcode": "org_id",
 			"update": "1",
 			"reconcile": "1",
-			"update_policy": "master_locked",
+			"update_policy": "write_if_empty",
 			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey",
 			"friendlyname": "org_id"
@@ -198,13 +198,13 @@
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
+			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey",
 			"friendlyname": "osfamily_id"
 		},
 		{
 			"attcode": "oslicence_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -222,7 +222,7 @@
 		},
 		{
 			"attcode": "powerA_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -231,7 +231,7 @@
 		},
 		{
 			"attcode": "powerB_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -240,7 +240,7 @@
 		},
 		{
 			"attcode": "providercontracts_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -252,7 +252,7 @@
 		},
 		{
 			"attcode": "purchase_date",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute",
@@ -260,7 +260,7 @@
 		},
 		{
 			"attcode": "rack_id",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
@@ -277,7 +277,7 @@
 		},
 		{
 			"attcode": "san_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -297,7 +297,7 @@
 		},
 		{
 			"attcode": "services_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -317,7 +317,7 @@
 		},
 		{
 			"attcode": "tickets_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",
@@ -330,10 +330,5 @@
 	],
 	"user_delete_policy": "nobody",
 	"url_icon": "",
-	"url_application": "",
-	"friendlyname": "Test 1",
-	"user_id_friendlyname": "",
-	"user_id_finalclass_recall": "",
-	"notify_contact_id_friendlyname": " ",
-	"notify_contact_id_finalclass_recall": ""
+	"url_application": ""
 }

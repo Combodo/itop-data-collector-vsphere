@@ -36,6 +36,10 @@ class Vhost {
 		return $this->getServiceContent()->about->apiType;
 	}
 
+	function getApiVersion() {
+		return $this->getServiceContent()->about->apiVersion;
+	}
+	
 	function changeService(\Vmwarephp\Service $service) {
 		$this->service = $service;
 	}
