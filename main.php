@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
+// Copyright (C) 2014 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
@@ -32,8 +32,8 @@ Orchestrator::AddCollector($iRank++, 'vSphereModelCollector');
 Orchestrator::AddCollector($iRank++, 'vSphereOSFamilyCollector');
 Orchestrator::AddCollector($iRank++, 'vSphereOSVersionCollector');
 Orchestrator::AddCollector($iRank++, 'vSphereFarmCollector');
-Orchestrator::AddCollector($iRank++, 'vSphereHypervisorCollector');
 Orchestrator::AddCollector($iRank++, 'vSphereServerCollector');
+Orchestrator::AddCollector($iRank++, 'vSphereHypervisorCollector');
 Orchestrator::AddCollector($iRank++, 'vSphereVirtualMachineCollector');
 
 
