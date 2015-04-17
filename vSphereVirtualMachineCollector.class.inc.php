@@ -231,6 +231,7 @@ class vSphereVirtualMachineCollector extends Collector
 						'interfaces' => $aNWInterfaces,
 						'power_state' => $oVirtualMachine->runtime->powerState,
 						'virtualhost_id' => empty($sFarmName) ? $oVirtualMachine->runtime->host->name : $sFarmName,
+						'description' => $oVirtualMachine->config->annotation,
 				);
 			}
 		}
@@ -308,6 +309,7 @@ class vSphereVirtualMachineCollector extends Collector
 				//'logicalvolumes_list' => implode('|', $aDS),
 				'osversion_id' => $aVM['osversion_id'],
 				'virtualhost_id' => $aVM['virtualhost_id'],
+				'description' => $aVM['description'],
 			);
 		}
 		return false;
