@@ -303,13 +303,13 @@ class vSphereVirtualMachineCollector extends Collector
 				'status' => 'active',
 				'org_id' => $aVM['org_id'],
 				'ram' => $aVM['ram'],
-				'cpu' => ((int)$aVM['cpu'])+1,
+				'cpu' => ((int)$aVM['cpu']),
 				'managementip' => $aVM['managementip'],
 				'osfamily_id' => $aVM['osfamily_id'],
 				//'logicalvolumes_list' => implode('|', $aDS),
 				'osversion_id' => $aVM['osversion_id'],
 				'virtualhost_id' => $aVM['virtualhost_id'],
-				'description' => $aVM['description'],
+				'description' => str_replace(array("\n", "\r"), ' ', $aVM['description']),
 			);
 		}
 		return false;
