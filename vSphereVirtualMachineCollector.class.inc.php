@@ -273,7 +273,8 @@ class vSphereVirtualMachineCollector extends Collector
 	protected function ProcessLineBeforeSynchro(&$aLineData, $iLineIndex)
 	{
 		// Process each line of the CSV
-		$this->oOSVersionLookup->Lookup($aLineData, array('osfamily_id', 'osversion_id'), 'osversion_id', $iLineIndex);
+		$bRet = $this->oOSVersionLookup->Lookup($aLineData, array('osfamily_id', 'osversion_id'), 'osversion_id', $iLineIndex);
+		return $bRet;
 	}
 
 	public function Prepare()
@@ -300,7 +301,7 @@ class vSphereVirtualMachineCollector extends Collector
 			return array(
 				'primary_key' => $aVM['id'],
 				'name' => $aVM['name'],
-				'status' => 'active',
+				'status' => 'production',
 				'org_id' => $aVM['org_id'],
 				'ram' => $aVM['ram'],
 				'cpu' => ((int)$aVM['cpu']),
