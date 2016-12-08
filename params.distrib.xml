@@ -5,6 +5,16 @@
   <vsphere_uri>192.168.10.12:443</vsphere_uri>
   <vsphere_login>admin</vsphere_login>
   <vsphere_password>admin</vsphere_password>
+  <vsphere_connection_options type="hash">
+  	<ssl type="hash">
+  		<!--  uncomment the lines below to disable SSL Certificates validation
+  		      see http://php.net/manual/en/context.ssl.php for the possible options
+  		<verify_peer>0</verify_peer>
+  		<verify_peer_name>0</verify_peer_name>
+  		<allow_self_signed>1</allow_self_signed>
+  		 -->
+  	</ssl>
+  </vsphere_connection_options>
   <virtual_machine type="hash">
     <default_values type="hash">
       <org_id>$default_org_id$</org_id>
