@@ -17,8 +17,6 @@
 class vSphereHypervisorCollector extends Collector
 {
 	protected $idx;
-	protected $oOSVersionLookup;
-	protected $oModelLookup;
 	static protected $aHypervisors = null;
 
 	public function AttributeIsOptional($sAttCode)
@@ -79,7 +77,7 @@ class vSphereHypervisorCollector extends Collector
 						'ram' => (int)($oHypervisor->hardware->memorySize / (1024*1024)),
 						'osfamily_id' => $oBrandMappings->MapValue($oHypervisor->config->product->name, 'Other'),
 						'osversion_id' => $oModelMappings->MapValue($oHypervisor->config->product->fullName, ''),
-						'status' => 'active',
+						'status' => 'production',
 						'farm_id' => $sFarmName,
 						'server_id' => $oHypervisor->name,
 				);
