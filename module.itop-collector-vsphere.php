@@ -16,7 +16,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'itop-collector-vsphere/1.0.5',
+	'itop-collector-vsphere/1.0.6',
 	array(
 		// Identification
 		//

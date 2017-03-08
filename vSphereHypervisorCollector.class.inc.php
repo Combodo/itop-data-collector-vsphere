@@ -17,8 +17,6 @@
 class vSphereHypervisorCollector extends Collector
 {
 	protected $idx;
-	protected $oOSVersionLookup;
-	protected $oModelLookup;
 	static protected $aHypervisors = null;
 
 	public function AttributeIsOptional($sAttCode)
@@ -36,7 +34,9 @@ class vSphereHypervisorCollector extends Collector
 		{
 			$oBrandMappings =  new MappingTable('brand_mapping');
 			$oModelMappings =  new MappingTable('model_mapping');
-	
+			$oOSFamilyMappings =  new MappingTable('os_family_mapping');
+			$oOSVersionMappings =  new MappingTable('os_version_mapping');
+				
 			$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri', '');
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
@@ -57,6 +57,15 @@ class vSphereHypervisorCollector extends Collector
 			
 			foreach($aHypervisors as $oHypervisor)
 			{
+				if ($oHypervisor->runtime->connectionState !== 'connected')
+				{
+					// The documentation says that 'config' ".. might not be available for a disconnected host"
+					// A customer reported that trying to access ->config->... causes a segfault !!
+					// So let's skip such hypervisors for now
+					Utils::Log(LOG_INFO, "Skipping Hypervisor {$oHypervisor->name} which is NOT connected (runtime->connectionState = '{$oHypervisor->runtime->connectionState}')");
+					continue;
+				}
+				
 				$sFarmName = '';
 				// Is the hypervisor part of a farm ?
 				
@@ -77,9 +86,9 @@ class vSphereHypervisorCollector extends Collector
 						'model_id' => $oModelMappings->MapValue($oHypervisor->hardware->systemInfo->model, ''),
 						'cpu' => $oHypervisor->hardware->cpuInfo->numCpuPackages,
 						'ram' => (int)($oHypervisor->hardware->memorySize / (1024*1024)),
-						'osfamily_id' => $oBrandMappings->MapValue($oHypervisor->config->product->name, 'Other'),
-						'osversion_id' => $oModelMappings->MapValue($oHypervisor->config->product->fullName, ''),
-						'status' => 'active',
+						'osfamily_id' => $oOSFamilyMappings->MapValue($oHypervisor->config->product->name, 'Other'),
+						'osversion_id' => $oOSVersionMappings->MapValue($oHypervisor->config->product->fullName, ''),
+						'status' => 'production',
 						'farm_id' => $sFarmName,
 						'server_id' => $oHypervisor->name,
 				);
@@ -145,7 +154,7 @@ class vSphereHypervisorCollector extends Collector
 			}
 			else
 			{
-				Utils::Log(LOG_CRIT, "Failed to connect to https://$sHost - Invalid SSL certificate.\nYou can add the following 'vsphere_connection_options' to your configuration to bypass this check:\n<vsphere_connection_options>\n\t<verify_peer>0</verify_peer>\n\t<verify_peer_name>0</verify_peer_name>\n\t<allow_self_signed>1</allow_self_signed>\n</vsphere_connection_options>\n");
+				Utils::Log(LOG_CRIT, "Failed to connect to https://$sHost - Invalid SSL certificate.\nYou can add the following 'vsphere_connection_options' to your configuration file (conf/params.local.xml) to bypass this check:\n<vsphere_connection_options>\n\t<ssl>\n\t\t<verify_peer>0</verify_peer>\n\t\t<verify_peer_name>0</verify_peer_name>\n\t\t<allow_self_signed>1</allow_self_signed>\n\t</ssl>\n</vsphere_connection_options>\n");
 				return false;
 			}
 		}
