@@ -34,7 +34,9 @@ class vSphereHypervisorCollector extends Collector
 		{
 			$oBrandMappings =  new MappingTable('brand_mapping');
 			$oModelMappings =  new MappingTable('model_mapping');
-	
+			$oOSFamilyMappings =  new MappingTable('os_family_mapping');
+			$oOSVersionMappings =  new MappingTable('os_version_mapping');
+				
 			$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri', '');
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
@@ -55,6 +57,15 @@ class vSphereHypervisorCollector extends Collector
 			
 			foreach($aHypervisors as $oHypervisor)
 			{
+				if ($oHypervisor->runtime->connectionState !== 'connected')
+				{
+					// The documentation says that 'config' ".. might not be available for a disconnected host"
+					// A customer reported that trying to access ->config->... causes a segfault !!
+					// So let's skip such hypervisors for now
+					Utils::Log(LOG_INFO, "Skipping Hypervisor {$oHypervisor->name} which is NOT connected (runtime->connectionState = '{$oHypervisor->runtime->connectionState}')");
+					continue;
+				}
+				
 				$sFarmName = '';
 				// Is the hypervisor part of a farm ?
 				
@@ -75,8 +86,8 @@ class vSphereHypervisorCollector extends Collector
 						'model_id' => $oModelMappings->MapValue($oHypervisor->hardware->systemInfo->model, ''),
 						'cpu' => $oHypervisor->hardware->cpuInfo->numCpuPackages,
 						'ram' => (int)($oHypervisor->hardware->memorySize / (1024*1024)),
-						'osfamily_id' => $oBrandMappings->MapValue($oHypervisor->config->product->name, 'Other'),
-						'osversion_id' => $oModelMappings->MapValue($oHypervisor->config->product->fullName, ''),
+						'osfamily_id' => $oOSFamilyMappings->MapValue($oHypervisor->config->product->name, 'Other'),
+						'osversion_id' => $oOSVersionMappings->MapValue($oHypervisor->config->product->fullName, ''),
 						'status' => 'production',
 						'farm_id' => $sFarmName,
 						'server_id' => $oHypervisor->name,
