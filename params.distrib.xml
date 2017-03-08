@@ -65,5 +65,6 @@
   <json_placeholders type="hash">
     <prefix>vSphere</prefix>
     <full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
+    <synchro_status>production</synchro_status>
   </json_placeholders>
 </parameters>

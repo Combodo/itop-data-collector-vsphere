@@ -1,7 +1,7 @@
 {
 	"name": "$prefix$:Server",
 	"description": "$prefix$ Data Collector (v. $version$): Physical Servers running an Hypervisor",
-	"status": "production",
+	"status": "$synchro_status$",
 	"user_id": "$synchro_user$",
 	"notify_contact_id": "$contact_to_notify$",
 	"scope_class": "Server",
