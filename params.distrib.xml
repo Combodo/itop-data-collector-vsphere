@@ -36,6 +36,17 @@
     <pattern>/Windows/Windows</pattern>
     <pattern>/.*/Other</pattern>
   </os_family_mapping>
+  <os_version_mapping type="array">
+    <!-- Syntax /pattern/replacement where:
+      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
+      pattern is a RegExpr pattern
+      replacement is a sprintf string in which:
+          %1$s will be replaced by the whole matched text,
+          %2$s will be replaced by the first match group, if any group is defined in the RegExpr
+          %3$s will be replaced by the second matched group, etc...
+    -->
+    <pattern>/.*/%1$s</pattern>
+  </os_version_mapping>
   <brand_mapping type="array">
     <!-- Syntax /pattern/replacement where:
       any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
