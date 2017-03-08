@@ -145,7 +145,7 @@ class vSphereHypervisorCollector extends Collector
 			}
 			else
 			{
-				Utils::Log(LOG_CRIT, "Failed to connect to https://$sHost - Invalid SSL certificate.\nYou can add the following 'vsphere_connection_options' to your configuration to bypass this check:\n<vsphere_connection_options>\n\t<verify_peer>0</verify_peer>\n\t<verify_peer_name>0</verify_peer_name>\n\t<allow_self_signed>1</allow_self_signed>\n</vsphere_connection_options>\n");
+				Utils::Log(LOG_CRIT, "Failed to connect to https://$sHost - Invalid SSL certificate.\nYou can add the following 'vsphere_connection_options' to your configuration file (conf/params.local.xml) to bypass this check:\n<vsphere_connection_options>\n\t<ssl>\n\t\t<verify_peer>0</verify_peer>\n\t\t<verify_peer_name>0</verify_peer_name>\n\t\t<allow_self_signed>1</allow_self_signed>\n\t</ssl>\n</vsphere_connection_options>\n");
 				return false;
 			}
 		}
