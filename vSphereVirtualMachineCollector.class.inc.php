@@ -189,6 +189,12 @@ class vSphereVirtualMachineCollector extends Collector
 								}
 								else
 								{
+									// If we have a guest IP set to IPv6, replace it with the first IPv4 we find
+									if(strpos($oVirtualMachine->guest->ipAddress, ":") !== false)
+									{
+										$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
+									}
+									
 									$mask = ip2long('255.255.255.255');
 									$subnet_mask = ($mask << (32 - (int)$oIPInfo->prefixLength)) & $mask;
 									$sSubnetMask = long2ip($subnet_mask);
@@ -221,7 +227,8 @@ class vSphereVirtualMachineCollector extends Collector
 						'id' => $oVirtualMachine->getReferenceId(),
 						'name' => $oVirtualMachine->name,
 						'org_id' => $sDefaultOrg,
-						'managementip' => $oVirtualMachine->guest->ipAddress,
+						// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
+						'managementip' => (strpos($oVirtualMachine->guest->ipAddress, ':') !== false) ? '' : $oVirtualMachine->guest->ipAddress,
 						'cpu' => $oVirtualMachine->config->hardware->numCPU,
 						'ram' => $oVirtualMachine->config->hardware->memoryMB,
 						'osfamily_id' => $OSFamily,
@@ -229,7 +236,6 @@ class vSphereVirtualMachineCollector extends Collector
 						'datastores' => $aDSUsage,
 						'disks' => $aDisks,
 						'interfaces' => $aNWInterfaces,
-						'power_state' => $oVirtualMachine->runtime->powerState,
 						'virtualhost_id' => empty($sFarmName) ? $oVirtualMachine->runtime->host->name : $sFarmName,
 						'description' => $oVirtualMachine->config->annotation,
 				);
