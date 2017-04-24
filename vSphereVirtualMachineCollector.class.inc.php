@@ -306,7 +306,7 @@ class vSphereVirtualMachineCollector extends Collector
 			return array(
 				'primary_key' => $aVM['id'],
 				'name' => $aVM['name'],
-				'status' => 'active',
+				'status' => 'production',
 				'org_id' => $aVM['org_id'],
 				'ram' => $aVM['ram'],
 				'cpu' => ((int)$aVM['cpu']),
