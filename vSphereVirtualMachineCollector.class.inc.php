@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
+// Copyright (C) 2014-2018 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
@@ -33,9 +33,25 @@ function myprint_r($var)
 class vSphereVirtualMachineCollector extends Collector
 {
 	protected $idx;
+	/**
+	 * @var LookupTable For the OS Family / OS Version lookup
+	 */
 	protected $oOSVersionLookup;
+	
+	/**
+	 * @var mixed[][] The collected VM infos
+	 */
 	static protected $aVMInfos = null;
+	
+	/**
+	 * @var MappingTable Mapping table for the OS Families
+	 */
 	static protected $oOSFamilyMappings = null;
+	
+	/**
+	 * @var MappingTable Mapping table for OS versions
+	 */
+	static protected $oOSVersionMappings = null;
 	
 	public function AttributeIsOptional($sAttCode)
 	{
@@ -99,7 +115,7 @@ class vSphereVirtualMachineCollector extends Collector
 			foreach($aVirtualMachines as $oVirtualMachine)
 			{
 				$OSFamily = self::GetOSFamily($oVirtualMachine);
-				$OSVersion = $oVirtualMachine->config->guestFullName;
+				$OSVersion = self::GetOSVersion($oVirtualMachine);
 				$aDSUsage = array();
 				if ($oVirtualMachine->storage->perDatastoreUsage)
 				{
@@ -246,9 +262,9 @@ class vSphereVirtualMachineCollector extends Collector
 
 	/**
 	 * Helper method to extract the OSFamily information from the VirtualMachine object
-	 * according to the mapping taken from the configuration
+	 * according to the 'os_family_mapping' mapping taken from the configuration
 	 * @param VirtualMachine $oVirtualMachine
-	 * @return mixed String or null if nothing matches the extraction rules
+	 * @return string The mapped OS Family or an empty string if nothing matches the extraction rules
 	 */
 	static public function GetOSFamily($oVirtualMachine)
 	{
@@ -260,6 +276,24 @@ class vSphereVirtualMachineCollector extends Collector
 		$value = self::$oOSFamilyMappings->MapValue($sRawValue, '');
 
 		return $value;		
+	}
+	
+	/**
+	 * Helper method to extract the Version information from the VirtualMachine object
+	 * according to the 'os_version_mapping' mapping taken from the configuration
+	 * @param VirtualMachine $oVirtualMachine
+	 * @return string The mapped OS Version or the original value if nothing matches the extraction rules
+	 */
+	static public function GetOSVersion($oVirtualMachine)
+	{
+		if (self::$oOSVersionMappings === null)
+		{
+			self::$oOSVersionMappings =  new MappingTable('os_version_mapping');
+		}
+		$sRawValue = $oVirtualMachine->config->guestFullName;
+		$value = self::$oOSVersionMappings->MapValue($sRawValue, $sRawValue); // Keep the raw value by default
+		
+		return $value;
 	}
 	
 	protected function MustProcessBeforeSynchro()
