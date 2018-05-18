@@ -112,11 +112,21 @@ class vSphereVirtualMachineCollector extends Collector
 			
 			$aVirtualMachines = $vhost->findAllManagedObjects('VirtualMachine', array('config', 'runtime', 'guest', 'network', 'storage'));
 			
+			$idx = 1;
 			foreach($aVirtualMachines as $oVirtualMachine)
 			{
+				utils::Log(LOG_DEBUG, ">>>>>> Starting collection of the VM '".$oVirtualMachine->name."' (VM #$idx)");
+				utils::Log(LOG_DEBUG, "Runtime->connectionState: ".$oVirtualMachine->runtime->connectionState);
+				utils::Log(LOG_DEBUG, "Runtime->powerState: ".$oVirtualMachine->runtime->powerState);
+				if ($oVirtualMachine->runtime->connectionState != 'connected')
+				{
+					utils::Log(LOG_INFO, "Cannot retrieve information from VM ".$oVirtualMachine->name." (VM#$idx) (runtime->connectionState='".$oVirtualMachine->runtime->connectionState."'), skipping.");
+					continue;
+				}
 				$OSFamily = self::GetOSFamily($oVirtualMachine);
 				$OSVersion = self::GetOSVersion($oVirtualMachine);
 				$aDSUsage = array();
+				utils::Log(LOG_DEBUG, "Collecting datastore name...");
 				if ($oVirtualMachine->storage->perDatastoreUsage)
 				{
 					foreach($oVirtualMachine->storage->perDatastoreUsage as $oVMUsageOnDatastore)
@@ -125,6 +135,7 @@ class vSphereVirtualMachineCollector extends Collector
 					}
 				}
 				$aDisks = array();
+				utils::Log(LOG_DEBUG, "Collecting disk info...");
 				if ($oVirtualMachine->guest->disk)
 				{
 					foreach($oVirtualMachine->guest->disk as $oDiskInfo)
@@ -137,6 +148,7 @@ class vSphereVirtualMachineCollector extends Collector
 					}
 				}
 				$aNWInterfaces = array();
+				utils::Log(LOG_DEBUG, "Collecting network info...");
 				if ($oVirtualMachine->guest->net)
 				{
 					$aMACToNetwork = array();
@@ -193,6 +205,7 @@ class vSphereVirtualMachineCollector extends Collector
 						}
 					}
 					
+					Utils::Log(LOG_DEBUG, "Collecting IP addresses for this VM...");
 					foreach($oVirtualMachine->guest->net as $oNICInfo)
 					{						
 						if ($oNICInfo->ipConfig && $oNICInfo->ipConfig->ipAddress)
@@ -202,6 +215,7 @@ class vSphereVirtualMachineCollector extends Collector
 								if (strpos($oIPInfo->ipAddress, ':') !== false)
 								{
 									// Ignore IP v6
+									Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
 								}
 								else
 								{
@@ -211,6 +225,7 @@ class vSphereVirtualMachineCollector extends Collector
 										$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 									}
 									
+									Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
 									$mask = ip2long('255.255.255.255');
 									$subnet_mask = ($mask << (32 - (int)$oIPInfo->prefixLength)) & $mask;
 									$sSubnetMask = long2ip($subnet_mask);
@@ -230,6 +245,7 @@ class vSphereVirtualMachineCollector extends Collector
 				$sFarmName = '';
 				
 				// Is the hypervisor, on which this VM is running, part of a farm ?
+				utils::Log(LOG_DEBUG, "Checking if the host is part of a Farm...");
 				foreach($aFarms as $aFarm)
 				{
 					if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts']))
@@ -239,24 +255,53 @@ class vSphereVirtualMachineCollector extends Collector
 					}
 				}
 				
+				utils::Log(LOG_DEBUG, "Building VM record...");
+				
+				utils::Log(LOG_DEBUG, "Reading Name...");
+				$sName = $oVirtualMachine->name;
+				utils::Log(LOG_DEBUG, "    Name: $sName");
+				
+				utils::Log(LOG_DEBUG, "Reading Number of CPUs...");
+				$iNbCPUs = $oVirtualMachine->config->hardware->numCPU;
+				utils::Log(LOG_DEBUG, "    CPUs: $iNbCPUs");
+				
+				utils::Log(LOG_DEBUG, "Reading Memory...");
+				$iMemory = $oVirtualMachine->config->hardware->memoryMB;
+				utils::Log(LOG_DEBUG, "    Memory: $iMemory");
+				
+				utils::Log(LOG_DEBUG, "Reading Annotation...");
+				$sAnnotation = $oVirtualMachine->config->annotation;
+				utils::Log(LOG_DEBUG, "    Annotation: $sAnnotation");
+				
+				utils::Log(LOG_DEBUG, "Reading management IP (guest->ipAddress)...");
+				$sGuestIP = $oVirtualMachine->config->annotation;
+				utils::Log(LOG_DEBUG, "    Management IP: $sGuestIP");
+				
+				utils::Log(LOG_DEBUG, "Reading host name...");
+				$sHostName = $oVirtualMachine->runtime->host->name;
+				utils::Log(LOG_DEBUG, "    Host name: $sHostName");
+				
 				self::$aVMInfos[] = array(
 						'id' => $oVirtualMachine->getReferenceId(),
-						'name' => $oVirtualMachine->name,
+						'name' => $sName,
 						'org_id' => $sDefaultOrg,
 						// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
-						'managementip' => (strpos($oVirtualMachine->guest->ipAddress, ':') !== false) ? '' : $oVirtualMachine->guest->ipAddress,
-						'cpu' => $oVirtualMachine->config->hardware->numCPU,
-						'ram' => $oVirtualMachine->config->hardware->memoryMB,
+						'managementip' => (strpos($sGuestIP, ':') !== false) ? '' : $sGuestIP,
+						'cpu' => $iNbCPUs,
+						'ram' => $iMemory,
 						'osfamily_id' => $OSFamily,
 						'osversion_id' => $OSVersion,
 						'datastores' => $aDSUsage,
 						'disks' => $aDisks,
 						'interfaces' => $aNWInterfaces,
-						'virtualhost_id' => empty($sFarmName) ? $oVirtualMachine->runtime->host->name : $sFarmName,
-						'description' => $oVirtualMachine->config->annotation,
+						'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
+						'description' => $sAnnotation,
 				);
+				utils::Log(LOG_DEBUG, "<<<<<< End of collection of the VM #$idx");
+				$idx++;
 			}
 		}
+		utils::Log(LOG_DEBUG, "End of collection of VMs information.");
 		return self::$aVMInfos;	
 	}
 
