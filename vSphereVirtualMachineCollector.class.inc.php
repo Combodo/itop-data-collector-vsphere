@@ -274,7 +274,7 @@ class vSphereVirtualMachineCollector extends Collector
 				utils::Log(LOG_DEBUG, "    Annotation: $sAnnotation");
 				
 				utils::Log(LOG_DEBUG, "Reading management IP (guest->ipAddress)...");
-				$sGuestIP = $oVirtualMachine->config->annotation;
+				$sGuestIP = $oVirtualMachine->guest->ipAddress;
 				utils::Log(LOG_DEBUG, "    Management IP: $sGuestIP");
 				
 				utils::Log(LOG_DEBUG, "Reading host name...");
