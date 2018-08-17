@@ -78,4 +78,10 @@
     <full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
     <synchro_status>production</synchro_status>
   </json_placeholders>
+  <teemip_options type="hash">
+    <collect_ips>yes</collect_ips>
+    <default_ip_status>allocated</default_ip_status>
+    <manage_ipv6>no</manage_ipv6>
+    <manage_logical_interfaces>yes</manage_logical_interfaces>
+  </teemip_options>
 </parameters>
