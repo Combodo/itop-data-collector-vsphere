@@ -17,69 +17,90 @@
 class vSphereServerCollector extends Collector
 {
 	protected $idx;
-	protected $aServers;
+	protected static $aServers;
 	
 	public function AttributeIsOptional($sAttCode)
 	{
 		// If the module Service Management for Service Providers is selected during the setup
 		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
 		if ($sAttCode == 'services_list') return true;
-		
+
+		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
+		// on Servers. Let's safely ignore it.
+		if ($sAttCode == 'providercontracts_list') return true;
+
 		return parent::AttributeIsOptional($sAttCode);
 	}
-	
+
+	public static function CollectServerInfos()
+	{
+		if (static::$aServers === null)
+		{
+			$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
+			foreach($aHypervisors as $aHyperV)
+			{
+				static::$aServers[] = static::DoCollectServer($aHyperV);
+			}
+		}
+		utils::Log(LOG_DEBUG, "End of collection of Servers information.");
+		return static::$aServers;
+	}
+
+	protected static function DoCollectServer($aHyperV)
+	{
+		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
+		return array(
+			'id' => $aHyperV['id'],
+			'name' => $aHyperV['name'],
+			'org_id' => $sDefaultOrg,
+			'serial_number' => '', //$aHyperV['other_info'][2]->identifierValue,
+			'status' => 'production',
+			'brand_id' => $aHyperV['brand_id'],
+			'model_id' => $aHyperV['model_id'],
+			'osfamily_id' => $aHyperV['osfamily_id'],
+			'osversion_id' => $aHyperV['osversion_id'],
+			'cpu' => $aHyperV['cpu'],
+			'ram' => $aHyperV['ram'],
+		);
+	}
+
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
 		if (!$bRet) return false;
-		
-		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
-		
-		//TODO
-		$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
-		foreach($aHypervisors as $aHyperV)
-		{
-			$this->aServers[] = array(
-				'id' => $aHyperV['id'],
-				'name' => $aHyperV['name'],
-				'org_id' => $sDefaultOrg,
-				'serial_number' => '', //$aHyperV['other_info'][2]->identifierValue,
-				'status' => 'production',
-				'brand_id' => $aHyperV['brand_id'],
-				'model_id' => $aHyperV['model_id'],
-				'osfamily_id' => $aHyperV['osfamily_id'],
-				'osversion_id' => $aHyperV['osversion_id'],
-				'cpu' => $aHyperV['cpu'],
-				'ram' => $aHyperV['ram'],
-			);
-		}
-				
+
+		static::CollectServerInfos();
+
 		$this->idx = 0;
 		return true;
 	}
 	
 	public function Fetch()
 	{
-		if ($this->idx < count($this->aServers))
+		if ($this->idx < count(static::$aServers))
 		{
-			$aServer = $this->aServers[$this->idx++];
-
-			return array(
-					'primary_key' => $aServer['id'],
-					'name' => $aServer['name'],
-					'org_id' => $aServer['org_id'],
-					'serialnumber' => '', //$aServer['serialnumber'],
-					'status' => $aServer['status'],
-					'brand_id' => $aServer['brand_id'],
-					'model_id' => $aServer['model_id'],
-					'osfamily_id' => $aServer['osfamily_id'],
-					'osversion_id' => $aServer['osversion_id'],
-					'cpu' => $aServer['cpu'],
-					'ram' => $aServer['ram'],
-					'managementip' => '', //$aServer[''],
-			);
+			$aServer = static::$aServers[$this->idx++];
+			return $this->DoFetch($aServer);
 		}
 		return false;
+	}
+
+	protected function DoFetch($aServer)
+	{
+		return array(
+			'primary_key' => $aServer['id'],
+			'name' => $aServer['name'],
+			'org_id' => $aServer['org_id'],
+			'serialnumber' => '', //$aServer['serialnumber'],
+			'status' => $aServer['status'],
+			'brand_id' => $aServer['brand_id'],
+			'model_id' => $aServer['model_id'],
+			'osfamily_id' => $aServer['osfamily_id'],
+			'osversion_id' => $aServer['osversion_id'],
+			'cpu' => $aServer['cpu'],
+			'ram' => $aServer['ram'],
+			'managementip' => '', //$aServer[''],
+		);
 	}
 	
 	protected function MustProcessBeforeSynchro()

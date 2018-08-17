@@ -18,6 +18,7 @@ class vSphereOSFamilyCollector extends Collector
 {
 	protected $idx;
 	protected $aOSFamily;
+	protected static $bUseTeemIp = false;
 
 	
 	public function Prepare()
@@ -25,7 +26,14 @@ class vSphereOSFamilyCollector extends Collector
 		$bRet = parent::Prepare();
 		$this->idx = 0;
 		// Get the different OS Family values from the Virtual Machines
-		$aVMInfos = vSphereVirtualMachineCollector::CollectVMInfos();
+		if (self::$bUseTeemIp)
+		{
+			$aVMInfos = vSphereVirtualMachineTeemIpCollector::CollectVMInfos();
+		}
+		else
+		{
+			$aVMInfos = vSphereVirtualMachineCollector::CollectVMInfos();
+		}
 		$aTmp = array();
 		foreach($aVMInfos as $aVM)
 		{
@@ -43,7 +51,12 @@ class vSphereOSFamilyCollector extends Collector
 		$this->aOSFamily = array_keys($aTmp);
 		return $bRet;
 	}
-	
+
+	public static function UseTeemIP($bUseTeemIp)
+	{
+		self::$bUseTeemIp = $bUseTeemIp;
+	}
+
 	public function Fetch()
 	{
 		if ($this->idx < count($this->aOSFamily))

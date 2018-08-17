@@ -1,0 +1,177 @@
+{
+	"name": "$prefix$:IPv4Address",
+	"description": "$prefix$ Data Collector (v. $version$): IPv4Address",
+	"status": "$synchro_status$",
+	"user_id": "$synchro_user$",
+	"notify_contact_id": "$contact_to_notify$",
+	"scope_class": "IPv4Address",
+	"database_table_name": "",
+	"scope_restriction": "",
+	"full_load_periodicity": "$full_load_interval$",
+	"reconciliation_policy": "use_attributes",
+	"action_on_zero": "create",
+	"action_on_one": "update",
+	"action_on_multiple": "error",
+	"delete_policy": "ignore",
+	"delete_policy_update": "",
+	"delete_policy_retention": "0",
+	"attribute_list": [
+		{
+			"attcode": "aliases",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "aliases"
+		},
+		{
+			"attcode": "allocation_date",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "allocation_date"
+		},
+		{
+			"attcode": "comment",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "comment"
+		},
+		{
+			"attcode": "contact_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet",
+			"friendlyname": "contact_list"
+		},
+		{
+			"attcode": "document_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet",
+			"friendlyname": "document_list"
+		},
+		{
+			"attcode": "domain_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "domain_id"
+		},
+		{
+			"attcode": "fqdn",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "fqdn"
+		},
+		{
+			"attcode": "ip",
+			"update": "1",
+			"reconcile": "1",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "ip"
+		},
+		{
+			"attcode": "ip_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet",
+			"friendlyname": "ip_list"
+		},
+		{
+			"attcode": "org_id",
+			"update": "1",
+			"reconcile": "1",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "name",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "org_id"
+		},
+		{
+			"attcode": "range_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "range_id"
+		},
+		{
+			"attcode": "release_date",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "release_date"
+		},
+		{
+			"attcode": "requestor_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "requestor_id"
+		},
+		{
+			"attcode": "short_name",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "short_name"
+		},
+		{
+			"attcode": "status",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "write_if_empty",
+			"finalclass": "SynchroAttribute",
+			"friendlyname": "status"
+		},
+		{
+			"attcode": "subnet_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "subnet_id"
+		},
+		{
+			"attcode": "usage_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "usage_id"
+		}
+	],
+	"user_delete_policy": "nobody",
+	"url_icon": "",
+	"url_application": ""
+}

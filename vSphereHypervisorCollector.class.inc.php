@@ -24,7 +24,11 @@ class vSphereHypervisorCollector extends Collector
 		// If the module Service Management for Service Providers is selected during the setup
 		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
 		if ($sAttCode == 'services_list') return true;
-	
+
+		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
+		// on VirtualMachines. Let's safely ignore it.
+		if ($sAttCode == 'providercontracts_list') return true;
+
 		return parent::AttributeIsOptional($sAttCode);
 	}
 		
