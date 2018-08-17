@@ -66,7 +66,6 @@ catch(Exception $e)
 }
 Utils::Log(LOG_INFO, $sMessage);
 if ($bTeemIpIsInstalled)
-//if (false)
 {
 	vSphereOSFamilyCollector::UseTeemIP(true);
 
