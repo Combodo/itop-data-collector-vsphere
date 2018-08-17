@@ -279,19 +279,19 @@ class vSphereVirtualMachineCollector extends Collector
 
 		return array(
 			'id' => $oVirtualMachine->getReferenceId(),
-			'name' => $oVirtualMachine->name,
+			'name' => $sName,
 			'org_id' => $sDefaultOrg,
 			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
 			'managementip' => (strpos($sGuestIP,':') !== false) ? '' : $sGuestIP,
-			'cpu' => $oVirtualMachine->config->hardware->numCPU,
-			'ram' => $oVirtualMachine->config->hardware->memoryMB,
+			'cpu' => $iNbCPUs,
+			'ram' => $iMemory,
 			'osfamily_id' => $OSFamily,
 			'osversion_id' => $OSVersion,
 			'datastores' => $aDSUsage,
 			'disks' => $aDisks,
 			'interfaces' => $aNWInterfaces,
 			'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
-			'description' => $oVirtualMachine->config->annotation,
+			'description' => $sAnnotation,
 		);
 	}
 
@@ -307,6 +307,7 @@ class vSphereVirtualMachineCollector extends Collector
 					if (strpos($oIPInfo->ipAddress, ':') !== false)
 					{
 						// Ignore IP v6
+						Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
 					}
 					else
 					{
@@ -316,6 +317,7 @@ class vSphereVirtualMachineCollector extends Collector
 							$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 						}
 
+						Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
 						$mask = ip2long('255.255.255.255');
 						$subnet_mask = ($mask << (32 - (int)$oIPInfo->prefixLength)) & $mask;
 						$sSubnetMask = long2ip($subnet_mask);

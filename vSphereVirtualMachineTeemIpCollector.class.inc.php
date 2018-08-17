@@ -80,6 +80,10 @@ class vSphereVirtualMachineTeemIpCollector extends vSphereVirtualMachineCollecto
 								'subnet_mask' => (int)$oIPInfo->prefixLength,
 							);
 						}
+						else
+						{
+							Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
+						}
 					}
 					else
 					{
@@ -89,6 +93,7 @@ class vSphereVirtualMachineTeemIpCollector extends vSphereVirtualMachineCollecto
 							$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 						}
 
+						Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
 						$mask = ip2long('255.255.255.255');
 						$subnet_mask = ($mask << (32 - (int)$oIPInfo->prefixLength)) & $mask;
 						$sSubnetMask = long2ip($subnet_mask);
