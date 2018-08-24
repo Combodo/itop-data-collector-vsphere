@@ -1,0 +1,41 @@
+{
+	"name": "vSphere:lnkIPInterfaceToIPAddress",
+	"description": "$prefix$ Data Collector (v. $version$): Link IP interface/ IP Address",
+	"status": "$synchro_status$",
+	"user_id": "$synchro_user$",
+	"notify_contact_id": "$contact_to_notify$",
+	"scope_class": "lnkIPInterfaceToIPAddress",
+	"database_table_name": "",
+	"scope_restriction": "",
+	"full_load_periodicity": "$full_load_interval$",
+	"reconciliation_policy": "use_attributes",
+	"action_on_zero": "create",
+	"action_on_one": "update",
+	"action_on_multiple": "error",
+	"delete_policy": "ignore",
+	"delete_policy_update": "",
+	"delete_policy_retention": "0",
+	"attribute_list": [
+		{
+			"attcode": "ipaddress_id",
+			"update": "1",
+			"reconcile": "1",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "friendlyname",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "ipaddress_id"
+		},
+		{
+			"attcode": "ipinterface_id",
+			"update": "1",
+			"reconcile": "1",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "macaddress",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "ipinterface_id"
+		}
+	],
+	"user_delete_policy": "nobody",
+	"url_icon": "",
+	"url_application": ""
+}

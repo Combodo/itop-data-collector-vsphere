@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default values for parameters. Do NOT alter this file, use params.local.xml instead -->
+<parameters>
+  <default_org_id>Demo</default_org_id>
+  <vsphere_uri>192.168.10.12:443</vsphere_uri>
+  <vsphere_login>admin</vsphere_login>
+  <vsphere_password>admin</vsphere_password>
+  <vsphere_connection_options type="hash">
+  	<ssl type="hash">
+  		<!--  uncomment the lines below to disable SSL Certificates validation
+  		      see http://php.net/manual/en/context.ssl.php for the possible options
+  		<verify_peer>0</verify_peer>
+  		<verify_peer_name>0</verify_peer_name>
+  		<allow_self_signed>1</allow_self_signed>
+  		 -->
+  	</ssl>
+  </vsphere_connection_options>
+  <virtual_machine type="hash">
+    <default_values type="hash">
+      <org_id>$default_org_id$</org_id>
+    </default_values>
+  </virtual_machine>
+  <os_family_mapping type="array">
+    <!-- Syntax /pattern/replacement where:
+      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
+      pattern is a RegExpr pattern
+      replacement is a sprintf string in which:
+          %1$s will be replaced by the whole matched text,
+          %2$s will be replaced by the first match group, if any group is defined in the RegExpr
+          %3$s will be replaced by the second matched group, etc...
+    -->
+    <pattern>/Ubuntu/Linux</pattern>
+    <pattern>/RedHat/Linux</pattern>
+    <pattern>/Debian/Linux</pattern>
+    <pattern>/Linux/Linux</pattern>
+    <pattern>/Windows/Windows</pattern>
+    <pattern>/.*/Other</pattern>
+  </os_family_mapping>
+  <os_version_mapping type="array">
+    <!-- Syntax /pattern/replacement where:
+      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
+      pattern is a RegExpr pattern
+      replacement is a sprintf string in which:
+          %1$s will be replaced by the whole matched text,
+          %2$s will be replaced by the first match group, if any group is defined in the RegExpr
+          %3$s will be replaced by the second matched group, etc...
+    -->
+    <pattern>/.*/%1$s</pattern>
+  </os_version_mapping>
+  <brand_mapping type="array">
+    <!-- Syntax /pattern/replacement where:
+      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
+      pattern is a RegExpr pattern
+      replacement is a sprintf string in which:
+          %1$s will be replaced by the whole matched text,
+          %2$s will be replaced by the first matched group, if any group is defined in the RegExpr
+          %3$s will be replaced by the second matched group, etc...
+    -->
+    <pattern>/IBM/IBM</pattern>
+    <pattern>/Hewlett Packard/Hewlett-Packard</pattern>
+    <pattern>/Hewlett-Packard/Hewlett-Packard</pattern>
+    <pattern>/Dell/Dell</pattern>
+    <pattern>/.*/%1$s</pattern>
+  </brand_mapping>
+  <model_mapping type="array">
+    <!-- Syntax /pattern/replacement where:
+      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
+      pattern is a RegExpr pattern
+      replacement is a sprintf string in which:
+          %1$s will be replaced by the whole matched text,
+          %2$s will be replaced by the first matched group, if any group is defined in the RegExpr
+          %3$s will be replaced by the second matched group, etc...
+    -->
+    <pattern>/.*/%1$s</pattern>
+  </model_mapping>
+  <json_placeholders type="hash">
+    <prefix>vSphere</prefix>
+    <full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
+    <synchro_status>production</synchro_status>
+  </json_placeholders>
+  <teemip_options type="hash">
+    <collect_ips>yes</collect_ips>
+    <default_ip_status>allocated</default_ip_status>
+    <manage_ipv6>no</manage_ipv6>
+    <manage_logical_interfaces>yes</manage_logical_interfaces>
+  </teemip_options>
+</parameters>
