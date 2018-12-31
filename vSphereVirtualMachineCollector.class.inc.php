@@ -140,10 +140,6 @@ class vSphereVirtualMachineCollector extends Collector
 
 	static protected function DoCollectVMInfo($aFarms, $oVirtualMachine, $aVLANs, $idx)
 	{
-		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
-		$OSFamily = static::GetOSFamily($oVirtualMachine);
-		$OSVersion = static::GetOSVersion($oVirtualMachine);
-
 		utils::Log(LOG_DEBUG, "Runtime->connectionState: ".$oVirtualMachine->runtime->connectionState);
 		utils::Log(LOG_DEBUG, "Runtime->powerState: ".$oVirtualMachine->runtime->powerState);
 		if ($oVirtualMachine->runtime->connectionState != 'connected')
@@ -151,6 +147,10 @@ class vSphereVirtualMachineCollector extends Collector
 			utils::Log(LOG_INFO, "Cannot retrieve information from VM ".$oVirtualMachine->name." (VM#$idx) (runtime->connectionState='".$oVirtualMachine->runtime->connectionState."'), skipping.");
 			return null;
 		}
+
+		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
+		$OSFamily = static::GetOSFamily($oVirtualMachine);
+		$OSVersion = static::GetOSVersion($oVirtualMachine);
 
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
