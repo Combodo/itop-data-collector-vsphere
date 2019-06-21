@@ -214,16 +214,6 @@ class vSphereVirtualMachineCollector extends Collector
 			$aNWInterfaces = static::DoCollectVMIPs($aMACToNetwork, $oVirtualMachine);
 		}
 
-		$aDSUsage = array();
-		utils::Log(LOG_DEBUG, "Collecting datastore name...");
-		if ($oVirtualMachine->storage->perDatastoreUsage)
-		{
-			foreach($oVirtualMachine->storage->perDatastoreUsage as $oVMUsageOnDatastore)
-			{
-				$aDSUsage[] = $oVMUsageOnDatastore->datastore->name;
-			}
-		}
-
 		$aDisks = array();
 		utils::Log(LOG_DEBUG, "Collecting disk info...");
 		if ($oVirtualMachine->guest->disk)
@@ -287,7 +277,6 @@ class vSphereVirtualMachineCollector extends Collector
 			'ram' => $iMemory,
 			'osfamily_id' => $OSFamily,
 			'osversion_id' => $OSVersion,
-			'datastores' => $aDSUsage,
 			'disks' => $aDisks,
 			'interfaces' => $aNWInterfaces,
 			'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
@@ -394,11 +383,6 @@ class vSphereVirtualMachineCollector extends Collector
 
 	protected function DoFetch($aVM)
 	{
-		$aDS = array();
-		foreach($aVM['datastores'] as $sDSName)
-		{
-			$aDS[] =  'datastore_id->name:'.$sDSName;
-		}
 		return array(
 			'primary_key' => $aVM['id'],
 			'name' => $aVM['name'],
