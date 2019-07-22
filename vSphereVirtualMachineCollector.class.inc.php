@@ -272,7 +272,8 @@ class vSphereVirtualMachineCollector extends Collector
 			'name' => $sName,
 			'org_id' => $sDefaultOrg,
 			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
-			'managementip' => (strpos($sGuestIP,':') !== false) ? '' : $sGuestIP,
+			// Note: some OpenVM clients report IP addresses with a trailing space, so let's trim the field
+			'managementip' => (strpos($sGuestIP,':') !== false) ? '' : trim($sGuestIP),
 			'cpu' => $iNbCPUs,
 			'ram' => $iMemory,
 			'osfamily_id' => $OSFamily,
@@ -312,7 +313,7 @@ class vSphereVirtualMachineCollector extends Collector
 						$sSubnetMask = long2ip($subnet_mask);
 						// IP v4
 						$aNWInterfaces[] = array(
-							'ip' => $oIPInfo->ipAddress,
+							'ip' => trim($oIPInfo->ipAddress), // Some OpenVM clients report IP addresses with a trailing space, let's trim it
 							'mac' => $oNICInfo->macAddress,
 							'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
 							'subnet_mask' => $sSubnetMask,
