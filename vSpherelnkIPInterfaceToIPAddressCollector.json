@@ -1,5 +1,5 @@
 {
-	"name": "vSphere:lnkIPInterfaceToIPAddress",
+	"name": "$prefix$:lnkIPInterfaceToIPAddress",
 	"description": "$prefix$ Data Collector (v. $version$): Link IP interface/ IP Address",
 	"status": "$synchro_status$",
 	"user_id": "$synchro_user$",

@@ -1,5 +1,5 @@
 {
-	"name": "vSphere:LogicalInterface",
+	"name": "$prefix$:LogicalInterface",
 	"description": "$prefix$ Data Collector (v. $version$): Logical Interfaces",
 	"status": "$synchro_status$",
 	"user_id": "$synchro_user$",
