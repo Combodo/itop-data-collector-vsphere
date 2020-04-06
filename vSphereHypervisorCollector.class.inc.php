@@ -1,12 +1,12 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
+// Copyright (C) 2014-2020 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
 //   (at your option) any later version.
 //
-//   iTop is distributed in the hope that it will be useful,
+//   This application is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   GNU Affero General Public License for more details.
@@ -14,10 +14,20 @@
 //   You should have received a copy of the GNU Affero General Public License
 //   along with this application. If not, see <http://www.gnu.org/licenses/>
 
-class vSphereHypervisorCollector extends Collector
+class vSphereHypervisorCollector extends ConfigurableCollector
 {
 	protected $idx;
+	protected $aHypervisorFields;
 	static protected $aHypervisors = null;
+
+	public function __construct()
+	{
+	    parent::__construct();
+	    $aDefaultFields = array('primary_key', 'name', 'org_id', 'status', 'server_id', 'farm_id');
+	    $aCustomFields = array_keys(static::GetCustomFields(__CLASS__));
+	    $this->aHypervisorFields = array_merge($aDefaultFields, $aCustomFields);
+	    
+	}
 
 	public function AttributeIsOptional($sAttCode)
 	{
@@ -31,7 +41,7 @@ class vSphereHypervisorCollector extends Collector
 
 		return parent::AttributeIsOptional($sAttCode);
 	}
-		
+	
 	public static function GetHypervisors()
 	{
 		if (self::$aHypervisors === null)
@@ -81,10 +91,13 @@ class vSphereHypervisorCollector extends Collector
 						break; // farm found
 					}
 				}
+
+				Utils::Log(LOG_DEBUG, "Server {$oHypervisor->name}: {$oHypervisor->hardware->systemInfo->vendor} {$oHypervisor->hardware->systemInfo->model}");
 				
-				self::$aHypervisors[] = array(
+				$aHypervisorData = array(
 						'id' => $oHypervisor->getReferenceId(),
-						'name' => $oHypervisor->name,
+				        'primary_key' => $oHypervisor->getReferenceId(),
+				        'name' => $oHypervisor->name,
 						'org_id' => $sDefaultOrg,
 						'brand_id' => $oBrandMappings->MapValue($oHypervisor->hardware->systemInfo->vendor, 'Other'),
 						'model_id' => $oModelMappings->MapValue($oHypervisor->hardware->systemInfo->model, ''),
@@ -96,9 +109,71 @@ class vSphereHypervisorCollector extends Collector
 						'farm_id' => $sFarmName,
 						'server_id' => $oHypervisor->name,
 				);
+				
+				foreach(static::GetCustomFields(__CLASS__) as $sAttCode => $sFieldDefinition)
+				{
+				    $aHypervisorData[$sAttCode] = static::GetCustomFieldValue($oHypervisor, $sFieldDefinition);
+				}
+				
+				// Hypervisors and Servers actually share the same collector mechanism
+				foreach(static::GetCustomFields('vSphereServerCollector') as $sAttCode => $sFieldDefinition)
+				{
+				    $aHypervisorData['server-custom-'.$sAttCode] = static::GetCustomFieldValue($oHypervisor, $sFieldDefinition);
+				}
+				
+				self::$aHypervisors[] = $aHypervisorData;
 			}
 		}
 		return self::$aHypervisors;
+	}
+	
+	public static function GetCustomFields($sClass)
+	{
+	    $aCustomFields = array();
+	    $aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', '');
+	    if (array_key_exists($sClass, $aCustomSynchro))
+	    {
+	        foreach($aCustomSynchro[$sClass]['fields'] as $sAttCode => $aFieldsDef)
+	        {
+	            // Check if the configuration contains an alteration of the JSON
+	            if (array_key_exists('source', $aFieldsDef))
+	            {
+	                $aCustomFields[$sAttCode] = $aFieldsDef['source'];
+	            }
+	        }
+	    }
+	    return $aCustomFields;
+	}
+	
+	protected static function GetCustomFieldValue($oHypervisor, $sFieldDefinition)
+	{
+	    $value = '';
+	    $aMatches = array();
+	    if (preg_match('/^hardware->systemInfo->otherIdentifyingInfo\\[(.+)\\]$/', $sFieldDefinition, $aMatches))
+	    {
+	        $bFound  = false;
+	        // Special case for HostSystemIdentificationInfo object
+	        foreach($oHypervisor->hardware->systemInfo->otherIdentifyingInfo as $oValue)
+	        {
+	            if ($oValue->identifierType->key == $aMatches[1])
+	            {
+	                $value = $oValue->identifierValue;
+	                $bFound = true;
+	                break;
+	            }
+	        }
+	        // Item not found
+	        if (!$bFound)
+	        {
+	           Utils::Log(LOG_WARNING, "Field $sFieldDefinition not found for Hypervisor '{$oHypervisor->name}'");
+	        }
+	    }
+	    else
+	    {
+	        eval('$value = $oHypervisor->'.$sFieldDefinition.';');
+	    }
+	    
+	    return $value;
 	}
 	
 	public function Prepare()
@@ -116,15 +191,13 @@ class vSphereHypervisorCollector extends Collector
 	{
 		if ($this->idx < count(self::$aHypervisors))
 		{
-			$aHV = self::$aHypervisors[$this->idx++];
-			return array(
-				'primary_key' => $aHV['id'],
-				'name' => $aHV['name'],
-				'org_id' => $aHV['org_id'],
-				'status' => $aHV['status'],
-				'server_id' => $aHV['server_id'],
-				'farm_id' => $aHV['farm_id'],
-			);
+			$aHV = self::$aHypervisors[$this->idx++];			
+			$aResult = array();
+			foreach($this->aHypervisorFields as $sAttCode)
+			{
+			    $aResult[$sAttCode] = $aHV[$sAttCode];
+			}
+			return $aResult;
 		}
 		return false;
 	}

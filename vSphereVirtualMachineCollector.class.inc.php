@@ -214,16 +214,6 @@ class vSphereVirtualMachineCollector extends Collector
 			$aNWInterfaces = static::DoCollectVMIPs($aMACToNetwork, $oVirtualMachine);
 		}
 
-		$aDSUsage = array();
-		utils::Log(LOG_DEBUG, "Collecting datastore name...");
-		if ($oVirtualMachine->storage->perDatastoreUsage)
-		{
-			foreach($oVirtualMachine->storage->perDatastoreUsage as $oVMUsageOnDatastore)
-			{
-				$aDSUsage[] = $oVMUsageOnDatastore->datastore->name;
-			}
-		}
-
 		$aDisks = array();
 		utils::Log(LOG_DEBUG, "Collecting disk info...");
 		if ($oVirtualMachine->guest->disk)
@@ -282,12 +272,12 @@ class vSphereVirtualMachineCollector extends Collector
 			'name' => $sName,
 			'org_id' => $sDefaultOrg,
 			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
-			'managementip' => (strpos($sGuestIP,':') !== false) ? '' : $sGuestIP,
+			// Note: some OpenVM clients report IP addresses with a trailing space, so let's trim the field
+			'managementip' => (strpos($sGuestIP,':') !== false) ? '' : trim($sGuestIP),
 			'cpu' => $iNbCPUs,
 			'ram' => $iMemory,
 			'osfamily_id' => $OSFamily,
 			'osversion_id' => $OSVersion,
-			'datastores' => $aDSUsage,
 			'disks' => $aDisks,
 			'interfaces' => $aNWInterfaces,
 			'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
@@ -323,7 +313,7 @@ class vSphereVirtualMachineCollector extends Collector
 						$sSubnetMask = long2ip($subnet_mask);
 						// IP v4
 						$aNWInterfaces[] = array(
-							'ip' => $oIPInfo->ipAddress,
+							'ip' => trim($oIPInfo->ipAddress), // Some OpenVM clients report IP addresses with a trailing space, let's trim it
 							'mac' => $oNICInfo->macAddress,
 							'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
 							'subnet_mask' => $sSubnetMask,
@@ -394,11 +384,6 @@ class vSphereVirtualMachineCollector extends Collector
 
 	protected function DoFetch($aVM)
 	{
-		$aDS = array();
-		foreach($aVM['datastores'] as $sDSName)
-		{
-			$aDS[] =  'datastore_id->name:'.$sDSName;
-		}
 		return array(
 			'primary_key' => $aVM['id'],
 			'name' => $aVM['name'],

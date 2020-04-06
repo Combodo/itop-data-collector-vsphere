@@ -1,12 +1,12 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
+// Copyright (C) 2014-2020 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
 //   (at your option) any later version.
 //
-//   iTop is distributed in the hope that it will be useful,
+//   This application is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   GNU Affero General Public License for more details.
@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU Affero General Public License
 //   along with this application. If not, see <http://www.gnu.org/licenses/>
 
-class vSphereServerCollector extends Collector
+class vSphereServerCollector extends ConfigurableCollector
 {
 	protected $idx;
 	protected static $aServers;
@@ -49,11 +49,10 @@ class vSphereServerCollector extends Collector
 	protected static function DoCollectServer($aHyperV)
 	{
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
-		return array(
-			'id' => $aHyperV['id'],
+		$aData = array(
+			'primary_key' => $aHyperV['id'],
 			'name' => $aHyperV['name'],
 			'org_id' => $sDefaultOrg,
-			'serial_number' => '', //$aHyperV['other_info'][2]->identifierValue,
 			'status' => 'production',
 			'brand_id' => $aHyperV['brand_id'],
 			'model_id' => $aHyperV['model_id'],
@@ -62,6 +61,13 @@ class vSphereServerCollector extends Collector
 			'cpu' => $aHyperV['cpu'],
 			'ram' => $aHyperV['ram'],
 		);
+		
+		// Add the custom fields (if any)
+		foreach(vSphereHypervisorCollector::GetCustomFields(__CLASS__) as $sAttCode => $sFieldDefinition)
+		{
+		    $aData[$sAttCode] = $aHyperV['server-custom-'.$sAttCode];
+		}
+		return $aData;
 	}
 
 	public function Prepare()
@@ -87,20 +93,7 @@ class vSphereServerCollector extends Collector
 
 	protected function DoFetch($aServer)
 	{
-		return array(
-			'primary_key' => $aServer['id'],
-			'name' => $aServer['name'],
-			'org_id' => $aServer['org_id'],
-			'serialnumber' => '', //$aServer['serialnumber'],
-			'status' => $aServer['status'],
-			'brand_id' => $aServer['brand_id'],
-			'model_id' => $aServer['model_id'],
-			'osfamily_id' => $aServer['osfamily_id'],
-			'osversion_id' => $aServer['osversion_id'],
-			'cpu' => $aServer['cpu'],
-			'ram' => $aServer['ram'],
-			'managementip' => '', //$aServer[''],
-		);
+		return $aServer;
 	}
 	
 	protected function MustProcessBeforeSynchro()

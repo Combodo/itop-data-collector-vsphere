@@ -14,6 +14,7 @@
 //   You should have received a copy of the GNU Affero General Public License
 //   along with this application. If not, see <http://www.gnu.org/licenses/>
 
+require_once(APPROOT.'collectors/ConfigurableCollector.class.inc.php');
 require_once(APPROOT.'collectors/vSphereOSFamilyCollector.class.inc.php');
 require_once(APPROOT.'collectors/vSphereOSVersionCollector.class.inc.php');
 require_once(APPROOT.'collectors/vSphereFarmCollector.class.inc.php');
