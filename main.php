@@ -62,10 +62,17 @@ try
 }
 catch(Exception $e)
 {
-	$sMessage = 'TeemIp is NOT installed';
-	$bTeemIpIsInstalled = false;
+    $bTeemIpIsInstalled = false;
+    $sMessage = 'TeemIp is considered as NOT installed due to below issue: ' . $e->getMessage();
+    if(is_a($e, "IOException"))
+    {
+        Utils::Log(LOG_ERR, $sMessage);
+        throw $e;
+    }
 }
+
 Utils::Log(LOG_INFO, $sMessage);
+
 if ($bTeemIpIsInstalled)
 {
 	vSphereOSFamilyCollector::UseTeemIP(true);
