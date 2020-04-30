@@ -63,7 +63,7 @@ try
 catch(Exception $e)
 {
     $bTeemIpIsInstalled = false;
-    $sMessage = 'TeemIp is considered as NOT installed due to below issue: ' . $e->getMessage();
+    $sMessage = 'TeemIp is considered as NOT installed due to: ' . $e->getMessage();
     if(is_a($e, "IOException"))
     {
         Utils::Log(LOG_ERR, $sMessage);
