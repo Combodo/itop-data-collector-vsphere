@@ -32,7 +32,7 @@ abstract class ConfigurableCollector extends Collector
         {
             $sSynchroDataSourceDefinition = file_get_contents($this->sSynchroDataSourceDefinitionFile);
             
-            $aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', '');
+            $aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', array());
             if (array_key_exists(get_class($this), $aCustomSynchro))
             {
                 // Decode the JSON for an easier edition

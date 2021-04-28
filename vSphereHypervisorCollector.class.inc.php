@@ -130,7 +130,7 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 	public static function GetCustomFields($sClass)
 	{
 	    $aCustomFields = array();
-	    $aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', '');
+	    $aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', array());
 	    if (array_key_exists($sClass, $aCustomSynchro))
 	    {
 	        foreach($aCustomSynchro[$sClass]['fields'] as $sAttCode => $aFieldsDef)
