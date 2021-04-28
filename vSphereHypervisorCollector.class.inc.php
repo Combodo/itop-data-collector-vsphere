@@ -93,6 +93,7 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 				}
 
 				Utils::Log(LOG_DEBUG, "Server {$oHypervisor->name}: {$oHypervisor->hardware->systemInfo->vendor} {$oHypervisor->hardware->systemInfo->model}");
+				Utils::Log(LOG_DEBUG, "Server software: {$oHypervisor->config->product->fullName} - API Version: {$oHypervisor->config->product->apiVersion}");
 				
 				$aHypervisorData = array(
 						'id' => $oHypervisor->getReferenceId(),
