@@ -163,6 +163,7 @@ class vSphereVirtualMachineCollector extends Collector
 				switch(get_class($oVirtualDevice))
 				{
 					case 'VirtualE1000':
+					case 'VirtualE1000e':
 					case 'VirtualPCNet32':
 					case 'VirtualVmxnet':
 					case 'VirtualVmxnet2':
