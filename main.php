@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2014 Combodo SARL
+// Copyright (C) 2022 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
@@ -45,72 +45,74 @@ Orchestrator::AddCollector($iRank++, 'vSphereFarmCollector');
 
 // Detects if TeemIp is installed or not
 Utils::Log(LOG_INFO, 'Detecting if TeemIp is installed on remote iTop server');
-$bTeemIpIsInstalled = true;
+$bTeemIpIsInstalled = false;
 $oRestClient = new RestClient();
-try
-{
+try {
 	$aResult = $oRestClient->Get('IPAddress', 'SELECT IPAddress WHERE id = 0');
-	if ($aResult['code'] == 0)
-	{
+	if ($aResult['code'] == 0) {
 		$sMessage = 'Yes, TeemIp is installed';
-	}
-	else
-	{
+		$bTeemIpIsInstalled = true;
+	} else {
 		$sMessage = 'TeemIp is NOT installed';
-		$bTeemIpIsInstalled = false;
+	}
+} catch (Exception $e) {
+	$sMessage = 'TeemIp is considered as NOT installed due to: '.$e->getMessage();
+	if (is_a($e, "IOException")) {
+		Utils::Log(LOG_ERR, $sMessage);
+		throw $e;
 	}
 }
-catch(Exception $e)
-{
-    $bTeemIpIsInstalled = false;
-    $sMessage = 'TeemIp is considered as NOT installed due to: ' . $e->getMessage();
-    if(is_a($e, "IOException"))
-    {
-        Utils::Log(LOG_ERR, $sMessage);
-        throw $e;
-    }
-}
-
 Utils::Log(LOG_INFO, $sMessage);
+vSphereOSFamilyCollector::UseTeemIP($bTeemIpIsInstalled);
 
-if ($bTeemIpIsInstalled)
-{
-	vSphereOSFamilyCollector::UseTeemIP(true);
+if ($bTeemIpIsInstalled) {
 
 	$aTeemIpOptions = Utils::GetConfigurationValue('teemip_options', array());
 	$bCollectIps = $aTeemIpOptions['collect_ips'];
 
-	if ($bCollectIps == 'yes')
-	{
+	if ($bCollectIps == 'yes') {
 		Utils::Log(LOG_INFO, 'IPs will be collected');
 		Orchestrator::AddCollector($iRank++, 'vSphereIPv4AddressCollector');
-		if ($aTeemIpOptions['manage_ipv6'] == 'yes')
-		{
+		if ($aTeemIpOptions['manage_ipv6'] == 'yes') {
 			Utils::Log(LOG_WARNING, "IPv6 creation and update is not supported yet due to iTop limitation");
 			Orchestrator::AddCollector($iRank++, 'vSphereIPv6AddressCollector');
 		}
-	}
-	else
-	{
+	} else {
 		Utils::Log(LOG_INFO, 'IPs will NOT be collected');
 	}
 	Orchestrator::AddCollector($iRank++, 'vSphereServerTeemIpCollector');
 	Orchestrator::AddCollector($iRank++, 'vSphereHypervisorCollector');
 	Orchestrator::AddCollector($iRank++, 'vSphereVirtualMachineTeemIpCollector');
 
-	if (($bCollectIps == 'yes') && ($aTeemIpOptions['manage_logical_interfaces'] == 'yes'))
-	{
+	if (($bCollectIps == 'yes') && ($aTeemIpOptions['manage_logical_interfaces'] == 'yes')) {
 		Utils::Log(LOG_INFO, 'Logical interfaces will be collected');
 		Orchestrator::AddCollector($iRank++, 'vSphereLogicalInterfaceCollector');
 		Orchestrator::AddCollector($iRank++, 'vSpherelnkIPInterfaceToIPAddressCollector');
-	}
-	else
-	{
+
+		// Detects if TeemIp Network Management Extended is installed
+		$bTeemIpNMEIsInstalled = false;
+		$oRestClient = new RestClient();
+		try {
+			$aResult = $oRestClient->Get('InterfaceSpeed', 'SELECT InterfaceSpeed WHERE id = 0');
+			if ($aResult['code'] == 0) {
+				$sMessage = 'Yes, TeemIp Network Management Extended is installed';
+				$bTeemIpNMEIsInstalled = true;
+			} else {
+				$sMessage = 'TeemIp Network Management Extended is NOT installed';
+			}
+		} catch (Exception $e) {
+			$sMessage = 'TeemIp Network Management Extended is considered as NOT installed due to: '.$e->getMessage();
+			if (is_a($e, "IOException")) {
+				Utils::Log(LOG_ERR, $sMessage);
+				throw $e;
+			}
+		}
+		Utils::Log(LOG_INFO, $sMessage);
+		vSphereLogicalInterfaceCollector::UseTeemIpNME($bTeemIpNMEIsInstalled);
+	} else {
 		Utils::Log(LOG_INFO, 'Logical interfaces will NOT be collected');
 	}
-}
-else
-{
+} else {
 	Orchestrator::AddCollector($iRank++, 'vSphereServerCollector');
 	Orchestrator::AddCollector($iRank++, 'vSphereHypervisorCollector');
 	Orchestrator::AddCollector($iRank++, 'vSphereVirtualMachineCollector');
