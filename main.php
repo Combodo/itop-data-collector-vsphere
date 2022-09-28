@@ -50,10 +50,9 @@ $oRestClient = new RestClient();
 try {
 	$aResult = $oRestClient->Get('IPAddress', 'SELECT IPAddress WHERE id = 0');
 	if ($aResult['code'] == 0) {
-		$sMessage = 'Yes, TeemIp is installed';
 		$bTeemIpIsInstalled = true;
 	} else {
-		$sMessage = 'TeemIp is NOT installed';
+		$sTeemIpMessage = 'TeemIp is NOT installed';
 	}
 } catch (Exception $e) {
 	$sMessage = 'TeemIp is considered as NOT installed due to: '.$e->getMessage();
@@ -62,10 +61,31 @@ try {
 		throw $e;
 	}
 }
-Utils::Log(LOG_INFO, $sMessage);
 vSphereOSFamilyCollector::UseTeemIP($bTeemIpIsInstalled);
 
 if ($bTeemIpIsInstalled) {
+	// Detects TeemIp's version
+	$oRestClient = new RestClient();
+	try {
+		$aResult = $oRestClient->Get('ModuleInstallation', 'SELECT ModuleInstallation WHERE name = \'teemip-ip-mgmt\'', 'version, installed');
+		$sInstalledDate = '0000-00-00 00:00:00';
+		$sTeemIpVersion = '';
+		foreach ($aResult['objects'] as $aModuleinstallation) {
+			$sInstalled = $aModuleinstallation['fields']['installed'];
+			if ($sInstalled >= $sInstalledDate) {
+				$sInstalledDate = $sInstalled;
+				$sTeemIpVersion = $aModuleinstallation['fields']['version'];
+			}
+		}
+		$sTeemIpMessage = 'TeemIp version '.$sTeemIpVersion.' is installed';
+	} catch (Exception $e) {
+		$sMessage = 'TeemIp\'s installed version cannot be fetched: '.$e->getMessage();
+		if (is_a($e, "IOException")) {
+			Utils::Log(LOG_ERR, $sMessage);
+			throw $e;
+		}
+	}
+	Utils::Log(LOG_INFO, $sTeemIpMessage);
 
 	$aTeemIpOptions = Utils::GetConfigurationValue('teemip_options', array());
 	$bCollectIps = $aTeemIpOptions['collect_ips'];
@@ -73,9 +93,11 @@ if ($bTeemIpIsInstalled) {
 	if ($bCollectIps == 'yes') {
 		Utils::Log(LOG_INFO, 'IPs will be collected');
 		Orchestrator::AddCollector($iRank++, 'vSphereIPv4AddressCollector');
+		vSphereIPv4AddressCollector::SetTeemIpVersion($sTeemIpVersion);
 		if ($aTeemIpOptions['manage_ipv6'] == 'yes') {
 			Utils::Log(LOG_WARNING, "IPv6 creation and update is not supported yet due to iTop limitation");
 			Orchestrator::AddCollector($iRank++, 'vSphereIPv6AddressCollector');
+			vSphereIPv6AddressCollector::SetTeemIpVersion($sTeemIpVersion);
 		}
 	} else {
 		Utils::Log(LOG_INFO, 'IPs will NOT be collected');
@@ -113,11 +135,9 @@ if ($bTeemIpIsInstalled) {
 		Utils::Log(LOG_INFO, 'Logical interfaces will NOT be collected');
 	}
 } else {
+	Utils::Log(LOG_INFO, $sTeemIpMessage);
 	Orchestrator::AddCollector($iRank++, 'vSphereServerCollector');
 	Orchestrator::AddCollector($iRank++, 'vSphereHypervisorCollector');
 	Orchestrator::AddCollector($iRank++, 'vSphereVirtualMachineCollector');
 }
-
-
-
 
