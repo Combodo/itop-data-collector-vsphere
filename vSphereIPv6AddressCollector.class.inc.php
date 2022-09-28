@@ -18,6 +18,7 @@ class vSphereIPv6AddressCollector extends Collector
 {
 	protected $idx;
 	static protected $aIPv6Addresses = null;
+	static protected $sTeemIpVersion;
 
 	public function AttributeIsOptional($sAttCode)
 	{
