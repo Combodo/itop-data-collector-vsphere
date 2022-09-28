@@ -90,6 +90,15 @@
 			"friendlyname": "ip"
 		},
 		{
+			"attcode": "ipconfig_id",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "org_name",
+			"finalclass": "SynchroAttExtKey",
+			"friendlyname": "org_id"
+		},
+		{
 			"attcode": "ip_list",
 			"update": "0",
 			"reconcile": "0",
