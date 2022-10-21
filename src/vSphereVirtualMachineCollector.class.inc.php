@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2014-2018 Combodo SARL
+// Copyright (C) 2014-2022 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
@@ -13,65 +13,95 @@
 //
 //   You should have received a copy of the GNU Affero General Public License
 //   along with this application. If not, see <http://www.gnu.org/licenses/>
+
 function myprint_r($var)
 {
 	$s = '';
-	foreach($var as $key => $val)
-	{
-		if (is_object($val))
-		{
+	foreach ($var as $key => $val) {
+		if (is_object($val)) {
 			$sVal = 'object['.get_class($val).']';
-		}
-		else
-		{
+		} else {
 			$sVal = $val;
 		}
 		$s .= "\t".$key." => ".$sVal."\n";
 	}
+
 	return $s;
 }
+
 class vSphereVirtualMachineCollector extends Collector
 {
 	protected $idx;
+	protected $oCollectionPlan;
 	/**
 	 * @var LookupTable For the OS Family / OS Version lookup
 	 */
 	protected $oOSVersionLookup;
-	
+
 	/**
 	 * @var mixed[][] The collected VM infos
 	 */
 	static protected $aVMInfos = null;
-	
+
 	/**
 	 * @var MappingTable Mapping table for the OS Families
 	 */
 	static protected $oOSFamilyMappings = null;
-	
+
 	/**
 	 * @var MappingTable Mapping table for OS versions
 	 */
 	static protected $oOSVersionMappings = null;
-	
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function Init(): void
+	{
+		parent::Init();
+
+		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function IsToBeLaunched(): bool
+	{
+		if (!$this->oCollectionPlan->IsComponentInstalled('teemip')) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function AttributeIsOptional($sAttCode)
 	{
 		// If the module Service Management for Service Providers is selected during the setup
 		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'services_list') return true;
+		if ($sAttCode == 'services_list') {
+			return true;
+		}
 
 		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
 		// on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'providercontracts_list') return true;
+		if ($sAttCode == 'providercontracts_list') {
+			return true;
+		}
 
 		return parent::AttributeIsOptional($sAttCode);
 	}
 
 	public static function GetVMs()
 	{
-		if (static::$aVMInfos === null)
-		{
+		if (static::$aVMInfos === null) {
 			static::CollectVMInfos();
 		}
+
 		return static::$aVMInfos;
 	}
 
@@ -81,53 +111,44 @@ class vSphereVirtualMachineCollector extends Collector
 	 */
 	static public function CollectVMInfos()
 	{
-		if (self::$aVMInfos === null)
-		{
+		if (self::$aVMInfos === null) {
 			require_once APPROOT.'collectors/library/Vmwarephp/Autoloader.php';
 			$autoloader = new \Vmwarephp\Autoloader;
 			$autoloader->register();
-	
+
 			$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri', '');
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 
 			$aFarms = vSphereFarmCollector::GetFarms();
 			$vhost = new \Vmwarephp\Vhost($sVSphereServer, $sLogin, $sPassword);
-			
+
 			Utils::Log(LOG_DEBUG, "vSphere API type: ".$vhost->getApiType().", version: ".$vhost->getApiVersion());
-			
+
 			$aVLANs = array();
 			$aDVSwitches = $vhost->findAllManagedObjects('DistributedVirtualSwitch', array('portgroup', 'summary'));
-			if (count($aDVSwitches) == 0)
-			{
+			if (count($aDVSwitches) == 0) {
 				utils::Log(LOG_DEBUG, "No DVSwitch found in this vSphere instance.");
-			}
-			else
-			{
-				foreach($aDVSwitches as $oSwitch)
-				{
+			} else {
+				foreach ($aDVSwitches as $oSwitch) {
 					utils::Log(LOG_DEBUG, "DVSwitch: {$oSwitch->summary->name}, UUID: {$oSwitch->uuid}");
-					if (count($oSwitch->portgroup) == 0)
-					{
+					if (count($oSwitch->portgroup) == 0) {
 						utils::Log(LOG_DEBUG, "No DVPortgroup found on this DVSwitch.");
 					}
-					foreach($oSwitch->portgroup as $oPortGroup)
-					{
+					foreach ($oSwitch->portgroup as $oPortGroup) {
 						$aVLANs[$oPortGroup->key] = $oPortGroup->name;
 						utils::Log(LOG_DEBUG, "Portgroup: {$oPortGroup->name}, config:\n".myprint_r($oPortGroup->config));
 					}
 				}
 			}
-			
+
 			$aVirtualMachines = $vhost->findAllManagedObjects('VirtualMachine', array('config', 'runtime', 'guest', 'network', 'storage'));
 
 			$idx = 1;
-			foreach($aVirtualMachines as $oVirtualMachine)
-			{
+			foreach ($aVirtualMachines as $oVirtualMachine) {
 				utils::Log(LOG_DEBUG, ">>>>>> Starting collection of the VM '".$oVirtualMachine->name."' (VM #$idx)");
 				$aVM = static::DoCollectVMInfo($aFarms, $oVirtualMachine, $aVLANs, $idx);
-				if ($aVM !== null)
-				{
+				if ($aVM !== null) {
 					static::$aVMInfos[] = $aVM;
 				}
 				utils::Log(LOG_DEBUG, "<<<<<< End of collection of the VM #$idx");
@@ -135,6 +156,7 @@ class vSphereVirtualMachineCollector extends Collector
 			}
 		}
 		utils::Log(LOG_DEBUG, "End of collection of VMs information.");
+
 		return static::$aVMInfos;
 	}
 
@@ -142,9 +164,9 @@ class vSphereVirtualMachineCollector extends Collector
 	{
 		utils::Log(LOG_DEBUG, "Runtime->connectionState: ".$oVirtualMachine->runtime->connectionState);
 		utils::Log(LOG_DEBUG, "Runtime->powerState: ".$oVirtualMachine->runtime->powerState);
-		if ($oVirtualMachine->runtime->connectionState != 'connected')
-		{
+		if ($oVirtualMachine->runtime->connectionState != 'connected') {
 			utils::Log(LOG_INFO, "Cannot retrieve information from VM ".$oVirtualMachine->name." (VM#$idx) (runtime->connectionState='".$oVirtualMachine->runtime->connectionState."'), skipping.");
+
 			return null;
 		}
 
@@ -154,14 +176,11 @@ class vSphereVirtualMachineCollector extends Collector
 
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
-		if ($oVirtualMachine->guest->net)
-		{
+		if ($oVirtualMachine->guest->net) {
 			$aMACToNetwork = array();
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
-			foreach($oVirtualMachine->config->hardware->device as $oVirtualDevice)
-			{
-				switch(get_class($oVirtualDevice))
-				{
+			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
+				switch (get_class($oVirtualDevice)) {
 					case 'VirtualE1000':
 					case 'VirtualE1000e':
 					case 'VirtualPCNet32':
@@ -170,37 +189,31 @@ class vSphereVirtualMachineCollector extends Collector
 					case 'VirtualVmxnet3':
 						$oBacking = $oVirtualDevice->backing;
 						$sNetworkName = '';
-						if (property_exists($oBacking, 'network'))
-						{
+						if (property_exists($oBacking, 'network')) {
 							$sNetworkName = $oBacking->network->name;
 							utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->network->name: '$sNetworkName'");
-						}
-						else if (property_exists($oBacking, 'opaqueNetworkId'))
-						{
-							$sNetworkName = $oBacking->opaqueNetworkId;
-							utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->opaqueNetworkId: '$sNetworkName'");
-						}
-						else if (property_exists($oBacking, 'deviceName'))
-						{
-							$sNetworkName = $oBacking->deviceName;
-							utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
-						}
-						else if (property_exists($oBacking, 'port'))
-						{
-							$oPort = $oBacking->port;
-							utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".myprint_r($oPort));
-							if (array_key_exists($oPort->portgroupKey, $aVLANs))
-							{
-								$sNetworkName = $aVLANs[$oPort->portgroupKey];
+						} else {
+							if (property_exists($oBacking, 'opaqueNetworkId')) {
+								$sNetworkName = $oBacking->opaqueNetworkId;
+								utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->opaqueNetworkId: '$sNetworkName'");
+							} else {
+								if (property_exists($oBacking, 'deviceName')) {
+									$sNetworkName = $oBacking->deviceName;
+									utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
+								} else {
+									if (property_exists($oBacking, 'port')) {
+										$oPort = $oBacking->port;
+										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".myprint_r($oPort));
+										if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
+											$sNetworkName = $aVLANs[$oPort->portgroupKey];
+										} else {
+											utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".myprint_r($oPort));
+										}
+									} else {
+										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".myprint_r($oBacking));
+									}
+								}
 							}
-							else
-							{
-								utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".myprint_r($oPort));
-							}
-						}
-						else
-						{
-							utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".myprint_r($oBacking));
 						}
 						Utils::Log(LOG_DEBUG, "MACAddress: {$oVirtualDevice->macAddress} is connected to the network: '$sNetworkName'");
 						$aMACToNetwork[$oVirtualDevice->macAddress] = $sNetworkName;
@@ -217,10 +230,8 @@ class vSphereVirtualMachineCollector extends Collector
 
 		$aDisks = array();
 		utils::Log(LOG_DEBUG, "Collecting disk info...");
-		if ($oVirtualMachine->guest->disk)
-		{
-			foreach($oVirtualMachine->guest->disk as $oDiskInfo)
-			{
+		if ($oVirtualMachine->guest->disk) {
+			foreach ($oVirtualMachine->guest->disk as $oDiskInfo) {
 				$aDisks[] = array(
 					'path' => $oDiskInfo->diskPath,
 					'capacity' => $oDiskInfo->capacity,
@@ -233,10 +244,8 @@ class vSphereVirtualMachineCollector extends Collector
 
 		// Is the hypervisor, on which this VM is running, part of a farm ?
 		utils::Log(LOG_DEBUG, "Checking if the host is part of a Farm...");
-		foreach($aFarms as $aFarm)
-		{
-			if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts']))
-			{
+		foreach ($aFarms as $aFarm) {
+			if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts'])) {
 				$sFarmName = $aFarm['name'];
 				break; // Farm found
 			}
@@ -274,7 +283,7 @@ class vSphereVirtualMachineCollector extends Collector
 			'org_id' => $sDefaultOrg,
 			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
 			// Note: some OpenVM clients report IP addresses with a trailing space, so let's trim the field
-			'managementip' => (strpos($sGuestIP,':') !== false) ? '' : trim($sGuestIP),
+			'managementip' => (strpos($sGuestIP, ':') !== false) ? '' : trim($sGuestIP),
 			'cpu' => $iNbCPUs,
 			'ram' => $iMemory,
 			'osfamily_id' => $OSFamily,
@@ -289,22 +298,15 @@ class vSphereVirtualMachineCollector extends Collector
 	static protected function DoCollectVMIPs($aMACToNetwork, $oVirtualMachine)
 	{
 		$aNWInterfaces = array();
-		foreach($oVirtualMachine->guest->net as $oNICInfo)
-		{
-			if ($oNICInfo->ipConfig && $oNICInfo->ipConfig->ipAddress)
-			{
-				foreach($oNICInfo->ipConfig->ipAddress as $oIPInfo)
-				{
-					if (strpos($oIPInfo->ipAddress, ':') !== false)
-					{
+		foreach ($oVirtualMachine->guest->net as $oNICInfo) {
+			if ($oNICInfo->ipConfig && $oNICInfo->ipConfig->ipAddress) {
+				foreach ($oNICInfo->ipConfig->ipAddress as $oIPInfo) {
+					if (strpos($oIPInfo->ipAddress, ':') !== false) {
 						// Ignore IP v6
 						Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
-					}
-					else
-					{
+					} else {
 						// If we have a guest IP set to IPv6, replace it with the first IPv4 we find
-						if(strpos($oVirtualMachine->guest->ipAddress, ":") !== false)
-						{
+						if (strpos($oVirtualMachine->guest->ipAddress, ":") !== false) {
 							$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 						}
 
@@ -323,66 +325,79 @@ class vSphereVirtualMachineCollector extends Collector
 				}
 			}
 		}
+
 		return $aNWInterfaces;
 	}
 
 	/**
 	 * Helper method to extract the OSFamily information from the VirtualMachine object
 	 * according to the 'os_family_mapping' mapping taken from the configuration
+	 *
 	 * @param VirtualMachine $oVirtualMachine
+	 *
 	 * @return string The mapped OS Family or an empty string if nothing matches the extraction rules
 	 */
 	static public function GetOSFamily($oVirtualMachine)
 	{
-		if (self::$oOSFamilyMappings === null)
-		{
-			self::$oOSFamilyMappings =  new MappingTable('os_family_mapping');
+		if (self::$oOSFamilyMappings === null) {
+			self::$oOSFamilyMappings = new MappingTable('os_family_mapping');
 		}
 		$sRawValue = $oVirtualMachine->config->guestFullName;
 		$value = self::$oOSFamilyMappings->MapValue($sRawValue, '');
 
-		return $value;		
+		return $value;
 	}
-	
+
 	/**
 	 * Helper method to extract the Version information from the VirtualMachine object
 	 * according to the 'os_version_mapping' mapping taken from the configuration
+	 *
 	 * @param VirtualMachine $oVirtualMachine
+	 *
 	 * @return string The mapped OS Version or the original value if nothing matches the extraction rules
 	 */
 	static public function GetOSVersion($oVirtualMachine)
 	{
-		if (self::$oOSVersionMappings === null)
-		{
-			self::$oOSVersionMappings =  new MappingTable('os_version_mapping');
+		if (self::$oOSVersionMappings === null) {
+			self::$oOSVersionMappings = new MappingTable('os_version_mapping');
 		}
 		$sRawValue = $oVirtualMachine->config->guestFullName;
 		$value = self::$oOSVersionMappings->MapValue($sRawValue, $sRawValue); // Keep the raw value by default
-		
+
 		return $value;
 	}
-	
+
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
-		if (!$bRet) return false;
+		if (!$bRet) {
+			return false;
+		}
 
 		static::CollectVMInfos();
-		
+
 		$this->idx = 0;
+
 		return true;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function Fetch()
 	{
-		if ($this->idx < count(static::$aVMInfos))
-		{
+		if ($this->idx < count(static::$aVMInfos)) {
 			$aVM = static::$aVMInfos[$this->idx++];
+
 			return $this->DoFetch($aVM);
 		}
+
 		return false;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function DoFetch($aVM)
 	{
 		return array(
@@ -401,6 +416,9 @@ class vSphereVirtualMachineCollector extends Collector
 		);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function MustProcessBeforeSynchro()
 	{
 		// We must reprocess the CSV data obtained from vSphere
@@ -408,6 +426,9 @@ class vSphereVirtualMachineCollector extends Collector
 		return true;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function InitProcessBeforeSynchro()
 	{
 		// Retrieve the identifiers of the OSVersion since we must do a lookup based on two fields: Family + Version
@@ -415,6 +436,9 @@ class vSphereVirtualMachineCollector extends Collector
 		$this->oOSVersionLookup = new LookupTable('SELECT OSVersion', array('osfamily_id_friendlyname', 'name'));
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function ProcessLineBeforeSynchro(&$aLineData, $iLineIndex)
 	{
 		// Process each line of the CSV

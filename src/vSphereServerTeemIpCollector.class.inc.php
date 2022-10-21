@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
+// Copyright (C) 2014-2022 Combodo SARL
 //
 //   This application is free software; you can redistribute it and/or modify	
 //   it under the terms of the GNU Affero General Public License as published by
@@ -16,25 +16,50 @@
 
 class vSphereServerTeemIpCollector extends vSphereServerCollector
 {
+	protected $oCollectionPlan;
 	protected $oIPAddressLookup;
+
+	/**
+	 * @inheritdoc
+	 */
+	public function Init(): void
+	{
+		parent::Init();
+
+		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function IsToBeLaunched(): bool
+	{
+		if ($this->oCollectionPlan->IsComponentInstalled('teemip')) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 
 	protected static function DoCollectServer($aHyperV)
 	{
 		$aResult = parent::DoCollectServer($aHyperV);
 
-		$aTeemIpOptions = Utils::GetConfigurationValue('teemip_options', array());
-		$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true :false;
-		$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true :false;
+		$aTeemIpOptions = Utils::GetConfigurationValue('teemip_discovery', array());
+		$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true : false;
+		$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true : false;
 
 		$sName = $aHyperV['name'];
 		$sIP = '';
-		if ($bCollectIps == 'yes')
-		{
+		if ($bCollectIps == 'yes') {
 			// Check if name has IPv4 or "IPv6" format
 			$sNum = '(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])';
 			$sPattern = "($sNum\.$sNum\.$sNum\.$sNum)";
-			if (preg_match($sPattern, $sName) || (($bCollectIPv6Addresses == 'yes') && (strpos($sName, ":") !== false)))
-			{
+			if (preg_match($sPattern, $sName) || (($bCollectIPv6Addresses == 'yes') && (strpos($sName, ":") !== false))) {
 				$sIP = $sName;
 			}
 		}
@@ -45,6 +70,9 @@ class vSphereServerTeemIpCollector extends vSphereServerCollector
 		return $aResult;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function DoFetch($aServer)
 	{
 		$aResult = parent::DoFetch($aServer);
@@ -55,6 +83,9 @@ class vSphereServerTeemIpCollector extends vSphereServerCollector
 		return $aResult;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function InitProcessBeforeSynchro()
 	{
 		parent::InitProcessBeforeSynchro();
@@ -62,6 +93,9 @@ class vSphereServerTeemIpCollector extends vSphereServerCollector
 		$this->oIPAddressLookup = new LookupTable('SELECT IPAddress', array('org_name', 'friendlyname'));
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function ProcessLineBeforeSynchro(&$aLineData, $iLineIndex)
 	{
 		// Process each line of the CSV

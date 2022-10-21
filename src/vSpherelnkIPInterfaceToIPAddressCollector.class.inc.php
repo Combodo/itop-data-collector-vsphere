@@ -17,6 +17,7 @@
 class vSpherelnkIPInterfaceToIPAddressCollector extends Collector
 {
 	protected $idx;
+	protected $oCollectionPlan;
 	protected $sDefaultOrg;
 
 	/**
@@ -24,38 +25,75 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends Collector
 	 */
 	static protected $aLnks = null;
 
+	/**
+	 * @inheritdoc
+	 */
+	public function Init(): void
+	{
+		parent::Init();
+
+		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function IsToBeLaunched(): bool
+	{
+		if ($this->oCollectionPlan->IsComponentInstalled('teemip') &&
+			$this->oCollectionPlan->GetOption('collect_ips') &&
+			$this->oCollectionPlan->GetOption('manage_logical_interfaces')) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	static public function GetLnks()
 	{
-		if (self::$aLnks === null)
-		{
+		if (self::$aLnks === null) {
 			self::$aLnks = vSphereLogicalInterfaceCollector::GetLnks();
 		}
+
 		return self::$aLnks;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
-		if (!$bRet) return false;
+		if (!$bRet) {
+			return false;
+		}
 
 		$this->sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 
 		$this->GetLnks();
 		$this->idx = 0;
+
 		return true;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function Fetch()
 	{
-		if ($this->idx < count(self::$aLnks))
-		{
+		if ($this->idx < count(self::$aLnks)) {
 			$aLnks = self::$aLnks[$this->idx++];
+
 			return array(
 				'primary_key' => $aLnks['ipinterface_id'].'-'.$aLnks['ipaddress_id'],
 				'ipinterface_id' => $aLnks['ipinterface_id'],
-				'ipaddress_id' => $aLnks['ipaddress_id']
+				'ipaddress_id' => $aLnks['ipaddress_id'],
 			);
 		}
+
 		return false;
 	}
 

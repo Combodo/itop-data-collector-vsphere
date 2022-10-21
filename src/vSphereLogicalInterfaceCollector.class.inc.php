@@ -17,8 +17,7 @@
 class vSphereLogicalInterfaceCollector extends Collector
 {
 	protected $idx;
-	protected static $bUseTeemIpNME = false;
-
+	protected $oCollectionPlan;
 	/**
 	 * @var LookupTable For the VMs
 	 */
@@ -27,10 +26,39 @@ class vSphereLogicalInterfaceCollector extends Collector
 	static protected $aLogicalInterfaces = null;
 	static protected $aLnkLogicalInterfaceToIPAddress = null;
 
+
+	/**
+	 * @inheritdoc
+	 */
+	public function Init(): void
+	{
+		parent::Init();
+
+		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function IsToBeLaunched(): bool
+	{
+		if ($this->oCollectionPlan->IsComponentInstalled('teemip') &&
+			$this->oCollectionPlan->GetOption('collect_ips') &&
+			$this->oCollectionPlan->GetOption('manage_logical_interfaces')) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
 	public function AttributeIsOptional($sAttCode)
 	{
-		if (self::$bUseTeemIpNME) {
-			if ($sAttCode == 'speed') {
+		if ($sAttCode == 'speed') {
+			if ($this->oCollectionPlan->IsComponentInstalled('teemip_nme')) {
 				return true;
 			}
 		}
@@ -41,9 +69,6 @@ class vSphereLogicalInterfaceCollector extends Collector
 	static public function GetLogicalInterfaces()
 	{
 		if (self::$aLogicalInterfaces === null) {
-			$aTeemIpOptions = Utils::GetConfigurationValue('teemip_options', array());
-			$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true : false;
-
 			$aVMs = vSphereVirtualMachineTeemIpCollector::GetVMs();
 
 			$aLogicalInterfaces = array();
@@ -125,11 +150,6 @@ class vSphereLogicalInterfaceCollector extends Collector
 		$this->idx = 0;
 
 		return true;
-	}
-
-	public static function UseTeemIpNME($bUseTeemIpNME)
-	{
-		self::$bUseTeemIpNME = $bUseTeemIpNME;
 	}
 
 	public function Fetch()
