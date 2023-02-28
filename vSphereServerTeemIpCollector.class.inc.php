@@ -26,7 +26,7 @@ class vSphereServerTeemIpCollector extends vSphereServerCollector
 		$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true :false;
 		$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true :false;
 
-		$sName = $aHyperV['name'];
+		$sName = $aHyperV['name'] ?? '';
 		$sIP = '';
 		if ($bCollectIps == 'yes')
 		{

@@ -28,9 +28,9 @@ abstract class ConfigurableCollector extends Collector
      */
     public function GetSynchroDataSourceDefinition($aPlaceHolders = array())
     {
-        if (file_exists($this->sSynchroDataSourceDefinitionFile))
+        if (file_exists($this->GetSynchroDataSourceDefinitionFile()))
         {
-            $sSynchroDataSourceDefinition = file_get_contents($this->sSynchroDataSourceDefinitionFile);
+            $sSynchroDataSourceDefinition = file_get_contents($this->GetSynchroDataSourceDefinitionFile());
             
             $aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', array());
             if (array_key_exists(get_class($this), $aCustomSynchro))

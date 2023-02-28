@@ -33,7 +33,7 @@ class vSphereVirtualMachineTeemIpCollector extends vSphereVirtualMachineCollecto
 			utils::Log(LOG_DEBUG, "    DNS short name: $sGuestShortName");
 
 			// Trim IP address if necessary
-			$sGuestIP = $oVirtualMachine->guest->ipAddress;
+			$sGuestIP = $oVirtualMachine->guest->ipAddress ?? '';
 			// Trim IP address if necessary
 			if (!$bCollectIps)
 			{
@@ -68,7 +68,7 @@ class vSphereVirtualMachineTeemIpCollector extends vSphereVirtualMachineCollecto
 				foreach($oNICInfo->ipConfig->ipAddress as $oIPInfo)
 				{
 					Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
-					if (strpos($oIPInfo->ipAddress, ':') !== false)
+					if (strpos($oIPInfo->ipAddress ?? '', ':') !== false)
 					{
 						// It's an IPv6 address
 						if ($bCollectIPv6Addresses)
@@ -88,7 +88,7 @@ class vSphereVirtualMachineTeemIpCollector extends vSphereVirtualMachineCollecto
 					else
 					{
 						// If we have a guest IP set to IPv6, replace it with the first IPv4 we find
-						if(strpos($oVirtualMachine->guest->ipAddress, ":") !== false)
+						if(strpos($oVirtualMachine->guest->ipAddress ?? '', ":") !== false)
 						{
 							$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 						}

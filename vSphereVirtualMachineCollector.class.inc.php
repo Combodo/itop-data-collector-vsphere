@@ -261,7 +261,7 @@ class vSphereVirtualMachineCollector extends Collector
 		utils::Log(LOG_DEBUG, "    Annotation: $sAnnotation");
 
 		utils::Log(LOG_DEBUG, "Reading management IP (guest->ipAddress)...");
-		$sGuestIP = $oVirtualMachine->guest->ipAddress;
+		$sGuestIP = $oVirtualMachine->guest->ipAddress ?? '';
 		utils::Log(LOG_DEBUG, "    Management IP: $sGuestIP");
 
 		utils::Log(LOG_DEBUG, "Reading host name...");
@@ -295,7 +295,7 @@ class vSphereVirtualMachineCollector extends Collector
 			{
 				foreach($oNICInfo->ipConfig->ipAddress as $oIPInfo)
 				{
-					if (strpos($oIPInfo->ipAddress, ':') !== false)
+					if (strpos($oIPInfo->ipAddress ?? '', ':') !== false)
 					{
 						// Ignore IP v6
 						Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
@@ -303,7 +303,7 @@ class vSphereVirtualMachineCollector extends Collector
 					else
 					{
 						// If we have a guest IP set to IPv6, replace it with the first IPv4 we find
-						if(strpos($oVirtualMachine->guest->ipAddress, ":") !== false)
+						if(strpos($oVirtualMachine->guest->ipAddress ?? '', ":") !== false)
 						{
 							$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 						}
@@ -314,7 +314,7 @@ class vSphereVirtualMachineCollector extends Collector
 						$sSubnetMask = long2ip($subnet_mask);
 						// IP v4
 						$aNWInterfaces[] = array(
-							'ip' => trim($oIPInfo->ipAddress), // Some OpenVM clients report IP addresses with a trailing space, let's trim it
+							'ip' => trim($oIPInfo->ipAddress ?? ''), // Some OpenVM clients report IP addresses with a trailing space, let's trim it
 							'mac' => $oNICInfo->macAddress,
 							'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
 							'subnet_mask' => $sSubnetMask,

@@ -36,7 +36,7 @@ class vSphereIPv4AddressCollector extends Collector
 				$aVMs = vSphereVirtualMachineTeemIpCollector::GetVMs();
 				foreach($aVMs as $oVM)
 				{
-					$sIP = $oVM['managementip_id'];
+					$sIP = $oVM['managementip_id'] ?? '';
 					if ($sIP != '')
 					{
 						if (strpos($sIP, ':') == false)
@@ -57,7 +57,7 @@ class vSphereIPv4AddressCollector extends Collector
 				$aServers = vSphereServerTeemIpCollector::CollectServerInfos();
 				foreach($aServers as $oServer)
 				{
-					$sIP = $oServer['managementip_id'];
+					$sIP = $oServer['managementip_id'] ?? '';
 					if ($sIP != '')
 					{
 						if (strpos($sIP, ':') == false)
@@ -79,7 +79,7 @@ class vSphereIPv4AddressCollector extends Collector
 					$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
 					foreach($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss)
 					{
-						$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'];
+						$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
 						if ($sIP != '')
 						{
 							if (strpos($sIP, ':') == false)
