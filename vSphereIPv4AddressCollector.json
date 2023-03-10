@@ -21,24 +21,21 @@
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "aliases"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "allocation_date",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "allocation_date"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "comment",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "comment"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "contact_list",
@@ -49,8 +46,7 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "contact_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "document_list",
@@ -61,8 +57,7 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "document_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "domain_id",
@@ -70,24 +65,21 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "domain_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "fqdn",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "fqdn"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "ip",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "ip"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "ip_list",
@@ -98,8 +90,7 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "ip_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "org_id",
@@ -107,8 +98,7 @@
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "org_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "range_id",
@@ -116,16 +106,14 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "range_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "release_date",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "release_date"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "requestor_id",
@@ -133,24 +121,21 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "requestor_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "short_name",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "short_name"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "status",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "write_if_empty",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "status"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "subnet_id",
@@ -158,8 +143,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "subnet_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "usage_id",
@@ -167,8 +151,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "usage_id"
+			"finalclass": "SynchroAttExtKey"
 		}
 	],
 	"user_delete_policy": "nobody",

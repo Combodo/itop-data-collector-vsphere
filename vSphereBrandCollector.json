@@ -21,8 +21,7 @@
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "name"
+			"finalclass": "SynchroAttribute"
 		}
 	],
 	"user_delete_policy": "nobody",
