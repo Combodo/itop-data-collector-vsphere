@@ -74,7 +74,7 @@ class vSphereIPv6AddressCollector extends Collector
 				$sDefaulIpStatus = $aTeemIpOptions['default_ip_status'];
 				$aVMs = vSphereVirtualMachineTeemIpCollector::CollectVMInfos();
 				foreach ($aVMs as $oVM) {
-					$sIP = $oVM['managementip_id'];
+					$sIP = $oVM['managementip_id'] ?? '';
 					if ($sIP != '') {
 						if (strpos($sIP, ':') !== false) {
 							Utils::Log(LOG_DEBUG, 'IPv6 Address: '.$sIP);
@@ -92,7 +92,7 @@ class vSphereIPv6AddressCollector extends Collector
 
 				$aServers = vSphereServerTeemIpCollector::CollectServerInfos();
 				foreach ($aServers as $oServer) {
-					$sIP = $oServer['managementip_id'];
+					$sIP = $oServer['managementip_id'] ?? '';
 					if ($sIP != '') {
 						if (strpos($sIP, ':') !== false) {
 							Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
@@ -110,7 +110,7 @@ class vSphereIPv6AddressCollector extends Collector
 				if ($aTeemIpOptions['manage_logical_interfaces'] == 'yes') {
 					$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
 					foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
-						$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'];
+						$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
 						if ($sIP != '') {
 							if (strpos($sIP, ':') !== false) {
 								// Check if address is already listed as it may be that vSphere reported it as management IP too
@@ -145,9 +145,7 @@ class vSphereIPv6AddressCollector extends Collector
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
-		if (!$bRet) {
-			return false;
-		}
+		if (!$bRet) return false;
 
 		self::GetIPv6Addresses();
 

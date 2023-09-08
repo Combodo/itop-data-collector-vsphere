@@ -21,8 +21,7 @@
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "name"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "osfamily_id",
@@ -30,8 +29,7 @@
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "osfamily_id"
+			"finalclass": "SynchroAttExtKey"
 		}
 	],
 	"user_delete_policy": "nobody",

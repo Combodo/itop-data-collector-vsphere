@@ -73,7 +73,7 @@ class vSphereIPv4AddressCollector extends Collector
 				$sDefaulIpStatus = $aTeemIpOptions['default_ip_status'];
 				$aVMs = vSphereVirtualMachineTeemIpCollector::GetVMs();
 				foreach ($aVMs as $oVM) {
-					$sIP = $oVM['managementip'];
+					$sIP = $oVM['managementip'] ?? '';
 					if ($sIP != '') {
 						if (strpos($sIP, ':') == false) {
 							Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
@@ -96,7 +96,7 @@ class vSphereIPv4AddressCollector extends Collector
 
 				$aServers = vSphereServerTeemIpCollector::CollectServerInfos();
 				foreach ($aServers as $oServer) {
-					$sIP = $oServer['managementip_id'];
+					$sIP = $oServer['managementip_id'] ?? '';
 					if ($sIP != '') {
 						if (strpos($sIP, ':') == false) {
 							Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
@@ -115,7 +115,7 @@ class vSphereIPv4AddressCollector extends Collector
 				if ($aTeemIpOptions['manage_logical_interfaces'] == 'yes') {
 					$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
 					foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
-						$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'];
+						$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
 						if ($sIP != '') {
 							if (strpos($sIP, ':') == false) {
 								// Check if address is already listed as it may be that vSphere reported it as management IP too

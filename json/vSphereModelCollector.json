@@ -22,24 +22,21 @@
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "brand_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "name",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "name"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "type",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "type"
+			"finalclass": "SynchroAttribute"
 		}
 	],
 	"user_delete_policy": "nobody",

@@ -36,7 +36,7 @@
  * @return string The result of the POST request
  * @throws Exception
  */
-function DoPostRequest($sUrl, $sData, $sOptionnalHeaders = null, &$aResponseHeaders = null, $aCurlOptions = array())
+function DoPostRequest($sUrl, $sData, $sOptionnalHeaders = '', &$aResponseHeaders = null, $aCurlOptions = array())
 {
 	// $sOptionnalHeaders is a string containing additional HTTP headers that you would like to send in your request.
 	$response = '';

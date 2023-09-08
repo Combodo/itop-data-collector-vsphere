@@ -22,8 +22,7 @@
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "friendlyname",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "ipaddress_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "ipinterface_id",
@@ -31,8 +30,7 @@
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "macaddress",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "ipinterface_id"
+			"finalclass": "SynchroAttExtKey"
 		}
 	],
 	"user_delete_policy": "nobody",

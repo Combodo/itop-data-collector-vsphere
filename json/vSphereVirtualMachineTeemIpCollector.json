@@ -25,16 +25,14 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "applicationsolution_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "business_criticity",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "business_criticity"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "contacts_list",
@@ -45,24 +43,21 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "contacts_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "cpu",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "cpu"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "description",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "description"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "documents_list",
@@ -73,8 +68,7 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "documents_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "logicalvolumes_list",
@@ -85,8 +79,7 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "logicalvolumes_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "managementip_id",
@@ -94,24 +87,21 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "id",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "managementip_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "move2production",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "move2production"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "name",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "name"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "org_id",
@@ -119,8 +109,7 @@
 			"reconcile": "1",
 			"update_policy": "write_if_empty",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "org_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "osfamily_id",
@@ -128,8 +117,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "osfamily_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "oslicence_id",
@@ -137,8 +125,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "oslicence_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "osversion_id",
@@ -146,8 +133,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "osversion_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "providercontracts_list",
@@ -158,16 +144,14 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "providercontracts_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "ram",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "ram"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "services_list",
@@ -178,16 +162,14 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "services_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "status",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "status"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "tickets_list",
@@ -198,8 +180,7 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "tickets_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "virtualhost_id",
@@ -207,8 +188,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "virtualhost_id"
+			"finalclass": "SynchroAttExtKey"
 		}
 	],
 	"user_delete_policy": "nobody",

@@ -21,8 +21,7 @@
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "comment"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "ip_list",
@@ -33,32 +32,28 @@
 			"attribute_separator": ";",
 			"value_separator": ":",
 			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet",
-			"friendlyname": "ip_list"
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "macaddress",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "macaddress"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "name",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "name"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "speed",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute",
-			"friendlyname": "speed"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "virtualmachine_id",
@@ -66,8 +61,7 @@
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "virtualmachine_id"
+			"finalclass": "SynchroAttExtKey"
 		}
 	],
 	"user_delete_policy": "nobody",
