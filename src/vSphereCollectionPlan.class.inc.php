@@ -2,54 +2,39 @@
 
 class vSphereCollectionPlan extends CollectionPlan
 {
-	public $bTeemIpIsInstalled;
-	public $sTeemIpVersion;
-	public $bCollectIps;
-	public $sDefaultIpStatus;
-	public $bManageIpv6;
-	public $bManageLogicalInterfaces;
-	public $bTeemIpZoneMgmtIsInstalled;
-	public $bTeemIpNMEIsInstalled;
+	private $bTeemIpIsInstalled;
+	private $bTeemIpIpDiscoveryIsInstalled;
+	private $bTeemIpNMEIsInstalled;
+	private $bTeemIpZoneMgmtIsInstalled;
+	private $sTeemIpVersion;
+	private $bCollectIps;
+	private $sDefaultIpStatus;
+	private $bManageIpv6;
+	private $bManageLogicalInterfaces;
 
 	/**
 	 * @inheritdoc
 	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->bTeemIpIsInstalled = false;
-		$this->sTeemIpVersion = '';
-		$this->bCollectIps = false;
-		$this->sDefaultIpStatus = 'allocated';
-		$this->bManageIpv6 = false;
-		$this->bManageLogicalInterfaces = false;
-		$this->bTeemIpZoneMgmtIsInstalled = false;
-		$this->bTeemIpNMEIsInstalled = false;
-	}
-
-	/**
-	 * Initialize collection plan
-	 *
-	 * @return void
-	 * @throws \IOException
-	 */
-	public function Init()
+	public function Init(): void
 	{
 		parent::Init();
 
 		// If TeemIp should be considered, check if it is installed or not
-		Utils::Log(LOG_INFO, '---------- Check TeemIp / IPAM for iTop parameters ----------');
+		Utils::Log(LOG_INFO, '---------- Check TeemIp installation ----------');
 		$this->bTeemIpIsInstalled = false;
+		$this->sTeemIpVersion = '';
+		$this->bTeemIpIpDiscoveryIsInstalled = false;
+		$this->bTeemIpNMEIsInstalled = false;
+		$this->bTeemIpZoneMgmtIsInstalled = false;
 		$aTeemIpDiscovery = Utils::GetConfigurationValue('teemip_discovery', []);
-		if (!empty($aTeemIpDiscovery) && isset($aTeemIpDiscovery['enable']) && ($aTeemIpDiscovery['enable'] == 'yes')) {
-			Utils::Log(LOG_INFO, 'TeemIp should be considered. Detecting if it is installed on remote iTop server');
+		if (!empty($aTeemIpDiscovery) && array_key_exists('enable', $aTeemIpDiscovery) && ($aTeemIpDiscovery['enable'] == 'yes')) {
+			Utils::Log(LOG_INFO, 'TeemIp should be considered. Detecting if it is installed on remote iTop server...');
 			$oRestClient = new RestClient();
 			try {
 				$aResult = $oRestClient->Get('IPAddress', 'SELECT IPAddress WHERE id = 0');
 				if ($aResult['code'] == 0) {
 					$this->bTeemIpIsInstalled = true;
-					Utils::Log(LOG_INFO, 'Yes, TeemIp is installed');
+					Utils::Log(LOG_INFO, 'TeemIp is installed');
 				} else {
 					Utils::Log(LOG_INFO, $sMessage = 'TeemIp is NOT installed');
 				}
@@ -62,12 +47,17 @@ class vSphereCollectionPlan extends CollectionPlan
 			}
 
 			if ($this->bTeemIpIsInstalled) {
+				// Record discovery parameters
+				$this->bCollectIps = array_key_exists('collect_ips', $aTeemIpDiscovery) ? $aTeemIpDiscovery['collect_ips'] : 'no';
+				$this->sDefaultIpStatus = array_key_exists('default_ip_status', $aTeemIpDiscovery) ? $aTeemIpDiscovery['default_ip_status'] : 'allocated';
+				$this->bManageIpv6 = array_key_exists('manage_ipv6', $aTeemIpDiscovery) ? $aTeemIpDiscovery['manage_ipv6'] : 'no';
+				$this->bManageLogicalInterfaces = array_key_exists('manage_logical_interfaces', $aTeemIpDiscovery) ? $aTeemIpDiscovery['manage_logical_interfaces'] : 'no';
+
 				// Detects TeemIp's version
 				$oRestClient = new RestClient();
 				try {
 					$aResult = $oRestClient->Get('ModuleInstallation', 'SELECT ModuleInstallation WHERE name = \'teemip-ip-mgmt\'', 'version, installed');
 					$sInstalledDate = '0000-00-00 00:00:00';
-					$this->sTeemIpVersion = '';
 					foreach ($aResult['objects'] as $aModuleinstallation) {
 						$sInstalled = $aModuleinstallation['fields']['installed'];
 						if ($sInstalled >= $sInstalledDate) {
@@ -85,26 +75,18 @@ class vSphereCollectionPlan extends CollectionPlan
 				}
 				Utils::Log(LOG_INFO, $sTeemIpMessage);
 
-				// Record discovery parameters
-				$this->bCollectIps = $aTeemIpDiscovery['collect_ips'];
-				$this->sDefaultIpStatus = $aTeemIpDiscovery['default_ip_status'];
-				$this->bManageIpv6 = $aTeemIpDiscovery['manage_ipv6'];
-				$this->bManageLogicalInterfaces = $aTeemIpDiscovery['manage_logical_interfaces'];
-
-				// Check if TeemIp Zone Management is installed or not
-				Utils::Log(LOG_INFO, 'Detecting if TeemIp Zone Management extension is installed on remote server');
-				$this->bTeemIpZoneMgmtIsInstalled = false;
+				// Check if TeemIp IpDiscovery is installed or not
 				$oRestClient = new RestClient();
 				try {
-					$aResult = $oRestClient->Get('Zone', 'SELECT Zone WHERE id = 0');
-					if ($aResult['code'] == 0) {
-						$this->bTeemIpZoneMgmtIsInstalled = true;
-						Utils::Log(LOG_INFO, 'Yes, TeemIp Zone Management extension is installed');
+					$aResult = $oRestClient->Get('IPDiscovery', 'SELECT IPDiscovery WHERE id = 0');
+					if ($aResult['code']==0) {
+						$this->bTeemIpIpDiscoveryIsInstalled = true;
+						Utils::Log(LOG_INFO, 'TeemIp IP Discovery is installed');
 					} else {
-						Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is NOT installed');
+						Utils::Log(LOG_INFO, 'TeemIp IP Discovery is NOT installed');
 					}
 				} catch (Exception $e) {
-					$sMessage = 'TeemIp Zone Management extension is considered as NOT installed due to: '.$e->getMessage();
+					$sMessage = 'TeemIp IP Discovery is considered as NOT installed due to: '.$e->getMessage();
 					if (is_a($e, "IOException")) {
 						Utils::Log(LOG_ERR, $sMessage);
 						throw $e;
@@ -112,14 +94,12 @@ class vSphereCollectionPlan extends CollectionPlan
 				}
 
 				// Check if TeemIp Network Management Extended is installed or not
-				Utils::Log(LOG_INFO, 'Detecting if TeemIp Network Management Extended extension is installed on remote server');
-				$this->bTeemIpNMEIsInstalled = false;
 				$oRestClient = new RestClient();
 				try {
 					$aResult = $oRestClient->Get('InterfaceSpeed', 'SELECT InterfaceSpeed WHERE id = 0');
-					if ($aResult['code'] == 0) {
+					if ($aResult['code']==0) {
 						$this->bTeemIpNMEIsInstalled = true;
-						Utils::Log(LOG_INFO, 'Yes, TeemIp Network Management Extended is installed');
+						Utils::Log(LOG_INFO, 'TeemIp Network Management Extended is installed');
 					} else {
 						Utils::Log(LOG_INFO, 'TeemIp Network Management Extended is NOT installed');
 					}
@@ -130,29 +110,68 @@ class vSphereCollectionPlan extends CollectionPlan
 						throw $e;
 					}
 				}
+
+				// Check if TeemIp Zone Management is installed or not
+				$oRestClient = new RestClient();
+				try {
+					$aResult = $oRestClient->Get('Zone', 'SELECT Zone WHERE id = 0');
+					if ($aResult['code']==0) {
+						$this->bTeemIpZoneMgmtIsInstalled = true;
+						Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is installed');
+					} else {
+						Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is NOT installed');
+					}
+				} catch (Exception $e) {
+					$sMessage = 'TeemIp Zone Management extension is considered as NOT installed due to: '.$e->getMessage();
+					if (is_a($e, "IOException")) {
+						Utils::Log(LOG_ERR, $sMessage);
+						throw $e;
+					}
+				}
 			}
 		} else {
-			Utils::Log(LOG_INFO, 'TeemIp should not be considered.');
+			Utils::Log(LOG_INFO, 'As requested, TeemIp will not be considered.');
 		}
 	}
 
 	/**
-	 * @param $sOption
+	 * Check if TeemIp is installed
 	 *
 	 * @return bool
 	 */
-	public function IsComponentInstalled($sComponent): bool
+	public function IsTeemIpInstalled(): bool
 	{
-		switch ($sComponent) {
-			case 'teemip':
-				return $this->bTeemIpIsInstalled;
-			case 'teemip_zone_mgmt':
-				return $this->bTeemIpZoneMgmtIsInstalled;
-			case 'teemip_nme':
-				return $this->bTeemIpNMEIsInstalled;
-			default:
-				return false;
-		}
+		return $this->bTeemIpIsInstalled;
+	}
+
+	/**
+	 * Check if TeemIp IP Discovey extension is installed
+	 *
+	 * @return bool
+	 */
+	public function IsTeemIpIpDiscoveryinstalled(): bool
+	{
+		return $this->bTeemIpIpDiscoveryIsInstalled;
+	}
+
+	/**
+	 * Check if TeemIp Network Management Extended extension is installed
+	 *
+	 * @return bool
+	 */
+	public function IsTeemIpNMEInstalled(): bool
+	{
+		return $this->bTeemIpNMEIsInstalled;
+	}
+
+	/**
+	 * Check if TeemIp Zone Management is installed
+	 *
+	 * @return bool
+	 */
+	public function IsTeemIpZoneMgmtInstalled(): bool
+	{
+		return $this->bTeemIpZoneMgmtIsInstalled;
 	}
 
 	/**
@@ -160,18 +179,17 @@ class vSphereCollectionPlan extends CollectionPlan
 	 *
 	 * @return bool
 	 */
-	public function GetOption($sOption): bool
+	public function GetTeemIpOption($sOption): bool
 	{
 		switch ($sOption) {
 			case 'collect_ips':
-				return $this->bCollectIps;
+				return ($this->bCollectIps == 'yes') ? true : false;
+			case 'default_ip_status':
+				return $this->sDefaultIpStatus;
 			case 'manage_ipv6':
-				Utils::Log(LOG_WARNING, "IPv6 creation and update is not supported yet due to iTop limitation");
-
-				//return $this->bManageIpv6;
-				return false;
+				return ($this->bManageIpv6 == 'yes') ? true : false;
 			case 'manage_logical_interfaces':
-				return $this->bManageLogicalInterfaces;
+				return ($this->bManageLogicalInterfaces == 'yes') ? true : false;
 			default:
 				return false;
 		}
@@ -183,14 +201,6 @@ class vSphereCollectionPlan extends CollectionPlan
 	public function GetTeemIpVersion(): string
 	{
 		return $this->sTeemIpVersion;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function GetDefaultIpStatus(): string
-	{
-		return $this->sDefaultIpStatus;
 	}
 
 	/**

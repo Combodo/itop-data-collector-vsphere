@@ -35,9 +35,9 @@ class vSphereServerCollector extends ConfigurableCollector
 	/**
 	 * @inheritdoc
 	 */
-	public function IsToBeLaunched(): bool
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if (!$this->oCollectionPlan->IsComponentInstalled('teemip')) {
+		if (!$this->oCollectionPlan->IsTeemIpInstalled()) {
 			return true;
 		}
 

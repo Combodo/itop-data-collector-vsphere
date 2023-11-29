@@ -1,18 +1,4 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   iTop is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
 
 class vSpherelnkIPInterfaceToIPAddressCollector extends Collector
 {
@@ -38,11 +24,14 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends Collector
 	/**
 	 * @inheritdoc
 	 */
-	public function IsToBeLaunched(): bool
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if ($this->oCollectionPlan->IsComponentInstalled('teemip') &&
-			$this->oCollectionPlan->GetOption('collect_ips') &&
-			$this->oCollectionPlan->GetOption('manage_logical_interfaces')) {
+		// vSphereLogicalInterfaceCollector collector must be registered
+		if (!array_key_exists('vSphereLogicalInterfaceCollector', $aOrchestratedCollectors) || ($aOrchestratedCollectors['vSphereLogicalInterfaceCollector'] == false)) {
+			return false;
+		}
+		// TeemIp must be present with correct collection options
+		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
 			return true;
 		}
 

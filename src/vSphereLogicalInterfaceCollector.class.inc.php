@@ -40,11 +40,9 @@ class vSphereLogicalInterfaceCollector extends Collector
 	/**
 	 * @inheritdoc
 	 */
-	public function IsToBeLaunched(): bool
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if ($this->oCollectionPlan->IsComponentInstalled('teemip') &&
-			$this->oCollectionPlan->GetOption('collect_ips') &&
-			$this->oCollectionPlan->GetOption('manage_logical_interfaces')) {
+		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
 			return true;
 		}
 
@@ -58,7 +56,7 @@ class vSphereLogicalInterfaceCollector extends Collector
 	public function AttributeIsOptional($sAttCode)
 	{
 		if ($sAttCode == 'speed') {
-			if ($this->oCollectionPlan->IsComponentInstalled('teemip_nme')) {
+			if ($this->oCollectionPlan->IsTeemIpInstalled()) {
 				return true;
 			}
 		}

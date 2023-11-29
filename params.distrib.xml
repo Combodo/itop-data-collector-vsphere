@@ -6,98 +6,112 @@
 	<itop_password>admin</itop_password>
 
 	<!-- vSphere Parameters -->
-	<vsphere_uri>192.168.10.12:443</vsphere_uri>
-  <vsphere_login>admin</vsphere_login>
-  <vsphere_password>admin</vsphere_password>
-  <vsphere_connection_options type="hash">
-  	<ssl type="hash">
-  		<!--  uncomment the lines below to disable SSL Certificates validation
-  		      see http://php.net/manual/en/context.ssl.php for the possible options
-  		<verify_peer>0</verify_peer>
-  		<verify_peer_name>0</verify_peer_name>
-  		<allow_self_signed>1</allow_self_signed>
-  		 -->
-  	</ssl>
-  </vsphere_connection_options>
+	<vsphere_uri>10.10.10.10:443</vsphere_uri>
+	<vsphere_login>admin</vsphere_login>
+	<vsphere_password>admin</vsphere_password>
+	<vsphere_connection_options type="hash">
+	    <ssl type="hash">
+	        <!--  uncomment the lines below to disable SSL Certificates validation
+	              see http://php.net/manual/en/context.ssl.php for the possible options
+	        <verify_peer>0</verify_peer>
+	        <verify_peer_name>0</verify_peer_name>
+	        <allow_self_signed>1</allow_self_signed>
+	         -->
+	    </ssl>
+	</vsphere_connection_options>
 
 	<!-- Default values -->
 	<default_org_id>Demo</default_org_id>
-  <virtual_machine type="hash">
-    <default_values type="hash">
-      <org_id>$default_org_id$</org_id>
-    </default_values>
-  </virtual_machine>
+	<virtual_machine type="hash">
+        <default_values type="hash">
+	        <org_id>$default_org_id$</org_id>
+        </default_values>
+	</virtual_machine>
 
 	<!-- Class collection sequence -->
 	<collectors_launch_sequence type="array">
-    <collector>
-			<!-- Brands -->
-	    <name>vSphereBrandCollector</name>
-			<rank>1</rank>
-		</collector>
+	    <!-- Brands -->
+	    <collector>
+		    <name>vSphereBrandCollector</name>
+		    <enable>yes</enable>
+		    <rank>1</rank>
+	    </collector>
+		<!-- Models -->
 		<collector>
-			<!-- Models -->
 			<name>vSphereModelCollector</name>
+		    <enable>yes</enable>
 			<rank>2</rank>
 		</collector>
+		<!-- OS Families -->
 		<collector>
-			<!-- OS Families -->
 			<name>vSphereOSFamilyCollector</name>
+		    <enable>yes</enable>
 			<rank>3</rank>
 		</collector>
+		<!-- OS Versions -->
 		<collector>
-			<!-- OS Versions -->
 			<name>vSphereOSVersionCollector</name>
+		    <enable>yes</enable>
 			<rank>4</rank>
 		</collector>
+		<!-- Farms -->
 		<collector>
-			<!-- Farms -->
 			<name>vSphereFarmCollector</name>
+		    <enable>yes</enable>
 			<rank>5</rank>
 		</collector>
+		<!-- IPv4 Addresses -->
 		<collector>
-			<!-- IPv4 Addresses -->
 			<name>vSphereIPv4AddressCollector</name>
+		    <enable>yes</enable>
 			<rank>10</rank>
 		</collector>
+		<!-- IPv6 Addresses -->
 		<collector>
-			<!-- IPv6 Addresses -->
 			<name>vSphereIPv6AddressCollector</name>
+		    <enable>yes</enable>
 			<rank>11</rank>
 		</collector>
+		<!-- Servers -->
 		<collector>
-			<!-- Servers -->
 			<name>vSphereServerCollector</name>
+		    <enable>no</enable>
 			<rank>20</rank>
 		</collector>
+		<!-- Servers with TeemIp-->
 		<collector>
-			<!-- Servers with TeemIp-->
 			<name>vSphereServerTeemIpCollector</name>
+		    <enable>yes</enable>
 			<rank>21</rank>
 		</collector>
+		<!-- Hypervisors -->
 		<collector>
-			<!-- Hypervisors -->
 			<name>vSphereHypervisorCollector</name>
+		    <enable>yes</enable>
 			<rank>22</rank>
 		</collector>
+		<!-- Virtual Machines -->
 		<collector>
-			<!-- Virtual Machines -->
 			<name>vSphereVirtualMachineCollector</name>
+		    <enable>no</enable>
 			<rank>23</rank>
 		</collector>
+		<!-- Virtual Machines with TeemIp -->
 		<collector>
-			<!-- Virtual Machines with TeemIp -->
 			<name>vSphereVirtualMachineTeemIpCollector</name>
+		    <enable>yes</enable>
 			<rank>24</rank>
 		</collector>
+		<!-- Logical Interfaces -->
 		<collector>
-			<!-- Logical Interfaces -->
 			<name>vSphereLogicalInterfaceCollector</name>
+		    <enable>yes</enable>
 			<rank>30</rank>
 		</collector>
+		<!-- Lnks IP Interface to IP Address -->
 		<collector>
-			<!-- Lnks IP Interface to IP Address -->
 			<name>vSpherelnkIPInterfaceToIPAddressCollector</name>
+		    <enable>yes</enable>
 			<rank>31</rank>
 		</collector>
 	</collectors_launch_sequence>
@@ -105,20 +119,20 @@
 	<!-- Synchronization parameters -->
 	<contact_to_notify></contact_to_notify>
 	<synchro_user></synchro_user>
-  <json_placeholders type="hash">
-    <prefix>vSphere</prefix>
-    <full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
-    <synchro_status>production</synchro_status>
-  </json_placeholders>
+	<json_placeholders type="hash">
+		<prefix>vSphere</prefix>
+		<full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
+		<synchro_status>production</synchro_status>
+	</json_placeholders>
 
 	<!-- TeemIp discovery options -->
 	<teemip_discovery>
 		<enable>yes</enable>
-    <collect_ips>yes</collect_ips>
-    <default_ip_status>allocated</default_ip_status>
-    <manage_ipv6>no</manage_ipv6>
-    <manage_logical_interfaces>yes</manage_logical_interfaces>
-  </teemip_discovery>
+		<collect_ips>yes</collect_ips>
+		<default_ip_status>allocated</default_ip_status>
+		<manage_ipv6>no</manage_ipv6>
+		<manage_logical_interfaces>yes</manage_logical_interfaces>
+	</teemip_discovery>
 
 	<!-- Mapping tables -->
 	<brand_mapping type="array">
@@ -131,23 +145,22 @@
           %3$s will be replaced by the second matched group, etc...
     -->
 		<pattern>/IBM/IBM</pattern>
-    <pattern>/Hewlett Packard/Hewlett-Packard</pattern>
-    <pattern>/Hewlett-Packard/Hewlett-Packard</pattern>
-    <pattern>/Dell/Dell</pattern>
-    <pattern>/.*/%1$s</pattern>
-  </brand_mapping>
-  <model_mapping type="array">
-    <pattern>/.*/%1$s</pattern>
-  </model_mapping>
-  <os_family_mapping type="array">
-    <pattern>/Ubuntu/Linux</pattern>
-    <pattern>/RedHat/Linux</pattern>
-    <pattern>/Debian/Linux</pattern>
-    <pattern>/Linux/Linux</pattern>
-    <pattern>/Windows/Windows</pattern>
-    <pattern>/.*/Other</pattern>
-  </os_family_mapping>
-  <os_version_mapping type="array">
-    <pattern>/.*/%1$s</pattern>
-  </os_version_mapping>
+		<pattern>/Hewlett Packard/Hewlett-Packard</pattern>
+		<pattern>/Hewlett-Packard/Hewlett-Packard</pattern><pattern>/Dell/Dell</pattern>
+		<pattern>/.*/%1$s</pattern>
+	</brand_mapping>
+	<model_mapping type="array">
+		<pattern>/.*/%1$s</pattern>
+	</model_mapping>
+	<os_family_mapping type="array">
+		<pattern>/Ubuntu/Linux</pattern>
+		<pattern>/RedHat/Linux</pattern>
+		<pattern>/Debian/Linux</pattern>
+		<pattern>/Linux/Linux</pattern>
+		<pattern>/Windows/Windows</pattern>
+		<pattern>/.*/Other</pattern>
+	</os_family_mapping>
+	<os_version_mapping type="array">
+		<pattern>/.*/%1$s</pattern>
+	</os_version_mapping>
 </parameters>
