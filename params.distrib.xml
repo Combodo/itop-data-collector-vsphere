@@ -19,7 +19,7 @@
     <default_values type="hash">
       <org_id>$default_org_id$</org_id>
     </default_values>
-    <vsphere_cpu_attribute>numCpuCores</vsphere_cpu_attribute>
+    <cpu_attribute>numCpuCores</cpu_attribute>
   </virtual_machine>
   <os_family_mapping type="array">
     <!-- Syntax /pattern/replacement where:

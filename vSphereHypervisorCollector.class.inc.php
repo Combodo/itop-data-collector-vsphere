@@ -57,8 +57,8 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 			$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 			$sVMCPUAttribute = 'numCpuCores';
 			$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
-			if (!empty($aVMParams) && array_key_exists('vsphere_cpu_attribute', $aVMParams) && ($aVMParams['vsphere_cpu_attribute'] != '')) {
-				$sVMCPUAttribute = $aVMParams['vsphere_cpu_attribute'];
+			if (!empty($aVMParams) && array_key_exists('cpu_attribute', $aVMParams) && ($aVMParams['cpu_attribute'] != '')) {
+				$sVMCPUAttribute = $aVMParams['cpu_attribute'];
 			}
 
 			static::InitVmwarephp();
