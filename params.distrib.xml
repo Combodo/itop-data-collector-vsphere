@@ -19,6 +19,10 @@
     <default_values type="hash">
       <org_id>$default_org_id$</org_id>
     </default_values>
+    <!-- By default, a VM's virtual host points to the farm that the VM's hypervisor belongs to, if any.
+         This option forces the VM's virtual host to point to the VM's hypervisor
+         Allowed values: hypervisor, farm (default) -->
+    <virtual_host>hypervisor</virtual_host>
   </virtual_machine>
   <os_family_mapping type="array">
     <!-- Syntax /pattern/replacement where:
