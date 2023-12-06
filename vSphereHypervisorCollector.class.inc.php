@@ -107,7 +107,7 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 						'org_id' => $sDefaultOrg,
 						'brand_id' => $oBrandMappings->MapValue($oHypervisor->hardware->systemInfo->vendor, 'Other'),
 						'model_id' => $oModelMappings->MapValue($oHypervisor->hardware->systemInfo->model, ''),
-						'cpu' => $oHypervisor->hardware->cpuInfo->$sVMCPUAttribute) ?? : '',
+						'cpu' => ($oHypervisor->hardware->cpuInfo->$sVMCPUAttribute) ?? '',
 						'ram' => (int)($oHypervisor->hardware->memorySize / (1024*1024)),
 						'osfamily_id' => $oOSFamilyMappings->MapValue($oHypervisor->config->product->name, 'Other'),
 						'osversion_id' => $oOSVersionMappings->MapValue($oHypervisor->config->product->fullName, ''),
