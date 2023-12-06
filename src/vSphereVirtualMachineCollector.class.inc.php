@@ -1,42 +1,14 @@
 <?php
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-function myprint_r($var)
-{
-	$s = '';
-	foreach ($var as $key => $val) {
-		if (is_object($val)) {
-			$sVal = 'object['.get_class($val).']';
-		} else {
-			$sVal = $val;
-		}
-		$s .= "\t".$key." => ".$sVal."\n";
-	}
-
-	return $s;
-}
-
-class vSphereVirtualMachineCollector extends Collector
+class vSphereVirtualMachineCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $oCollectionPlan;
-	/**
-	 * @var LookupTable For the OS Family / OS Version lookup
-	 */
 	protected $oOSVersionLookup;
-
-	/**
-	 * @var mixed[][] The collected VM infos
-	 */
-	static protected $aVMInfos = null;
-
-	/**
-	 * @var MappingTable Mapping table for the OS Families
-	 */
+	protected $oIPAddressLookup;
 	static protected $oOSFamilyMappings = null;
-
-	/**
-	 * @var MappingTable Mapping table for OS versions
-	 */
+	static protected $aVMInfos = null;
 	static protected $oOSVersionMappings = null;
 
 
@@ -53,30 +25,17 @@ class vSphereVirtualMachineCollector extends Collector
 	/**
 	 * @inheritdoc
 	 */
-	public function CheckToLaunch(array $aOrchestratedCollectors): bool
-	{
-		if (!$this->oCollectionPlan->IsTeemIpInstalled()) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function AttributeIsOptional($sAttCode)
 	{
-		// If the module Service Management for Service Providers is selected during the setup
-		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'services_list') {
-			return true;
-		}
+		if ($sAttCode == 'services_list') return true;
+		if ($sAttCode == 'providercontracts_list') return true;
 
-		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
-		// on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'providercontracts_list') {
-			return true;
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			if ($sAttCode == 'managementip') return true;
+			if ($sAttCode == 'managementip_id') return false;
+		} else {
+			if ($sAttCode == 'managementip') return false;
+			if ($sAttCode == 'managementip_id') return true;
 		}
 
 		return parent::AttributeIsOptional($sAttCode);
@@ -123,7 +82,7 @@ class vSphereVirtualMachineCollector extends Collector
 					}
 					foreach ($oSwitch->portgroup as $oPortGroup) {
 						$aVLANs[$oPortGroup->key] = $oPortGroup->name;
-						utils::Log(LOG_DEBUG, "Portgroup: {$oPortGroup->name}, config:\n".myprint_r($oPortGroup->config));
+						utils::Log(LOG_DEBUG, "Portgroup: {$oPortGroup->name}, config:\n".static::myprint_r($oPortGroup->config));
 					}
 				}
 			}
@@ -189,14 +148,14 @@ class vSphereVirtualMachineCollector extends Collector
 								} else {
 									if (property_exists($oBacking, 'port')) {
 										$oPort = $oBacking->port;
-										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".myprint_r($oPort));
+										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
 										if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
 											$sNetworkName = $aVLANs[$oPort->portgroupKey];
 										} else {
-											utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".myprint_r($oPort));
+											utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
 										}
 									} else {
-										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".myprint_r($oBacking));
+										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".static::myprint_r($oBacking));
 									}
 								}
 							}
@@ -263,13 +222,10 @@ class vSphereVirtualMachineCollector extends Collector
 		$sHostName = $oVirtualMachine->runtime->host->name;
 		utils::Log(LOG_DEBUG, "    Host name: $sHostName");
 
-		return array(
+		$aData = array(
 			'id' => $oVirtualMachine->getReferenceId(),
 			'name' => $sName,
 			'org_id' => $sDefaultOrg,
-			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
-			// Note: some OpenVM clients report IP addresses with a trailing space, so let's trim the field
-			'managementip' => (strpos($sGuestIP, ':') !== false) ? '' : trim($sGuestIP),
 			'cpu' => $iNbCPUs,
 			'ram' => $iMemory,
 			'osfamily_id' => $OSFamily,
@@ -279,17 +235,64 @@ class vSphereVirtualMachineCollector extends Collector
 			'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
 			'description' => $sAnnotation,
 		);
+
+		$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+		if ($oCollectionPlan->IsTeemIpInstalled()) {
+			$aTeemIpOptions = Utils::GetConfigurationValue('teemip_discovery', array());
+			$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true : false;
+			$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true : false;
+
+			utils::Log(LOG_DEBUG, "Reading DNS short name (guest->hostName)...");
+			$sGuestShortName = $oVirtualMachine->guest->hostName;
+			utils::Log(LOG_DEBUG, "    DNS short name: $sGuestShortName");
+
+			// Trim IP address if necessary
+			$sGuestIP = $oVirtualMachine->guest->ipAddress ?? '';
+			// Trim IP address if necessary
+			if (!$bCollectIps) {
+				$sGuestIP = '';
+			} else {
+				if (!$bCollectIPv6Addresses) {
+					$sGuestIP = (strpos($sGuestIP, ':') !== false) ? '' : $sGuestIP;
+				}
+			}
+
+			$aData['managementip_id'] = $sGuestIP;
+			utils::Log(LOG_DEBUG, "Setting managementip_id: ".$sGuestIP);
+			$aData['short_name'] = $sGuestShortName;
+		} else {
+			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
+			// Note: some OpenVM clients report IP addresses with a trailing space, so let's trim the field
+			$aData['managementip'] = (strpos($sGuestIP, ':') !== false) ? '' : trim($sGuestIP);
+		}
+
+		return $aData;
+
 	}
 
 	static protected function DoCollectVMIPs($aMACToNetwork, $oVirtualMachine)
 	{
+		$aTeemIpOptions = Utils::GetConfigurationValue('teemip_discovery', array());
+		$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true : false;
+		$oCollectionPlan = vSphereCollectionPlan::GetPlan();
 		$aNWInterfaces = array();
+
 		foreach ($oVirtualMachine->guest->net as $oNICInfo) {
 			if ($oNICInfo->ipConfig && $oNICInfo->ipConfig->ipAddress) {
 				foreach ($oNICInfo->ipConfig->ipAddress as $oIPInfo) {
+					Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
 					if (strpos($oIPInfo->ipAddress ?? '', ':') !== false) {
-						// Ignore IP v6
-						Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
+						// It's an IPv6 address
+						if ($oCollectionPlan->IsTeemIpInstalled() && $bCollectIPv6Addresses) {
+							$aNWInterfaces[] = array(
+								'ip' => $oIPInfo->ipAddress,
+								'mac' => $oNICInfo->macAddress,
+								'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
+								'subnet_mask' => (int)$oIPInfo->prefixLength,
+							);
+						} else {
+							Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
+						}
 					} else {
 						// If we have a guest IP set to IPv6, replace it with the first IPv4 we find
 						if (strpos($oVirtualMachine->guest->ipAddress ?? '', ":") !== false) {
@@ -298,7 +301,7 @@ class vSphereVirtualMachineCollector extends Collector
 
 						Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
 						$mask = ip2long('255.255.255.255');
-						$subnet_mask = ($mask << (32 - (int)$oIPInfo->prefixLength)) & $mask;
+						$subnet_mask = ($mask << (32 - (int) $oIPInfo->prefixLength)) & $mask;
 						$sSubnetMask = long2ip($subnet_mask);
 						// IP v4
 						$aNWInterfaces[] = array(
@@ -386,20 +389,27 @@ class vSphereVirtualMachineCollector extends Collector
 	 */
 	protected function DoFetch($aVM)
 	{
-		return array(
+		$aData = array(
 			'primary_key' => $aVM['id'],
 			'name' => $aVM['name'],
 			'status' => 'production',
 			'org_id' => $aVM['org_id'],
 			'ram' => $aVM['ram'],
 			'cpu' => ((int)$aVM['cpu']),
-			'managementip' => $aVM['managementip'],
 			'osfamily_id' => $aVM['osfamily_id'],
 			//'logicalvolumes_list' => implode('|', $aDS),
 			'osversion_id' => $aVM['osversion_id'],
 			'virtualhost_id' => $aVM['virtualhost_id'],
 			'description' => str_replace(array("\n", "\r"), ' ', $aVM['description']),
 		);
+
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			$aData['managementip_id'] = $aVM['managementip_id'];
+		} else {
+			$aData['managementip'] = $aVM['managementip'];
+		}
+
+		return $aData;
 	}
 
 	/**
@@ -420,6 +430,10 @@ class vSphereVirtualMachineCollector extends Collector
 		// Retrieve the identifiers of the OSVersion since we must do a lookup based on two fields: Family + Version
 		// which is not supported by the iTop Data Synchro... so let's do the job of an ETL
 		$this->oOSVersionLookup = new LookupTable('SELECT OSVersion', array('osfamily_id_friendlyname', 'name'));
+
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			$this->oIPAddressLookup = new LookupTable('SELECT IPAddress', array('org_name', 'friendlyname'));
+		}
 	}
 
 	/**
@@ -429,5 +443,8 @@ class vSphereVirtualMachineCollector extends Collector
 	{
 		// Process each line of the CSV
 		$this->oOSVersionLookup->Lookup($aLineData, array('osfamily_id', 'osversion_id'), 'osversion_id', $iLineIndex);
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex);
+		}
 	}
 }

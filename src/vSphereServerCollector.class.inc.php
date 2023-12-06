@@ -1,44 +1,23 @@
 <?php
-// Copyright (C) 2022 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify	
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   This application is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-require_once(APPROOT.'collectors/src/ConfigurableCollector.class.inc.php');
-
-class vSphereServerCollector extends ConfigurableCollector
+class vSphereServerCollector extends vSphereCollector
 {
 	protected $idx;
-	protected $oCollectionPlan;
+	protected $oOSVersionLookup;
+	protected $oModelLookup;
+	protected $oIPAddressLookup;
 	protected static $aServers;
-
-	/**
-	 * @inheritdoc
-	 */
-	public function Init(): void
-	{
-		parent::Init();
-
-		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
-	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if (!$this->oCollectionPlan->IsTeemIpInstalled()) {
+		if (array_key_exists('vSphereHypervisorCollector',$aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereHypervisorCollector'] == true)) {
 			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereServerCollector will not be launched as vSphereHypervisorCollector is required but is not launched');
 		}
 
 		return false;
@@ -49,16 +28,15 @@ class vSphereServerCollector extends ConfigurableCollector
 	 */
 	public function AttributeIsOptional($sAttCode)
 	{
-		// If the module Service Management for Service Providers is selected during the setup
-		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'services_list') {
-			return true;
-		}
+		if ($sAttCode == 'services_list') return true;
+		if ($sAttCode == 'providercontracts_list') return true;
 
-		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
-		// on Servers. Let's safely ignore it.
-		if ($sAttCode == 'providercontracts_list') {
-			return true;
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			if ($sAttCode == 'managementip') return true;
+			if ($sAttCode == 'managementip_id') return false;
+		} else {
+			if ($sAttCode == 'managementip') return false;
+			if ($sAttCode == 'managementip_id') return true;
 		}
 
 		return parent::AttributeIsOptional($sAttCode);
@@ -106,6 +84,27 @@ class vSphereServerCollector extends ConfigurableCollector
 		// Add the custom fields (if any)
 		foreach (vSphereHypervisorCollector::GetCustomFields(__CLASS__) as $sAttCode => $sFieldDefinition) {
 			$aData[$sAttCode] = $aHyperV['server-custom-'.$sAttCode];
+		}
+
+		$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+		if ($oCollectionPlan->IsTeemIpInstalled()) {
+			$aTeemIpOptions = Utils::GetConfigurationValue('teemip_discovery', array());
+			$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true : false;
+			$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true : false;
+
+			$sName = $aHyperV['name'] ?? '';
+			$sIP = '';
+			if ($bCollectIps == 'yes') {
+				// Check if name has IPv4 or "IPv6" format
+				$sNum = '(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])';
+				$sPattern = "($sNum\.$sNum\.$sNum\.$sNum)";
+				if (preg_match($sPattern, $sName) || (($bCollectIPv6Addresses == 'yes') && (strpos($sName, ":") !== false))) {
+					$sIP = $sName;
+				}
+			}
+
+			unset($aData['managementip']);
+			$aData['managementip_id'] = $sIP;
 		}
 
 		return $aData;
@@ -174,6 +173,10 @@ class vSphereServerCollector extends ConfigurableCollector
 		// Retrieve the identifiers of the Model since we must do a lookup based on two fields: Brand + Model
 		// which is not supported by the iTop Data Synchro... so let's do the job of an ETL
 		$this->oModelLookup = new LookupTable('SELECT Model', array('brand_id_friendlyname', 'name'));
+
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			$this->oIPAddressLookup = new LookupTable('SELECT IPAddress', array('org_name', 'friendlyname'));
+		}
 	}
 
 	/**
@@ -184,5 +187,8 @@ class vSphereServerCollector extends ConfigurableCollector
 		// Process each line of the CSV
 		$this->oOSVersionLookup->Lookup($aLineData, array('osfamily_id', 'osversion_id'), 'osversion_id', $iLineIndex);
 		$this->oModelLookup->Lookup($aLineData, array('brand_id', 'model_id'), 'model_id', $iLineIndex);
+		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex);
+		}
 	}
 }
