@@ -58,61 +58,49 @@
 		<collector>
 			<name>vSphereFarmCollector</name>
 		    <enable>yes</enable>
-			<rank>5</rank>
-		</collector>
-		<!-- IPv4 Addresses -->
-		<collector>
-			<name>vSphereIPv4AddressCollector</name>
-		    <enable>yes</enable>
 			<rank>10</rank>
 		</collector>
-		<!-- IPv6 Addresses -->
+		<!-- Hypervisors -->
 		<collector>
-			<name>vSphereIPv6AddressCollector</name>
+			<name>vSphereHypervisorCollector</name>
 		    <enable>yes</enable>
 			<rank>11</rank>
 		</collector>
 		<!-- Servers -->
 		<collector>
 			<name>vSphereServerCollector</name>
-		    <enable>no</enable>
-			<rank>20</rank>
-		</collector>
-		<!-- Servers with TeemIp-->
-		<collector>
-			<name>vSphereServerTeemIpCollector</name>
 		    <enable>yes</enable>
-			<rank>21</rank>
-		</collector>
-		<!-- Hypervisors -->
-		<collector>
-			<name>vSphereHypervisorCollector</name>
-		    <enable>yes</enable>
-			<rank>22</rank>
+			<rank>12</rank>
 		</collector>
 		<!-- Virtual Machines -->
 		<collector>
 			<name>vSphereVirtualMachineCollector</name>
-		    <enable>no</enable>
-			<rank>23</rank>
-		</collector>
-		<!-- Virtual Machines with TeemIp -->
-		<collector>
-			<name>vSphereVirtualMachineTeemIpCollector</name>
 		    <enable>yes</enable>
-			<rank>24</rank>
+			<rank>13</rank>
 		</collector>
 		<!-- Logical Interfaces -->
 		<collector>
 			<name>vSphereLogicalInterfaceCollector</name>
 		    <enable>yes</enable>
-			<rank>30</rank>
+			<rank>14</rank>
+		</collector>
+		<!-- IPv4 Addresses -->
+		<collector>
+			<name>vSphereIPv4AddressCollector</name>
+		    <enable>yes</enable>
+			<rank>20</rank>
+		</collector>
+		<!-- IPv6 Addresses -->
+		<collector>
+			<name>vSphereIPv6AddressCollector</name>
+		    <enable>yes</enable>
+			<rank>21</rank>
 		</collector>
 		<!-- Lnks IP Interface to IP Address -->
 		<collector>
 			<name>vSpherelnkIPInterfaceToIPAddressCollector</name>
 		    <enable>yes</enable>
-			<rank>31</rank>
+			<rank>22</rank>
 		</collector>
 	</collectors_launch_sequence>
 
