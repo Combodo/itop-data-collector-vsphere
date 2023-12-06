@@ -1,22 +1,7 @@
 <?php
-// Copyright (C) 2022 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify	
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   This application is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-require_once(APPROOT.'collectors/src/ConfigurableCollector.class.inc.php');
-
-class vSphereHypervisorCollector extends ConfigurableCollector
+class vSphereHypervisorCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $aHypervisorFields;
@@ -29,6 +14,20 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 		$aCustomFields = array_keys(static::GetCustomFields(__CLASS__));
 		$this->aHypervisorFields = array_merge($aDefaultFields, $aCustomFields);
 
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		if (array_key_exists('vSphereFarmCollector',$aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereFarmCollector'] == true)) {
+			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereHypervisorCollector will not be launched as vSphereFarmCollector is required but is not launched');
+		}
+
+		return false;
 	}
 
 	public function AttributeIsOptional($sAttCode)
@@ -127,22 +126,6 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 		return self::$aHypervisors;
 	}
 
-	public static function GetCustomFields($sClass)
-	{
-		$aCustomFields = array();
-		$aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', array());
-		if (array_key_exists($sClass, $aCustomSynchro)) {
-			foreach ($aCustomSynchro[$sClass]['fields'] as $sAttCode => $aFieldsDef) {
-				// Check if the configuration contains an alteration of the JSON
-				if (array_key_exists('source', $aFieldsDef)) {
-					$aCustomFields[$sAttCode] = $aFieldsDef['source'];
-				}
-			}
-		}
-
-		return $aCustomFields;
-	}
-
 	protected static function GetCustomFieldValue($oHypervisor, $sFieldDefinition)
 	{
 		$value = '';
@@ -197,62 +180,4 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 		return false;
 	}
 
-	/**
-	 * Check the SSL connection to the given host
-	 *
-	 * @param string $sHost The host/uri to connect to (e.g. 192.168.10.12:443)
-	 *
-	 * @return boolean
-	 */
-	protected static function CheckSSLConnection($sHost)
-	{
-		$errno = 0;
-		$errstr = 'No error';
-		$fp = @stream_socket_client('ssl://'.$sHost, $errno, $errstr, 5);
-		if (($fp === false) && ($errno === 0)) {
-			// Failed to connect, check for SSL certificate problems
-			$aStreamContextOptions = array(
-				'ssl' => array(
-					'verify_peer' => 0,
-					'verify_peer_name' => 0,
-					'allow_self_signed' => 1,
-				),
-			);
-			$context = stream_context_create($aStreamContextOptions);
-			$fp = @stream_socket_client('ssl://'.$sHost, $errno, $errstr, 5, STREAM_CLIENT_CONNECT, $context);
-			if ($fp === false) {
-				Utils::Log(LOG_CRIT, "Failed to connect to https://$sHost (Error $errno: $errstr)");
-
-				return false;
-			} else {
-				Utils::Log(LOG_CRIT,
-					"Failed to connect to https://$sHost - Invalid SSL certificate.\nYou can add the following 'vsphere_connection_options' to your configuration file (conf/params.local.xml) to bypass this check:\n<vsphere_connection_options>\n\t<ssl>\n\t\t<verify_peer>0</verify_peer>\n\t\t<verify_peer_name>0</verify_peer_name>\n\t\t<allow_self_signed>1</allow_self_signed>\n\t</ssl>\n</vsphere_connection_options>\n");
-
-				return false;
-			}
-		} else {
-			if ($fp === false) {
-				Utils::Log(LOG_CRIT, "Failed to connect to https://$sHost (Error $errno: $errstr)");
-
-				return false;
-			}
-		}
-		Utils::Log(LOG_DEBUG, "Connection to https://$sHost Ok.");
-
-		return true; // Ok this works
-	}
-
-	protected static function InitVmwarephp()
-	{
-		require_once APPROOT.'collectors/library/Vmwarephp/Autoloader.php';
-		$autoloader = new \Vmwarephp\Autoloader();
-		$autoloader->register();
-
-		// Set default stream context options, see http://php.net/manual/en/context.php for the possible options
-		$aStreamContextOptions = Utils::GetConfigurationValue('vsphere_connection_options', array());
-
-		Utils::Log(LOG_DEBUG, "vSphere connection options: ".print_r($aStreamContextOptions, true));
-
-		$default = stream_context_set_default($aStreamContextOptions);
-	}
 }
