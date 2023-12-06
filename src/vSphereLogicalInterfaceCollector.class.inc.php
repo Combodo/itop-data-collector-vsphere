@@ -1,41 +1,12 @@
 <?php
-// Copyright (C) 2014-2022 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   iTop is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSphereLogicalInterfaceCollector extends Collector
+class vSphereLogicalInterfaceCollector extends vSphereCollector
 {
 	protected $idx;
-	protected $oCollectionPlan;
-	/**
-	 * @var LookupTable For the VMs
-	 */
 	protected $oVMLookup;
-
 	static protected $aLogicalInterfaces = null;
 	static protected $aLnkLogicalInterfaceToIPAddress = null;
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function Init(): void
-	{
-		parent::Init();
-
-		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
-	}
 
 	/**
 	 * @inheritdoc
@@ -44,6 +15,8 @@ class vSphereLogicalInterfaceCollector extends Collector
 	{
 		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
 			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or logical interfaces should not be managed');
 		}
 
 		return false;
@@ -67,7 +40,7 @@ class vSphereLogicalInterfaceCollector extends Collector
 	static public function GetLogicalInterfaces()
 	{
 		if (self::$aLogicalInterfaces === null) {
-			$aVMs = vSphereVirtualMachineTeemIpCollector::GetVMs();
+			$aVMs = vSphereVirtualMachineCollector::GetVMs();
 
 			$aLogicalInterfaces = array();
 			foreach ($aVMs as $oVM) {
