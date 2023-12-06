@@ -89,6 +89,14 @@
 			"finalclass": "SynchroAttribute"
 		},
 		{
+			"attcode": "managementip_id",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "id",
+			"finalclass": "SynchroAttExtKey"
+		},
+		{
 			"attcode": "move2production",
 			"update": "0",
 			"reconcile": "0",
