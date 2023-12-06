@@ -87,8 +87,7 @@
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "org_name",
-			"finalclass": "SynchroAttExtKey",
-			"friendlyname": "org_id"
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "ip_list",
