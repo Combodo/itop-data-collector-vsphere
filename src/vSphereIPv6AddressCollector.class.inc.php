@@ -1,10 +1,10 @@
 <?php
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSphereIPv6AddressCollector extends Collector
+class vSphereIPv6AddressCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $aIPv6Addresses;
-	protected $oCollectionPlan;
 
 	/**
 	 * @inheritdoc
@@ -14,7 +14,6 @@ class vSphereIPv6AddressCollector extends Collector
 		parent::Init();
 
 		$this->aIPv6Addresses = [];
-		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
 	}
 
 	/**
@@ -24,6 +23,8 @@ class vSphereIPv6AddressCollector extends Collector
 	{
 		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_ipv6')) {
 			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or IPv6 should not be managed');
 		}
 
 		return false;
@@ -60,7 +61,7 @@ class vSphereIPv6AddressCollector extends Collector
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 
 		$sDefaulIpStatus = $this->oCollectionPlan->GetTeemIpOption('default_ip_status');
-		$aVMs = vSphereVirtualMachineTeemIpCollector::CollectVMInfos();
+		$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 		foreach ($aVMs as $oVM) {
 			$sIP = $oVM['managementip_id'] ?? '';
 			if ($sIP != '') {

@@ -1,10 +1,10 @@
 <?php
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSphereIPv4AddressCollector extends Collector
+class vSphereIPv4AddressCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $aIPv4Addresses;
-	protected $oCollectionPlan;
 
 	/**
 	 * @inheritdoc
@@ -14,7 +14,6 @@ class vSphereIPv4AddressCollector extends Collector
 		parent::Init();
 
 		$this->aIPv4Addresses = [];
-		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
 	}
 
 	/**
@@ -24,6 +23,8 @@ class vSphereIPv4AddressCollector extends Collector
 	{
 		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips')) {
 			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed or IPs should not be collected');
 		}
 
 		return false;
@@ -60,7 +61,7 @@ class vSphereIPv4AddressCollector extends Collector
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 
 		$sDefaulIpStatus = $this->oCollectionPlan->GetTeemIpOption('default_ip_status');
-		$aVMs = vSphereVirtualMachineTeemIpCollector::GetVMs();
+		$aVMs = vSphereVirtualMachineCollector::GetVMs();
 		foreach ($aVMs as $oVM) {
 			$sIP = $oVM['managementip'] ?? '';
 			if ($sIP != '') {
@@ -83,7 +84,7 @@ class vSphereIPv4AddressCollector extends Collector
 			}
 		}
 
-		$aServers = vSphereServerTeemIpCollector::CollectServerInfos();
+		$aServers = vSphereServerCollector::CollectServerInfos();
 		foreach ($aServers as $oServer) {
 			$sIP = $oServer['managementip_id'] ?? '';
 			if ($sIP != '') {
