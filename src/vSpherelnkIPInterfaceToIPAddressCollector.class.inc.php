@@ -1,9 +1,9 @@
 <?php
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSpherelnkIPInterfaceToIPAddressCollector extends Collector
+class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 {
 	protected $idx;
-	protected $oCollectionPlan;
 	protected $sDefaultOrg;
 
 	/**
@@ -14,25 +14,18 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends Collector
 	/**
 	 * @inheritdoc
 	 */
-	public function Init(): void
-	{
-		parent::Init();
-
-		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
 		// vSphereLogicalInterfaceCollector collector must be registered
 		if (!array_key_exists('vSphereLogicalInterfaceCollector', $aOrchestratedCollectors) || ($aOrchestratedCollectors['vSphereLogicalInterfaceCollector'] == false)) {
+			Utils::Log(LOG_INFO, '> vSpherelnkIPInterfaceToIPAddressCollector will not be launched as vSphereLogicalInterfaceCollector is not launched');
 			return false;
 		}
 		// TeemIp must be present with correct collection options
 		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
 			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSpherelnkIPInterfaceToIPAddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or logical interfaces should not be managed');
 		}
 
 		return false;
