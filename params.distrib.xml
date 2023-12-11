@@ -102,6 +102,12 @@
 		    <enable>yes</enable>
 			<rank>22</rank>
 		</collector>
+		<!-- Datastores -->
+		<collector>
+			<name>vSphereDatastoreCollector</name>
+		    <enable>yes</enable>
+			<rank>40</rank>
+		</collector>
 	</collectors_launch_sequence>
 
 	<!-- Synchronization parameters -->
