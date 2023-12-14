@@ -23,6 +23,7 @@
          This option forces the VM's virtual host to point to the VM's hypervisor
          Allowed values: hypervisor, farm (default) -->
     <virtual_host>hypervisor</virtual_host>
+    <cpu_attribute>numCpuCores</cpu_attribute>
   </virtual_machine>
   <os_family_mapping type="array">
     <!-- Syntax /pattern/replacement where:

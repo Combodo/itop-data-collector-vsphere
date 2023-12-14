@@ -55,6 +55,11 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 			$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
+			$sVMCPUAttribute = 'numCpuCores';
+			$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
+			if (!empty($aVMParams) && array_key_exists('cpu_attribute', $aVMParams) && ($aVMParams['cpu_attribute'] != '')) {
+				$sVMCPUAttribute = $aVMParams['cpu_attribute'];
+			}
 
 			static::InitVmwarephp();
 			if (!static::CheckSSLConnection($sVSphereServer))
@@ -94,7 +99,7 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 
 				Utils::Log(LOG_DEBUG, "Server {$oHypervisor->name}: {$oHypervisor->hardware->systemInfo->vendor} {$oHypervisor->hardware->systemInfo->model}");
 				Utils::Log(LOG_DEBUG, "Server software: {$oHypervisor->config->product->fullName} - API Version: {$oHypervisor->config->product->apiVersion}");
-				
+
 				$aHypervisorData = array(
 						'id' => $oHypervisor->getReferenceId(),
 				        'primary_key' => $oHypervisor->getReferenceId(),
@@ -102,7 +107,7 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 						'org_id' => $sDefaultOrg,
 						'brand_id' => $oBrandMappings->MapValue($oHypervisor->hardware->systemInfo->vendor, 'Other'),
 						'model_id' => $oModelMappings->MapValue($oHypervisor->hardware->systemInfo->model, ''),
-						'cpu' => $oHypervisor->hardware->cpuInfo->numCpuPackages,
+						'cpu' => ($oHypervisor->hardware->cpuInfo->$sVMCPUAttribute) ?? '',
 						'ram' => (int)($oHypervisor->hardware->memorySize / (1024*1024)),
 						'osfamily_id' => $oOSFamilyMappings->MapValue($oHypervisor->config->product->name, 'Other'),
 						'osversion_id' => $oOSVersionMappings->MapValue($oHypervisor->config->product->fullName, ''),
@@ -110,7 +115,7 @@ class vSphereHypervisorCollector extends ConfigurableCollector
 						'farm_id' => $sFarmName,
 						'server_id' => $oHypervisor->name,
 				);
-				
+
 				foreach(static::GetCustomFields(__CLASS__) as $sAttCode => $sFieldDefinition)
 				{
 				    $aHypervisorData[$sAttCode] = static::GetCustomFieldValue($oHypervisor, $sFieldDefinition);
