@@ -154,8 +154,8 @@ class vSphereVirtualMachineCollector extends Collector
 
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
-		if ($oVirtualMachine->guest->net)
-		{
+		// Make sure user has access to network information - see bug N°6888
+		if (isset($oVirtualMachine->guest) && isset($oVirtualMachine->guest->net)) {
 			$aMACToNetwork = array();
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
 			foreach($oVirtualMachine->config->hardware->device as $oVirtualDevice)
@@ -213,6 +213,8 @@ class vSphereVirtualMachineCollector extends Collector
 
 			Utils::Log(LOG_DEBUG, "Collecting IP addresses for this VM...");
 			$aNWInterfaces = static::DoCollectVMIPs($aMACToNetwork, $oVirtualMachine);
+		} else {
+			utils::Log(LOG_DEBUG, "User cannot access to network information of VM ".$oVirtualMachine->name.", skipping.");
 		}
 
 		$aDisks = array();
