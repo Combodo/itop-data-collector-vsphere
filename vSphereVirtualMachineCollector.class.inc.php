@@ -149,6 +149,11 @@ class vSphereVirtualMachineCollector extends Collector
 		}
 
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
+		$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
+		$sVirtualHostType = 'farm';
+		if (array_key_exists('virtual_host', $aVMParams) && $aVMParams['virtual_host'] != '') {
+			$sVirtualHostType = $aVMParams['virtual_host'];
+		}
 		$OSFamily = static::GetOSFamily($oVirtualMachine);
 		$OSVersion = static::GetOSVersion($oVirtualMachine);
 
@@ -231,19 +236,6 @@ class vSphereVirtualMachineCollector extends Collector
 			}
 		}
 
-		$sFarmName = '';
-
-		// Is the hypervisor, on which this VM is running, part of a farm ?
-		utils::Log(LOG_DEBUG, "Checking if the host is part of a Farm...");
-		foreach($aFarms as $aFarm)
-		{
-			if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts']))
-			{
-				$sFarmName = $aFarm['name'];
-				break; // Farm found
-			}
-		}
-
 		utils::Log(LOG_DEBUG, "Building VM record...");
 
 		utils::Log(LOG_DEBUG, "Reading Name...");
@@ -270,6 +262,23 @@ class vSphereVirtualMachineCollector extends Collector
 		$sHostName = $oVirtualMachine->runtime->host->name;
 		utils::Log(LOG_DEBUG, "    Host name: $sHostName");
 
+		if ($sVirtualHostType == 'hypervisor') {
+			$sVirtualHost = $sHostName;
+		} else {
+			// Get the farm that the hypervisor, on which this VM is running, is part of, if any
+			utils::Log(LOG_DEBUG, "Checking if the host is part of a Farm...");
+			$sFarmName = '';
+			foreach($aFarms as $aFarm)
+			{
+				if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts']))
+				{
+					$sFarmName = $aFarm['name'];
+					break; // Farm found
+				}
+			}
+			$sVirtualHost = empty($sFarmName) ? $sHostName : $sFarmName;
+		}
+
 		return array(
 			'id' => $oVirtualMachine->getReferenceId(),
 			'name' => $sName,
@@ -283,7 +292,7 @@ class vSphereVirtualMachineCollector extends Collector
 			'osversion_id' => $OSVersion,
 			'disks' => $aDisks,
 			'interfaces' => $aNWInterfaces,
-			'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
+			'virtualhost_id' => $sVirtualHost,
 			'description' => $sAnnotation,
 		);
 	}
