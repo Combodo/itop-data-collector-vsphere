@@ -1,46 +1,51 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   iTop is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSphereLogicalInterfaceCollector extends Collector
+class vSphereLogicalInterfaceCollector extends vSphereCollector
 {
 	protected $idx;
-
-	/**
-	 * @var LookupTable For the VMs
-	 */
 	protected $oVMLookup;
-
 	static protected $aLogicalInterfaces = null;
 	static protected $aLnkLogicalInterfaceToIPAddress = null;
 
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
+			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or logical interfaces should not be managed');
+		}
+
+		return false;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function AttributeIsOptional($sAttCode)
+	{
+		if ($sAttCode == 'speed') {
+			if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+				return true;
+			}
+		}
+
+		return parent::AttributeIsOptional($sAttCode);
+	}
+
 	static public function GetLogicalInterfaces()
 	{
-		if (self::$aLogicalInterfaces === null)
-		{
-			$aTeemIpOptions = Utils::GetConfigurationValue('teemip_options', array());
-			$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true :false;
-
-			$aVMs = vSphereVirtualMachineTeemIpCollector::GetVMs();
+		if (self::$aLogicalInterfaces === null) {
+			$aVMs = vSphereVirtualMachineCollector::GetVMs();
 
 			$aLogicalInterfaces = array();
-			foreach($aVMs as $oVM)
-			{
+			foreach ($aVMs as $oVM) {
 				$aInterfaces = $oVM['interfaces'];
-				foreach ($aInterfaces AS $oInterface)
-				{
+				foreach ($aInterfaces as $oInterface) {
 					$sMac = $oInterface['mac'];
 					Utils::Log(LOG_DEBUG, 'Reading interface information related to MAC @: '.$sMac);
 					$aLogicalInterfaces[] = array(
@@ -56,37 +61,36 @@ class vSphereLogicalInterfaceCollector extends Collector
 			// Change array with correct ip_lists
 			$aFinalLogicalInterfaces = array();
 			$aLnkLogicalInterfaceToIPAddress = array();
-			foreach($aLogicalInterfaces as $sLogicalInterface => $aValue)
-			{
+			foreach ($aLogicalInterfaces as $sLogicalInterface => $aValue) {
 				$sKey = array_search($aValue['macaddress'], array_column($aFinalLogicalInterfaces, 'macaddress'));
-				if ($sKey === false)
-				{
+				if ($sKey === false) {
 					$aFinalLogicalInterfaces[] = array(
 						'macaddress' => $aValue['macaddress'],
 						'name' => $aValue['name'],
 						'virtualmachine_orgid' => $aValue['virtualmachine_orgid'],
-						'virtualmachine_id' => $aValue['virtualmachine_id']
+						'virtualmachine_id' => $aValue['virtualmachine_id'],
 					);
 				}
 
-				$aLnkLogicalInterfaceToIPAddress[] = array (
+				$aLnkLogicalInterfaceToIPAddress[] = array(
 					'ipinterface_id' => $aValue['macaddress'],
-					'ipaddress_id' => $aValue['ip']
+					'ipaddress_id' => $aValue['ip'],
 				);
 			}
 
 			self::$aLogicalInterfaces = $aFinalLogicalInterfaces;
 			self::$aLnkLogicalInterfaceToIPAddress = $aLnkLogicalInterfaceToIPAddress;
 		}
+
 		return self::$aLogicalInterfaces;
 	}
 
 	static public function GetLnks()
 	{
-		if (self::$aLnkLogicalInterfaceToIPAddress === null)
-		{
+		if (self::$aLnkLogicalInterfaceToIPAddress === null) {
 			self::GetLogicalInterfaces();
 		}
+
 		return self::$aLnkLogicalInterfaceToIPAddress;
 	}
 
@@ -101,25 +105,29 @@ class vSphereLogicalInterfaceCollector extends Collector
 	{
 		// Process each line of the CSV
 		$bRet = $this->oVMLookup->Lookup($aLineData, array('virtualmachine_id'), 'virtualmachine_id', $iLineIndex);
+
 		return $bRet;
 	}
 
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
-		if (!$bRet) return false;
+		if (!$bRet) {
+			return false;
+		}
 
 		self::GetLogicalInterfaces();
 
 		$this->idx = 0;
+
 		return true;
 	}
 
 	public function Fetch()
 	{
-		if ($this->idx < count(self::$aLogicalInterfaces))
-		{
+		if ($this->idx < count(self::$aLogicalInterfaces)) {
 			$aLogicalInterfaces = self::$aLogicalInterfaces[$this->idx++];
+
 			return array(
 				'primary_key' => $aLogicalInterfaces['macaddress'],
 				'macaddress' => $aLogicalInterfaces['macaddress'],
@@ -127,6 +135,7 @@ class vSphereLogicalInterfaceCollector extends Collector
 				'virtualmachine_id' => $aLogicalInterfaces['virtualmachine_id'],
 			);
 		}
+
 		return false;
 	}
 }

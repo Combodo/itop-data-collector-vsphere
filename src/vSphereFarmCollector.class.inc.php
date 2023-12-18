@@ -1,20 +1,7 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify	
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   iTop is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSphereFarmCollector extends Collector
+class vSphereFarmCollector extends vSphereCollector
 {
 	protected $idx;
 	static protected $aFarms = null;
@@ -40,9 +27,15 @@ class vSphereFarmCollector extends Collector
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 			$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
-	
+
+			// Init VMware library and connection to VMware
+			static::InitVmwarephp();
+			if (!static::CheckSSLConnection($sVSphereServer)) {
+				throw new Exception("Cannot connect to https://$sVSphereServer. Aborting.");
+			}
+
+			// Get farms
 			$vhost = new \Vmwarephp\Vhost($sVSphereServer, $sLogin, $sPassword);
-	
 			$aFarms = $vhost->findAllManagedObjects('ClusterComputeResource', array('configurationEx'));
 			self::$aFarms = array();
 			

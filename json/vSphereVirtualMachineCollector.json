@@ -1,10 +1,10 @@
 {
-	"name": "$prefix$:IPv6Address",
-	"description": "$prefix$ Data Collector (v. $version$): IPv6Address",
+	"name": "$prefix$:VirtualMachine",
+	"description": "$prefix$ Data Collector (v. $version$): Virtual Machines",
 	"status": "$synchro_status$",
 	"user_id": "$synchro_user$",
 	"notify_contact_id": "$contact_to_notify$",
-	"scope_class": "IPv6Address",
+	"scope_class": "VirtualMachine",
 	"database_table_name": "",
 	"scope_restriction": "",
 	"full_load_periodicity": "$full_load_interval$",
@@ -12,33 +12,12 @@
 	"action_on_zero": "create",
 	"action_on_one": "update",
 	"action_on_multiple": "error",
-	"delete_policy": "ignore",
-	"delete_policy_update": "",
+	"delete_policy": "update",
+	"delete_policy_update": "status:obsolete",
 	"delete_policy_retention": "0",
 	"attribute_list": [
 		{
-			"attcode": "aliases",
-			"update": "0",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute"
-		},
-		{
-			"attcode": "allocation_date",
-			"update": "0",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute"
-		},
-		{
-			"attcode": "comment",
-			"update": "0",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute"
-		},
-		{
-			"attcode": "contact_list",
+			"attcode": "applicationsolution_list",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
@@ -49,7 +28,14 @@
 			"finalclass": "SynchroAttLinkSet"
 		},
 		{
-			"attcode": "document_list",
+			"attcode": "business_criticity",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "contacts_list",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
@@ -60,48 +46,88 @@
 			"finalclass": "SynchroAttLinkSet"
 		},
 		{
-			"attcode": "domain_id",
+			"attcode": "cpu",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "description",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "documents_list",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "logicalvolumes_list",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "managementip",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "managementip_id",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "id",
 			"finalclass": "SynchroAttExtKey"
 		},
 		{
-			"attcode": "fqdn",
+			"attcode": "move2production",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
-			"attcode": "ip",
+			"attcode": "name",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute"
-		},
-		{
-			"attcode": "ip_list",
-			"update": "0",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"row_separator": "|",
-			"attribute_separator": ";",
-			"value_separator": ":",
-			"attribute_qualifier": "'",
-			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "org_id",
 			"update": "1",
 			"reconcile": "1",
+			"update_policy": "write_if_empty",
+			"reconciliation_attcode": "name",
+			"finalclass": "SynchroAttExtKey"
+		},
+		{
+			"attcode": "osfamily_id",
+			"update": "1",
+			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey"
 		},
 		{
-			"attcode": "range_id",
+			"attcode": "oslicence_id",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
@@ -109,48 +135,66 @@
 			"finalclass": "SynchroAttExtKey"
 		},
 		{
-			"attcode": "release_date",
-			"update": "0",
-			"reconcile": "0",
-			"update_policy": "master_locked",
-			"finalclass": "SynchroAttribute"
-		},
-		{
-			"attcode": "requestor_id",
-			"update": "0",
+			"attcode": "osversion_id",
+			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
 		{
-			"attcode": "short_name",
+			"attcode": "providercontracts_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "ram",
 			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "services_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
 			"attcode": "status",
 			"update": "1",
 			"reconcile": "0",
-			"update_policy": "write_if_empty",
+			"update_policy": "master_locked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
-			"attcode": "subnet_id",
+			"attcode": "tickets_list",
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
-			"finalclass": "SynchroAttExtKey"
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
 		},
 		{
-			"attcode": "usage_id",
-			"update": "0",
+			"attcode": "virtualhost_id",
+			"update": "1",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "",
+			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey"
 		}
 	],

@@ -1,31 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Default values for parameters. Do NOT alter this file, use params.local.xml instead -->
 <parameters>
-  <default_org_id>Demo</default_org_id>
-  <vsphere_uri>192.168.10.12:443</vsphere_uri>
-  <vsphere_login>admin</vsphere_login>
-  <vsphere_password>admin</vsphere_password>
-  <vsphere_connection_options type="hash">
-  	<ssl type="hash">
-  		<!--  uncomment the lines below to disable SSL Certificates validation
-  		      see http://php.net/manual/en/context.ssl.php for the possible options
-  		<verify_peer>0</verify_peer>
-  		<verify_peer_name>0</verify_peer_name>
-  		<allow_self_signed>1</allow_self_signed>
-  		 -->
-  	</ssl>
-  </vsphere_connection_options>
-  <virtual_machine type="hash">
-    <default_values type="hash">
-      <org_id>$default_org_id$</org_id>
-    </default_values>
-    <!-- By default, a VM's virtual host points to the farm that the VM's hypervisor belongs to, if any.
-         This option forces the VM's virtual host to point to the VM's hypervisor
-         Allowed values: hypervisor, farm (default) -->
-    <virtual_host>hypervisor</virtual_host>
-    <cpu_attribute>numCpuCores</cpu_attribute>
-  </virtual_machine>
-  <os_family_mapping type="array">
+	<!-- iTop Parameters -->
+	<itop_url>http://myitop.com</itop_url>
+	<itop_login>admin</itop_login>
+	<itop_password>admin</itop_password>
+
+	<!-- vSphere Parameters -->
+	<vsphere_uri>10.10.10.10:443</vsphere_uri>
+	<vsphere_login>admin</vsphere_login>
+	<vsphere_password>admin</vsphere_password>
+	<vsphere_connection_options type="hash">
+	    <ssl type="hash">
+	        <!--  uncomment the lines below to disable SSL Certificates validation
+	              see http://php.net/manual/en/context.ssl.php for the possible options
+	        <verify_peer>0</verify_peer>
+	        <verify_peer_name>0</verify_peer_name>
+	        <allow_self_signed>1</allow_self_signed>
+	         -->
+	    </ssl>
+	</vsphere_connection_options>
+
+	<!-- Default values -->
+	<default_org_id>Demo</default_org_id>
+	<virtual_machine type="hash">
+        <default_values type="hash">
+	        <org_id>$default_org_id$</org_id>
+        </default_values>
+		<!-- By default, a VM's virtual host points to the farm that the VM's hypervisor belongs to, if any.
+			 This option forces the VM's virtual host to point to the VM's hypervisor
+			 Allowed values: hypervisor, farm (default) -->
+		<virtual_host>hypervisor</virtual_host>
+        <cpu_attribute>numCpuCores</cpu_attribute>
+	</virtual_machine>
+
+	<!-- Class collection sequence -->
+	<collectors_launch_sequence type="array">
+	    <!-- Brands -->
+	    <collector>
+		    <name>vSphereBrandCollector</name>
+		    <enable>yes</enable>
+		    <rank>1</rank>
+	    </collector>
+		<!-- Models -->
+		<collector>
+			<name>vSphereModelCollector</name>
+		    <enable>yes</enable>
+			<rank>2</rank>
+		</collector>
+		<!-- OS Families -->
+		<collector>
+			<name>vSphereOSFamilyCollector</name>
+		    <enable>yes</enable>
+			<rank>3</rank>
+		</collector>
+		<!-- OS Versions -->
+		<collector>
+			<name>vSphereOSVersionCollector</name>
+		    <enable>yes</enable>
+			<rank>4</rank>
+		</collector>
+		<!-- Farms -->
+		<collector>
+			<name>vSphereFarmCollector</name>
+		    <enable>yes</enable>
+			<rank>10</rank>
+		</collector>
+		<!-- Hypervisors -->
+		<collector>
+			<name>vSphereHypervisorCollector</name>
+		    <enable>yes</enable>
+			<rank>11</rank>
+		</collector>
+		<!-- Servers -->
+		<collector>
+			<name>vSphereServerCollector</name>
+		    <enable>yes</enable>
+			<rank>12</rank>
+		</collector>
+		<!-- Virtual Machines -->
+		<collector>
+			<name>vSphereVirtualMachineCollector</name>
+		    <enable>yes</enable>
+			<rank>13</rank>
+		</collector>
+		<!-- Logical Interfaces -->
+		<collector>
+			<name>vSphereLogicalInterfaceCollector</name>
+		    <enable>yes</enable>
+			<rank>14</rank>
+		</collector>
+		<!-- IPv4 Addresses -->
+		<collector>
+			<name>vSphereIPv4AddressCollector</name>
+		    <enable>yes</enable>
+			<rank>20</rank>
+		</collector>
+		<!-- IPv6 Addresses -->
+		<collector>
+			<name>vSphereIPv6AddressCollector</name>
+		    <enable>yes</enable>
+			<rank>21</rank>
+		</collector>
+		<!-- Lnks IP Interface to IP Address -->
+		<collector>
+			<name>vSpherelnkIPInterfaceToIPAddressCollector</name>
+		    <enable>yes</enable>
+			<rank>22</rank>
+		</collector>
+	</collectors_launch_sequence>
+
+	<!-- Synchronization parameters -->
+	<contact_to_notify></contact_to_notify>
+	<synchro_user></synchro_user>
+	<json_placeholders type="hash">
+		<prefix>vSphere</prefix>
+		<full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
+		<synchro_status>production</synchro_status>
+	</json_placeholders>
+
+	<!-- TeemIp discovery options -->
+	<teemip_discovery>
+		<enable>yes</enable>
+		<collect_ips>yes</collect_ips>
+		<default_ip_status>allocated</default_ip_status>
+		<manage_ipv6>no</manage_ipv6>
+		<manage_logical_interfaces>yes</manage_logical_interfaces>
+	</teemip_discovery>
+
+	<!-- Mapping tables -->
+	<brand_mapping type="array">
     <!-- Syntax /pattern/replacement where:
       any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
       pattern is a RegExpr pattern
@@ -34,59 +138,23 @@
           %2$s will be replaced by the first match group, if any group is defined in the RegExpr
           %3$s will be replaced by the second matched group, etc...
     -->
-    <pattern>/Ubuntu/Linux</pattern>
-    <pattern>/RedHat/Linux</pattern>
-    <pattern>/Debian/Linux</pattern>
-    <pattern>/Linux/Linux</pattern>
-    <pattern>/Windows/Windows</pattern>
-    <pattern>/.*/Other</pattern>
-  </os_family_mapping>
-  <os_version_mapping type="array">
-    <!-- Syntax /pattern/replacement where:
-      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
-      pattern is a RegExpr pattern
-      replacement is a sprintf string in which:
-          %1$s will be replaced by the whole matched text,
-          %2$s will be replaced by the first match group, if any group is defined in the RegExpr
-          %3$s will be replaced by the second matched group, etc...
-    -->
-    <pattern>/.*/%1$s</pattern>
-  </os_version_mapping>
-  <brand_mapping type="array">
-    <!-- Syntax /pattern/replacement where:
-      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
-      pattern is a RegExpr pattern
-      replacement is a sprintf string in which:
-          %1$s will be replaced by the whole matched text,
-          %2$s will be replaced by the first matched group, if any group is defined in the RegExpr
-          %3$s will be replaced by the second matched group, etc...
-    -->
-    <pattern>/IBM/IBM</pattern>
-    <pattern>/Hewlett Packard/Hewlett-Packard</pattern>
-    <pattern>/Hewlett-Packard/Hewlett-Packard</pattern>
-    <pattern>/Dell/Dell</pattern>
-    <pattern>/.*/%1$s</pattern>
-  </brand_mapping>
-  <model_mapping type="array">
-    <!-- Syntax /pattern/replacement where:
-      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
-      pattern is a RegExpr pattern
-      replacement is a sprintf string in which:
-          %1$s will be replaced by the whole matched text,
-          %2$s will be replaced by the first matched group, if any group is defined in the RegExpr
-          %3$s will be replaced by the second matched group, etc...
-    -->
-    <pattern>/.*/%1$s</pattern>
-  </model_mapping>
-  <json_placeholders type="hash">
-    <prefix>vSphere</prefix>
-    <full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
-    <synchro_status>production</synchro_status>
-  </json_placeholders>
-  <teemip_options type="hash">
-    <collect_ips>yes</collect_ips>
-    <default_ip_status>allocated</default_ip_status>
-    <manage_ipv6>no</manage_ipv6>
-    <manage_logical_interfaces>yes</manage_logical_interfaces>
-  </teemip_options>
+		<pattern>/IBM/IBM</pattern>
+		<pattern>/Hewlett Packard/Hewlett-Packard</pattern>
+		<pattern>/Hewlett-Packard/Hewlett-Packard</pattern><pattern>/Dell/Dell</pattern>
+		<pattern>/.*/%1$s</pattern>
+	</brand_mapping>
+	<model_mapping type="array">
+		<pattern>/.*/%1$s</pattern>
+	</model_mapping>
+	<os_family_mapping type="array">
+		<pattern>/Ubuntu/Linux</pattern>
+		<pattern>/RedHat/Linux</pattern>
+		<pattern>/Debian/Linux</pattern>
+		<pattern>/Linux/Linux</pattern>
+		<pattern>/Windows/Windows</pattern>
+		<pattern>/.*/Other</pattern>
+	</os_family_mapping>
+	<os_version_mapping type="array">
+		<pattern>/.*/%1$s</pattern>
+	</os_version_mapping>
 </parameters>

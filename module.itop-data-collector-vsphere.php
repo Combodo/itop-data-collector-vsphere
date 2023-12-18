@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2014-2018 Combodo SARL
+// Copyright (C) 2023 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'itop-data-collector-vsphere/1.1.1-dev',
+	'itop-data-collector-vsphere/1.2.0-dev',
 	array(
 		// Identification
 		//
