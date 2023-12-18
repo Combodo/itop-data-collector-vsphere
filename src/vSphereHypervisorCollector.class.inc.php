@@ -59,6 +59,11 @@ class vSphereHypervisorCollector extends vSphereCollector
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 			$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
+			$sVMCPUAttribute = 'numCpuCores';
+			$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
+			if (!empty($aVMParams) && array_key_exists('cpu_attribute', $aVMParams) && ($aVMParams['cpu_attribute'] != '')) {
+				$sVMCPUAttribute = $aVMParams['cpu_attribute'];
+			}
 
 			static::InitVmwarephp();
 			if (!static::CheckSSLConnection($sVSphereServer)) {
@@ -101,8 +106,8 @@ class vSphereHypervisorCollector extends vSphereCollector
 					'org_id' => $sDefaultOrg,
 					'brand_id' => $oBrandMappings->MapValue($oHypervisor->hardware->systemInfo->vendor, 'Other'),
 					'model_id' => $oModelMappings->MapValue($oHypervisor->hardware->systemInfo->model, ''),
-					'cpu' => $oHypervisor->hardware->cpuInfo->numCpuPackages,
-					'ram' => (int)($oHypervisor->hardware->memorySize / (1024 * 1024)),
+					'cpu' => ($oHypervisor->hardware->cpuInfo->$sVMCPUAttribute) ?? '',
+					'ram' => (int)($oHypervisor->hardware->memorySize / (1024*1024)),
 					'osfamily_id' => $oOSFamilyMappings->MapValue($oHypervisor->config->product->name, 'Other'),
 					'osversion_id' => $oOSVersionMappings->MapValue($oHypervisor->config->product->fullName, ''),
 					'status' => 'production',
