@@ -116,12 +116,18 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		}
 
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
+		$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
+		$sVirtualHostType = 'farm';
+		if (array_key_exists('virtual_host', $aVMParams) && $aVMParams['virtual_host'] != '') {
+			$sVirtualHostType = $aVMParams['virtual_host'];
+		}
 		$OSFamily = static::GetOSFamily($oVirtualMachine);
 		$OSVersion = static::GetOSVersion($oVirtualMachine);
 
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
-		if ($oVirtualMachine->guest->net) {
+		// Make sure user has access to network information - see bug N°6888
+		if (isset($oVirtualMachine->guest) && isset($oVirtualMachine->guest->net)) {
 			$aMACToNetwork = array();
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
 			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
@@ -171,6 +177,8 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 
 			Utils::Log(LOG_DEBUG, "Collecting IP addresses for this VM...");
 			$aNWInterfaces = static::DoCollectVMIPs($aMACToNetwork, $oVirtualMachine);
+		} else {
+			utils::Log(LOG_DEBUG, "User cannot access to network information of VM ".$oVirtualMachine->name.", skipping.");
 		}
 
 		$aDisks = array();
@@ -182,17 +190,6 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 					'capacity' => $oDiskInfo->capacity,
 					'used' => $oDiskInfo->capacity - $oDiskInfo->freeSpace,
 				);
-			}
-		}
-
-		$sFarmName = '';
-
-		// Is the hypervisor, on which this VM is running, part of a farm ?
-		utils::Log(LOG_DEBUG, "Checking if the host is part of a Farm...");
-		foreach ($aFarms as $aFarm) {
-			if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts'])) {
-				$sFarmName = $aFarm['name'];
-				break; // Farm found
 			}
 		}
 
@@ -222,6 +219,23 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		$sHostName = $oVirtualMachine->runtime->host->name;
 		utils::Log(LOG_DEBUG, "    Host name: $sHostName");
 
+		if ($sVirtualHostType == 'hypervisor') {
+			$sVirtualHost = $sHostName;
+		} else {
+			// Get the farm that the hypervisor, on which this VM is running, is part of, if any
+			utils::Log(LOG_DEBUG, "Checking if the host is part of a Farm...");
+			$sFarmName = '';
+			foreach($aFarms as $aFarm)
+			{
+				if (in_array($oVirtualMachine->runtime->host->name, $aFarm['hosts']))
+				{
+					$sFarmName = $aFarm['name'];
+					break; // Farm found
+				}
+			}
+			$sVirtualHost = empty($sFarmName) ? $sHostName : $sFarmName;
+		}
+
 		$aData = array(
 			'id' => $oVirtualMachine->getReferenceId(),
 			'name' => $sName,
@@ -232,7 +246,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			'osversion_id' => $OSVersion,
 			'disks' => $aDisks,
 			'interfaces' => $aNWInterfaces,
-			'virtualhost_id' => empty($sFarmName) ? $sHostName : $sFarmName,
+			'virtualhost_id' => $sVirtualHost,
 			'description' => $sAnnotation,
 		);
 
