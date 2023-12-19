@@ -2,6 +2,7 @@
 
 class vSphereCollectionPlan extends CollectionPlan
 {
+	private $bCbdVMwareDMIsInstalled;
 	private $bTeemIpIsInstalled;
 	private $bTeemIpIpDiscoveryIsInstalled;
 	private $bTeemIpNMEIsInstalled;
@@ -18,6 +19,26 @@ class vSphereCollectionPlan extends CollectionPlan
 	public function Init(): void
 	{
 		parent::Init();
+
+		// Check if combodo-vmware-datamodel is installed
+		Utils::Log(LOG_INFO, '---------- Check Combodo VMware Datamodel installation ----------');
+		$this->bCbdVMwareDMIsInstalled = false;
+		$oRestClient = new RestClient();
+		try {
+			$aResult = $oRestClient->Get('Datastore', 'SELECT Datastore WHERE id = 0');
+			if ($aResult['code'] == 0) {
+				$this->bCbdVMwareDMIsInstalled = true;
+				Utils::Log(LOG_INFO, 'Combodo VMware Datamodel is installed');
+			} else {
+				Utils::Log(LOG_INFO, $sMessage = 'Combodo VMware Datamodel is NOT installed');
+			}
+		} catch (Exception $e) {
+			$sMessage = 'Combodo VMware Datamodel is considered as NOT installed due to: '.$e->getMessage();
+			if (is_a($e, "IOException")) {
+				Utils::Log(LOG_ERR, $sMessage);
+				throw $e;
+			}
+		}
 
 		// If TeemIp should be considered, check if it is installed or not
 		Utils::Log(LOG_INFO, '---------- Check TeemIp installation ----------');
@@ -132,6 +153,16 @@ class vSphereCollectionPlan extends CollectionPlan
 		} else {
 			Utils::Log(LOG_INFO, 'As requested, TeemIp will not be considered.');
 		}
+	}
+
+	/**
+	 * Check if Combodo VMware Datamodel is installed
+	 *
+	 * @return bool
+	 */
+	public function IsCbdVMwareDMInstalled(): bool
+	{
+		return $this->bCbdVMwareDMIsInstalled;
 	}
 
 	/**
