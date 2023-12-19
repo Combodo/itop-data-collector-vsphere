@@ -24,7 +24,7 @@
 			"finalclass": "SynchroAttribute"
 		}
 	],
-	"user_delete_policy": "nobody",
+	"user_delete_policy": "administrators",
 	"url_icon": "",
 	"url_application": ""
 }

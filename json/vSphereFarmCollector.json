@@ -20,7 +20,7 @@
 			"attcode": "applicationsolution_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -31,14 +31,14 @@
 			"attcode": "business_criticity",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "contacts_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -49,14 +49,14 @@
 			"attcode": "description",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "documents_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -67,7 +67,7 @@
 			"attcode": "logicalvolumes_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -78,7 +78,7 @@
 			"attcode": "move2production",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
@@ -100,7 +100,7 @@
 			"attcode": "providercontracts_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -116,9 +116,9 @@
 		},
 		{
 			"attcode": "tickets_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -126,7 +126,7 @@
 			"finalclass": "SynchroAttLinkSet"
 		}
 	],
-	"user_delete_policy": "nobody",
+	"user_delete_policy": "administrators",
 	"url_icon": "",
 	"url_application": ""
 }

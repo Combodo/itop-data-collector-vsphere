@@ -20,7 +20,7 @@
 			"attcode": "applicationsolution_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -31,7 +31,7 @@
 			"attcode": "asset_number",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
@@ -46,14 +46,14 @@
 			"attcode": "business_criticity",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "contacts_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -71,14 +71,14 @@
 			"attcode": "description",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "documents_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -89,7 +89,7 @@
 			"attcode": "enclosure_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -97,14 +97,14 @@
 			"attcode": "end_of_warranty",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "location_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -112,7 +112,7 @@
 			"attcode": "logicalvolumes_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -146,7 +146,7 @@
 			"attcode": "move2production",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
@@ -160,14 +160,14 @@
 			"attcode": "nb_u",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "networkdevice_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -194,7 +194,7 @@
 			"attcode": "oslicence_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -210,7 +210,7 @@
 			"attcode": "powerA_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -218,7 +218,7 @@
 			"attcode": "powerB_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -226,7 +226,7 @@
 			"attcode": "providercontracts_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -237,14 +237,14 @@
 			"attcode": "purchase_date",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "rack_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -259,7 +259,7 @@
 			"attcode": "san_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -277,7 +277,7 @@
 			"attcode": "services_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -295,7 +295,7 @@
 			"attcode": "tickets_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -303,7 +303,7 @@
 			"finalclass": "SynchroAttLinkSet"
 		}
 	],
-	"user_delete_policy": "nobody",
+	"user_delete_policy": "administrators",
 	"url_icon": "",
 	"url_application": ""
 }

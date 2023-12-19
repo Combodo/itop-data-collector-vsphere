@@ -20,28 +20,28 @@
 			"attcode": "aliases",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "allocation_date",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "comment",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "contact_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -52,7 +52,7 @@
 			"attcode": "document_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -63,7 +63,7 @@
 			"attcode": "domain_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -71,7 +71,7 @@
 			"attcode": "fqdn",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
@@ -93,7 +93,7 @@
 			"attcode": "ip_list",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"row_separator": "|",
 			"attribute_separator": ";",
 			"value_separator": ":",
@@ -112,7 +112,7 @@
 			"attcode": "range_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -120,14 +120,14 @@
 			"attcode": "release_date",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "requestor_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -149,7 +149,7 @@
 			"attcode": "subnet_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		},
@@ -157,12 +157,12 @@
 			"attcode": "usage_id",
 			"update": "0",
 			"reconcile": "0",
-			"update_policy": "master_locked",
+			"update_policy": "master_unlocked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		}
 	],
-	"user_delete_policy": "nobody",
+	"user_delete_policy": "administrators",
 	"url_icon": "",
 	"url_application": ""
 }
