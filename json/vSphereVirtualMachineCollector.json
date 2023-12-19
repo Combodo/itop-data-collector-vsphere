@@ -190,6 +190,13 @@
 			"finalclass": "SynchroAttLinkSet"
 		},
 		{
+			"attcode": "uuid",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
 			"attcode": "virtualhost_id",
 			"update": "1",
 			"reconcile": "0",
