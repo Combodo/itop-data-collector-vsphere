@@ -30,6 +30,20 @@ class vSphereDatastoreCollector extends vSphereCollector
 		$this->aDatastores = array();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> vSphereDatastoreCollector will not be launched as Combodo VMware Datamodel is not installed');
+		}
+
+		return false;
+	}
+
 	private function GetDatastores()
 	{
 		$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri', '');
