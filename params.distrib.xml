@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Default values for parameters. Do NOT alter this file, use params.local.xml instead -->
 <parameters>
-	<!-- iTop Parameters -->
-	<itop_url>http://myitop.com</itop_url>
-	<itop_login>admin</itop_login>
-	<itop_password>admin</itop_password>
-
 	<!-- vSphere Parameters -->
 	<vsphere_uri>10.10.10.10:443</vsphere_uri>
 	<vsphere_login>admin</vsphere_login>
@@ -24,14 +19,14 @@
 	<!-- Default values -->
 	<default_org_id>Demo</default_org_id>
 	<virtual_machine type="hash">
-        <default_values type="hash">
-	        <org_id>$default_org_id$</org_id>
-        </default_values>
+		<default_values type="hash">
+			<org_id>$default_org_id$</org_id>
+		</default_values>
 		<!-- By default, a VM's virtual host points to the farm that the VM's hypervisor belongs to, if any.
-			 This option forces the VM's virtual host to point to the VM's hypervisor
-			 Allowed values: hypervisor, farm (default) -->
+			This option forces the VM's virtual host to point to the VM's hypervisor
+			Allowed values: hypervisor, farm (default) -->
 		<virtual_host>hypervisor</virtual_host>
-        <cpu_attribute>numCpuCores</cpu_attribute>
+		<cpu_attribute>numCpuCores</cpu_attribute>
 	</virtual_machine>
 
 	<!-- Class collection sequence -->
