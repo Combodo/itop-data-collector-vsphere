@@ -29,6 +29,11 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	{
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
+		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			if ($sAttCode == 'uuid') return false;
+		} else {
+			if ($sAttCode == 'uuid') return true;
+		}
 
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
 			if ($sAttCode == 'managementip') return true;
@@ -251,6 +256,14 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		);
 
 		$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+		if ($oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			utils::Log(LOG_DEBUG, "Reading uuid...");
+			$sUUID = $oVirtualMachine->config->uuid;
+			utils::Log(LOG_DEBUG, "    UUID: $sUUID");
+
+			$aData['uuid'] = $sUUID;
+		}
+
 		if ($oCollectionPlan->IsTeemIpInstalled()) {
 			$aTeemIpOptions = Utils::GetConfigurationValue('teemip_discovery', array());
 			$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true : false;
@@ -416,6 +429,10 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			'virtualhost_id' => $aVM['virtualhost_id'],
 			'description' => str_replace(array("\n", "\r"), ' ', $aVM['description']),
 		);
+
+		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			$aData['uuid'] = $aVM['uuid'];
+		}
 
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
 			$aData['managementip_id'] = $aVM['managementip_id'];
