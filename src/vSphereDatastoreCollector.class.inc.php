@@ -57,7 +57,7 @@ class vSphereDatastoreCollector extends vSphereCollector
 				'type' => strtolower($oDatastore->summary->type),
 				'capacity' => (int)($oDatastore->summary->capacity / (1024 * 1024 * 1024)),
 				'status' => 'production',
-				'mounting_point' => $oDatastore->summary->url,
+				'mountingpoint' => $oDatastore->summary->url,
 			);
 
 			$this->aDatastores[] = $aDatastoreData;
@@ -83,7 +83,7 @@ class vSphereDatastoreCollector extends vSphereCollector
 			$aDS = $this->aDatastores[$this->idx++];
 			$aResult = array();
 			foreach ($this->aDatastoreFields as $sAttCode) {
-				$aResult[$sAttCode] = $aDS[$sAttCode];
+				$aResult[$sAttCode] = array_key_exists($sAttCode, $aDS) ? $aDS[$sAttCode] : '';
 			}
 
 			return $aResult;
