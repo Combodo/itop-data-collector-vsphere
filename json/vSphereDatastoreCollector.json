@@ -27,7 +27,7 @@
             "attcode": "description",
             "update": "0",
             "reconcile": "0",
-            "update_policy": "master_locked",
+            "update_policy": "master_unlocked",
             "finalclass": "SynchroAttribute"
         },
         {
@@ -45,6 +45,13 @@
             "update_policy": "master_locked",
             "reconciliation_attcode": "",
             "finalclass": "SynchroAttExtKey"
+        },
+        {
+            "attcode": "mountingpoint",
+            "update": "1",
+            "reconcile": "0",
+            "update_policy": "master_locked",
+            "finalclass": "SynchroAttribute"
         },
         {
             "attcode": "name",
@@ -87,7 +94,7 @@
             "attcode": "virtualhosts_list",
             "update": "0",
             "reconcile": "0",
-            "update_policy": "master_locked",
+            "update_policy": "master_unlocked",
             "row_separator": "|",
             "attribute_separator": ";",
             "value_separator": ":",
@@ -95,7 +102,7 @@
             "finalclass": "SynchroAttLinkSet"
         }
     ],
-    "user_delete_policy": "nobody",
+    "user_delete_policy": "administrators",
     "url_icon": "",
     "url_application": ""
 }
