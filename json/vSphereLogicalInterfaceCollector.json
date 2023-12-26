@@ -24,6 +24,14 @@
 			"finalclass": "SynchroAttribute"
 		},
 		{
+			"attcode": "interfacespeed_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "name",
+			"finalclass": "SynchroAttExtKey"
+		},
+		{
 			"attcode": "ip_list",
 			"update": "0",
 			"reconcile": "0",
@@ -33,6 +41,14 @@
 			"value_separator": ":",
 			"attribute_qualifier": "'",
 			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "layer2protocol_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "name",
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "macaddress",
@@ -56,12 +72,41 @@
 			"finalclass": "SynchroAttribute"
 		},
 		{
+			"attcode": "status",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
 			"attcode": "virtualmachine_id",
 			"update": "1",
 			"reconcile": "1",
 			"update_policy": "master_locked",
 			"reconciliation_attcode": "name",
 			"finalclass": "SynchroAttExtKey"
+		},
+		{
+			"attcode": "vlans_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "vrfs_list",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"row_separator": "|",
+			"attribute_separator": ";",
+			"value_separator": ":",
+			"attribute_qualifier": "'",
+			"finalclass": "SynchroAttLinkSet"
 		}
 	],
 	"user_delete_policy": "administrators",

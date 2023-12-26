@@ -89,12 +89,11 @@
 			"finalclass": "SynchroAttribute"
 		},
 		{
-			"attcode": "ipconfig_id",
-			"update": "1",
+			"attcode": "ip_allow_duplicate_name",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
-			"reconciliation_attcode": "org_name",
-			"finalclass": "SynchroAttExtKey"
+			"finalclass": "SynchroAttribute"
 		},
 		{
 			"attcode": "ip_list",
@@ -106,6 +105,14 @@
 			"value_separator": ":",
 			"attribute_qualifier": "'",
 			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "ipconfig_id",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"reconciliation_attcode": "org_name",
+			"finalclass": "SynchroAttExtKey"
 		},
 		{
 			"attcode": "org_id",
@@ -165,6 +172,14 @@
 			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_unlocked",
+			"reconciliation_attcode": "",
+			"finalclass": "SynchroAttExtKey"
+		},
+		{
+			"attcode": "view_id",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
 			"reconciliation_attcode": "",
 			"finalclass": "SynchroAttExtKey"
 		}
