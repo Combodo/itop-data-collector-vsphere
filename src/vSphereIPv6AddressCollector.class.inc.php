@@ -35,6 +35,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 	 */
 	public function AttributeIsOptional($sAttCode)
 	{
+		if ($sAttCode == 'azureip') return true;
 		if ($sAttCode == 'fqdn_from_iplookup') return true;
 		if ($sAttCode == 'last_discovery_date') return true;
 		if ($sAttCode == 'ping_before_assign') return true;

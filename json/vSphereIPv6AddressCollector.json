@@ -31,6 +31,13 @@
 			"finalclass": "SynchroAttribute"
 		},
 		{
+			"attcode": "azureip",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
 			"attcode": "comment",
 			"update": "0",
 			"reconcile": "0",
