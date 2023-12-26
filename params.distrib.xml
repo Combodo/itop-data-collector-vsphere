@@ -27,6 +27,8 @@
 			This option forces the VM's virtual host to point to the VM's hypervisor
 			Allowed values: hypervisor, farm (default) -->
 		<virtual_host>farm</virtual_host>
+		<!-- Define what VM's attribute to use as cpu attribute within iTop's datamodel.
+		    numCpuPackages was used before -->
 		<cpu_attribute>numCpuCores</cpu_attribute>
 	</virtual_machine>
 
