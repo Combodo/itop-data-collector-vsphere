@@ -136,6 +136,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			$aMACToNetwork = array();
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
 			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
+				utils::Log(LOG_DEBUG, "Start collect for VM ".get_class($oVirtualDevice)."...");
 				switch (get_class($oVirtualDevice)) {
 					case 'VirtualE1000':
 					case 'VirtualE1000e':
@@ -143,41 +144,49 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 					case 'VirtualVmxnet':
 					case 'VirtualVmxnet2':
 					case 'VirtualVmxnet3':
-						$oBacking = $oVirtualDevice->backing;
-						$sNetworkName = '';
-						if (property_exists($oBacking, 'network')) {
-							$sNetworkName = $oBacking->network->name;
-							utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->network->name: '$sNetworkName'");
-						} else {
-							if (property_exists($oBacking, 'opaqueNetworkId')) {
-								$sNetworkName = $oBacking->opaqueNetworkId;
-								utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->opaqueNetworkId: '$sNetworkName'");
+						if (isset($oVirtualDevice->backing)) {
+							$oBacking = $oVirtualDevice->backing;
+							$sNetworkName = '';
+							if (isset($oBacking->network) && property_exists($oBacking, 'network') && isset($oBacking->network->name)) {
+								$sNetworkName = $oBacking->network->name;
+								utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->network->name: '$sNetworkName'");
 							} else {
-								if (property_exists($oBacking, 'deviceName')) {
-									$sNetworkName = $oBacking->deviceName;
-									utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
+								if (isset($oBacking->opaqueNetworkId) && property_exists($oBacking, 'opaqueNetworkId')) {
+									$sNetworkName = $oBacking->opaqueNetworkId;
+									utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->opaqueNetworkId: '$sNetworkName'");
 								} else {
-									if (property_exists($oBacking, 'port')) {
-										$oPort = $oBacking->port;
-										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
-										if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
-											$sNetworkName = $aVLANs[$oPort->portgroupKey];
-										} else {
-											utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
-										}
+									if (isset($oBacking->deviceName) && property_exists($oBacking, 'deviceName')) {
+										$sNetworkName = $oBacking->deviceName;
+										utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
 									} else {
-										utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".static::myprint_r($oBacking));
+										if (isset($oBacking->portl) && property_exists($oBacking, 'port')) {
+											$oPort = $oBacking->port;
+											utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
+											if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
+												$sNetworkName = $aVLANs[$oPort->portgroupKey];
+											} else {
+												utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
+											}
+										} else {
+											utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".static::myprint_r($oBacking));
+										}
 									}
 								}
 							}
+						} else {
+							utils::Log(LOG_DEBUG, "Skip virtual device of class ".get_class($oVirtualDevice)." as we don't have access to its \"backing\" informations.");
 						}
-						Utils::Log(LOG_DEBUG, "MACAddress: {$oVirtualDevice->macAddress} is connected to the network: '$sNetworkName'");
-						$aMACToNetwork[$oVirtualDevice->macAddress] = $sNetworkName;
+
+						if (isset($oVirtualDevice->macAddress)) {
+							Utils::Log(LOG_DEBUG, "MACAddress: {$oVirtualDevice->macAddress} is connected to the network: '$sNetworkName'");
+							$aMACToNetwork[$oVirtualDevice->macAddress] = $sNetworkName;
+						}
 						break;
 
 					default:
 						// Other types of Virtual Devices, skip
 				}
+				utils::Log(LOG_DEBUG, "End of collect for VM ".get_class($oVirtualDevice).".");
 			}
 
 			Utils::Log(LOG_DEBUG, "Collecting IP addresses for this VM...");
