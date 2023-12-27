@@ -24,7 +24,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_ipv6')) {
 			return true;
 		} else {
-			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or IPv6 should not be managed');
+			Utils::Log(LOG_INFO, '> vSphereIPv6AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or IPv6 should not be managed');
 		}
 
 		return false;
