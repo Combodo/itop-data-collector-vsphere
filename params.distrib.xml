@@ -123,7 +123,7 @@
 		<synchro_status>production</synchro_status>
 	</json_placeholders>
 
-	<!-- TeemIp discovery options -->
+	<!-- IPs and logical interfaces collection -->
 	<teemip_discovery>
 		<enable>yes</enable>
 		<collect_ips>yes</collect_ips>
