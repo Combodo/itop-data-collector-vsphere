@@ -18,18 +18,16 @@
 
 	<!-- Default values -->
 	<default_org_id>Demo</default_org_id>
-	<default_org_id>Demo</default_org_id>
+	<hypervisor type="hash">
+		<!-- Define what VM's attribute to use as cpu attribute within iTop's datamodel.
+		    numCpuPackages was used before -->
+		<cpu_attribute>numCpuCores</cpu_attribute>
+	</hypervisor>
 	<virtual_machine type="hash">
-		<default_values type="hash">
-			<org_id>$default_org_id$</org_id>
-		</default_values>
 		<!-- By default, a VM's virtual host points to the farm that the VM's hypervisor belongs to, if any.
 			This option forces the VM's virtual host to point to the VM's hypervisor
 			Allowed values: hypervisor, farm (default) -->
 		<virtual_host>farm</virtual_host>
-		<!-- Define what VM's attribute to use as cpu attribute within iTop's datamodel.
-		    numCpuPackages was used before -->
-		<cpu_attribute>numCpuCores</cpu_attribute>
 	</virtual_machine>
 
 	<!-- Class collection sequence -->

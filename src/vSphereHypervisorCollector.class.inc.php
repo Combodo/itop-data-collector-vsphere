@@ -58,7 +58,7 @@ class vSphereHypervisorCollector extends vSphereCollector
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 			$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 			$sVMCPUAttribute = 'numCpuCores';
-			$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
+			$aVMParams = Utils::GetConfigurationValue('hypervisor', []);
 			if (!empty($aVMParams) && array_key_exists('cpu_attribute', $aVMParams) && ($aVMParams['cpu_attribute'] != '')) {
 				$sVMCPUAttribute = $aVMParams['cpu_attribute'];
 			}
