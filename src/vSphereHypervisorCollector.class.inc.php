@@ -180,7 +180,9 @@ class vSphereHypervisorCollector extends vSphereCollector
 			$aHV = self::$aHypervisors[$this->idx++];
 			$aResult = array();
 			foreach ($this->aHypervisorFields as $sAttCode) {
-				$aResult[$sAttCode] = $aHV[$sAttCode];
+				if (!$this->AttributeIsOptional($sAttCode)) {
+					$aResult[$sAttCode] = $aHV[$sAttCode];
+				}
 			}
 
 			return $aResult;
