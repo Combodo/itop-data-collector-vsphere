@@ -10,7 +10,7 @@ class vSphereHypervisorCollector extends vSphereCollector
 	public function __construct()
 	{
 		parent::__construct();
-		$aDefaultFields = array('primary_key', 'name', 'org_id', 'status', 'server_id', 'farm_id');
+		$aDefaultFields = array('primary_key', 'name', 'org_id', 'status', 'server_id', 'farm_id', 'uuid', 'hostid');
 		$aCustomFields = array_keys(static::GetCustomFields(__CLASS__));
 		$this->aHypervisorFields = array_merge($aDefaultFields, $aCustomFields);
 
@@ -32,16 +32,14 @@ class vSphereHypervisorCollector extends vSphereCollector
 
 	public function AttributeIsOptional($sAttCode)
 	{
-		// If the module Service Management for Service Providers is selected during the setup
-		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'services_list') {
-			return true;
-		}
-
-		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
-		// on VirtualMachines. Let's safely ignore it.
-		if ($sAttCode == 'providercontracts_list') {
-			return true;
+		if ($sAttCode == 'services_list') return true;
+		if ($sAttCode == 'providercontracts_list') return true;
+		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			if ($sAttCode == 'uuid') return false;
+			if ($sAttCode == 'hostid') return false;
+		} else {
+			if ($sAttCode == 'uuid') return true;
+			if ($sAttCode == 'hostid') return true;
 		}
 
 		return parent::AttributeIsOptional($sAttCode);
@@ -114,6 +112,12 @@ class vSphereHypervisorCollector extends vSphereCollector
 					'farm_id' => $sFarmName,
 					'server_id' => $oHypervisor->name,
 				);
+
+				$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+				if ($oCollectionPlan->IsCbdVMwareDMInstalled()) {
+					$aHypervisorData['uuid'] = ($oHypervisor->hardware->systemInfo->uuid) ?? '';
+					$aHypervisorData['hostid'] = $oHypervisor->getReferenceId();
+				}
 
 				foreach (static::GetCustomFields(__CLASS__) as $sAttCode => $sFieldDefinition) {
 					$aHypervisorData[$sAttCode] = static::GetCustomFieldValue($oHypervisor, $sFieldDefinition);

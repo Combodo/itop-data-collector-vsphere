@@ -39,6 +39,11 @@ class vSphereServerCollector extends vSphereCollector
 			if ($sAttCode == 'managementip_id') return true;
 		}
 
+		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			if ($sAttCode == 'hostid') return false;
+		} else {
+			if ($sAttCode == 'hostid') return true;
+		}
 		return parent::AttributeIsOptional($sAttCode);
 	}
 
@@ -87,6 +92,9 @@ class vSphereServerCollector extends vSphereCollector
 		}
 
 		$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+		if ($oCollectionPlan->IsCbdVMwareDMInstalled()) {
+			$aData['hostid'] = $aHyperV['id'];
+		}
 		if ($oCollectionPlan->IsTeemIpInstalled()) {
 			$aTeemIpOptions = Utils::GetConfigurationValue('teemip_discovery', array());
 			$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true : false;

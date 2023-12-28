@@ -72,6 +72,13 @@
 			"finalclass": "SynchroAttExtKey"
 		},
 		{
+			"attcode": "hostid",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
 			"attcode": "logicalvolumes_list",
 			"update": "1",
 			"reconcile": "0",
@@ -140,6 +147,13 @@
 			"value_separator": ":",
 			"attribute_qualifier": "'",
 			"finalclass": "SynchroAttLinkSet"
+		},
+		{
+			"attcode": "uuid",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
 		}
 	],
 	"user_delete_policy": "administrators",
