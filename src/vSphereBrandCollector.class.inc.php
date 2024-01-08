@@ -1,24 +1,27 @@
 <?php
-// Copyright (C) 2014-2015 Combodo SARL
-//
-//   This application is free software; you can redistribute it and/or modify	
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
-//
-//   iTop is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
-//
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
-class vSphereBrandCollector extends Collector
+class vSphereBrandCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $aBrands;
-	
+
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if (array_key_exists('vSphereHypervisorCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereHypervisorCollector'] == true)) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereBrandCollector will not be launched as vSphereHypervisorCollector is required but is not launched');
+			}
+		}
+
+		return false;
+	}
+
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
