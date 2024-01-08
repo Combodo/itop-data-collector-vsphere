@@ -35,10 +35,12 @@ class vSphereDatastoreCollector extends vSphereCollector
 	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
-			return true;
-		} else {
-			Utils::Log(LOG_INFO, '> vSphereDatastoreCollector will not be launched as Combodo VMware Datamodel is not installed');
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereDatastoreCollector will not be launched as Data model for vSphere is not installed');
+			}
 		}
 
 		return false;

@@ -13,10 +13,12 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
-			return true;
-		} else {
-			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or logical interfaces should not be managed');
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed, IPs should not be collected or logical interfaces should not be managed');
+			}
 		}
 
 		return false;

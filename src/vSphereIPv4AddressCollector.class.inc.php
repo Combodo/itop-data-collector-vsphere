@@ -21,10 +21,12 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips')) {
-			return true;
-		} else {
-			Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed or IPs should not be collected');
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips')) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereIPv4AddressCollector will not be launched as TeemIP is not installed or IPs should not be collected');
+			}
 		}
 
 		return false;

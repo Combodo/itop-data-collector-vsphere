@@ -14,10 +14,12 @@ class vSphereServerCollector extends vSphereCollector
 	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		if (array_key_exists('vSphereHypervisorCollector',$aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereHypervisorCollector'] == true)) {
-			return true;
-		} else {
-			Utils::Log(LOG_INFO, '> vSphereServerCollector will not be launched as vSphereHypervisorCollector is required but is not launched');
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if (array_key_exists('vSphereHypervisorCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereHypervisorCollector'] == true)) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereServerCollector will not be launched as vSphereHypervisorCollector is required but is not launched');
+			}
 		}
 
 		return false;
