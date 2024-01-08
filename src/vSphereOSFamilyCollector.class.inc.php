@@ -6,6 +6,22 @@ class vSphereOSFamilyCollector extends vSphereCollector
 	protected $idx;
 	protected $aOSFamily;
 
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if (array_key_exists('vSphereVirtualMachineCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereVirtualMachineCollector'] == true)) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereOSFamilyCollector will not be launched as vSphereVirtualMachineCollector is required but is not launched');
+			}
+		}
+
+		return false;
+	}
+
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
