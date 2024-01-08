@@ -2,6 +2,8 @@
 
 class vSphereCollectionPlan extends CollectionPlan
 {
+	private $bVirtualizationMgtIsInstalled;
+	private $sVirtualizationMgtVersion;
 	private $bFarmIsToBeCollected;
 	private $bCbdVMwareDMIsInstalled;
 	private $bTeemIpIsInstalled;
@@ -21,23 +23,52 @@ class vSphereCollectionPlan extends CollectionPlan
 	{
 		parent::Init();
 
-		// Check if combodo-vmware-datamodel is installed
-		Utils::Log(LOG_INFO, '---------- Check Combodo VMware Datamodel installation ----------');
 		// By Default
 		$this->bFarmIsToBeCollected = false;
 
+		// Check if Virtualization Management Module is installed
+		Utils::Log(LOG_INFO, '---------- Check Virtualization Management Module installation ----------');
+		$this->bVirtualizationMgtIsInstalled = false;
+		$oRestClient = new RestClient();
+		try {
+			$aResult = $oRestClient->Get('ModuleInstallation', 'SELECT ModuleInstallation WHERE name = \'itop-virtualization-mgmt\'', 'version, installed');
+			$sInstalledDate = '0000-00-00 00:00:00';
+			if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+				$this->bVirtualizationMgtIsInstalled = true;
+				foreach ($aResult['objects'] as $aModuleinstallation) {
+					$sInstalled = $aModuleinstallation['fields']['installed'];
+					if ($sInstalled >= $sInstalledDate) {
+						$sInstalledDate = $sInstalled;
+						$this->sVirtualizationMgtVersion = $aModuleinstallation['fields']['version'];
+					}
+				}
+			} else {
+				$this->sVirtualizationMgtVersion = 'unknown';
+			}
+			$sVirtualizationMgmtMessage = 'Virtualization Management Module version '.$this->sVirtualizationMgtVersion.' is installed';
+		} catch (Exception $e) {
+			$sMessage = 'Virtualization Management Module\'s installed version cannot be fetched: '.$e->getMessage();
+			if (is_a($e, "IOException")) {
+				Utils::Log(LOG_ERR, $sMessage);
+				throw $e;
+			}
+		}
+		Utils::Log(LOG_INFO, $sVirtualizationMgmtMessage);
+
+		// Check if Data model for vSphere  is installed
+		Utils::Log(LOG_INFO, '---------- Check Data model for vSphere installation ----------');
 		$this->bCbdVMwareDMIsInstalled = false;
 		$oRestClient = new RestClient();
 		try {
 			$aResult = $oRestClient->Get('Datastore', 'SELECT Datastore WHERE id = 0');
 			if ($aResult['code'] == 0) {
 				$this->bCbdVMwareDMIsInstalled = true;
-				Utils::Log(LOG_INFO, 'Combodo VMware Datamodel is installed');
+				Utils::Log(LOG_INFO, 'Data model for vSphere is installed');
 			} else {
-				Utils::Log(LOG_INFO, $sMessage = 'Combodo VMware Datamodel is NOT installed');
+				Utils::Log(LOG_INFO, $sMessage = 'Data model for vSphere is NOT installed');
 			}
 		} catch (Exception $e) {
-			$sMessage = 'Combodo VMware Datamodel is considered as NOT installed due to: '.$e->getMessage();
+			$sMessage = 'Data model for vSphere is considered as NOT installed due to: '.$e->getMessage();
 			if (is_a($e, "IOException")) {
 				Utils::Log(LOG_ERR, $sMessage);
 				throw $e;
@@ -157,6 +188,16 @@ class vSphereCollectionPlan extends CollectionPlan
 		} else {
 			Utils::Log(LOG_INFO, 'As requested, TeemIp will not be considered.');
 		}
+	}
+
+	/**
+	 * Check if Virtualization Management Module is installed
+	 *
+	 * @return bool
+	 */
+	public function IsVirtualizationMgmtInstalled(): bool
+	{
+		return $this->bVirtualizationMgtIsInstalled;
 	}
 
 	/**
