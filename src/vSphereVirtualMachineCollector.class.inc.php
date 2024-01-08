@@ -70,7 +70,13 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 
-			$aFarms = vSphereFarmCollector::GetFarms();
+			$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+			if ($oCollectionPlan->IsFarmToBeCollected()) {
+				$aFarms = vSphereFarmCollector::GetFarms();
+			} else {
+				$aFarms = [];
+			}
+
 			$vhost = new \Vmwarephp\Vhost($sVSphereServer, $sLogin, $sPassword);
 
 			Utils::Log(LOG_DEBUG, "vSphere API type: ".$vhost->getApiType().", version: ".$vhost->getApiVersion());

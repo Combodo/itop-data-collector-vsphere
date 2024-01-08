@@ -16,20 +16,6 @@ class vSphereHypervisorCollector extends vSphereCollector
 
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function CheckToLaunch(array $aOrchestratedCollectors): bool
-	{
-		if (array_key_exists('vSphereFarmCollector',$aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereFarmCollector'] == true)) {
-			return true;
-		} else {
-			Utils::Log(LOG_INFO, '> vSphereHypervisorCollector will not be launched as vSphereFarmCollector is required but is not launched');
-		}
-
-		return false;
-	}
-
 	public function AttributeIsOptional($sAttCode)
 	{
 		if ($sAttCode == 'services_list') return true;
@@ -68,7 +54,12 @@ class vSphereHypervisorCollector extends vSphereCollector
 				throw new Exception("Cannot connect to https://$sVSphereServer. Aborting.");
 			}
 
-			$aFarms = vSphereFarmCollector::GetFarms();
+			$oCollectionPlan = vSphereCollectionPlan::GetPlan();
+			if ($oCollectionPlan->IsFarmToBeCollected()) {
+				$aFarms = vSphereFarmCollector::GetFarms();
+			} else {
+				$aFarms = [];
+			}
 
 			self::$aHypervisors = array();
 			$vhost = new \Vmwarephp\Vhost($sVSphereServer, $sLogin, $sPassword);
