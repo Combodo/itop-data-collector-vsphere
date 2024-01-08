@@ -78,7 +78,6 @@ class vSphereCollectionPlan extends CollectionPlan
 		// If TeemIp should be considered, check if it is installed or not
 		Utils::Log(LOG_INFO, '---------- Check TeemIp installation ----------');
 		$this->bTeemIpIsInstalled = false;
-		$this->sTeemIpVersion = '';
 		$this->bTeemIpIpDiscoveryIsInstalled = false;
 		$this->bTeemIpNMEIsInstalled = false;
 		$this->bTeemIpZoneMgmtIsInstalled = false;
@@ -114,12 +113,16 @@ class vSphereCollectionPlan extends CollectionPlan
 				try {
 					$aResult = $oRestClient->Get('ModuleInstallation', 'SELECT ModuleInstallation WHERE name = \'teemip-ip-mgmt\'', 'version, installed');
 					$sInstalledDate = '0000-00-00 00:00:00';
-					foreach ($aResult['objects'] as $aModuleinstallation) {
-						$sInstalled = $aModuleinstallation['fields']['installed'];
-						if ($sInstalled >= $sInstalledDate) {
-							$sInstalledDate = $sInstalled;
-							$this->sTeemIpVersion = $aModuleinstallation['fields']['version'];
+					if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+						foreach ($aResult['objects'] as $aModuleinstallation) {
+							$sInstalled = $aModuleinstallation['fields']['installed'];
+							if ($sInstalled >= $sInstalledDate) {
+								$sInstalledDate = $sInstalled;
+								$this->sTeemIpVersion = $aModuleinstallation['fields']['version'];
+							}
 						}
+					} else {
+						$this->sTeemIpVersion = 'unknown';
 					}
 					$sTeemIpMessage = 'TeemIp version '.$this->sTeemIpVersion.' is installed';
 				} catch (Exception $e) {
