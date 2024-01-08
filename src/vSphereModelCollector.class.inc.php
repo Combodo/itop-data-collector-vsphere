@@ -14,11 +14,27 @@
 //   You should have received a copy of the GNU Affero General Public License
 //   along with this application. If not, see <http://www.gnu.org/licenses/>
 
-class vSphereModelCollector extends Collector
+class vSphereModelCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $aModels;
-	
+
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+			if (array_key_exists('vSphereHypervisorCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereHypervisorCollector'] == true)) {
+				return true;
+			} else {
+				Utils::Log(LOG_INFO, '> vSphereModelCollector will not be launched as vSphereHypervisorCollector is required but is not launched');
+			}
+		}
+
+		return false;
+	}
+
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
