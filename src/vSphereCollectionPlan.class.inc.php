@@ -2,6 +2,7 @@
 
 class vSphereCollectionPlan extends CollectionPlan
 {
+	private $bFarmIsToBeCollected;
 	private $bCbdVMwareDMIsInstalled;
 	private $bTeemIpIsInstalled;
 	private $bTeemIpIpDiscoveryIsInstalled;
@@ -22,6 +23,9 @@ class vSphereCollectionPlan extends CollectionPlan
 
 		// Check if combodo-vmware-datamodel is installed
 		Utils::Log(LOG_INFO, '---------- Check Combodo VMware Datamodel installation ----------');
+		// By Default
+		$this->bFarmIsToBeCollected = false;
+
 		$this->bCbdVMwareDMIsInstalled = false;
 		$oRestClient = new RestClient();
 		try {
@@ -153,6 +157,26 @@ class vSphereCollectionPlan extends CollectionPlan
 		} else {
 			Utils::Log(LOG_INFO, 'As requested, TeemIp will not be considered.');
 		}
+	}
+
+	/**
+	 * Record if Farm class should be collected
+	 *
+	 * @return bool
+	 */
+	public function SetFarmToBeCollected($bToBeCollected)
+	{
+		$this->bFarmIsToBeCollected = $bToBeCollected;
+	}
+
+	/**
+	 * Check if Farm class should be collected
+	 *
+	 * @return bool
+	 */
+	public function IsFarmToBeCollected() : bool
+	{
+		return $this->bFarmIsToBeCollected;
 	}
 
 	/**
