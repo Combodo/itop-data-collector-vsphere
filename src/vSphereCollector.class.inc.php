@@ -15,6 +15,28 @@ class vSphereCollector extends ConfigurableCollector
 		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	public function CheckToLaunch(array $aOrchestratedCollectors): bool
+	{
+		// Store information that vSphereFarmCollector is activated or not
+		if (array_key_exists('vSphereFarmCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereFarmCollector'] == true)) {
+			$this->oCollectionPlan->SetFarmToBeCollected(true);
+		} else {
+			$this->oCollectionPlan->SetFarmToBeCollected(false);
+		}
+
+		// Check if Virtualization mgmt module is installed
+		if ($this->oCollectionPlan->IsVirtualizationMgmtInstalled()) {
+			return true;
+		} else {
+			Utils::Log(LOG_INFO, '> '.get_class($this).' will not be launched as Virtualization Management Module is not installed on iTop !');
+		}
+
+		return false;
+	}
+
 	protected static function myprint_r($var)
 	{
 		$s = '';
