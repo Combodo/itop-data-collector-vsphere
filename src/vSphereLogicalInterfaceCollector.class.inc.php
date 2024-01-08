@@ -28,7 +28,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	 */
 	public function AttributeIsOptional($sAttCode)
 	{
-		if ($sAttCode == 'interfacespeed_id') return ($this->oCollectionPlan->IsTeemIpInstalled()) ? false : true;
+		if ($sAttCode == 'interfacespeed_id') return ($this->oCollectionPlan->IsTeemIpNMEInstalled()) ? false : true;
 		if ($sAttCode == 'ip_list') return true;
 		if ($sAttCode == 'layer2protocol_id') return ($this->oCollectionPlan->IsTeemIpInstalled()) ? false : true;
 		if ($sAttCode == 'speed') return ($this->oCollectionPlan->IsTeemIpInstalled()) ? true : false;
