@@ -175,7 +175,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 
 			$aAttributesToReturn = [
 				'primary_key' => $aIPv6Addresses['id'],
-				'ip_text' => $aIPv6Addresses['ip'],
+				'ip' => $aIPv6Addresses['ip'],
 				'org_id' => $aIPv6Addresses['org_id'],
 				'short_name' => $aIPv6Addresses['short_name'],
 				'status' => $aIPv6Addresses['status'],
