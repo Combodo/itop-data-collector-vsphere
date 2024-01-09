@@ -113,6 +113,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 							'id' => $sIP,
 							'ip' => $sIP,
 							'org_id' => $sDefaultOrg,
+							'ipconfig_id' => $sDefaultOrg,
 							'short_name' => '',
 							'status' => $sDefaulIpStatus,
 						);
@@ -139,6 +140,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 								'id' => $sIP,
 								'ip' => $sIP,
 								'org_id' => $sDefaultOrg,
+								'ipconfig_id' => $sDefaultOrg,
 								'short_name' => '',
 								'status' => $sDefaulIpStatus,
 							);
