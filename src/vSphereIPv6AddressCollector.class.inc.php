@@ -89,19 +89,6 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 			}
 		}
 
-		$aServers = vSphereServerTeemIpCollector::CollectServerInfos();
-		foreach ($aServers as $oServer) {
-			$sIP = $oServer['managementip_id'] ?? '';
-			if ($sIP != '') {
-				if (strpos($sIP, ':') !== false) {
-					Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
-					$this->aIPv6Addresses[] = array(
-						'id' => $sIP,
-						'ip' => $sIP,
-						'org_id' => $sDefaultOrg,
-						'short_name' => '',
-						'status' => $sDefaulIpStatus,
-					);
 		if (class_exists('vSphereServerCollector')) {
 			$aServers = vSphereServerCollector::CollectServerInfos();
 			foreach ($aServers as $oServer) {
