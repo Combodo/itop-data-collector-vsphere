@@ -64,48 +64,52 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 
 		$sDefaulIpStatus = $this->oCollectionPlan->GetTeemIpOption('default_ip_status');
-		$aVMs = vSphereVirtualMachineCollector::GetVMs();
-		foreach ($aVMs as $oVM) {
-			$sIP = $oVM['managementip'] ?? '';
-			if ($sIP != '') {
-				if (strpos($sIP, ':') == false) {
-					Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
-					if (in_array('short_name', $oVM)) {
-						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
-					} else {
-						$sShortName = '';
+		if (class_exists('vSphereVirtualMachineCollector')) {
+			$aVMs = vSphereVirtualMachineCollector::GetVMs();
+			foreach ($aVMs as $oVM) {
+				$sIP = $oVM['managementip'] ?? '';
+				if ($sIP != '') {
+					if (strpos($sIP, ':') == false) {
+						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
+						if (in_array('short_name', $oVM)) {
+							$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
+						} else {
+							$sShortName = '';
+						}
+						$this->aIPv4Addresses[] = array(
+							'id' => $sIP,
+							'ip' => $sIP,
+							'org_id' => $sDefaultOrg,
+							'ipconfig_id' => $sDefaultOrg,
+							'short_name' => $sShortName,
+							'status' => $this->oCollectionPlan->GetTeemIpOption('default_ip_status'),
+						);
 					}
-					$this->aIPv4Addresses[] = array(
-						'id' => $sIP,
-						'ip' => $sIP,
-						'org_id' => $sDefaultOrg,
-						'ipconfig_id' => $sDefaultOrg,
-						'short_name' => $sShortName,
-						'status' => $this->oCollectionPlan->GetTeemIpOption('default_ip_status'),
-					);
 				}
 			}
 		}
 
-		$aServers = vSphereServerCollector::CollectServerInfos();
-		foreach ($aServers as $oServer) {
-			$sIP = $oServer['managementip_id'] ?? '';
-			if ($sIP != '') {
-				if (strpos($sIP, ':') == false) {
-					Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
-					$this->aIPv4Addresses[] = array(
-						'id' => $sIP,
-						'ip' => $sIP,
-						'org_id' => $sDefaultOrg,
-						'ipconfig_id' => $sDefaultOrg,
-						'short_name' => '',
-						'status' => $sDefaulIpStatus,
-					);
+		if (class_exists('vSphereServerCollector')) {
+			$aServers = vSphereServerCollector::CollectServerInfos();
+			foreach ($aServers as $oServer) {
+				$sIP = $oServer['managementip_id'] ?? '';
+				if ($sIP != '') {
+					if (strpos($sIP, ':') == false) {
+						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
+						$this->aIPv4Addresses[] = array(
+							'id' => $sIP,
+							'ip' => $sIP,
+							'org_id' => $sDefaultOrg,
+							'ipconfig_id' => $sDefaultOrg,
+							'short_name' => '',
+							'status' => $sDefaulIpStatus,
+						);
+					}
 				}
 			}
 		}
 
-		if ($this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
+		if ($this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces') && class_exists('vSpherelnkIPInterfaceToIPAddressCollector')) {
 			$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
 			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
 				$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';

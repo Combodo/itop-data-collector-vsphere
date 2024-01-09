@@ -19,55 +19,42 @@ class vSphereOSVersionCollector extends Collector
 	protected $idx;
 	protected $aOSVersion;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function CheckToLaunch(array $aOrchestratedCollectors): bool
-	{
-		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
-			if (array_key_exists('vSphereVirtualMachineCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereVirtualMachineCollector'] == true)) {
-				return true;
-			} else {
-				Utils::Log(LOG_INFO, '> vSphereOSVersionCollector will not be launched as vSphereVirtualMachineCollector is required but is not launched');
-			}
-		}
-
-		return false;
-	}
-
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
 		$this->idx = 0;
-
-		// Collect the different couples {os_family, os_version} from the virtual machines
-		$aVMInfos = vSphereVirtualMachineCollector::CollectVMInfos();
 		$aTmp = array();
-		foreach($aVMInfos as $aVM)
-		{
-			if (array_key_exists('osfamily_id', $aVM) && ($aVM['osfamily_id'] != null))
-			{
-				// unique ID : Family + version
-				$aTmp[$aVM['osfamily_id'].'_'.$aVM['osversion_id']] = array('name' => $aVM['osversion_id'], 'osfamily_id' => $aVM['osfamily_id']);
+
+		if (class_exists('vSphereVirtualMachineCollector')) {
+			// Collect the different couples {os_family, os_version} from the virtual machines
+			$aVMInfos = vSphereVirtualMachineCollector::CollectVMInfos();
+			foreach ($aVMInfos as $aVM) {
+				if (array_key_exists('osfamily_id', $aVM) && ($aVM['osfamily_id'] != null)) {
+					// unique ID : Family + version
+					$aTmp[$aVM['osfamily_id'].'_'.$aVM['osversion_id']] = array(
+						'name' => $aVM['osversion_id'],
+						'osfamily_id' => $aVM['osfamily_id']
+					);
+				}
 			}
 		}
 
-		// Add the different couples {os_family, os_version} from the hypervisors
-		$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
-		foreach($aHypervisors as $aHV)
-		{
-			if (array_key_exists('osfamily_id', $aHV) && ($aHV['osfamily_id'] != null))
-			{
-				// unique ID : Family + version
-				$aTmp[$aHV['osfamily_id'].'_'.$aHV['osversion_id']] = array(
+		if (class_exists('vSphereHypervisorCollector')) {
+			// Add the different couples {os_family, os_version} from the hypervisors
+			$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
+			foreach ($aHypervisors as $aHV) {
+				if (array_key_exists('osfamily_id', $aHV) && ($aHV['osfamily_id'] != null)) {
+					// unique ID : Family + version
+					$aTmp[$aHV['osfamily_id'].'_'.$aHV['osversion_id']] = array(
 						'name' => $aHV['osversion_id'],
 						'osfamily_id' => $aHV['osfamily_id']
-				);
+					);
+				}
 			}
 		}
 		
 		// Build a zero-based array
-		$this->aOSVersion = array();
+		$this->aOSVersion = [];
 		foreach($aTmp as $aData)
 		{
 			$this->aOSVersion[] = $aData;

@@ -20,13 +20,6 @@ class vSphereCollector extends ConfigurableCollector
 	 */
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
-		// Store information that vSphereFarmCollector is activated or not
-		if (array_key_exists('vSphereFarmCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereFarmCollector'] == true)) {
-			$this->oCollectionPlan->SetFarmToBeCollected(true);
-		} else {
-			$this->oCollectionPlan->SetFarmToBeCollected(false);
-		}
-
 		// Check if Virtualization mgmt module is installed
 		if ($this->oCollectionPlan->IsVirtualizationMgmtInstalled()) {
 			return true;

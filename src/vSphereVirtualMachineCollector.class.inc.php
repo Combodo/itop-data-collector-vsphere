@@ -70,8 +70,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
 
-			$oCollectionPlan = vSphereCollectionPlan::GetPlan();
-			if ($oCollectionPlan->IsFarmToBeCollected()) {
+			if (class_exists('vSphereFarmCollector')) {
 				$aFarms = vSphereFarmCollector::GetFarms();
 			} else {
 				$aFarms = [];

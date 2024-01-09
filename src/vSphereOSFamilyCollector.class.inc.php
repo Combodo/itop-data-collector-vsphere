@@ -6,38 +6,26 @@ class vSphereOSFamilyCollector extends vSphereCollector
 	protected $idx;
 	protected $aOSFamily;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function CheckToLaunch(array $aOrchestratedCollectors): bool
-	{
-		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
-			if (array_key_exists('vSphereVirtualMachineCollector', $aOrchestratedCollectors) && ($aOrchestratedCollectors['vSphereVirtualMachineCollector'] == true)) {
-				return true;
-			} else {
-				Utils::Log(LOG_INFO, '> vSphereOSFamilyCollector will not be launched as vSphereVirtualMachineCollector is required but is not launched');
-			}
-		}
-
-		return false;
-	}
-
 	public function Prepare()
 	{
 		$bRet = parent::Prepare();
 		$this->idx = 0;
-		// Get the different OS Family values from the Virtual Machines
-		$aVMInfos = vSphereVirtualMachineCollector::CollectVMInfos();
-		$aTmp = array();
-		foreach ($aVMInfos as $aVM) {
-			if (array_key_exists('osfamily_id', $aVM) && ($aVM['osfamily_id'] != null)) {
-				$aTmp[$aVM['osfamily_id']] = true;
+		$aTmp = [];
+		if (class_exists('vSphereVirtualMachineCollector')) {
+			// Get the different OS Family values from the Virtual Machines
+			$aVMInfos = vSphereVirtualMachineCollector::CollectVMInfos();
+			foreach ($aVMInfos as $aVM) {
+				if (array_key_exists('osfamily_id', $aVM) && ($aVM['osfamily_id'] != null)) {
+					$aTmp[$aVM['osfamily_id']] = true;
+				}
 			}
 		}
-		// Add the different OS Family values from the Hypervisors
-		$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
-		foreach ($aHypervisors as $aHV) {
-			$aTmp[$aHV['osfamily_id']] = true;
+		if (class_exists('vSphereHypervisorCollector')) {
+			// Add the different OS Family values from the Hypervisors
+			$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
+			foreach ($aHypervisors as $aHV) {
+				$aTmp[$aHV['osfamily_id']] = true;
+			}
 		}
 		$this->aOSFamily = array_keys($aTmp);
 

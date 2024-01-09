@@ -56,9 +56,13 @@ class vSphereServerCollector extends vSphereCollector
 	public static function CollectServerInfos()
 	{
 		if (static::$aServers === null) {
-			$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
-			foreach ($aHypervisors as $aHyperV) {
-				static::$aServers[] = static::DoCollectServer($aHyperV);
+			if (class_exists('vSphereHypervisorCollector')) {
+				$aHypervisors = vSphereHypervisorCollector::GetHypervisors();
+				foreach ($aHypervisors as $aHyperV) {
+					static::$aServers[] = static::DoCollectServer($aHyperV);
+				}
+			} else {
+				static::$aServers = [];
 			}
 		}
 		utils::Log(LOG_DEBUG, "End of collection of Servers information.");

@@ -54,8 +54,7 @@ class vSphereHypervisorCollector extends vSphereCollector
 				throw new Exception("Cannot connect to https://$sVSphereServer. Aborting.");
 			}
 
-			$oCollectionPlan = vSphereCollectionPlan::GetPlan();
-			if ($oCollectionPlan->IsFarmToBeCollected()) {
+			if (class_exists('vSphereFarmCollector')) {
 				$aFarms = vSphereFarmCollector::GetFarms();
 			} else {
 				$aFarms = [];

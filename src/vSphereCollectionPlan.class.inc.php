@@ -4,7 +4,6 @@ class vSphereCollectionPlan extends CollectionPlan
 {
 	private $bVirtualizationMgtIsInstalled;
 	private $sVirtualizationMgtVersion;
-	private $bFarmIsToBeCollected;
 	private $bCbdVMwareDMIsInstalled;
 	private $bTeemIpIsInstalled;
 	private $bTeemIpIpDiscoveryIsInstalled;
@@ -22,9 +21,6 @@ class vSphereCollectionPlan extends CollectionPlan
 	public function Init(): void
 	{
 		parent::Init();
-
-		// By Default
-		$this->bFarmIsToBeCollected = false;
 
 		// Check if Virtualization Management Module is installed
 		Utils::Log(LOG_INFO, '---------- Check Virtualization Management Module installation ----------');
@@ -201,26 +197,6 @@ class vSphereCollectionPlan extends CollectionPlan
 	public function IsVirtualizationMgmtInstalled(): bool
 	{
 		return $this->bVirtualizationMgtIsInstalled;
-	}
-
-	/**
-	 * Record if Farm class should be collected
-	 *
-	 * @return bool
-	 */
-	public function SetFarmToBeCollected($bToBeCollected)
-	{
-		$this->bFarmIsToBeCollected = $bToBeCollected;
-	}
-
-	/**
-	 * Check if Farm class should be collected
-	 *
-	 * @return bool
-	 */
-	public function IsFarmToBeCollected() : bool
-	{
-		return $this->bFarmIsToBeCollected;
 	}
 
 	/**
