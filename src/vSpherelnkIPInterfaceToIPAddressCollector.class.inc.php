@@ -39,7 +39,11 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 	static public function GetLnks()
 	{
 		if (self::$aLnks === null) {
-			self::$aLnks = vSphereLogicalInterfaceCollector::GetLnks();
+			if (class_exists('vSphereLogicalInterfaceCollector')) {
+				self::$aLnks = vSphereLogicalInterfaceCollector::GetLnks();
+			} else {
+				self::$aLnks = [];
+			}
 		}
 
 		return self::$aLnks;
