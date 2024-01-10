@@ -32,8 +32,8 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	{
 		if ($sAttCode == 'interfacespeed_id') return ($this->oCollectionPlan->IsTeemIpNMEInstalled()) ? false : true;
 		if ($sAttCode == 'ip_list') return true;
-		if ($sAttCode == 'layer2protocol_id') return ($this->oCollectionPlan->IsTeemIpInstalled()) ? false : true;
-		if ($sAttCode == 'speed') return ($this->oCollectionPlan->IsTeemIpInstalled()) ? true : false;
+		if ($sAttCode == 'layer2protocol_id') return ($this->oCollectionPlan->IsTeemIpNMEInstalled()) ? false : true;
+		if ($sAttCode == 'speed') return ($this->oCollectionPlan->IsTeemIpNMEInstalled()) ? true : false;
 		if ($sAttCode == 'status') return true;
 		if ($sAttCode == 'vlans_list') return true;
 		if ($sAttCode == 'vrfs_list') return true;
