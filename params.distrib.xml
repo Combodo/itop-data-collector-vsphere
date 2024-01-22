@@ -41,7 +41,7 @@
 		<!-- Models -->
 		<collector>
 			<name>vSphereModelCollector</name>
-		    <enable>no</enable>
+		    <enable>yes</enable>
 			<rank>2</rank>
 		</collector>
 		<!-- OS Families -->
@@ -83,7 +83,7 @@
 		<!-- Logical Interfaces -->
 		<collector>
 			<name>vSphereLogicalInterfaceCollector</name>
-		    <enable>no</enable>
+		    <enable>yes</enable>
 			<rank>14</rank>
 		</collector>
 		<!-- IPv4 Addresses -->
