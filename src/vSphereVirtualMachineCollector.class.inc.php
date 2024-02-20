@@ -164,7 +164,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 										$sNetworkName = $oBacking->deviceName;
 										utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
 									} else {
-										if (isset($oBacking->portl) && property_exists($oBacking, 'port')) {
+										if (isset($oBacking->port) && property_exists($oBacking, 'port')) {
 											$oPort = $oBacking->port;
 											utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
 											if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
