@@ -141,6 +141,8 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			$aMACToNetwork = array();
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
 			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
+                if ($oVirtualDevice === null) continue;
+
 				utils::Log(LOG_DEBUG, "Start collect for VM ".get_class($oVirtualDevice)."...");
 				switch (get_class($oVirtualDevice)) {
 					case 'VirtualE1000':
