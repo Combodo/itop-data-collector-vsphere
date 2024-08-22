@@ -1,5 +1,18 @@
 <?php
-class DynamicArray {
+
+class PhpDynamicProperties {
+    private array $aProperties = [];
+
+    public function __set(string $name, mixed $value): void {
+        $this->aProperties[$name] = $value;
+    }
+
+    public function __get(string $name): mixed {
+        return (array_key_exists($name, $this->aProperties) ? $this->aProperties[$name]: null);
+    }
+}
+
+class DynamicArray extends phpDynamicProperties {
 	public $dynamicType; //string
 	public $val; //anyType
 
@@ -9,7 +22,7 @@ class DynamicArray {
 	}
 }
 
-class DynamicData {
+class DynamicData extends phpDynamicProperties {
 	public $dynamicType; //string
 	public $dynamicProperty; //DynamicProperty
 
@@ -19,7 +32,7 @@ class DynamicData {
 	}
 }
 
-class DynamicProperty {
+class DynamicProperty extends phpDynamicProperties {
 	public $name; //string
 	public $val; //anyType
 
@@ -29,7 +42,7 @@ class DynamicProperty {
 	}
 }
 
-class ArrayOfDynamicProperty {
+class ArrayOfDynamicProperty extends phpDynamicProperties {
 	public $DynamicProperty; //DynamicProperty
 
 	function __construct($DynamicProperty = null) {
@@ -37,7 +50,7 @@ class ArrayOfDynamicProperty {
 	}
 }
 
-class KeyAnyValue {
+class KeyAnyValue extends phpDynamicProperties {
 	public $key; //string
 	public $value; //anyType
 
@@ -47,7 +60,7 @@ class KeyAnyValue {
 	}
 }
 
-class ArrayOfKeyAnyValue {
+class ArrayOfKeyAnyValue extends phpDynamicProperties {
 	public $KeyAnyValue; //KeyAnyValue
 
 	function __construct($KeyAnyValue = null) {
@@ -55,7 +68,7 @@ class ArrayOfKeyAnyValue {
 	}
 }
 
-class LocalizableMessage {
+class LocalizableMessage extends phpDynamicProperties {
 	public $key; //string
 	public $arg; //KeyAnyValue
 	public $message; //string
@@ -67,7 +80,7 @@ class LocalizableMessage {
 	}
 }
 
-class ArrayOfLocalizableMessage {
+class ArrayOfLocalizableMessage extends phpDynamicProperties {
 	public $LocalizableMessage; //LocalizableMessage
 
 	function __construct($LocalizableMessage = null) {
@@ -75,16 +88,16 @@ class ArrayOfLocalizableMessage {
 	}
 }
 
-class HostCommunication {
+class HostCommunication extends phpDynamicProperties {
 }
 
-class HostNotConnected {
+class HostNotConnected extends phpDynamicProperties {
 }
 
-class HostNotReachable {
+class HostNotReachable extends phpDynamicProperties {
 }
 
-class InvalidArgument {
+class InvalidArgument extends phpDynamicProperties {
 	public $invalidProperty; //string
 
 	function __construct($invalidProperty = null) {
@@ -92,10 +105,10 @@ class InvalidArgument {
 	}
 }
 
-class InvalidRequest {
+class InvalidRequest extends phpDynamicProperties {
 }
 
-class InvalidType {
+class InvalidType extends phpDynamicProperties {
 	public $argument; //string
 
 	function __construct($argument = null) {
@@ -103,7 +116,7 @@ class InvalidType {
 	}
 }
 
-class ManagedObjectNotFound {
+class ManagedObjectNotFound extends phpDynamicProperties {
 	public $obj; //ManagedObjectReference
 
 	function __construct($obj = null) {
@@ -111,7 +124,7 @@ class ManagedObjectNotFound {
 	}
 }
 
-class MethodNotFound {
+class MethodNotFound extends phpDynamicProperties {
 	public $receiver; //ManagedObjectReference
 	public $method; //string
 
@@ -121,22 +134,22 @@ class MethodNotFound {
 	}
 }
 
-class NotEnoughLicenses {
+class NotEnoughLicenses extends phpDynamicProperties {
 }
 
-class NotImplemented {
+class NotImplemented extends phpDynamicProperties {
 }
 
-class NotSupported {
+class NotSupported extends phpDynamicProperties {
 }
 
-class RequestCanceled {
+class RequestCanceled extends phpDynamicProperties {
 }
 
-class SecurityError {
+class SecurityError extends phpDynamicProperties {
 }
 
-class SystemError {
+class SystemError extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -144,7 +157,7 @@ class SystemError {
 	}
 }
 
-class UnexpectedFault {
+class UnexpectedFault extends phpDynamicProperties {
 	public $faultName; //string
 	public $fault; //LocalizedMethodFault
 
@@ -154,7 +167,7 @@ class UnexpectedFault {
 	}
 }
 
-class LocalizedMethodFault {
+class LocalizedMethodFault extends phpDynamicProperties {
 	public $fault; //MethodFault
 	public $localizedMessage; //string
 
@@ -164,7 +177,7 @@ class LocalizedMethodFault {
 	}
 }
 
-class MethodFault {
+class MethodFault extends phpDynamicProperties {
 	public $dynamicType; //string
 	public $dynamicProperty; //DynamicProperty
 	public $faultCause; //LocalizedMethodFault
@@ -178,7 +191,7 @@ class MethodFault {
 	}
 }
 
-class ArrayOfMethodFault {
+class ArrayOfMethodFault extends phpDynamicProperties {
 	public $MethodFault; //MethodFault
 
 	function __construct($MethodFault = null) {
@@ -186,10 +199,10 @@ class ArrayOfMethodFault {
 	}
 }
 
-class RuntimeFault {
+class RuntimeFault extends phpDynamicProperties {
 }
 
-class ManagedObjectReference {
+class ManagedObjectReference extends phpDynamicProperties {
 	public $_; //string
 	public $type; //string
 
@@ -199,7 +212,7 @@ class ManagedObjectReference {
 	}
 }
 
-class ArrayOfString {
+class ArrayOfString extends phpDynamicProperties {
 	public $string; //string
 
 	function __construct($string = null) {
@@ -207,7 +220,7 @@ class ArrayOfString {
 	}
 }
 
-class ArrayOfAnyType {
+class ArrayOfAnyType extends phpDynamicProperties {
 	public $anyType; //anyType
 
 	function __construct($anyType = null) {
@@ -215,7 +228,7 @@ class ArrayOfAnyType {
 	}
 }
 
-class ArrayOfManagedObjectReference {
+class ArrayOfManagedObjectReference extends phpDynamicProperties {
 	public $ManagedObjectReference; //ManagedObjectReference
 
 	function __construct($ManagedObjectReference = null) {
@@ -223,7 +236,7 @@ class ArrayOfManagedObjectReference {
 	}
 }
 
-class ArrayOfBoolean {
+class ArrayOfBoolean extends phpDynamicProperties {
 	public $boolean; //boolean
 
 	function __construct($boolean = null) {
@@ -231,7 +244,7 @@ class ArrayOfBoolean {
 	}
 }
 
-class ArrayOfByte {
+class ArrayOfByte extends phpDynamicProperties {
 	public $byte; //byte
 
 	function __construct($byte = null) {
@@ -239,7 +252,7 @@ class ArrayOfByte {
 	}
 }
 
-class ArrayOfInt {
+class ArrayOfInt extends phpDynamicProperties {
 	public $int; //int
 
 	function __construct($int = null) {
@@ -247,7 +260,7 @@ class ArrayOfInt {
 	}
 }
 
-class ArrayOfLong {
+class ArrayOfLong extends phpDynamicProperties {
 	public $long; //long
 
 	function __construct($long = null) {
@@ -255,7 +268,7 @@ class ArrayOfLong {
 	}
 }
 
-class ArrayOfShort {
+class ArrayOfShort extends phpDynamicProperties {
 	public $short; //short
 
 	function __construct($short = null) {
@@ -263,10 +276,10 @@ class ArrayOfShort {
 	}
 }
 
-class InvalidCollectorVersion {
+class InvalidCollectorVersion extends phpDynamicProperties {
 }
 
-class InvalidProperty {
+class InvalidProperty extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -274,7 +287,7 @@ class InvalidProperty {
 	}
 }
 
-class PropertyFilterSpec {
+class PropertyFilterSpec extends phpDynamicProperties {
 	public $propSet; //PropertySpec
 	public $objectSet; //ObjectSpec
 	public $reportMissingObjectsInResults; //boolean
@@ -286,7 +299,7 @@ class PropertyFilterSpec {
 	}
 }
 
-class ArrayOfPropertyFilterSpec {
+class ArrayOfPropertyFilterSpec extends phpDynamicProperties {
 	public $PropertyFilterSpec; //PropertyFilterSpec
 
 	function __construct($PropertyFilterSpec = null) {
@@ -294,7 +307,7 @@ class ArrayOfPropertyFilterSpec {
 	}
 }
 
-class PropertySpec {
+class PropertySpec extends phpDynamicProperties {
 	public $type; //string
 	public $all; //boolean
 	public $pathSet; //string
@@ -306,7 +319,7 @@ class PropertySpec {
 	}
 }
 
-class ArrayOfPropertySpec {
+class ArrayOfPropertySpec extends phpDynamicProperties {
 	public $PropertySpec; //PropertySpec
 
 	function __construct($PropertySpec = null) {
@@ -314,7 +327,7 @@ class ArrayOfPropertySpec {
 	}
 }
 
-class ObjectSpec {
+class ObjectSpec extends phpDynamicProperties {
 	public $obj; //ManagedObjectReference
 	public $skip; //boolean
 	public $selectSet; //SelectionSpec
@@ -326,7 +339,7 @@ class ObjectSpec {
 	}
 }
 
-class ArrayOfObjectSpec {
+class ArrayOfObjectSpec extends phpDynamicProperties {
 	public $ObjectSpec; //ObjectSpec
 
 	function __construct($ObjectSpec = null) {
@@ -334,7 +347,7 @@ class ArrayOfObjectSpec {
 	}
 }
 
-class SelectionSpec {
+class SelectionSpec extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -342,7 +355,7 @@ class SelectionSpec {
 	}
 }
 
-class ArrayOfSelectionSpec {
+class ArrayOfSelectionSpec extends phpDynamicProperties {
 	public $SelectionSpec; //SelectionSpec
 
 	function __construct($SelectionSpec = null) {
@@ -365,7 +378,7 @@ class TraversalSpec extends SelectionSpec {
 	}
 }
 
-class ObjectContent {
+class ObjectContent extends phpDynamicProperties {
 	public $obj; //ManagedObjectReference
 	public $propSet; //DynamicProperty
 	public $missingSet; //MissingProperty
@@ -377,7 +390,7 @@ class ObjectContent {
 	}
 }
 
-class ArrayOfObjectContent {
+class ArrayOfObjectContent extends phpDynamicProperties {
 	public $ObjectContent; //ObjectContent
 
 	function __construct($ObjectContent = null) {
@@ -385,7 +398,7 @@ class ArrayOfObjectContent {
 	}
 }
 
-class UpdateSet {
+class UpdateSet extends phpDynamicProperties {
 	public $version; //string
 	public $filterSet; //PropertyFilterUpdate
 	public $truncated; //boolean
@@ -397,7 +410,7 @@ class UpdateSet {
 	}
 }
 
-class PropertyFilterUpdate {
+class PropertyFilterUpdate extends phpDynamicProperties {
 	public $filter; //ManagedObjectReference
 	public $objectSet; //ObjectUpdate
 	public $missingSet; //MissingObject
@@ -409,7 +422,7 @@ class PropertyFilterUpdate {
 	}
 }
 
-class ArrayOfPropertyFilterUpdate {
+class ArrayOfPropertyFilterUpdate extends phpDynamicProperties {
 	public $PropertyFilterUpdate; //PropertyFilterUpdate
 
 	function __construct($PropertyFilterUpdate = null) {
@@ -417,7 +430,7 @@ class ArrayOfPropertyFilterUpdate {
 	}
 }
 
-class ObjectUpdate {
+class ObjectUpdate extends phpDynamicProperties {
 	public $kind; //ObjectUpdateKind
 	public $obj; //ManagedObjectReference
 	public $changeSet; //PropertyChange
@@ -431,7 +444,7 @@ class ObjectUpdate {
 	}
 }
 
-class ArrayOfObjectUpdate {
+class ArrayOfObjectUpdate extends phpDynamicProperties {
 	public $ObjectUpdate; //ObjectUpdate
 
 	function __construct($ObjectUpdate = null) {
@@ -439,7 +452,7 @@ class ArrayOfObjectUpdate {
 	}
 }
 
-class PropertyChange {
+class PropertyChange extends phpDynamicProperties {
 	public $name; //string
 	public $op; //PropertyChangeOp
 	public $val; //anyType
@@ -451,7 +464,7 @@ class PropertyChange {
 	}
 }
 
-class ArrayOfPropertyChange {
+class ArrayOfPropertyChange extends phpDynamicProperties {
 	public $PropertyChange; //PropertyChange
 
 	function __construct($PropertyChange = null) {
@@ -459,7 +472,7 @@ class ArrayOfPropertyChange {
 	}
 }
 
-class MissingProperty {
+class MissingProperty extends phpDynamicProperties {
 	public $path; //string
 	public $fault; //LocalizedMethodFault
 
@@ -469,7 +482,7 @@ class MissingProperty {
 	}
 }
 
-class ArrayOfMissingProperty {
+class ArrayOfMissingProperty extends phpDynamicProperties {
 	public $MissingProperty; //MissingProperty
 
 	function __construct($MissingProperty = null) {
@@ -477,7 +490,7 @@ class ArrayOfMissingProperty {
 	}
 }
 
-class MissingObject {
+class MissingObject extends phpDynamicProperties {
 	public $obj; //ManagedObjectReference
 	public $fault; //LocalizedMethodFault
 
@@ -487,7 +500,7 @@ class MissingObject {
 	}
 }
 
-class ArrayOfMissingObject {
+class ArrayOfMissingObject extends phpDynamicProperties {
 	public $MissingObject; //MissingObject
 
 	function __construct($MissingObject = null) {
@@ -495,7 +508,7 @@ class ArrayOfMissingObject {
 	}
 }
 
-class WaitOptions {
+class WaitOptions extends phpDynamicProperties {
 	public $maxWaitSeconds; //int
 	public $maxObjectUpdates; //int
 
@@ -505,7 +518,7 @@ class WaitOptions {
 	}
 }
 
-class RetrieveOptions {
+class RetrieveOptions extends phpDynamicProperties {
 	public $maxObjects; //int
 
 	function __construct($maxObjects = null) {
@@ -513,7 +526,7 @@ class RetrieveOptions {
 	}
 }
 
-class RetrieveResult {
+class RetrieveResult extends phpDynamicProperties {
 	public $token; //string
 	public $objects; //ObjectContent
 
@@ -523,7 +536,7 @@ class RetrieveResult {
 	}
 }
 
-class DestroyPropertyFilterRequestType {
+class DestroyPropertyFilterRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -531,7 +544,7 @@ class DestroyPropertyFilterRequestType {
 	}
 }
 
-class CreateFilterRequestType {
+class CreateFilterRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //PropertyFilterSpec
 	public $partialUpdates; //boolean
@@ -543,7 +556,7 @@ class CreateFilterRequestType {
 	}
 }
 
-class RetrievePropertiesRequestType {
+class RetrievePropertiesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $specSet; //PropertyFilterSpec
 
@@ -553,7 +566,7 @@ class RetrievePropertiesRequestType {
 	}
 }
 
-class CheckForUpdatesRequestType {
+class CheckForUpdatesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $version; //string
 
@@ -563,7 +576,7 @@ class CheckForUpdatesRequestType {
 	}
 }
 
-class WaitForUpdatesRequestType {
+class WaitForUpdatesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $version; //string
 
@@ -573,7 +586,7 @@ class WaitForUpdatesRequestType {
 	}
 }
 
-class CancelWaitForUpdatesRequestType {
+class CancelWaitForUpdatesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -581,7 +594,7 @@ class CancelWaitForUpdatesRequestType {
 	}
 }
 
-class WaitForUpdatesExRequestType {
+class WaitForUpdatesExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $version; //string
 	public $options; //WaitOptions
@@ -593,7 +606,7 @@ class WaitForUpdatesExRequestType {
 	}
 }
 
-class RetrievePropertiesExRequestType {
+class RetrievePropertiesExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $specSet; //PropertyFilterSpec
 	public $options; //RetrieveOptions
@@ -605,7 +618,7 @@ class RetrievePropertiesExRequestType {
 	}
 }
 
-class ContinueRetrievePropertiesExRequestType {
+class ContinueRetrievePropertiesExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $token; //string
 
@@ -615,7 +628,7 @@ class ContinueRetrievePropertiesExRequestType {
 	}
 }
 
-class CancelRetrievePropertiesExRequestType {
+class CancelRetrievePropertiesExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $token; //string
 
@@ -625,7 +638,7 @@ class CancelRetrievePropertiesExRequestType {
 	}
 }
 
-class CreatePropertyCollectorRequestType {
+class CreatePropertyCollectorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -633,7 +646,7 @@ class CreatePropertyCollectorRequestType {
 	}
 }
 
-class DestroyPropertyCollectorRequestType {
+class DestroyPropertyCollectorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -641,7 +654,7 @@ class DestroyPropertyCollectorRequestType {
 	}
 }
 
-class AboutInfo {
+class AboutInfo extends phpDynamicProperties {
 	public $name; //string
 	public $fullName; //string
 	public $vendor; //string
@@ -675,7 +688,7 @@ class AboutInfo {
 	}
 }
 
-class AuthorizationDescription {
+class AuthorizationDescription extends phpDynamicProperties {
 	public $privilege; //ElementDescription
 	public $privilegeGroup; //ElementDescription
 
@@ -685,7 +698,7 @@ class AuthorizationDescription {
 	}
 }
 
-class Permission {
+class Permission extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $principal; //string
 	public $group; //boolean
@@ -701,7 +714,7 @@ class Permission {
 	}
 }
 
-class ArrayOfPermission {
+class ArrayOfPermission extends phpDynamicProperties {
 	public $Permission; //Permission
 
 	function __construct($Permission = null) {
@@ -709,7 +722,7 @@ class ArrayOfPermission {
 	}
 }
 
-class AuthorizationRole {
+class AuthorizationRole extends phpDynamicProperties {
 	public $roleId; //int
 	public $system; //boolean
 	public $name; //string
@@ -725,7 +738,7 @@ class AuthorizationRole {
 	}
 }
 
-class ArrayOfAuthorizationRole {
+class ArrayOfAuthorizationRole extends phpDynamicProperties {
 	public $AuthorizationRole; //AuthorizationRole
 
 	function __construct($AuthorizationRole = null) {
@@ -733,7 +746,7 @@ class ArrayOfAuthorizationRole {
 	}
 }
 
-class AuthorizationPrivilege {
+class AuthorizationPrivilege extends phpDynamicProperties {
 	public $privId; //string
 	public $onParent; //boolean
 	public $name; //string
@@ -747,7 +760,7 @@ class AuthorizationPrivilege {
 	}
 }
 
-class ArrayOfAuthorizationPrivilege {
+class ArrayOfAuthorizationPrivilege extends phpDynamicProperties {
 	public $AuthorizationPrivilege; //AuthorizationPrivilege
 
 	function __construct($AuthorizationPrivilege = null) {
@@ -755,7 +768,7 @@ class ArrayOfAuthorizationPrivilege {
 	}
 }
 
-class BoolPolicy {
+class BoolPolicy extends phpDynamicProperties {
 	public $value; //boolean
 
 	function __construct($value = null) {
@@ -763,7 +776,7 @@ class BoolPolicy {
 	}
 }
 
-class Capability {
+class Capability extends phpDynamicProperties {
 	public $provisioningSupported; //boolean
 	public $multiHostSupported; //boolean
 	public $userShellAccessSupported; //boolean
@@ -777,7 +790,7 @@ class Capability {
 	}
 }
 
-class ClusterComputeResourceSummary {
+class ClusterComputeResourceSummary extends phpDynamicProperties {
 	public $currentFailoverLevel; //int
 	public $admissionControlInfo; //ClusterDasAdmissionControlInfo
 	public $numVmotions; //int
@@ -797,7 +810,7 @@ class ClusterComputeResourceSummary {
 	}
 }
 
-class ComputeResourceSummary {
+class ComputeResourceSummary extends phpDynamicProperties {
 	public $totalCpu; //int
 	public $totalMemory; //long
 	public $numCpuCores; //short
@@ -821,7 +834,7 @@ class ComputeResourceSummary {
 	}
 }
 
-class ComputeResourceConfigInfo {
+class ComputeResourceConfigInfo extends phpDynamicProperties {
 	public $vmSwapPlacement; //string
 	public $spbmEnabled; //boolean
 
@@ -831,7 +844,7 @@ class ComputeResourceConfigInfo {
 	}
 }
 
-class ComputeResourceHostSPBMLicenseInfo {
+class ComputeResourceHostSPBMLicenseInfo extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $licenseState; //ComputeResourceHostSPBMLicenseInfoHostSPBMLicenseState
 
@@ -841,7 +854,7 @@ class ComputeResourceHostSPBMLicenseInfo {
 	}
 }
 
-class ArrayOfComputeResourceHostSPBMLicenseInfo {
+class ArrayOfComputeResourceHostSPBMLicenseInfo extends phpDynamicProperties {
 	public $ComputeResourceHostSPBMLicenseInfo; //ComputeResourceHostSPBMLicenseInfo
 
 	function __construct($ComputeResourceHostSPBMLicenseInfo = null) {
@@ -849,7 +862,7 @@ class ArrayOfComputeResourceHostSPBMLicenseInfo {
 	}
 }
 
-class ComputeResourceConfigSpec {
+class ComputeResourceConfigSpec extends phpDynamicProperties {
 	public $vmSwapPlacement; //string
 	public $spbmEnabled; //boolean
 
@@ -859,7 +872,7 @@ class ComputeResourceConfigSpec {
 	}
 }
 
-class CustomFieldDef {
+class CustomFieldDef extends phpDynamicProperties {
 	public $key; //int
 	public $name; //string
 	public $type; //string
@@ -877,7 +890,7 @@ class CustomFieldDef {
 	}
 }
 
-class ArrayOfCustomFieldDef {
+class ArrayOfCustomFieldDef extends phpDynamicProperties {
 	public $CustomFieldDef; //CustomFieldDef
 
 	function __construct($CustomFieldDef = null) {
@@ -885,7 +898,7 @@ class ArrayOfCustomFieldDef {
 	}
 }
 
-class CustomFieldValue {
+class CustomFieldValue extends phpDynamicProperties {
 	public $key; //int
 
 	function __construct($key = null) {
@@ -893,7 +906,7 @@ class CustomFieldValue {
 	}
 }
 
-class ArrayOfCustomFieldValue {
+class ArrayOfCustomFieldValue extends phpDynamicProperties {
 	public $CustomFieldValue; //CustomFieldValue
 
 	function __construct($CustomFieldValue = null) {
@@ -901,7 +914,7 @@ class ArrayOfCustomFieldValue {
 	}
 }
 
-class CustomFieldStringValue {
+class CustomFieldStringValue extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -909,7 +922,7 @@ class CustomFieldStringValue {
 	}
 }
 
-class CustomizationSpecInfo {
+class CustomizationSpecInfo extends phpDynamicProperties {
 	public $name; //string
 	public $description; //string
 	public $type; //string
@@ -925,7 +938,7 @@ class CustomizationSpecInfo {
 	}
 }
 
-class ArrayOfCustomizationSpecInfo {
+class ArrayOfCustomizationSpecInfo extends phpDynamicProperties {
 	public $CustomizationSpecInfo; //CustomizationSpecInfo
 
 	function __construct($CustomizationSpecInfo = null) {
@@ -933,7 +946,7 @@ class ArrayOfCustomizationSpecInfo {
 	}
 }
 
-class CustomizationSpecItem {
+class CustomizationSpecItem extends phpDynamicProperties {
 	public $info; //CustomizationSpecInfo
 	public $spec; //CustomizationSpec
 
@@ -943,7 +956,7 @@ class CustomizationSpecItem {
 	}
 }
 
-class DatastoreSummary {
+class DatastoreSummary extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $name; //string
 	public $url; //string
@@ -969,7 +982,7 @@ class DatastoreSummary {
 	}
 }
 
-class DatastoreInfo {
+class DatastoreInfo extends phpDynamicProperties {
 	public $name; //string
 	public $url; //string
 	public $freeSpace; //long
@@ -985,7 +998,7 @@ class DatastoreInfo {
 	}
 }
 
-class DatastoreCapability {
+class DatastoreCapability extends phpDynamicProperties {
 	public $directoryHierarchySupported; //boolean
 	public $rawDiskMappingsSupported; //boolean
 	public $perFileThinProvisioningSupported; //boolean
@@ -999,7 +1012,7 @@ class DatastoreCapability {
 	}
 }
 
-class DatastoreHostMount {
+class DatastoreHostMount extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $mountInfo; //HostMountInfo
 
@@ -1009,7 +1022,7 @@ class DatastoreHostMount {
 	}
 }
 
-class ArrayOfDatastoreHostMount {
+class ArrayOfDatastoreHostMount extends phpDynamicProperties {
 	public $DatastoreHostMount; //DatastoreHostMount
 
 	function __construct($DatastoreHostMount = null) {
@@ -1017,7 +1030,7 @@ class ArrayOfDatastoreHostMount {
 	}
 }
 
-class DatastoreMountPathDatastorePair {
+class DatastoreMountPathDatastorePair extends phpDynamicProperties {
 	public $oldMountPath; //string
 	public $datastore; //ManagedObjectReference
 
@@ -1027,7 +1040,7 @@ class DatastoreMountPathDatastorePair {
 	}
 }
 
-class ArrayOfDatastoreMountPathDatastorePair {
+class ArrayOfDatastoreMountPathDatastorePair extends phpDynamicProperties {
 	public $DatastoreMountPathDatastorePair; //DatastoreMountPathDatastorePair
 
 	function __construct($DatastoreMountPathDatastorePair = null) {
@@ -1035,7 +1048,7 @@ class ArrayOfDatastoreMountPathDatastorePair {
 	}
 }
 
-class Description {
+class Description extends phpDynamicProperties {
 	public $label; //string
 	public $summary; //string
 
@@ -1045,7 +1058,7 @@ class Description {
 	}
 }
 
-class DiagnosticManagerLogDescriptor {
+class DiagnosticManagerLogDescriptor extends phpDynamicProperties {
 	public $key; //string
 	public $fileName; //string
 	public $creator; //string
@@ -1063,7 +1076,7 @@ class DiagnosticManagerLogDescriptor {
 	}
 }
 
-class ArrayOfDiagnosticManagerLogDescriptor {
+class ArrayOfDiagnosticManagerLogDescriptor extends phpDynamicProperties {
 	public $DiagnosticManagerLogDescriptor; //DiagnosticManagerLogDescriptor
 
 	function __construct($DiagnosticManagerLogDescriptor = null) {
@@ -1071,7 +1084,7 @@ class ArrayOfDiagnosticManagerLogDescriptor {
 	}
 }
 
-class DiagnosticManagerLogHeader {
+class DiagnosticManagerLogHeader extends phpDynamicProperties {
 	public $lineStart; //int
 	public $lineEnd; //int
 	public $lineText; //string
@@ -1083,7 +1096,7 @@ class DiagnosticManagerLogHeader {
 	}
 }
 
-class DiagnosticManagerBundleInfo {
+class DiagnosticManagerBundleInfo extends phpDynamicProperties {
 	public $system; //ManagedObjectReference
 	public $url; //string
 
@@ -1093,7 +1106,7 @@ class DiagnosticManagerBundleInfo {
 	}
 }
 
-class ArrayOfDiagnosticManagerBundleInfo {
+class ArrayOfDiagnosticManagerBundleInfo extends phpDynamicProperties {
 	public $DiagnosticManagerBundleInfo; //DiagnosticManagerBundleInfo
 
 	function __construct($DiagnosticManagerBundleInfo = null) {
@@ -1101,7 +1114,7 @@ class ArrayOfDiagnosticManagerBundleInfo {
 	}
 }
 
-class DVSContactInfo {
+class DVSContactInfo extends phpDynamicProperties {
 	public $name; //string
 	public $contact; //string
 
@@ -1111,7 +1124,7 @@ class DVSContactInfo {
 	}
 }
 
-class DVSNetworkResourceManagementCapability {
+class DVSNetworkResourceManagementCapability extends phpDynamicProperties {
 	public $networkResourceManagementSupported; //boolean
 	public $networkResourcePoolHighShareValue; //int
 	public $qosSupported; //boolean
@@ -1125,7 +1138,7 @@ class DVSNetworkResourceManagementCapability {
 	}
 }
 
-class DVSFeatureCapability {
+class DVSFeatureCapability extends phpDynamicProperties {
 	public $networkResourceManagementSupported; //boolean
 	public $vmDirectPathGen2Supported; //boolean
 	public $nicTeamingPolicy; //string
@@ -1141,7 +1154,7 @@ class DVSFeatureCapability {
 	}
 }
 
-class DVSCapability {
+class DVSCapability extends phpDynamicProperties {
 	public $dvsOperationSupported; //boolean
 	public $dvPortGroupOperationSupported; //boolean
 	public $dvPortOperationSupported; //boolean
@@ -1157,7 +1170,7 @@ class DVSCapability {
 	}
 }
 
-class DVSSummary {
+class DVSSummary extends phpDynamicProperties {
 	public $name; //string
 	public $uuid; //string
 	public $numPorts; //int
@@ -1183,7 +1196,7 @@ class DVSSummary {
 	}
 }
 
-class DVSPolicy {
+class DVSPolicy extends phpDynamicProperties {
 	public $autoPreInstallAllowed; //boolean
 	public $autoUpgradeAllowed; //boolean
 	public $partialUpgradeAllowed; //boolean
@@ -1195,10 +1208,10 @@ class DVSPolicy {
 	}
 }
 
-class DVSUplinkPortPolicy {
+class DVSUplinkPortPolicy extends phpDynamicProperties {
 }
 
-class DVSNameArrayUplinkPortPolicy {
+class DVSNameArrayUplinkPortPolicy extends phpDynamicProperties {
 	public $uplinkPortName; //string
 
 	function __construct($uplinkPortName = null) {
@@ -1206,7 +1219,7 @@ class DVSNameArrayUplinkPortPolicy {
 	}
 }
 
-class DVSConfigSpec {
+class DVSConfigSpec extends phpDynamicProperties {
 	public $configVersion; //string
 	public $name; //string
 	public $numStandalonePorts; //int
@@ -1240,7 +1253,7 @@ class DVSConfigSpec {
 	}
 }
 
-class DVSCreateSpec {
+class DVSCreateSpec extends phpDynamicProperties {
 	public $configSpec; //DVSConfigSpec
 	public $productInfo; //DistributedVirtualSwitchProductSpec
 	public $capability; //DVSCapability
@@ -1252,7 +1265,7 @@ class DVSCreateSpec {
 	}
 }
 
-class DVSConfigInfo {
+class DVSConfigInfo extends phpDynamicProperties {
 	public $uuid; //string
 	public $name; //string
 	public $numStandalonePorts; //int
@@ -1298,7 +1311,7 @@ class DVSConfigInfo {
 	}
 }
 
-class EVCMode {
+class EVCMode extends phpDynamicProperties {
 	public $guaranteedCPUFeatures; //HostCpuIdInfo
 	public $vendor; //string
 	public $track; //string
@@ -1312,7 +1325,7 @@ class EVCMode {
 	}
 }
 
-class ArrayOfEVCMode {
+class ArrayOfEVCMode extends phpDynamicProperties {
 	public $EVCMode; //EVCMode
 
 	function __construct($EVCMode = null) {
@@ -1320,7 +1333,7 @@ class ArrayOfEVCMode {
 	}
 }
 
-class ElementDescription {
+class ElementDescription extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -1328,7 +1341,7 @@ class ElementDescription {
 	}
 }
 
-class ArrayOfElementDescription {
+class ArrayOfElementDescription extends phpDynamicProperties {
 	public $ElementDescription; //ElementDescription
 
 	function __construct($ElementDescription = null) {
@@ -1336,7 +1349,7 @@ class ArrayOfElementDescription {
 	}
 }
 
-class EnumDescription {
+class EnumDescription extends phpDynamicProperties {
 	public $key; //string
 	public $tags; //ElementDescription
 
@@ -1346,7 +1359,7 @@ class EnumDescription {
 	}
 }
 
-class ArrayOfEnumDescription {
+class ArrayOfEnumDescription extends phpDynamicProperties {
 	public $EnumDescription; //EnumDescription
 
 	function __construct($EnumDescription = null) {
@@ -1354,7 +1367,7 @@ class ArrayOfEnumDescription {
 	}
 }
 
-class ExtendedDescription {
+class ExtendedDescription extends phpDynamicProperties {
 	public $messageCatalogKeyPrefix; //string
 	public $messageArg; //KeyAnyValue
 
@@ -1364,7 +1377,7 @@ class ExtendedDescription {
 	}
 }
 
-class ExtendedElementDescription {
+class ExtendedElementDescription extends phpDynamicProperties {
 	public $messageCatalogKeyPrefix; //string
 	public $messageArg; //KeyAnyValue
 
@@ -1374,7 +1387,7 @@ class ExtendedElementDescription {
 	}
 }
 
-class ExtensionServerInfo {
+class ExtensionServerInfo extends phpDynamicProperties {
 	public $url; //string
 	public $description; //Description
 	public $company; //string
@@ -1392,7 +1405,7 @@ class ExtensionServerInfo {
 	}
 }
 
-class ArrayOfExtensionServerInfo {
+class ArrayOfExtensionServerInfo extends phpDynamicProperties {
 	public $ExtensionServerInfo; //ExtensionServerInfo
 
 	function __construct($ExtensionServerInfo = null) {
@@ -1400,7 +1413,7 @@ class ArrayOfExtensionServerInfo {
 	}
 }
 
-class ExtensionClientInfo {
+class ExtensionClientInfo extends phpDynamicProperties {
 	public $version; //string
 	public $description; //Description
 	public $company; //string
@@ -1416,7 +1429,7 @@ class ExtensionClientInfo {
 	}
 }
 
-class ArrayOfExtensionClientInfo {
+class ArrayOfExtensionClientInfo extends phpDynamicProperties {
 	public $ExtensionClientInfo; //ExtensionClientInfo
 
 	function __construct($ExtensionClientInfo = null) {
@@ -1424,7 +1437,7 @@ class ArrayOfExtensionClientInfo {
 	}
 }
 
-class ExtensionTaskTypeInfo {
+class ExtensionTaskTypeInfo extends phpDynamicProperties {
 	public $taskID; //string
 
 	function __construct($taskID = null) {
@@ -1432,7 +1445,7 @@ class ExtensionTaskTypeInfo {
 	}
 }
 
-class ArrayOfExtensionTaskTypeInfo {
+class ArrayOfExtensionTaskTypeInfo extends phpDynamicProperties {
 	public $ExtensionTaskTypeInfo; //ExtensionTaskTypeInfo
 
 	function __construct($ExtensionTaskTypeInfo = null) {
@@ -1440,7 +1453,7 @@ class ArrayOfExtensionTaskTypeInfo {
 	}
 }
 
-class ExtensionEventTypeInfo {
+class ExtensionEventTypeInfo extends phpDynamicProperties {
 	public $eventID; //string
 	public $eventTypeSchema; //string
 
@@ -1450,7 +1463,7 @@ class ExtensionEventTypeInfo {
 	}
 }
 
-class ArrayOfExtensionEventTypeInfo {
+class ArrayOfExtensionEventTypeInfo extends phpDynamicProperties {
 	public $ExtensionEventTypeInfo; //ExtensionEventTypeInfo
 
 	function __construct($ExtensionEventTypeInfo = null) {
@@ -1458,7 +1471,7 @@ class ArrayOfExtensionEventTypeInfo {
 	}
 }
 
-class ExtensionFaultTypeInfo {
+class ExtensionFaultTypeInfo extends phpDynamicProperties {
 	public $faultID; //string
 
 	function __construct($faultID = null) {
@@ -1466,7 +1479,7 @@ class ExtensionFaultTypeInfo {
 	}
 }
 
-class ArrayOfExtensionFaultTypeInfo {
+class ArrayOfExtensionFaultTypeInfo extends phpDynamicProperties {
 	public $ExtensionFaultTypeInfo; //ExtensionFaultTypeInfo
 
 	function __construct($ExtensionFaultTypeInfo = null) {
@@ -1474,7 +1487,7 @@ class ArrayOfExtensionFaultTypeInfo {
 	}
 }
 
-class ExtensionPrivilegeInfo {
+class ExtensionPrivilegeInfo extends phpDynamicProperties {
 	public $privID; //string
 	public $privGroupName; //string
 
@@ -1484,7 +1497,7 @@ class ExtensionPrivilegeInfo {
 	}
 }
 
-class ArrayOfExtensionPrivilegeInfo {
+class ArrayOfExtensionPrivilegeInfo extends phpDynamicProperties {
 	public $ExtensionPrivilegeInfo; //ExtensionPrivilegeInfo
 
 	function __construct($ExtensionPrivilegeInfo = null) {
@@ -1492,7 +1505,7 @@ class ArrayOfExtensionPrivilegeInfo {
 	}
 }
 
-class ExtensionResourceInfo {
+class ExtensionResourceInfo extends phpDynamicProperties {
 	public $locale; //string
 	public $module; //string
 	public $data; //KeyValue
@@ -1504,7 +1517,7 @@ class ExtensionResourceInfo {
 	}
 }
 
-class ArrayOfExtensionResourceInfo {
+class ArrayOfExtensionResourceInfo extends phpDynamicProperties {
 	public $ExtensionResourceInfo; //ExtensionResourceInfo
 
 	function __construct($ExtensionResourceInfo = null) {
@@ -1512,7 +1525,7 @@ class ArrayOfExtensionResourceInfo {
 	}
 }
 
-class ExtensionHealthInfo {
+class ExtensionHealthInfo extends phpDynamicProperties {
 	public $url; //string
 
 	function __construct($url = null) {
@@ -1520,7 +1533,7 @@ class ExtensionHealthInfo {
 	}
 }
 
-class ExtensionOvfConsumerInfo {
+class ExtensionOvfConsumerInfo extends phpDynamicProperties {
 	public $callbackUrl; //string
 	public $sectionType; //string
 
@@ -1530,7 +1543,7 @@ class ExtensionOvfConsumerInfo {
 	}
 }
 
-class Extension {
+class Extension extends phpDynamicProperties {
 	public $description; //Description
 	public $key; //string
 	public $company; //string
@@ -1576,7 +1589,7 @@ class Extension {
 	}
 }
 
-class ArrayOfExtension {
+class ArrayOfExtension extends phpDynamicProperties {
 	public $Extension; //Extension
 
 	function __construct($Extension = null) {
@@ -1584,7 +1597,7 @@ class ArrayOfExtension {
 	}
 }
 
-class ReplicationVmProgressInfo {
+class ReplicationVmProgressInfo extends phpDynamicProperties {
 	public $progress; //int
 	public $bytesTransferred; //long
 	public $bytesToTransfer; //long
@@ -1600,7 +1613,7 @@ class ReplicationVmProgressInfo {
 	}
 }
 
-class HbrManagerReplicationVmInfo {
+class HbrManagerReplicationVmInfo extends phpDynamicProperties {
 	public $state; //string
 	public $progressInfo; //ReplicationVmProgressInfo
 	public $imageId; //string
@@ -1614,7 +1627,7 @@ class HbrManagerReplicationVmInfo {
 	}
 }
 
-class HostServiceTicket {
+class HostServiceTicket extends phpDynamicProperties {
 	public $host; //string
 	public $port; //int
 	public $sslThumbprint; //string
@@ -1632,7 +1645,7 @@ class HostServiceTicket {
 	}
 }
 
-class HostSystemReconnectSpec {
+class HostSystemReconnectSpec extends phpDynamicProperties {
 	public $syncState; //boolean
 
 	function __construct($syncState = null) {
@@ -1640,7 +1653,7 @@ class HostSystemReconnectSpec {
 	}
 }
 
-class HttpNfcLeaseDatastoreLeaseInfo {
+class HttpNfcLeaseDatastoreLeaseInfo extends phpDynamicProperties {
 	public $datastoreKey; //string
 	public $hosts; //HttpNfcLeaseHostInfo
 
@@ -1650,7 +1663,7 @@ class HttpNfcLeaseDatastoreLeaseInfo {
 	}
 }
 
-class ArrayOfHttpNfcLeaseDatastoreLeaseInfo {
+class ArrayOfHttpNfcLeaseDatastoreLeaseInfo extends phpDynamicProperties {
 	public $HttpNfcLeaseDatastoreLeaseInfo; //HttpNfcLeaseDatastoreLeaseInfo
 
 	function __construct($HttpNfcLeaseDatastoreLeaseInfo = null) {
@@ -1658,7 +1671,7 @@ class ArrayOfHttpNfcLeaseDatastoreLeaseInfo {
 	}
 }
 
-class HttpNfcLeaseHostInfo {
+class HttpNfcLeaseHostInfo extends phpDynamicProperties {
 	public $url; //string
 	public $sslThumbprint; //string
 
@@ -1668,7 +1681,7 @@ class HttpNfcLeaseHostInfo {
 	}
 }
 
-class ArrayOfHttpNfcLeaseHostInfo {
+class ArrayOfHttpNfcLeaseHostInfo extends phpDynamicProperties {
 	public $HttpNfcLeaseHostInfo; //HttpNfcLeaseHostInfo
 
 	function __construct($HttpNfcLeaseHostInfo = null) {
@@ -1676,7 +1689,7 @@ class ArrayOfHttpNfcLeaseHostInfo {
 	}
 }
 
-class HttpNfcLeaseInfo {
+class HttpNfcLeaseInfo extends phpDynamicProperties {
 	public $lease; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $deviceUrl; //HttpNfcLeaseDeviceUrl
@@ -1694,7 +1707,7 @@ class HttpNfcLeaseInfo {
 	}
 }
 
-class HttpNfcLeaseDeviceUrl {
+class HttpNfcLeaseDeviceUrl extends phpDynamicProperties {
 	public $key; //string
 	public $importKey; //string
 	public $url; //string
@@ -1716,7 +1729,7 @@ class HttpNfcLeaseDeviceUrl {
 	}
 }
 
-class ArrayOfHttpNfcLeaseDeviceUrl {
+class ArrayOfHttpNfcLeaseDeviceUrl extends phpDynamicProperties {
 	public $HttpNfcLeaseDeviceUrl; //HttpNfcLeaseDeviceUrl
 
 	function __construct($HttpNfcLeaseDeviceUrl = null) {
@@ -1724,7 +1737,7 @@ class ArrayOfHttpNfcLeaseDeviceUrl {
 	}
 }
 
-class HttpNfcLeaseManifestEntry {
+class HttpNfcLeaseManifestEntry extends phpDynamicProperties {
 	public $key; //string
 	public $sha1; //string
 	public $size; //long
@@ -1742,7 +1755,7 @@ class HttpNfcLeaseManifestEntry {
 	}
 }
 
-class ArrayOfHttpNfcLeaseManifestEntry {
+class ArrayOfHttpNfcLeaseManifestEntry extends phpDynamicProperties {
 	public $HttpNfcLeaseManifestEntry; //HttpNfcLeaseManifestEntry
 
 	function __construct($HttpNfcLeaseManifestEntry = null) {
@@ -1750,7 +1763,7 @@ class ArrayOfHttpNfcLeaseManifestEntry {
 	}
 }
 
-class ImportSpec {
+class ImportSpec extends phpDynamicProperties {
 	public $entityConfig; //VAppEntityConfigInfo
 	public $instantiationOst; //OvfConsumerOstNode
 
@@ -1760,7 +1773,7 @@ class ImportSpec {
 	}
 }
 
-class ArrayOfImportSpec {
+class ArrayOfImportSpec extends phpDynamicProperties {
 	public $ImportSpec; //ImportSpec
 
 	function __construct($ImportSpec = null) {
@@ -1768,7 +1781,7 @@ class ArrayOfImportSpec {
 	}
 }
 
-class InheritablePolicy {
+class InheritablePolicy extends phpDynamicProperties {
 	public $inherited; //boolean
 
 	function __construct($inherited = null) {
@@ -1776,7 +1789,7 @@ class InheritablePolicy {
 	}
 }
 
-class IntPolicy {
+class IntPolicy extends phpDynamicProperties {
 	public $value; //int
 
 	function __construct($value = null) {
@@ -1784,7 +1797,7 @@ class IntPolicy {
 	}
 }
 
-class KeyValue {
+class KeyValue extends phpDynamicProperties {
 	public $key; //string
 	public $value; //string
 
@@ -1794,7 +1807,7 @@ class KeyValue {
 	}
 }
 
-class ArrayOfKeyValue {
+class ArrayOfKeyValue extends phpDynamicProperties {
 	public $KeyValue; //KeyValue
 
 	function __construct($KeyValue = null) {
@@ -1802,7 +1815,7 @@ class ArrayOfKeyValue {
 	}
 }
 
-class LicenseAssignmentManagerLicenseAssignment {
+class LicenseAssignmentManagerLicenseAssignment extends phpDynamicProperties {
 	public $entityId; //string
 	public $scope; //string
 	public $entityDisplayName; //string
@@ -1818,7 +1831,7 @@ class LicenseAssignmentManagerLicenseAssignment {
 	}
 }
 
-class ArrayOfLicenseAssignmentManagerLicenseAssignment {
+class ArrayOfLicenseAssignmentManagerLicenseAssignment extends phpDynamicProperties {
 	public $LicenseAssignmentManagerLicenseAssignment; //LicenseAssignmentManagerLicenseAssignment
 
 	function __construct($LicenseAssignmentManagerLicenseAssignment = null) {
@@ -1826,10 +1839,10 @@ class ArrayOfLicenseAssignmentManagerLicenseAssignment {
 	}
 }
 
-class LicenseSource {
+class LicenseSource extends phpDynamicProperties {
 }
 
-class LicenseServerSource {
+class LicenseServerSource extends phpDynamicProperties {
 	public $licenseServer; //string
 
 	function __construct($licenseServer = null) {
@@ -1837,7 +1850,7 @@ class LicenseServerSource {
 	}
 }
 
-class LocalLicenseSource {
+class LocalLicenseSource extends phpDynamicProperties {
 	public $licenseKeys; //string
 
 	function __construct($licenseKeys = null) {
@@ -1845,7 +1858,7 @@ class LocalLicenseSource {
 	}
 }
 
-class EvaluationLicenseSource {
+class EvaluationLicenseSource extends phpDynamicProperties {
 	public $remainingHours; //long
 
 	function __construct($remainingHours = null) {
@@ -1853,7 +1866,7 @@ class EvaluationLicenseSource {
 	}
 }
 
-class LicenseFeatureInfo {
+class LicenseFeatureInfo extends phpDynamicProperties {
 	public $key; //string
 	public $featureName; //string
 	public $featureDescription; //string
@@ -1877,7 +1890,7 @@ class LicenseFeatureInfo {
 	}
 }
 
-class ArrayOfLicenseFeatureInfo {
+class ArrayOfLicenseFeatureInfo extends phpDynamicProperties {
 	public $LicenseFeatureInfo; //LicenseFeatureInfo
 
 	function __construct($LicenseFeatureInfo = null) {
@@ -1885,7 +1898,7 @@ class ArrayOfLicenseFeatureInfo {
 	}
 }
 
-class LicenseReservationInfo {
+class LicenseReservationInfo extends phpDynamicProperties {
 	public $key; //string
 	public $state; //LicenseReservationInfoState
 	public $required; //int
@@ -1897,7 +1910,7 @@ class LicenseReservationInfo {
 	}
 }
 
-class ArrayOfLicenseReservationInfo {
+class ArrayOfLicenseReservationInfo extends phpDynamicProperties {
 	public $LicenseReservationInfo; //LicenseReservationInfo
 
 	function __construct($LicenseReservationInfo = null) {
@@ -1905,7 +1918,7 @@ class ArrayOfLicenseReservationInfo {
 	}
 }
 
-class LicenseAvailabilityInfo {
+class LicenseAvailabilityInfo extends phpDynamicProperties {
 	public $feature; //LicenseFeatureInfo
 	public $total; //int
 	public $available; //int
@@ -1917,7 +1930,7 @@ class LicenseAvailabilityInfo {
 	}
 }
 
-class ArrayOfLicenseAvailabilityInfo {
+class ArrayOfLicenseAvailabilityInfo extends phpDynamicProperties {
 	public $LicenseAvailabilityInfo; //LicenseAvailabilityInfo
 
 	function __construct($LicenseAvailabilityInfo = null) {
@@ -1925,7 +1938,7 @@ class ArrayOfLicenseAvailabilityInfo {
 	}
 }
 
-class LicenseDiagnostics {
+class LicenseDiagnostics extends phpDynamicProperties {
 	public $sourceLastChanged; //dateTime
 	public $sourceLost; //string
 	public $sourceLatency; //float
@@ -1949,7 +1962,7 @@ class LicenseDiagnostics {
 	}
 }
 
-class LicenseUsageInfo {
+class LicenseUsageInfo extends phpDynamicProperties {
 	public $source; //LicenseSource
 	public $sourceAvailable; //boolean
 	public $reservationInfo; //LicenseReservationInfo
@@ -1963,7 +1976,7 @@ class LicenseUsageInfo {
 	}
 }
 
-class LicenseManagerEvaluationInfo {
+class LicenseManagerEvaluationInfo extends phpDynamicProperties {
 	public $properties; //KeyAnyValue
 
 	function __construct($properties = null) {
@@ -1971,7 +1984,7 @@ class LicenseManagerEvaluationInfo {
 	}
 }
 
-class HostLicensableResourceInfo {
+class HostLicensableResourceInfo extends phpDynamicProperties {
 	public $resource; //KeyAnyValue
 
 	function __construct($resource = null) {
@@ -1979,7 +1992,7 @@ class HostLicensableResourceInfo {
 	}
 }
 
-class LicenseManagerLicenseInfo {
+class LicenseManagerLicenseInfo extends phpDynamicProperties {
 	public $licenseKey; //string
 	public $editionKey; //string
 	public $name; //string
@@ -2001,7 +2014,7 @@ class LicenseManagerLicenseInfo {
 	}
 }
 
-class ArrayOfLicenseManagerLicenseInfo {
+class ArrayOfLicenseManagerLicenseInfo extends phpDynamicProperties {
 	public $LicenseManagerLicenseInfo; //LicenseManagerLicenseInfo
 
 	function __construct($LicenseManagerLicenseInfo = null) {
@@ -2009,7 +2022,7 @@ class ArrayOfLicenseManagerLicenseInfo {
 	}
 }
 
-class LocalizationManagerMessageCatalog {
+class LocalizationManagerMessageCatalog extends phpDynamicProperties {
 	public $moduleName; //string
 	public $catalogName; //string
 	public $locale; //string
@@ -2029,7 +2042,7 @@ class LocalizationManagerMessageCatalog {
 	}
 }
 
-class ArrayOfLocalizationManagerMessageCatalog {
+class ArrayOfLocalizationManagerMessageCatalog extends phpDynamicProperties {
 	public $LocalizationManagerMessageCatalog; //LocalizationManagerMessageCatalog
 
 	function __construct($LocalizationManagerMessageCatalog = null) {
@@ -2037,7 +2050,7 @@ class ArrayOfLocalizationManagerMessageCatalog {
 	}
 }
 
-class LongPolicy {
+class LongPolicy extends phpDynamicProperties {
 	public $value; //long
 
 	function __construct($value = null) {
@@ -2045,7 +2058,7 @@ class LongPolicy {
 	}
 }
 
-class MethodDescription {
+class MethodDescription extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -2053,7 +2066,7 @@ class MethodDescription {
 	}
 }
 
-class NetworkSummary {
+class NetworkSummary extends phpDynamicProperties {
 	public $network; //ManagedObjectReference
 	public $name; //string
 	public $accessible; //boolean
@@ -2067,7 +2080,7 @@ class NetworkSummary {
 	}
 }
 
-class NumericRange {
+class NumericRange extends phpDynamicProperties {
 	public $start; //int
 	public $end; //int
 
@@ -2077,7 +2090,7 @@ class NumericRange {
 	}
 }
 
-class ArrayOfNumericRange {
+class ArrayOfNumericRange extends phpDynamicProperties {
 	public $NumericRange; //NumericRange
 
 	function __construct($NumericRange = null) {
@@ -2085,7 +2098,7 @@ class ArrayOfNumericRange {
 	}
 }
 
-class OvfConsumerOvfSection {
+class OvfConsumerOvfSection extends phpDynamicProperties {
 	public $lineNumber; //int
 	public $xml; //string
 
@@ -2095,7 +2108,7 @@ class OvfConsumerOvfSection {
 	}
 }
 
-class ArrayOfOvfConsumerOvfSection {
+class ArrayOfOvfConsumerOvfSection extends phpDynamicProperties {
 	public $OvfConsumerOvfSection; //OvfConsumerOvfSection
 
 	function __construct($OvfConsumerOvfSection = null) {
@@ -2103,7 +2116,7 @@ class ArrayOfOvfConsumerOvfSection {
 	}
 }
 
-class OvfConsumerOstNode {
+class OvfConsumerOstNode extends phpDynamicProperties {
 	public $id; //string
 	public $type; //string
 	public $section; //OvfConsumerOvfSection
@@ -2119,7 +2132,7 @@ class OvfConsumerOstNode {
 	}
 }
 
-class ArrayOfOvfConsumerOstNode {
+class ArrayOfOvfConsumerOstNode extends phpDynamicProperties {
 	public $OvfConsumerOstNode; //OvfConsumerOstNode
 
 	function __construct($OvfConsumerOstNode = null) {
@@ -2127,7 +2140,7 @@ class ArrayOfOvfConsumerOstNode {
 	}
 }
 
-class OvfDeploymentOption {
+class OvfDeploymentOption extends phpDynamicProperties {
 	public $key; //string
 	public $label; //string
 	public $description; //string
@@ -2139,7 +2152,7 @@ class OvfDeploymentOption {
 	}
 }
 
-class ArrayOfOvfDeploymentOption {
+class ArrayOfOvfDeploymentOption extends phpDynamicProperties {
 	public $OvfDeploymentOption; //OvfDeploymentOption
 
 	function __construct($OvfDeploymentOption = null) {
@@ -2147,7 +2160,7 @@ class ArrayOfOvfDeploymentOption {
 	}
 }
 
-class OvfManagerCommonParams {
+class OvfManagerCommonParams extends phpDynamicProperties {
 	public $locale; //string
 	public $deploymentOption; //string
 	public $msgBundle; //KeyValue
@@ -2159,10 +2172,10 @@ class OvfManagerCommonParams {
 	}
 }
 
-class OvfValidateHostParams {
+class OvfValidateHostParams extends phpDynamicProperties {
 }
 
-class OvfValidateHostResult {
+class OvfValidateHostResult extends phpDynamicProperties {
 	public $downloadSize; //long
 	public $flatDeploymentSize; //long
 	public $sparseDeploymentSize; //long
@@ -2180,10 +2193,10 @@ class OvfValidateHostResult {
 	}
 }
 
-class OvfParseDescriptorParams {
+class OvfParseDescriptorParams extends phpDynamicProperties {
 }
 
-class OvfParseDescriptorResult {
+class OvfParseDescriptorResult extends phpDynamicProperties {
 	public $eula; //string
 	public $network; //OvfNetworkInfo
 	public $ipAllocationScheme; //string
@@ -2225,7 +2238,7 @@ class OvfParseDescriptorResult {
 	}
 }
 
-class OvfNetworkInfo {
+class OvfNetworkInfo extends phpDynamicProperties {
 	public $name; //string
 	public $description; //string
 
@@ -2235,7 +2248,7 @@ class OvfNetworkInfo {
 	}
 }
 
-class ArrayOfOvfNetworkInfo {
+class ArrayOfOvfNetworkInfo extends phpDynamicProperties {
 	public $OvfNetworkInfo; //OvfNetworkInfo
 
 	function __construct($OvfNetworkInfo = null) {
@@ -2243,7 +2256,7 @@ class ArrayOfOvfNetworkInfo {
 	}
 }
 
-class OvfCreateImportSpecParams {
+class OvfCreateImportSpecParams extends phpDynamicProperties {
 	public $entityName; //string
 	public $hostSystem; //ManagedObjectReference
 	public $networkMapping; //OvfNetworkMapping
@@ -2267,7 +2280,7 @@ class OvfCreateImportSpecParams {
 	}
 }
 
-class OvfResourceMap {
+class OvfResourceMap extends phpDynamicProperties {
 	public $source; //string
 	public $parent; //ManagedObjectReference
 	public $resourceSpec; //ResourceConfigSpec
@@ -2281,7 +2294,7 @@ class OvfResourceMap {
 	}
 }
 
-class ArrayOfOvfResourceMap {
+class ArrayOfOvfResourceMap extends phpDynamicProperties {
 	public $OvfResourceMap; //OvfResourceMap
 
 	function __construct($OvfResourceMap = null) {
@@ -2289,7 +2302,7 @@ class ArrayOfOvfResourceMap {
 	}
 }
 
-class OvfNetworkMapping {
+class OvfNetworkMapping extends phpDynamicProperties {
 	public $name; //string
 	public $network; //ManagedObjectReference
 
@@ -2299,7 +2312,7 @@ class OvfNetworkMapping {
 	}
 }
 
-class ArrayOfOvfNetworkMapping {
+class ArrayOfOvfNetworkMapping extends phpDynamicProperties {
 	public $OvfNetworkMapping; //OvfNetworkMapping
 
 	function __construct($OvfNetworkMapping = null) {
@@ -2307,7 +2320,7 @@ class ArrayOfOvfNetworkMapping {
 	}
 }
 
-class OvfCreateImportSpecResult {
+class OvfCreateImportSpecResult extends phpDynamicProperties {
 	public $importSpec; //ImportSpec
 	public $fileItem; //OvfFileItem
 	public $warning; //LocalizedMethodFault
@@ -2321,7 +2334,7 @@ class OvfCreateImportSpecResult {
 	}
 }
 
-class OvfFileItem {
+class OvfFileItem extends phpDynamicProperties {
 	public $deviceId; //string
 	public $path; //string
 	public $compressionMethod; //string
@@ -2341,7 +2354,7 @@ class OvfFileItem {
 	}
 }
 
-class ArrayOfOvfFileItem {
+class ArrayOfOvfFileItem extends phpDynamicProperties {
 	public $OvfFileItem; //OvfFileItem
 
 	function __construct($OvfFileItem = null) {
@@ -2349,7 +2362,7 @@ class ArrayOfOvfFileItem {
 	}
 }
 
-class OvfCreateDescriptorParams {
+class OvfCreateDescriptorParams extends phpDynamicProperties {
 	public $ovfFiles; //OvfFile
 	public $name; //string
 	public $description; //string
@@ -2363,7 +2376,7 @@ class OvfCreateDescriptorParams {
 	}
 }
 
-class OvfCreateDescriptorResult {
+class OvfCreateDescriptorResult extends phpDynamicProperties {
 	public $ovfDescriptor; //string
 	public $error; //LocalizedMethodFault
 	public $warning; //LocalizedMethodFault
@@ -2377,7 +2390,7 @@ class OvfCreateDescriptorResult {
 	}
 }
 
-class OvfFile {
+class OvfFile extends phpDynamicProperties {
 	public $deviceId; //string
 	public $path; //string
 	public $compressionMethod; //string
@@ -2397,7 +2410,7 @@ class OvfFile {
 	}
 }
 
-class ArrayOfOvfFile {
+class ArrayOfOvfFile extends phpDynamicProperties {
 	public $OvfFile; //OvfFile
 
 	function __construct($OvfFile = null) {
@@ -2405,7 +2418,7 @@ class ArrayOfOvfFile {
 	}
 }
 
-class PasswordField {
+class PasswordField extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -2413,7 +2426,7 @@ class PasswordField {
 	}
 }
 
-class PerformanceDescription {
+class PerformanceDescription extends phpDynamicProperties {
 	public $counterType; //ElementDescription
 	public $statsType; //ElementDescription
 
@@ -2423,7 +2436,7 @@ class PerformanceDescription {
 	}
 }
 
-class PerfProviderSummary {
+class PerfProviderSummary extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $currentSupported; //boolean
 	public $summarySupported; //boolean
@@ -2437,7 +2450,7 @@ class PerfProviderSummary {
 	}
 }
 
-class PerfCounterInfo {
+class PerfCounterInfo extends phpDynamicProperties {
 	public $key; //int
 	public $nameInfo; //ElementDescription
 	public $groupInfo; //ElementDescription
@@ -2461,7 +2474,7 @@ class PerfCounterInfo {
 	}
 }
 
-class ArrayOfPerfCounterInfo {
+class ArrayOfPerfCounterInfo extends phpDynamicProperties {
 	public $PerfCounterInfo; //PerfCounterInfo
 
 	function __construct($PerfCounterInfo = null) {
@@ -2469,7 +2482,7 @@ class ArrayOfPerfCounterInfo {
 	}
 }
 
-class PerfMetricId {
+class PerfMetricId extends phpDynamicProperties {
 	public $counterId; //int
 	public $instance; //string
 
@@ -2479,7 +2492,7 @@ class PerfMetricId {
 	}
 }
 
-class ArrayOfPerfMetricId {
+class ArrayOfPerfMetricId extends phpDynamicProperties {
 	public $PerfMetricId; //PerfMetricId
 
 	function __construct($PerfMetricId = null) {
@@ -2487,7 +2500,7 @@ class ArrayOfPerfMetricId {
 	}
 }
 
-class PerfQuerySpec {
+class PerfQuerySpec extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $startTime; //dateTime
 	public $endTime; //dateTime
@@ -2507,7 +2520,7 @@ class PerfQuerySpec {
 	}
 }
 
-class ArrayOfPerfQuerySpec {
+class ArrayOfPerfQuerySpec extends phpDynamicProperties {
 	public $PerfQuerySpec; //PerfQuerySpec
 
 	function __construct($PerfQuerySpec = null) {
@@ -2515,7 +2528,7 @@ class ArrayOfPerfQuerySpec {
 	}
 }
 
-class PerfSampleInfo {
+class PerfSampleInfo extends phpDynamicProperties {
 	public $timestamp; //dateTime
 	public $interval; //int
 
@@ -2525,7 +2538,7 @@ class PerfSampleInfo {
 	}
 }
 
-class ArrayOfPerfSampleInfo {
+class ArrayOfPerfSampleInfo extends phpDynamicProperties {
 	public $PerfSampleInfo; //PerfSampleInfo
 
 	function __construct($PerfSampleInfo = null) {
@@ -2533,7 +2546,7 @@ class ArrayOfPerfSampleInfo {
 	}
 }
 
-class PerfMetricSeries {
+class PerfMetricSeries extends phpDynamicProperties {
 	public $id; //PerfMetricId
 
 	function __construct($id = null) {
@@ -2541,7 +2554,7 @@ class PerfMetricSeries {
 	}
 }
 
-class ArrayOfPerfMetricSeries {
+class ArrayOfPerfMetricSeries extends phpDynamicProperties {
 	public $PerfMetricSeries; //PerfMetricSeries
 
 	function __construct($PerfMetricSeries = null) {
@@ -2549,7 +2562,7 @@ class ArrayOfPerfMetricSeries {
 	}
 }
 
-class PerfMetricIntSeries {
+class PerfMetricIntSeries extends phpDynamicProperties {
 	public $value; //long
 
 	function __construct($value = null) {
@@ -2557,7 +2570,7 @@ class PerfMetricIntSeries {
 	}
 }
 
-class PerfMetricSeriesCSV {
+class PerfMetricSeriesCSV extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -2565,7 +2578,7 @@ class PerfMetricSeriesCSV {
 	}
 }
 
-class ArrayOfPerfMetricSeriesCSV {
+class ArrayOfPerfMetricSeriesCSV extends phpDynamicProperties {
 	public $PerfMetricSeriesCSV; //PerfMetricSeriesCSV
 
 	function __construct($PerfMetricSeriesCSV = null) {
@@ -2573,7 +2586,7 @@ class ArrayOfPerfMetricSeriesCSV {
 	}
 }
 
-class PerfEntityMetricBase {
+class PerfEntityMetricBase extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 
 	function __construct($entity = null) {
@@ -2581,7 +2594,7 @@ class PerfEntityMetricBase {
 	}
 }
 
-class ArrayOfPerfEntityMetricBase {
+class ArrayOfPerfEntityMetricBase extends phpDynamicProperties {
 	public $PerfEntityMetricBase; //PerfEntityMetricBase
 
 	function __construct($PerfEntityMetricBase = null) {
@@ -2589,7 +2602,7 @@ class ArrayOfPerfEntityMetricBase {
 	}
 }
 
-class PerfEntityMetric {
+class PerfEntityMetric extends phpDynamicProperties {
 	public $sampleInfo; //PerfSampleInfo
 	public $value; //PerfMetricSeries
 
@@ -2599,7 +2612,7 @@ class PerfEntityMetric {
 	}
 }
 
-class PerfEntityMetricCSV {
+class PerfEntityMetricCSV extends phpDynamicProperties {
 	public $sampleInfoCSV; //string
 	public $value; //PerfMetricSeriesCSV
 
@@ -2609,7 +2622,7 @@ class PerfEntityMetricCSV {
 	}
 }
 
-class PerfCompositeMetric {
+class PerfCompositeMetric extends phpDynamicProperties {
 	public $entity; //PerfEntityMetricBase
 	public $childEntity; //PerfEntityMetricBase
 
@@ -2619,7 +2632,7 @@ class PerfCompositeMetric {
 	}
 }
 
-class PerformanceManagerCounterLevelMapping {
+class PerformanceManagerCounterLevelMapping extends phpDynamicProperties {
 	public $counterId; //int
 	public $aggregateLevel; //int
 	public $perDeviceLevel; //int
@@ -2631,7 +2644,7 @@ class PerformanceManagerCounterLevelMapping {
 	}
 }
 
-class ArrayOfPerformanceManagerCounterLevelMapping {
+class ArrayOfPerformanceManagerCounterLevelMapping extends phpDynamicProperties {
 	public $PerformanceManagerCounterLevelMapping; //PerformanceManagerCounterLevelMapping
 
 	function __construct($PerformanceManagerCounterLevelMapping = null) {
@@ -2639,7 +2652,7 @@ class ArrayOfPerformanceManagerCounterLevelMapping {
 	}
 }
 
-class PerfInterval {
+class PerfInterval extends phpDynamicProperties {
 	public $key; //int
 	public $samplingPeriod; //int
 	public $name; //string
@@ -2657,7 +2670,7 @@ class PerfInterval {
 	}
 }
 
-class ArrayOfPerfInterval {
+class ArrayOfPerfInterval extends phpDynamicProperties {
 	public $PerfInterval; //PerfInterval
 
 	function __construct($PerfInterval = null) {
@@ -2665,7 +2678,7 @@ class ArrayOfPerfInterval {
 	}
 }
 
-class PosixUserSearchResult {
+class PosixUserSearchResult extends phpDynamicProperties {
 	public $id; //int
 	public $shellAccess; //boolean
 
@@ -2675,7 +2688,7 @@ class PosixUserSearchResult {
 	}
 }
 
-class PrivilegePolicyDef {
+class PrivilegePolicyDef extends phpDynamicProperties {
 	public $createPrivilege; //string
 	public $readPrivilege; //string
 	public $updatePrivilege; //string
@@ -2689,7 +2702,7 @@ class PrivilegePolicyDef {
 	}
 }
 
-class ResourceAllocationInfo {
+class ResourceAllocationInfo extends phpDynamicProperties {
 	public $reservation; //long
 	public $expandableReservation; //boolean
 	public $limit; //long
@@ -2705,7 +2718,7 @@ class ResourceAllocationInfo {
 	}
 }
 
-class ResourceAllocationOption {
+class ResourceAllocationOption extends phpDynamicProperties {
 	public $sharesOption; //SharesOption
 
 	function __construct($sharesOption = null) {
@@ -2713,7 +2726,7 @@ class ResourceAllocationOption {
 	}
 }
 
-class ResourceConfigOption {
+class ResourceConfigOption extends phpDynamicProperties {
 	public $cpuAllocationOption; //ResourceAllocationOption
 	public $memoryAllocationOption; //ResourceAllocationOption
 
@@ -2723,7 +2736,7 @@ class ResourceConfigOption {
 	}
 }
 
-class ResourceConfigSpec {
+class ResourceConfigSpec extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $changeVersion; //string
 	public $lastModified; //dateTime
@@ -2739,7 +2752,7 @@ class ResourceConfigSpec {
 	}
 }
 
-class ArrayOfResourceConfigSpec {
+class ArrayOfResourceConfigSpec extends phpDynamicProperties {
 	public $ResourceConfigSpec; //ResourceConfigSpec
 
 	function __construct($ResourceConfigSpec = null) {
@@ -2747,7 +2760,7 @@ class ArrayOfResourceConfigSpec {
 	}
 }
 
-class DatabaseSizeParam {
+class DatabaseSizeParam extends phpDynamicProperties {
 	public $inventoryDesc; //InventoryDescription
 	public $perfStatsDesc; //PerformanceStatisticsDescription
 
@@ -2757,7 +2770,7 @@ class DatabaseSizeParam {
 	}
 }
 
-class InventoryDescription {
+class InventoryDescription extends phpDynamicProperties {
 	public $numHosts; //int
 	public $numVirtualMachines; //int
 	public $numResourcePools; //int
@@ -2783,7 +2796,7 @@ class InventoryDescription {
 	}
 }
 
-class PerformanceStatisticsDescription {
+class PerformanceStatisticsDescription extends phpDynamicProperties {
 	public $intervals; //PerfInterval
 
 	function __construct($intervals = null) {
@@ -2791,7 +2804,7 @@ class PerformanceStatisticsDescription {
 	}
 }
 
-class DatabaseSizeEstimate {
+class DatabaseSizeEstimate extends phpDynamicProperties {
 	public $size; //long
 
 	function __construct($size = null) {
@@ -2799,7 +2812,7 @@ class DatabaseSizeEstimate {
 	}
 }
 
-class ResourcePoolResourceUsage {
+class ResourcePoolResourceUsage extends phpDynamicProperties {
 	public $reservationUsed; //long
 	public $reservationUsedForVm; //long
 	public $unreservedForPool; //long
@@ -2817,7 +2830,7 @@ class ResourcePoolResourceUsage {
 	}
 }
 
-class ResourcePoolRuntimeInfo {
+class ResourcePoolRuntimeInfo extends phpDynamicProperties {
 	public $memory; //ResourcePoolResourceUsage
 	public $cpu; //ResourcePoolResourceUsage
 	public $overallStatus; //ManagedEntityStatus
@@ -2829,7 +2842,7 @@ class ResourcePoolRuntimeInfo {
 	}
 }
 
-class ResourcePoolQuickStats {
+class ResourcePoolQuickStats extends phpDynamicProperties {
 	public $overallCpuUsage; //long
 	public $overallCpuDemand; //long
 	public $guestMemoryUsage; //long
@@ -2865,7 +2878,7 @@ class ResourcePoolQuickStats {
 	}
 }
 
-class ResourcePoolSummary {
+class ResourcePoolSummary extends phpDynamicProperties {
 	public $name; //string
 	public $config; //ResourceConfigSpec
 	public $runtime; //ResourcePoolRuntimeInfo
@@ -2881,7 +2894,7 @@ class ResourcePoolSummary {
 	}
 }
 
-class HostVMotionCompatibility {
+class HostVMotionCompatibility extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $compatibility; //string
 
@@ -2891,7 +2904,7 @@ class HostVMotionCompatibility {
 	}
 }
 
-class ArrayOfHostVMotionCompatibility {
+class ArrayOfHostVMotionCompatibility extends phpDynamicProperties {
 	public $HostVMotionCompatibility; //HostVMotionCompatibility
 
 	function __construct($HostVMotionCompatibility = null) {
@@ -2899,7 +2912,7 @@ class ArrayOfHostVMotionCompatibility {
 	}
 }
 
-class ProductComponentInfo {
+class ProductComponentInfo extends phpDynamicProperties {
 	public $id; //string
 	public $name; //string
 	public $version; //string
@@ -2913,7 +2926,7 @@ class ProductComponentInfo {
 	}
 }
 
-class ArrayOfProductComponentInfo {
+class ArrayOfProductComponentInfo extends phpDynamicProperties {
 	public $ProductComponentInfo; //ProductComponentInfo
 
 	function __construct($ProductComponentInfo = null) {
@@ -2921,7 +2934,7 @@ class ArrayOfProductComponentInfo {
 	}
 }
 
-class ServiceContent {
+class ServiceContent extends phpDynamicProperties {
 	public $rootFolder; //ManagedObjectReference
 	public $propertyCollector; //ManagedObjectReference
 	public $viewManager; //ManagedObjectReference
@@ -2997,7 +3010,7 @@ class ServiceContent {
 	}
 }
 
-class SessionManagerLocalTicket {
+class SessionManagerLocalTicket extends phpDynamicProperties {
 	public $userName; //string
 	public $passwordFilePath; //string
 
@@ -3007,7 +3020,7 @@ class SessionManagerLocalTicket {
 	}
 }
 
-class SessionManagerGenericServiceTicket {
+class SessionManagerGenericServiceTicket extends phpDynamicProperties {
 	public $id; //string
 
 	function __construct($id = null) {
@@ -3015,10 +3028,10 @@ class SessionManagerGenericServiceTicket {
 	}
 }
 
-class SessionManagerServiceRequestSpec {
+class SessionManagerServiceRequestSpec extends phpDynamicProperties {
 }
 
-class SessionManagerHttpServiceRequestSpec {
+class SessionManagerHttpServiceRequestSpec extends phpDynamicProperties {
 	public $method; //string
 	public $url; //string
 
@@ -3028,7 +3041,7 @@ class SessionManagerHttpServiceRequestSpec {
 	}
 }
 
-class UserSession {
+class UserSession extends phpDynamicProperties {
 	public $key; //string
 	public $userName; //string
 	public $fullName; //string
@@ -3050,7 +3063,7 @@ class UserSession {
 	}
 }
 
-class ArrayOfUserSession {
+class ArrayOfUserSession extends phpDynamicProperties {
 	public $UserSession; //UserSession
 
 	function __construct($UserSession = null) {
@@ -3058,7 +3071,7 @@ class ArrayOfUserSession {
 	}
 }
 
-class SharesInfo {
+class SharesInfo extends phpDynamicProperties {
 	public $shares; //int
 	public $level; //SharesLevel
 
@@ -3068,7 +3081,7 @@ class SharesInfo {
 	}
 }
 
-class SharesOption {
+class SharesOption extends phpDynamicProperties {
 	public $sharesOption; //IntOption
 	public $defaultLevel; //SharesLevel
 
@@ -3078,7 +3091,7 @@ class SharesOption {
 	}
 }
 
-class StoragePodSummary {
+class StoragePodSummary extends phpDynamicProperties {
 	public $name; //string
 	public $capacity; //long
 	public $freeSpace; //long
@@ -3090,7 +3103,7 @@ class StoragePodSummary {
 	}
 }
 
-class StorageIOAllocationInfo {
+class StorageIOAllocationInfo extends phpDynamicProperties {
 	public $limit; //long
 	public $shares; //SharesInfo
 
@@ -3100,7 +3113,7 @@ class StorageIOAllocationInfo {
 	}
 }
 
-class StorageIOAllocationOption {
+class StorageIOAllocationOption extends phpDynamicProperties {
 	public $limitOption; //LongOption
 	public $sharesOption; //SharesOption
 
@@ -3110,7 +3123,7 @@ class StorageIOAllocationOption {
 	}
 }
 
-class StorageIORMInfo {
+class StorageIORMInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $congestionThreshold; //int
 	public $statsCollectionEnabled; //boolean
@@ -3124,7 +3137,7 @@ class StorageIORMInfo {
 	}
 }
 
-class StorageIORMConfigSpec {
+class StorageIORMConfigSpec extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $congestionThreshold; //int
 	public $statsCollectionEnabled; //boolean
@@ -3138,7 +3151,7 @@ class StorageIORMConfigSpec {
 	}
 }
 
-class StorageIORMConfigOption {
+class StorageIORMConfigOption extends phpDynamicProperties {
 	public $enabledOption; //BoolOption
 	public $congestionThresholdOption; //IntOption
 	public $statsCollectionEnabledOption; //BoolOption
@@ -3150,7 +3163,7 @@ class StorageIORMConfigOption {
 	}
 }
 
-class PodStorageDrsEntry {
+class PodStorageDrsEntry extends phpDynamicProperties {
 	public $storageDrsConfig; //StorageDrsConfigInfo
 	public $recommendation; //ClusterRecommendation
 	public $drsFault; //ClusterDrsFaults
@@ -3164,7 +3177,7 @@ class PodStorageDrsEntry {
 	}
 }
 
-class StringPolicy {
+class StringPolicy extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -3172,7 +3185,7 @@ class StringPolicy {
 	}
 }
 
-class Tag {
+class Tag extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -3180,7 +3193,7 @@ class Tag {
 	}
 }
 
-class ArrayOfTag {
+class ArrayOfTag extends phpDynamicProperties {
 	public $Tag; //Tag
 
 	function __construct($Tag = null) {
@@ -3188,7 +3201,7 @@ class ArrayOfTag {
 	}
 }
 
-class TaskDescription {
+class TaskDescription extends phpDynamicProperties {
 	public $methodInfo; //ElementDescription
 	public $state; //ElementDescription
 	public $reason; //TypeDescription
@@ -3200,7 +3213,7 @@ class TaskDescription {
 	}
 }
 
-class TaskFilterSpecByEntity {
+class TaskFilterSpecByEntity extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $recursion; //TaskFilterSpecRecursionOption
 
@@ -3210,7 +3223,7 @@ class TaskFilterSpecByEntity {
 	}
 }
 
-class TaskFilterSpecByTime {
+class TaskFilterSpecByTime extends phpDynamicProperties {
 	public $timeType; //TaskFilterSpecTimeOption
 	public $beginTime; //dateTime
 	public $endTime; //dateTime
@@ -3222,7 +3235,7 @@ class TaskFilterSpecByTime {
 	}
 }
 
-class TaskFilterSpecByUsername {
+class TaskFilterSpecByUsername extends phpDynamicProperties {
 	public $systemUser; //boolean
 	public $userList; //string
 
@@ -3232,7 +3245,7 @@ class TaskFilterSpecByUsername {
 	}
 }
 
-class TaskFilterSpec {
+class TaskFilterSpec extends phpDynamicProperties {
 	public $entity; //TaskFilterSpecByEntity
 	public $time; //TaskFilterSpecByTime
 	public $userName; //TaskFilterSpecByUsername
@@ -3258,7 +3271,7 @@ class TaskFilterSpec {
 	}
 }
 
-class ArrayOfTaskInfoState {
+class ArrayOfTaskInfoState extends phpDynamicProperties {
 	public $TaskInfoState; //TaskInfoState
 
 	function __construct($TaskInfoState = null) {
@@ -3266,7 +3279,7 @@ class ArrayOfTaskInfoState {
 	}
 }
 
-class TaskInfo {
+class TaskInfo extends phpDynamicProperties {
 	public $key; //string
 	public $task; //ManagedObjectReference
 	public $description; //LocalizableMessage
@@ -3316,7 +3329,7 @@ class TaskInfo {
 	}
 }
 
-class ArrayOfTaskInfo {
+class ArrayOfTaskInfo extends phpDynamicProperties {
 	public $TaskInfo; //TaskInfo
 
 	function __construct($TaskInfo = null) {
@@ -3324,13 +3337,13 @@ class ArrayOfTaskInfo {
 	}
 }
 
-class TaskReason {
+class TaskReason extends phpDynamicProperties {
 }
 
-class TaskReasonSystem {
+class TaskReasonSystem extends phpDynamicProperties {
 }
 
-class TaskReasonUser {
+class TaskReasonUser extends phpDynamicProperties {
 	public $userName; //string
 
 	function __construct($userName = null) {
@@ -3338,7 +3351,7 @@ class TaskReasonUser {
 	}
 }
 
-class TaskReasonAlarm {
+class TaskReasonAlarm extends phpDynamicProperties {
 	public $alarmName; //string
 	public $alarm; //ManagedObjectReference
 	public $entityName; //string
@@ -3352,7 +3365,7 @@ class TaskReasonAlarm {
 	}
 }
 
-class TaskReasonSchedule {
+class TaskReasonSchedule extends phpDynamicProperties {
 	public $name; //string
 	public $scheduledTask; //ManagedObjectReference
 
@@ -3362,7 +3375,7 @@ class TaskReasonSchedule {
 	}
 }
 
-class TypeDescription {
+class TypeDescription extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -3370,7 +3383,7 @@ class TypeDescription {
 	}
 }
 
-class ArrayOfTypeDescription {
+class ArrayOfTypeDescription extends phpDynamicProperties {
 	public $TypeDescription; //TypeDescription
 
 	function __construct($TypeDescription = null) {
@@ -3378,7 +3391,7 @@ class ArrayOfTypeDescription {
 	}
 }
 
-class UpdateVirtualMachineFilesResultFailedVmFileInfo {
+class UpdateVirtualMachineFilesResultFailedVmFileInfo extends phpDynamicProperties {
 	public $vmFile; //string
 	public $fault; //LocalizedMethodFault
 
@@ -3388,7 +3401,7 @@ class UpdateVirtualMachineFilesResultFailedVmFileInfo {
 	}
 }
 
-class ArrayOfUpdateVirtualMachineFilesResultFailedVmFileInfo {
+class ArrayOfUpdateVirtualMachineFilesResultFailedVmFileInfo extends phpDynamicProperties {
 	public $UpdateVirtualMachineFilesResultFailedVmFileInfo; //UpdateVirtualMachineFilesResultFailedVmFileInfo
 
 	function __construct($UpdateVirtualMachineFilesResultFailedVmFileInfo = null) {
@@ -3396,7 +3409,7 @@ class ArrayOfUpdateVirtualMachineFilesResultFailedVmFileInfo {
 	}
 }
 
-class UpdateVirtualMachineFilesResult {
+class UpdateVirtualMachineFilesResult extends phpDynamicProperties {
 	public $failedVmFile; //UpdateVirtualMachineFilesResultFailedVmFileInfo
 
 	function __construct($failedVmFile = null) {
@@ -3404,7 +3417,7 @@ class UpdateVirtualMachineFilesResult {
 	}
 }
 
-class UserSearchResult {
+class UserSearchResult extends phpDynamicProperties {
 	public $principal; //string
 	public $fullName; //string
 	public $group; //boolean
@@ -3416,7 +3429,7 @@ class UserSearchResult {
 	}
 }
 
-class ArrayOfUserSearchResult {
+class ArrayOfUserSearchResult extends phpDynamicProperties {
 	public $UserSearchResult; //UserSearchResult
 
 	function __construct($UserSearchResult = null) {
@@ -3424,7 +3437,7 @@ class ArrayOfUserSearchResult {
 	}
 }
 
-class VirtualAppSummary {
+class VirtualAppSummary extends phpDynamicProperties {
 	public $product; //VAppProductInfo
 	public $vAppState; //VirtualAppVAppState
 	public $suspended; //boolean
@@ -3440,7 +3453,7 @@ class VirtualAppSummary {
 	}
 }
 
-class VirtualAppLinkInfo {
+class VirtualAppLinkInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $destroyWithParent; //boolean
 
@@ -3450,7 +3463,7 @@ class VirtualAppLinkInfo {
 	}
 }
 
-class ArrayOfVirtualAppLinkInfo {
+class ArrayOfVirtualAppLinkInfo extends phpDynamicProperties {
 	public $VirtualAppLinkInfo; //VirtualAppLinkInfo
 
 	function __construct($VirtualAppLinkInfo = null) {
@@ -3458,7 +3471,7 @@ class ArrayOfVirtualAppLinkInfo {
 	}
 }
 
-class VirtualDiskSpec {
+class VirtualDiskSpec extends phpDynamicProperties {
 	public $diskType; //string
 	public $adapterType; //string
 
@@ -3468,7 +3481,7 @@ class VirtualDiskSpec {
 	}
 }
 
-class FileBackedVirtualDiskSpec {
+class FileBackedVirtualDiskSpec extends phpDynamicProperties {
 	public $capacityKb; //long
 
 	function __construct($capacityKb = null) {
@@ -3476,7 +3489,7 @@ class FileBackedVirtualDiskSpec {
 	}
 }
 
-class DeviceBackedVirtualDiskSpec {
+class DeviceBackedVirtualDiskSpec extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -3484,7 +3497,7 @@ class DeviceBackedVirtualDiskSpec {
 	}
 }
 
-class StorageRequirement {
+class StorageRequirement extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $freeSpaceRequiredInKb; //long
 
@@ -3494,7 +3507,7 @@ class StorageRequirement {
 	}
 }
 
-class ArrayOfStorageRequirement {
+class ArrayOfStorageRequirement extends phpDynamicProperties {
 	public $StorageRequirement; //StorageRequirement
 
 	function __construct($StorageRequirement = null) {
@@ -3502,7 +3515,7 @@ class ArrayOfStorageRequirement {
 	}
 }
 
-class VirtualMachineTicket {
+class VirtualMachineTicket extends phpDynamicProperties {
 	public $ticket; //string
 	public $cfgFile; //string
 	public $host; //string
@@ -3518,7 +3531,7 @@ class VirtualMachineTicket {
 	}
 }
 
-class VirtualMachineMksTicket {
+class VirtualMachineMksTicket extends phpDynamicProperties {
 	public $ticket; //string
 	public $cfgFile; //string
 	public $host; //string
@@ -3534,7 +3547,7 @@ class VirtualMachineMksTicket {
 	}
 }
 
-class VirtualMachineDisplayTopology {
+class VirtualMachineDisplayTopology extends phpDynamicProperties {
 	public $x; //int
 	public $y; //int
 	public $width; //int
@@ -3548,7 +3561,7 @@ class VirtualMachineDisplayTopology {
 	}
 }
 
-class ArrayOfVirtualMachineDisplayTopology {
+class ArrayOfVirtualMachineDisplayTopology extends phpDynamicProperties {
 	public $VirtualMachineDisplayTopology; //VirtualMachineDisplayTopology
 
 	function __construct($VirtualMachineDisplayTopology = null) {
@@ -3556,7 +3569,7 @@ class ArrayOfVirtualMachineDisplayTopology {
 	}
 }
 
-class DiskChangeExtent {
+class DiskChangeExtent extends phpDynamicProperties {
 	public $start; //long
 	public $length; //long
 
@@ -3566,7 +3579,7 @@ class DiskChangeExtent {
 	}
 }
 
-class ArrayOfDiskChangeExtent {
+class ArrayOfDiskChangeExtent extends phpDynamicProperties {
 	public $DiskChangeExtent; //DiskChangeExtent
 
 	function __construct($DiskChangeExtent = null) {
@@ -3574,7 +3587,7 @@ class ArrayOfDiskChangeExtent {
 	}
 }
 
-class DiskChangeInfo {
+class DiskChangeInfo extends phpDynamicProperties {
 	public $startOffset; //long
 	public $length; //long
 	public $changedArea; //DiskChangeExtent
@@ -3586,10 +3599,10 @@ class DiskChangeInfo {
 	}
 }
 
-class Action {
+class Action extends phpDynamicProperties {
 }
 
-class MethodActionArgument {
+class MethodActionArgument extends phpDynamicProperties {
 	public $value; //anyType
 
 	function __construct($value = null) {
@@ -3597,7 +3610,7 @@ class MethodActionArgument {
 	}
 }
 
-class ArrayOfMethodActionArgument {
+class ArrayOfMethodActionArgument extends phpDynamicProperties {
 	public $MethodActionArgument; //MethodActionArgument
 
 	function __construct($MethodActionArgument = null) {
@@ -3605,7 +3618,7 @@ class ArrayOfMethodActionArgument {
 	}
 }
 
-class MethodAction {
+class MethodAction extends phpDynamicProperties {
 	public $name; //string
 	public $argument; //MethodActionArgument
 
@@ -3615,7 +3628,7 @@ class MethodAction {
 	}
 }
 
-class SendEmailAction {
+class SendEmailAction extends phpDynamicProperties {
 	public $toList; //string
 	public $ccList; //string
 	public $subject; //string
@@ -3629,10 +3642,10 @@ class SendEmailAction {
 	}
 }
 
-class SendSNMPAction {
+class SendSNMPAction extends phpDynamicProperties {
 }
 
-class RunScriptAction {
+class RunScriptAction extends phpDynamicProperties {
 	public $script; //string
 
 	function __construct($script = null) {
@@ -3640,7 +3653,7 @@ class RunScriptAction {
 	}
 }
 
-class CreateTaskAction {
+class CreateTaskAction extends phpDynamicProperties {
 	public $taskTypeId; //string
 	public $cancelable; //boolean
 
@@ -3650,10 +3663,10 @@ class CreateTaskAction {
 	}
 }
 
-class AlarmAction {
+class AlarmAction extends phpDynamicProperties {
 }
 
-class ArrayOfAlarmAction {
+class ArrayOfAlarmAction extends phpDynamicProperties {
 	public $AlarmAction; //AlarmAction
 
 	function __construct($AlarmAction = null) {
@@ -3661,7 +3674,7 @@ class ArrayOfAlarmAction {
 	}
 }
 
-class AlarmTriggeringActionTransitionSpec {
+class AlarmTriggeringActionTransitionSpec extends phpDynamicProperties {
 	public $startState; //ManagedEntityStatus
 	public $finalState; //ManagedEntityStatus
 	public $repeats; //boolean
@@ -3673,7 +3686,7 @@ class AlarmTriggeringActionTransitionSpec {
 	}
 }
 
-class ArrayOfAlarmTriggeringActionTransitionSpec {
+class ArrayOfAlarmTriggeringActionTransitionSpec extends phpDynamicProperties {
 	public $AlarmTriggeringActionTransitionSpec; //AlarmTriggeringActionTransitionSpec
 
 	function __construct($AlarmTriggeringActionTransitionSpec = null) {
@@ -3681,7 +3694,7 @@ class ArrayOfAlarmTriggeringActionTransitionSpec {
 	}
 }
 
-class AlarmTriggeringAction {
+class AlarmTriggeringAction extends phpDynamicProperties {
 	public $action; //Action
 	public $transitionSpecs; //AlarmTriggeringActionTransitionSpec
 	public $green2yellow; //boolean
@@ -3699,7 +3712,7 @@ class AlarmTriggeringAction {
 	}
 }
 
-class GroupAlarmAction {
+class GroupAlarmAction extends phpDynamicProperties {
 	public $action; //AlarmAction
 
 	function __construct($action = null) {
@@ -3707,7 +3720,7 @@ class GroupAlarmAction {
 	}
 }
 
-class AlarmDescription {
+class AlarmDescription extends phpDynamicProperties {
 	public $expr; //TypeDescription
 	public $stateOperator; //ElementDescription
 	public $metricOperator; //ElementDescription
@@ -3733,10 +3746,10 @@ class AlarmDescription {
 	}
 }
 
-class AlarmExpression {
+class AlarmExpression extends phpDynamicProperties {
 }
 
-class ArrayOfAlarmExpression {
+class ArrayOfAlarmExpression extends phpDynamicProperties {
 	public $AlarmExpression; //AlarmExpression
 
 	function __construct($AlarmExpression = null) {
@@ -3744,7 +3757,7 @@ class ArrayOfAlarmExpression {
 	}
 }
 
-class AndAlarmExpression {
+class AndAlarmExpression extends phpDynamicProperties {
 	public $expression; //AlarmExpression
 
 	function __construct($expression = null) {
@@ -3752,7 +3765,7 @@ class AndAlarmExpression {
 	}
 }
 
-class OrAlarmExpression {
+class OrAlarmExpression extends phpDynamicProperties {
 	public $expression; //AlarmExpression
 
 	function __construct($expression = null) {
@@ -3760,7 +3773,7 @@ class OrAlarmExpression {
 	}
 }
 
-class StateAlarmExpression {
+class StateAlarmExpression extends phpDynamicProperties {
 	public $operator; //StateAlarmOperator
 	public $type; //string
 	public $statePath; //string
@@ -3776,7 +3789,7 @@ class StateAlarmExpression {
 	}
 }
 
-class EventAlarmExpressionComparison {
+class EventAlarmExpressionComparison extends phpDynamicProperties {
 	public $attributeName; //string
 	public $operator; //string
 	public $value; //string
@@ -3788,7 +3801,7 @@ class EventAlarmExpressionComparison {
 	}
 }
 
-class ArrayOfEventAlarmExpressionComparison {
+class ArrayOfEventAlarmExpressionComparison extends phpDynamicProperties {
 	public $EventAlarmExpressionComparison; //EventAlarmExpressionComparison
 
 	function __construct($EventAlarmExpressionComparison = null) {
@@ -3796,7 +3809,7 @@ class ArrayOfEventAlarmExpressionComparison {
 	}
 }
 
-class EventAlarmExpression {
+class EventAlarmExpression extends phpDynamicProperties {
 	public $comparisons; //EventAlarmExpressionComparison
 	public $eventType; //string
 	public $eventTypeId; //string
@@ -3812,7 +3825,7 @@ class EventAlarmExpression {
 	}
 }
 
-class MetricAlarmExpression {
+class MetricAlarmExpression extends phpDynamicProperties {
 	public $operator; //MetricAlarmOperator
 	public $type; //string
 	public $metric; //PerfMetricId
@@ -3832,7 +3845,7 @@ class MetricAlarmExpression {
 	}
 }
 
-class AlarmInfo {
+class AlarmInfo extends phpDynamicProperties {
 	public $key; //string
 	public $alarm; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
@@ -3850,7 +3863,7 @@ class AlarmInfo {
 	}
 }
 
-class AlarmSetting {
+class AlarmSetting extends phpDynamicProperties {
 	public $toleranceRange; //int
 	public $reportingFrequency; //int
 
@@ -3860,7 +3873,7 @@ class AlarmSetting {
 	}
 }
 
-class AlarmSpec {
+class AlarmSpec extends phpDynamicProperties {
 	public $name; //string
 	public $systemName; //string
 	public $description; //string
@@ -3882,7 +3895,7 @@ class AlarmSpec {
 	}
 }
 
-class AlarmState {
+class AlarmState extends phpDynamicProperties {
 	public $key; //string
 	public $entity; //ManagedObjectReference
 	public $alarm; //ManagedObjectReference
@@ -3904,7 +3917,7 @@ class AlarmState {
 	}
 }
 
-class ArrayOfAlarmState {
+class ArrayOfAlarmState extends phpDynamicProperties {
 	public $AlarmState; //AlarmState
 
 	function __construct($AlarmState = null) {
@@ -3912,7 +3925,7 @@ class ArrayOfAlarmState {
 	}
 }
 
-class ClusterAction {
+class ClusterAction extends phpDynamicProperties {
 	public $type; //string
 	public $target; //ManagedObjectReference
 
@@ -3922,7 +3935,7 @@ class ClusterAction {
 	}
 }
 
-class ArrayOfClusterAction {
+class ArrayOfClusterAction extends phpDynamicProperties {
 	public $ClusterAction; //ClusterAction
 
 	function __construct($ClusterAction = null) {
@@ -3930,7 +3943,7 @@ class ArrayOfClusterAction {
 	}
 }
 
-class ClusterActionHistory {
+class ClusterActionHistory extends phpDynamicProperties {
 	public $action; //ClusterAction
 	public $time; //dateTime
 
@@ -3940,7 +3953,7 @@ class ClusterActionHistory {
 	}
 }
 
-class ArrayOfClusterActionHistory {
+class ArrayOfClusterActionHistory extends phpDynamicProperties {
 	public $ClusterActionHistory; //ClusterActionHistory
 
 	function __construct($ClusterActionHistory = null) {
@@ -3948,7 +3961,7 @@ class ArrayOfClusterActionHistory {
 	}
 }
 
-class ClusterAffinityRuleSpec {
+class ClusterAffinityRuleSpec extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 
 	function __construct($vm = null) {
@@ -3956,7 +3969,7 @@ class ClusterAffinityRuleSpec {
 	}
 }
 
-class ClusterAntiAffinityRuleSpec {
+class ClusterAntiAffinityRuleSpec extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 
 	function __construct($vm = null) {
@@ -3964,7 +3977,7 @@ class ClusterAntiAffinityRuleSpec {
 	}
 }
 
-class ClusterAttemptedVmInfo {
+class ClusterAttemptedVmInfo extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $task; //ManagedObjectReference
 
@@ -3974,7 +3987,7 @@ class ClusterAttemptedVmInfo {
 	}
 }
 
-class ArrayOfClusterAttemptedVmInfo {
+class ArrayOfClusterAttemptedVmInfo extends phpDynamicProperties {
 	public $ClusterAttemptedVmInfo; //ClusterAttemptedVmInfo
 
 	function __construct($ClusterAttemptedVmInfo = null) {
@@ -3982,7 +3995,7 @@ class ArrayOfClusterAttemptedVmInfo {
 	}
 }
 
-class ClusterConfigInfo {
+class ClusterConfigInfo extends phpDynamicProperties {
 	public $dasConfig; //ClusterDasConfigInfo
 	public $dasVmConfig; //ClusterDasVmConfigInfo
 	public $drsConfig; //ClusterDrsConfigInfo
@@ -3998,7 +4011,7 @@ class ClusterConfigInfo {
 	}
 }
 
-class ClusterDrsConfigInfo {
+class ClusterDrsConfigInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $enableVmBehaviorOverrides; //boolean
 	public $defaultVmBehavior; //DrsBehavior
@@ -4014,7 +4027,7 @@ class ClusterDrsConfigInfo {
 	}
 }
 
-class ClusterDrsVmConfigInfo {
+class ClusterDrsVmConfigInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $enabled; //boolean
 	public $behavior; //DrsBehavior
@@ -4026,7 +4039,7 @@ class ClusterDrsVmConfigInfo {
 	}
 }
 
-class ArrayOfClusterDrsVmConfigInfo {
+class ArrayOfClusterDrsVmConfigInfo extends phpDynamicProperties {
 	public $ClusterDrsVmConfigInfo; //ClusterDrsVmConfigInfo
 
 	function __construct($ClusterDrsVmConfigInfo = null) {
@@ -4034,7 +4047,7 @@ class ArrayOfClusterDrsVmConfigInfo {
 	}
 }
 
-class ClusterConfigInfoEx {
+class ClusterConfigInfoEx extends phpDynamicProperties {
 	public $dasConfig; //ClusterDasConfigInfo
 	public $dasVmConfig; //ClusterDasVmConfigInfo
 	public $drsConfig; //ClusterDrsConfigInfo
@@ -4056,7 +4069,7 @@ class ClusterConfigInfoEx {
 	}
 }
 
-class ClusterDpmConfigInfo {
+class ClusterDpmConfigInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $defaultDpmBehavior; //DpmBehavior
 	public $hostPowerActionRate; //int
@@ -4070,7 +4083,7 @@ class ClusterDpmConfigInfo {
 	}
 }
 
-class ClusterDpmHostConfigInfo {
+class ClusterDpmHostConfigInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $enabled; //boolean
 	public $behavior; //DpmBehavior
@@ -4082,7 +4095,7 @@ class ClusterDpmHostConfigInfo {
 	}
 }
 
-class ArrayOfClusterDpmHostConfigInfo {
+class ArrayOfClusterDpmHostConfigInfo extends phpDynamicProperties {
 	public $ClusterDpmHostConfigInfo; //ClusterDpmHostConfigInfo
 
 	function __construct($ClusterDpmHostConfigInfo = null) {
@@ -4090,7 +4103,7 @@ class ArrayOfClusterDpmHostConfigInfo {
 	}
 }
 
-class ClusterConfigSpec {
+class ClusterConfigSpec extends phpDynamicProperties {
 	public $dasConfig; //ClusterDasConfigInfo
 	public $dasVmConfigSpec; //ClusterDasVmConfigSpec
 	public $drsConfig; //ClusterDrsConfigInfo
@@ -4106,7 +4119,7 @@ class ClusterConfigSpec {
 	}
 }
 
-class ClusterDasVmConfigSpec {
+class ClusterDasVmConfigSpec extends phpDynamicProperties {
 	public $info; //ClusterDasVmConfigInfo
 
 	function __construct($info = null) {
@@ -4114,7 +4127,7 @@ class ClusterDasVmConfigSpec {
 	}
 }
 
-class ArrayOfClusterDasVmConfigSpec {
+class ArrayOfClusterDasVmConfigSpec extends phpDynamicProperties {
 	public $ClusterDasVmConfigSpec; //ClusterDasVmConfigSpec
 
 	function __construct($ClusterDasVmConfigSpec = null) {
@@ -4122,7 +4135,7 @@ class ArrayOfClusterDasVmConfigSpec {
 	}
 }
 
-class ClusterDrsVmConfigSpec {
+class ClusterDrsVmConfigSpec extends phpDynamicProperties {
 	public $info; //ClusterDrsVmConfigInfo
 
 	function __construct($info = null) {
@@ -4130,7 +4143,7 @@ class ClusterDrsVmConfigSpec {
 	}
 }
 
-class ArrayOfClusterDrsVmConfigSpec {
+class ArrayOfClusterDrsVmConfigSpec extends phpDynamicProperties {
 	public $ClusterDrsVmConfigSpec; //ClusterDrsVmConfigSpec
 
 	function __construct($ClusterDrsVmConfigSpec = null) {
@@ -4138,7 +4151,7 @@ class ArrayOfClusterDrsVmConfigSpec {
 	}
 }
 
-class ClusterConfigSpecEx {
+class ClusterConfigSpecEx extends phpDynamicProperties {
 	public $dasConfig; //ClusterDasConfigInfo
 	public $dasVmConfigSpec; //ClusterDasVmConfigSpec
 	public $drsConfig; //ClusterDrsConfigInfo
@@ -4160,7 +4173,7 @@ class ClusterConfigSpecEx {
 	}
 }
 
-class ClusterDpmHostConfigSpec {
+class ClusterDpmHostConfigSpec extends phpDynamicProperties {
 	public $info; //ClusterDpmHostConfigInfo
 
 	function __construct($info = null) {
@@ -4168,7 +4181,7 @@ class ClusterDpmHostConfigSpec {
 	}
 }
 
-class ArrayOfClusterDpmHostConfigSpec {
+class ArrayOfClusterDpmHostConfigSpec extends phpDynamicProperties {
 	public $ClusterDpmHostConfigSpec; //ClusterDpmHostConfigSpec
 
 	function __construct($ClusterDpmHostConfigSpec = null) {
@@ -4176,7 +4189,7 @@ class ArrayOfClusterDpmHostConfigSpec {
 	}
 }
 
-class ClusterGroupSpec {
+class ClusterGroupSpec extends phpDynamicProperties {
 	public $info; //ClusterGroupInfo
 
 	function __construct($info = null) {
@@ -4184,7 +4197,7 @@ class ClusterGroupSpec {
 	}
 }
 
-class ArrayOfClusterGroupSpec {
+class ArrayOfClusterGroupSpec extends phpDynamicProperties {
 	public $ClusterGroupSpec; //ClusterGroupSpec
 
 	function __construct($ClusterGroupSpec = null) {
@@ -4192,7 +4205,7 @@ class ArrayOfClusterGroupSpec {
 	}
 }
 
-class ClusterDasAamHostInfo {
+class ClusterDasAamHostInfo extends phpDynamicProperties {
 	public $hostDasState; //ClusterDasAamNodeState
 	public $primaryHosts; //string
 
@@ -4202,7 +4215,7 @@ class ClusterDasAamHostInfo {
 	}
 }
 
-class ClusterDasAamNodeState {
+class ClusterDasAamNodeState extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $name; //string
 	public $configState; //string
@@ -4216,7 +4229,7 @@ class ClusterDasAamNodeState {
 	}
 }
 
-class ArrayOfClusterDasAamNodeState {
+class ArrayOfClusterDasAamNodeState extends phpDynamicProperties {
 	public $ClusterDasAamNodeState; //ClusterDasAamNodeState
 
 	function __construct($ClusterDasAamNodeState = null) {
@@ -4224,13 +4237,13 @@ class ArrayOfClusterDasAamNodeState {
 	}
 }
 
-class ClusterDasAdmissionControlInfo {
+class ClusterDasAdmissionControlInfo extends phpDynamicProperties {
 }
 
-class ClusterDasAdmissionControlPolicy {
+class ClusterDasAdmissionControlPolicy extends phpDynamicProperties {
 }
 
-class DasHeartbeatDatastoreInfo {
+class DasHeartbeatDatastoreInfo extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $hosts; //ManagedObjectReference
 
@@ -4240,7 +4253,7 @@ class DasHeartbeatDatastoreInfo {
 	}
 }
 
-class ArrayOfDasHeartbeatDatastoreInfo {
+class ArrayOfDasHeartbeatDatastoreInfo extends phpDynamicProperties {
 	public $DasHeartbeatDatastoreInfo; //DasHeartbeatDatastoreInfo
 
 	function __construct($DasHeartbeatDatastoreInfo = null) {
@@ -4248,7 +4261,7 @@ class ArrayOfDasHeartbeatDatastoreInfo {
 	}
 }
 
-class ClusterDasAdvancedRuntimeInfo {
+class ClusterDasAdvancedRuntimeInfo extends phpDynamicProperties {
 	public $dasHostInfo; //ClusterDasHostInfo
 	public $heartbeatDatastoreInfo; //DasHeartbeatDatastoreInfo
 
@@ -4258,7 +4271,7 @@ class ClusterDasAdvancedRuntimeInfo {
 	}
 }
 
-class ClusterDasConfigInfo {
+class ClusterDasConfigInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $vmMonitoring; //string
 	public $hostMonitoring; //string
@@ -4284,10 +4297,10 @@ class ClusterDasConfigInfo {
 	}
 }
 
-class ClusterDasData {
+class ClusterDasData extends phpDynamicProperties {
 }
 
-class ClusterDasDataSummary {
+class ClusterDasDataSummary extends phpDynamicProperties {
 	public $hostListVersion; //long
 	public $clusterConfigVersion; //long
 	public $compatListVersion; //long
@@ -4299,7 +4312,7 @@ class ClusterDasDataSummary {
 	}
 }
 
-class ClusterDasFailoverLevelAdvancedRuntimeInfoSlotInfo {
+class ClusterDasFailoverLevelAdvancedRuntimeInfoSlotInfo extends phpDynamicProperties {
 	public $numVcpus; //int
 	public $cpuMHz; //int
 	public $memoryMB; //int
@@ -4311,7 +4324,7 @@ class ClusterDasFailoverLevelAdvancedRuntimeInfoSlotInfo {
 	}
 }
 
-class ClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots {
+class ClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $slots; //int
 
@@ -4321,7 +4334,7 @@ class ClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots {
 	}
 }
 
-class ArrayOfClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots {
+class ArrayOfClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots extends phpDynamicProperties {
 	public $ClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots; //ClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots
 
 	function __construct($ClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots = null) {
@@ -4329,7 +4342,7 @@ class ArrayOfClusterDasFailoverLevelAdvancedRuntimeInfoHostSlots {
 	}
 }
 
-class ClusterDasFailoverLevelAdvancedRuntimeInfo {
+class ClusterDasFailoverLevelAdvancedRuntimeInfo extends phpDynamicProperties {
 	public $slotInfo; //ClusterDasFailoverLevelAdvancedRuntimeInfoSlotInfo
 	public $totalSlots; //int
 	public $usedSlots; //int
@@ -4351,7 +4364,7 @@ class ClusterDasFailoverLevelAdvancedRuntimeInfo {
 	}
 }
 
-class ClusterDasFdmHostState {
+class ClusterDasFdmHostState extends phpDynamicProperties {
 	public $state; //string
 	public $stateReporter; //ManagedObjectReference
 
@@ -4361,10 +4374,10 @@ class ClusterDasFdmHostState {
 	}
 }
 
-class ClusterDasHostInfo {
+class ClusterDasHostInfo extends phpDynamicProperties {
 }
 
-class ClusterDasHostRecommendation {
+class ClusterDasHostRecommendation extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $drsRating; //int
 
@@ -4374,7 +4387,7 @@ class ClusterDasHostRecommendation {
 	}
 }
 
-class ClusterDasVmConfigInfo {
+class ClusterDasVmConfigInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $restartPriority; //DasVmPriority
 	public $powerOffOnIsolation; //boolean
@@ -4388,7 +4401,7 @@ class ClusterDasVmConfigInfo {
 	}
 }
 
-class ArrayOfClusterDasVmConfigInfo {
+class ArrayOfClusterDasVmConfigInfo extends phpDynamicProperties {
 	public $ClusterDasVmConfigInfo; //ClusterDasVmConfigInfo
 
 	function __construct($ClusterDasVmConfigInfo = null) {
@@ -4396,7 +4409,7 @@ class ArrayOfClusterDasVmConfigInfo {
 	}
 }
 
-class ClusterDasVmSettings {
+class ClusterDasVmSettings extends phpDynamicProperties {
 	public $restartPriority; //string
 	public $isolationResponse; //string
 	public $vmToolsMonitoringSettings; //ClusterVmToolsMonitoringSettings
@@ -4408,7 +4421,7 @@ class ClusterDasVmSettings {
 	}
 }
 
-class ClusterDrsFaultsFaultsByVm {
+class ClusterDrsFaultsFaultsByVm extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $fault; //LocalizedMethodFault
 
@@ -4418,7 +4431,7 @@ class ClusterDrsFaultsFaultsByVm {
 	}
 }
 
-class ArrayOfClusterDrsFaultsFaultsByVm {
+class ArrayOfClusterDrsFaultsFaultsByVm extends phpDynamicProperties {
 	public $ClusterDrsFaultsFaultsByVm; //ClusterDrsFaultsFaultsByVm
 
 	function __construct($ClusterDrsFaultsFaultsByVm = null) {
@@ -4426,7 +4439,7 @@ class ArrayOfClusterDrsFaultsFaultsByVm {
 	}
 }
 
-class ClusterDrsFaultsFaultsByVirtualDisk {
+class ClusterDrsFaultsFaultsByVirtualDisk extends phpDynamicProperties {
 	public $disk; //VirtualDiskId
 
 	function __construct($disk = null) {
@@ -4434,7 +4447,7 @@ class ClusterDrsFaultsFaultsByVirtualDisk {
 	}
 }
 
-class ClusterDrsFaults {
+class ClusterDrsFaults extends phpDynamicProperties {
 	public $reason; //string
 	public $faultsByVm; //ClusterDrsFaultsFaultsByVm
 
@@ -4444,7 +4457,7 @@ class ClusterDrsFaults {
 	}
 }
 
-class ArrayOfClusterDrsFaults {
+class ArrayOfClusterDrsFaults extends phpDynamicProperties {
 	public $ClusterDrsFaults; //ClusterDrsFaults
 
 	function __construct($ClusterDrsFaults = null) {
@@ -4452,7 +4465,7 @@ class ArrayOfClusterDrsFaults {
 	}
 }
 
-class ClusterDrsMigration {
+class ClusterDrsMigration extends phpDynamicProperties {
 	public $key; //string
 	public $time; //dateTime
 	public $vm; //ManagedObjectReference
@@ -4480,7 +4493,7 @@ class ClusterDrsMigration {
 	}
 }
 
-class ArrayOfClusterDrsMigration {
+class ArrayOfClusterDrsMigration extends phpDynamicProperties {
 	public $ClusterDrsMigration; //ClusterDrsMigration
 
 	function __construct($ClusterDrsMigration = null) {
@@ -4488,7 +4501,7 @@ class ArrayOfClusterDrsMigration {
 	}
 }
 
-class ClusterDrsRecommendation {
+class ClusterDrsRecommendation extends phpDynamicProperties {
 	public $key; //string
 	public $rating; //int
 	public $reason; //string
@@ -4504,7 +4517,7 @@ class ClusterDrsRecommendation {
 	}
 }
 
-class ArrayOfClusterDrsRecommendation {
+class ArrayOfClusterDrsRecommendation extends phpDynamicProperties {
 	public $ClusterDrsRecommendation; //ClusterDrsRecommendation
 
 	function __construct($ClusterDrsRecommendation = null) {
@@ -4512,7 +4525,7 @@ class ArrayOfClusterDrsRecommendation {
 	}
 }
 
-class ClusterEnterMaintenanceResult {
+class ClusterEnterMaintenanceResult extends phpDynamicProperties {
 	public $recommendations; //ClusterRecommendation
 	public $fault; //ClusterDrsFaults
 
@@ -4522,7 +4535,7 @@ class ClusterEnterMaintenanceResult {
 	}
 }
 
-class ClusterFailoverHostAdmissionControlInfoHostStatus {
+class ClusterFailoverHostAdmissionControlInfoHostStatus extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $status; //ManagedEntityStatus
 
@@ -4532,7 +4545,7 @@ class ClusterFailoverHostAdmissionControlInfoHostStatus {
 	}
 }
 
-class ArrayOfClusterFailoverHostAdmissionControlInfoHostStatus {
+class ArrayOfClusterFailoverHostAdmissionControlInfoHostStatus extends phpDynamicProperties {
 	public $ClusterFailoverHostAdmissionControlInfoHostStatus; //ClusterFailoverHostAdmissionControlInfoHostStatus
 
 	function __construct($ClusterFailoverHostAdmissionControlInfoHostStatus = null) {
@@ -4540,7 +4553,7 @@ class ArrayOfClusterFailoverHostAdmissionControlInfoHostStatus {
 	}
 }
 
-class ClusterFailoverHostAdmissionControlInfo {
+class ClusterFailoverHostAdmissionControlInfo extends phpDynamicProperties {
 	public $hostStatus; //ClusterFailoverHostAdmissionControlInfoHostStatus
 
 	function __construct($hostStatus = null) {
@@ -4548,7 +4561,7 @@ class ClusterFailoverHostAdmissionControlInfo {
 	}
 }
 
-class ClusterFailoverHostAdmissionControlPolicy {
+class ClusterFailoverHostAdmissionControlPolicy extends phpDynamicProperties {
 	public $failoverHosts; //ManagedObjectReference
 
 	function __construct($failoverHosts = null) {
@@ -4556,7 +4569,7 @@ class ClusterFailoverHostAdmissionControlPolicy {
 	}
 }
 
-class ClusterFailoverLevelAdmissionControlInfo {
+class ClusterFailoverLevelAdmissionControlInfo extends phpDynamicProperties {
 	public $currentFailoverLevel; //int
 
 	function __construct($currentFailoverLevel = null) {
@@ -4564,7 +4577,7 @@ class ClusterFailoverLevelAdmissionControlInfo {
 	}
 }
 
-class ClusterFailoverLevelAdmissionControlPolicy {
+class ClusterFailoverLevelAdmissionControlPolicy extends phpDynamicProperties {
 	public $failoverLevel; //int
 
 	function __construct($failoverLevel = null) {
@@ -4572,7 +4585,7 @@ class ClusterFailoverLevelAdmissionControlPolicy {
 	}
 }
 
-class ClusterFailoverResourcesAdmissionControlInfo {
+class ClusterFailoverResourcesAdmissionControlInfo extends phpDynamicProperties {
 	public $currentCpuFailoverResourcesPercent; //int
 	public $currentMemoryFailoverResourcesPercent; //int
 
@@ -4582,7 +4595,7 @@ class ClusterFailoverResourcesAdmissionControlInfo {
 	}
 }
 
-class ClusterFailoverResourcesAdmissionControlPolicy {
+class ClusterFailoverResourcesAdmissionControlPolicy extends phpDynamicProperties {
 	public $cpuFailoverResourcesPercent; //int
 	public $memoryFailoverResourcesPercent; //int
 
@@ -4592,7 +4605,7 @@ class ClusterFailoverResourcesAdmissionControlPolicy {
 	}
 }
 
-class ClusterGroupInfo {
+class ClusterGroupInfo extends phpDynamicProperties {
 	public $name; //string
 	public $userCreated; //boolean
 
@@ -4602,7 +4615,7 @@ class ClusterGroupInfo {
 	}
 }
 
-class ArrayOfClusterGroupInfo {
+class ArrayOfClusterGroupInfo extends phpDynamicProperties {
 	public $ClusterGroupInfo; //ClusterGroupInfo
 
 	function __construct($ClusterGroupInfo = null) {
@@ -4610,7 +4623,7 @@ class ArrayOfClusterGroupInfo {
 	}
 }
 
-class ClusterHostGroup {
+class ClusterHostGroup extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -4618,7 +4631,7 @@ class ClusterHostGroup {
 	}
 }
 
-class ClusterHostPowerAction {
+class ClusterHostPowerAction extends phpDynamicProperties {
 	public $operationType; //HostPowerOperationType
 	public $powerConsumptionWatt; //int
 	public $cpuCapacityMHz; //int
@@ -4632,7 +4645,7 @@ class ClusterHostPowerAction {
 	}
 }
 
-class ClusterHostRecommendation {
+class ClusterHostRecommendation extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $rating; //int
 
@@ -4642,7 +4655,7 @@ class ClusterHostRecommendation {
 	}
 }
 
-class ArrayOfClusterHostRecommendation {
+class ArrayOfClusterHostRecommendation extends phpDynamicProperties {
 	public $ClusterHostRecommendation; //ClusterHostRecommendation
 
 	function __construct($ClusterHostRecommendation = null) {
@@ -4650,7 +4663,7 @@ class ArrayOfClusterHostRecommendation {
 	}
 }
 
-class ClusterInitialPlacementAction {
+class ClusterInitialPlacementAction extends phpDynamicProperties {
 	public $targetHost; //ManagedObjectReference
 	public $pool; //ManagedObjectReference
 
@@ -4660,7 +4673,7 @@ class ClusterInitialPlacementAction {
 	}
 }
 
-class ClusterMigrationAction {
+class ClusterMigrationAction extends phpDynamicProperties {
 	public $drsMigration; //ClusterDrsMigration
 
 	function __construct($drsMigration = null) {
@@ -4668,7 +4681,7 @@ class ClusterMigrationAction {
 	}
 }
 
-class ClusterNotAttemptedVmInfo {
+class ClusterNotAttemptedVmInfo extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $fault; //LocalizedMethodFault
 
@@ -4678,7 +4691,7 @@ class ClusterNotAttemptedVmInfo {
 	}
 }
 
-class ArrayOfClusterNotAttemptedVmInfo {
+class ArrayOfClusterNotAttemptedVmInfo extends phpDynamicProperties {
 	public $ClusterNotAttemptedVmInfo; //ClusterNotAttemptedVmInfo
 
 	function __construct($ClusterNotAttemptedVmInfo = null) {
@@ -4686,7 +4699,7 @@ class ArrayOfClusterNotAttemptedVmInfo {
 	}
 }
 
-class ClusterPowerOnVmResult {
+class ClusterPowerOnVmResult extends phpDynamicProperties {
 	public $attempted; //ClusterAttemptedVmInfo
 	public $notAttempted; //ClusterNotAttemptedVmInfo
 	public $recommendations; //ClusterRecommendation
@@ -4698,7 +4711,7 @@ class ClusterPowerOnVmResult {
 	}
 }
 
-class ClusterRecommendation {
+class ClusterRecommendation extends phpDynamicProperties {
 	public $key; //string
 	public $type; //string
 	public $time; //dateTime
@@ -4722,7 +4735,7 @@ class ClusterRecommendation {
 	}
 }
 
-class ArrayOfClusterRecommendation {
+class ArrayOfClusterRecommendation extends phpDynamicProperties {
 	public $ClusterRecommendation; //ClusterRecommendation
 
 	function __construct($ClusterRecommendation = null) {
@@ -4730,7 +4743,7 @@ class ArrayOfClusterRecommendation {
 	}
 }
 
-class ClusterRuleInfo {
+class ClusterRuleInfo extends phpDynamicProperties {
 	public $key; //int
 	public $status; //ManagedEntityStatus
 	public $enabled; //boolean
@@ -4750,7 +4763,7 @@ class ClusterRuleInfo {
 	}
 }
 
-class ArrayOfClusterRuleInfo {
+class ArrayOfClusterRuleInfo extends phpDynamicProperties {
 	public $ClusterRuleInfo; //ClusterRuleInfo
 
 	function __construct($ClusterRuleInfo = null) {
@@ -4758,7 +4771,7 @@ class ArrayOfClusterRuleInfo {
 	}
 }
 
-class ClusterRuleSpec {
+class ClusterRuleSpec extends phpDynamicProperties {
 	public $info; //ClusterRuleInfo
 
 	function __construct($info = null) {
@@ -4766,7 +4779,7 @@ class ClusterRuleSpec {
 	}
 }
 
-class ArrayOfClusterRuleSpec {
+class ArrayOfClusterRuleSpec extends phpDynamicProperties {
 	public $ClusterRuleSpec; //ClusterRuleSpec
 
 	function __construct($ClusterRuleSpec = null) {
@@ -4774,7 +4787,7 @@ class ArrayOfClusterRuleSpec {
 	}
 }
 
-class ClusterVmGroup {
+class ClusterVmGroup extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 
 	function __construct($vm = null) {
@@ -4782,7 +4795,7 @@ class ClusterVmGroup {
 	}
 }
 
-class ClusterVmHostRuleInfo {
+class ClusterVmHostRuleInfo extends phpDynamicProperties {
 	public $vmGroupName; //string
 	public $affineHostGroupName; //string
 	public $antiAffineHostGroupName; //string
@@ -4794,7 +4807,7 @@ class ClusterVmHostRuleInfo {
 	}
 }
 
-class ClusterVmToolsMonitoringSettings {
+class ClusterVmToolsMonitoringSettings extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $vmMonitoring; //string
 	public $clusterSettings; //boolean
@@ -4814,7 +4827,7 @@ class ClusterVmToolsMonitoringSettings {
 	}
 }
 
-class DVPortConfigSpec {
+class DVPortConfigSpec extends phpDynamicProperties {
 	public $operation; //string
 	public $key; //string
 	public $name; //string
@@ -4834,7 +4847,7 @@ class DVPortConfigSpec {
 	}
 }
 
-class ArrayOfDVPortConfigSpec {
+class ArrayOfDVPortConfigSpec extends phpDynamicProperties {
 	public $DVPortConfigSpec; //DVPortConfigSpec
 
 	function __construct($DVPortConfigSpec = null) {
@@ -4842,7 +4855,7 @@ class ArrayOfDVPortConfigSpec {
 	}
 }
 
-class DVPortConfigInfo {
+class DVPortConfigInfo extends phpDynamicProperties {
 	public $name; //string
 	public $scope; //ManagedObjectReference
 	public $description; //string
@@ -4858,7 +4871,7 @@ class DVPortConfigInfo {
 	}
 }
 
-class DVSTrafficShapingPolicy {
+class DVSTrafficShapingPolicy extends phpDynamicProperties {
 	public $enabled; //BoolPolicy
 	public $averageBandwidth; //LongPolicy
 	public $peakBandwidth; //LongPolicy
@@ -4872,7 +4885,7 @@ class DVSTrafficShapingPolicy {
 	}
 }
 
-class DVSVendorSpecificConfig {
+class DVSVendorSpecificConfig extends phpDynamicProperties {
 	public $keyValue; //DistributedVirtualSwitchKeyedOpaqueBlob
 
 	function __construct($keyValue = null) {
@@ -4880,7 +4893,7 @@ class DVSVendorSpecificConfig {
 	}
 }
 
-class DVPortSetting {
+class DVPortSetting extends phpDynamicProperties {
 	public $blocked; //BoolPolicy
 	public $vmDirectPathGen2Allowed; //BoolPolicy
 	public $inShapingPolicy; //DVSTrafficShapingPolicy
@@ -4898,7 +4911,7 @@ class DVPortSetting {
 	}
 }
 
-class DVPortStatus {
+class DVPortStatus extends phpDynamicProperties {
 	public $linkUp; //boolean
 	public $blocked; //boolean
 	public $vlanIds; //NumericRange
@@ -4928,7 +4941,7 @@ class DVPortStatus {
 	}
 }
 
-class DVPortState {
+class DVPortState extends phpDynamicProperties {
 	public $runtimeInfo; //DVPortStatus
 	public $stats; //DistributedVirtualSwitchPortStatistics
 	public $vendorSpecificState; //DistributedVirtualSwitchKeyedOpaqueBlob
@@ -4940,7 +4953,7 @@ class DVPortState {
 	}
 }
 
-class DistributedVirtualPort {
+class DistributedVirtualPort extends phpDynamicProperties {
 	public $key; //string
 	public $config; //DVPortConfigInfo
 	public $dvsUuid; //string
@@ -4968,7 +4981,7 @@ class DistributedVirtualPort {
 	}
 }
 
-class ArrayOfDistributedVirtualPort {
+class ArrayOfDistributedVirtualPort extends phpDynamicProperties {
 	public $DistributedVirtualPort; //DistributedVirtualPort
 
 	function __construct($DistributedVirtualPort = null) {
@@ -4976,7 +4989,7 @@ class ArrayOfDistributedVirtualPort {
 	}
 }
 
-class DVPortgroupPolicy {
+class DVPortgroupPolicy extends phpDynamicProperties {
 	public $blockOverrideAllowed; //boolean
 	public $shapingOverrideAllowed; //boolean
 	public $vendorConfigOverrideAllowed; //boolean
@@ -4994,7 +5007,7 @@ class DVPortgroupPolicy {
 	}
 }
 
-class DVPortgroupConfigSpec {
+class DVPortgroupConfigSpec extends phpDynamicProperties {
 	public $configVersion; //string
 	public $name; //string
 	public $numPorts; //int
@@ -5022,7 +5035,7 @@ class DVPortgroupConfigSpec {
 	}
 }
 
-class ArrayOfDVPortgroupConfigSpec {
+class ArrayOfDVPortgroupConfigSpec extends phpDynamicProperties {
 	public $DVPortgroupConfigSpec; //DVPortgroupConfigSpec
 
 	function __construct($DVPortgroupConfigSpec = null) {
@@ -5030,7 +5043,7 @@ class ArrayOfDVPortgroupConfigSpec {
 	}
 }
 
-class DVPortgroupConfigInfo {
+class DVPortgroupConfigInfo extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $numPorts; //int
@@ -5062,7 +5075,7 @@ class DVPortgroupConfigInfo {
 	}
 }
 
-class DistributedVirtualPortgroupInfo {
+class DistributedVirtualPortgroupInfo extends phpDynamicProperties {
 	public $switchName; //string
 	public $switchUuid; //string
 	public $portgroupName; //string
@@ -5082,7 +5095,7 @@ class DistributedVirtualPortgroupInfo {
 	}
 }
 
-class ArrayOfDistributedVirtualPortgroupInfo {
+class ArrayOfDistributedVirtualPortgroupInfo extends phpDynamicProperties {
 	public $DistributedVirtualPortgroupInfo; //DistributedVirtualPortgroupInfo
 
 	function __construct($DistributedVirtualPortgroupInfo = null) {
@@ -5090,7 +5103,7 @@ class ArrayOfDistributedVirtualPortgroupInfo {
 	}
 }
 
-class DistributedVirtualSwitchInfo {
+class DistributedVirtualSwitchInfo extends phpDynamicProperties {
 	public $switchName; //string
 	public $switchUuid; //string
 	public $distributedVirtualSwitch; //ManagedObjectReference
@@ -5102,7 +5115,7 @@ class DistributedVirtualSwitchInfo {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchInfo {
+class ArrayOfDistributedVirtualSwitchInfo extends phpDynamicProperties {
 	public $DistributedVirtualSwitchInfo; //DistributedVirtualSwitchInfo
 
 	function __construct($DistributedVirtualSwitchInfo = null) {
@@ -5110,7 +5123,7 @@ class ArrayOfDistributedVirtualSwitchInfo {
 	}
 }
 
-class DVSManagerDvsConfigTarget {
+class DVSManagerDvsConfigTarget extends phpDynamicProperties {
 	public $distributedVirtualPortgroup; //DistributedVirtualPortgroupInfo
 	public $distributedVirtualSwitch; //DistributedVirtualSwitchInfo
 
@@ -5120,7 +5133,7 @@ class DVSManagerDvsConfigTarget {
 	}
 }
 
-class DistributedVirtualSwitchManagerCompatibilityResult {
+class DistributedVirtualSwitchManagerCompatibilityResult extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $error; //LocalizedMethodFault
 
@@ -5130,7 +5143,7 @@ class DistributedVirtualSwitchManagerCompatibilityResult {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchManagerCompatibilityResult {
+class ArrayOfDistributedVirtualSwitchManagerCompatibilityResult extends phpDynamicProperties {
 	public $DistributedVirtualSwitchManagerCompatibilityResult; //DistributedVirtualSwitchManagerCompatibilityResult
 
 	function __construct($DistributedVirtualSwitchManagerCompatibilityResult = null) {
@@ -5138,7 +5151,7 @@ class ArrayOfDistributedVirtualSwitchManagerCompatibilityResult {
 	}
 }
 
-class DistributedVirtualSwitchManagerHostContainer {
+class DistributedVirtualSwitchManagerHostContainer extends phpDynamicProperties {
 	public $container; //ManagedObjectReference
 	public $recursive; //boolean
 
@@ -5148,7 +5161,7 @@ class DistributedVirtualSwitchManagerHostContainer {
 	}
 }
 
-class DistributedVirtualSwitchManagerHostDvsFilterSpec {
+class DistributedVirtualSwitchManagerHostDvsFilterSpec extends phpDynamicProperties {
 	public $inclusive; //boolean
 
 	function __construct($inclusive = null) {
@@ -5156,7 +5169,7 @@ class DistributedVirtualSwitchManagerHostDvsFilterSpec {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchManagerHostDvsFilterSpec {
+class ArrayOfDistributedVirtualSwitchManagerHostDvsFilterSpec extends phpDynamicProperties {
 	public $DistributedVirtualSwitchManagerHostDvsFilterSpec; //DistributedVirtualSwitchManagerHostDvsFilterSpec
 
 	function __construct($DistributedVirtualSwitchManagerHostDvsFilterSpec = null) {
@@ -5164,7 +5177,7 @@ class ArrayOfDistributedVirtualSwitchManagerHostDvsFilterSpec {
 	}
 }
 
-class DistributedVirtualSwitchManagerHostArrayFilter {
+class DistributedVirtualSwitchManagerHostArrayFilter extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -5172,7 +5185,7 @@ class DistributedVirtualSwitchManagerHostArrayFilter {
 	}
 }
 
-class DistributedVirtualSwitchManagerHostContainerFilter {
+class DistributedVirtualSwitchManagerHostContainerFilter extends phpDynamicProperties {
 	public $hostContainer; //DistributedVirtualSwitchManagerHostContainer
 
 	function __construct($hostContainer = null) {
@@ -5180,7 +5193,7 @@ class DistributedVirtualSwitchManagerHostContainerFilter {
 	}
 }
 
-class DistributedVirtualSwitchManagerHostDvsMembershipFilter {
+class DistributedVirtualSwitchManagerHostDvsMembershipFilter extends phpDynamicProperties {
 	public $distributedVirtualSwitch; //ManagedObjectReference
 
 	function __construct($distributedVirtualSwitch = null) {
@@ -5188,7 +5201,7 @@ class DistributedVirtualSwitchManagerHostDvsMembershipFilter {
 	}
 }
 
-class DistributedVirtualSwitchManagerDvsProductSpec {
+class DistributedVirtualSwitchManagerDvsProductSpec extends phpDynamicProperties {
 	public $newSwitchProductSpec; //DistributedVirtualSwitchProductSpec
 	public $distributedVirtualSwitch; //ManagedObjectReference
 
@@ -5198,7 +5211,7 @@ class DistributedVirtualSwitchManagerDvsProductSpec {
 	}
 }
 
-class DistributedVirtualSwitchHostMemberConfigSpec {
+class DistributedVirtualSwitchHostMemberConfigSpec extends phpDynamicProperties {
 	public $operation; //string
 	public $host; //ManagedObjectReference
 	public $backing; //DistributedVirtualSwitchHostMemberBacking
@@ -5214,7 +5227,7 @@ class DistributedVirtualSwitchHostMemberConfigSpec {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchHostMemberConfigSpec {
+class ArrayOfDistributedVirtualSwitchHostMemberConfigSpec extends phpDynamicProperties {
 	public $DistributedVirtualSwitchHostMemberConfigSpec; //DistributedVirtualSwitchHostMemberConfigSpec
 
 	function __construct($DistributedVirtualSwitchHostMemberConfigSpec = null) {
@@ -5222,7 +5235,7 @@ class ArrayOfDistributedVirtualSwitchHostMemberConfigSpec {
 	}
 }
 
-class DistributedVirtualSwitchHostMemberPnicSpec {
+class DistributedVirtualSwitchHostMemberPnicSpec extends phpDynamicProperties {
 	public $pnicDevice; //string
 	public $uplinkPortKey; //string
 	public $uplinkPortgroupKey; //string
@@ -5236,7 +5249,7 @@ class DistributedVirtualSwitchHostMemberPnicSpec {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchHostMemberPnicSpec {
+class ArrayOfDistributedVirtualSwitchHostMemberPnicSpec extends phpDynamicProperties {
 	public $DistributedVirtualSwitchHostMemberPnicSpec; //DistributedVirtualSwitchHostMemberPnicSpec
 
 	function __construct($DistributedVirtualSwitchHostMemberPnicSpec = null) {
@@ -5244,10 +5257,10 @@ class ArrayOfDistributedVirtualSwitchHostMemberPnicSpec {
 	}
 }
 
-class DistributedVirtualSwitchHostMemberBacking {
+class DistributedVirtualSwitchHostMemberBacking extends phpDynamicProperties {
 }
 
-class DistributedVirtualSwitchHostMemberPnicBacking {
+class DistributedVirtualSwitchHostMemberPnicBacking extends phpDynamicProperties {
 	public $pnicSpec; //DistributedVirtualSwitchHostMemberPnicSpec
 
 	function __construct($pnicSpec = null) {
@@ -5255,7 +5268,7 @@ class DistributedVirtualSwitchHostMemberPnicBacking {
 	}
 }
 
-class DistributedVirtualSwitchHostMemberRuntimeState {
+class DistributedVirtualSwitchHostMemberRuntimeState extends phpDynamicProperties {
 	public $currentMaxProxySwitchPorts; //int
 
 	function __construct($currentMaxProxySwitchPorts = null) {
@@ -5263,7 +5276,7 @@ class DistributedVirtualSwitchHostMemberRuntimeState {
 	}
 }
 
-class DistributedVirtualSwitchHostMemberConfigInfo {
+class DistributedVirtualSwitchHostMemberConfigInfo extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $maxProxySwitchPorts; //int
 	public $vendorSpecificConfig; //DistributedVirtualSwitchKeyedOpaqueBlob
@@ -5277,7 +5290,7 @@ class DistributedVirtualSwitchHostMemberConfigInfo {
 	}
 }
 
-class DistributedVirtualSwitchHostMember {
+class DistributedVirtualSwitchHostMember extends phpDynamicProperties {
 	public $runtimeState; //DistributedVirtualSwitchHostMemberRuntimeState
 	public $config; //DistributedVirtualSwitchHostMemberConfigInfo
 	public $productInfo; //DistributedVirtualSwitchProductSpec
@@ -5295,7 +5308,7 @@ class DistributedVirtualSwitchHostMember {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchHostMember {
+class ArrayOfDistributedVirtualSwitchHostMember extends phpDynamicProperties {
 	public $DistributedVirtualSwitchHostMember; //DistributedVirtualSwitchHostMember
 
 	function __construct($DistributedVirtualSwitchHostMember = null) {
@@ -5303,7 +5316,7 @@ class ArrayOfDistributedVirtualSwitchHostMember {
 	}
 }
 
-class DistributedVirtualSwitchHostProductSpec {
+class DistributedVirtualSwitchHostProductSpec extends phpDynamicProperties {
 	public $productLineId; //string
 	public $version; //string
 
@@ -5313,7 +5326,7 @@ class DistributedVirtualSwitchHostProductSpec {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchHostProductSpec {
+class ArrayOfDistributedVirtualSwitchHostProductSpec extends phpDynamicProperties {
 	public $DistributedVirtualSwitchHostProductSpec; //DistributedVirtualSwitchHostProductSpec
 
 	function __construct($DistributedVirtualSwitchHostProductSpec = null) {
@@ -5321,7 +5334,7 @@ class ArrayOfDistributedVirtualSwitchHostProductSpec {
 	}
 }
 
-class DistributedVirtualSwitchKeyedOpaqueBlob {
+class DistributedVirtualSwitchKeyedOpaqueBlob extends phpDynamicProperties {
 	public $key; //string
 	public $opaqueData; //string
 
@@ -5331,7 +5344,7 @@ class DistributedVirtualSwitchKeyedOpaqueBlob {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchKeyedOpaqueBlob {
+class ArrayOfDistributedVirtualSwitchKeyedOpaqueBlob extends phpDynamicProperties {
 	public $DistributedVirtualSwitchKeyedOpaqueBlob; //DistributedVirtualSwitchKeyedOpaqueBlob
 
 	function __construct($DistributedVirtualSwitchKeyedOpaqueBlob = null) {
@@ -5339,7 +5352,7 @@ class ArrayOfDistributedVirtualSwitchKeyedOpaqueBlob {
 	}
 }
 
-class DVSNetworkResourcePoolAllocationInfo {
+class DVSNetworkResourcePoolAllocationInfo extends phpDynamicProperties {
 	public $limit; //long
 	public $shares; //SharesInfo
 	public $priorityTag; //int
@@ -5351,7 +5364,7 @@ class DVSNetworkResourcePoolAllocationInfo {
 	}
 }
 
-class DVSNetworkResourcePoolConfigSpec {
+class DVSNetworkResourcePoolConfigSpec extends phpDynamicProperties {
 	public $key; //string
 	public $configVersion; //string
 	public $allocationInfo; //DVSNetworkResourcePoolAllocationInfo
@@ -5367,7 +5380,7 @@ class DVSNetworkResourcePoolConfigSpec {
 	}
 }
 
-class ArrayOfDVSNetworkResourcePoolConfigSpec {
+class ArrayOfDVSNetworkResourcePoolConfigSpec extends phpDynamicProperties {
 	public $DVSNetworkResourcePoolConfigSpec; //DVSNetworkResourcePoolConfigSpec
 
 	function __construct($DVSNetworkResourcePoolConfigSpec = null) {
@@ -5375,7 +5388,7 @@ class ArrayOfDVSNetworkResourcePoolConfigSpec {
 	}
 }
 
-class DVSNetworkResourcePool {
+class DVSNetworkResourcePool extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $description; //string
@@ -5391,7 +5404,7 @@ class DVSNetworkResourcePool {
 	}
 }
 
-class ArrayOfDVSNetworkResourcePool {
+class ArrayOfDVSNetworkResourcePool extends phpDynamicProperties {
 	public $DVSNetworkResourcePool; //DVSNetworkResourcePool
 
 	function __construct($DVSNetworkResourcePool = null) {
@@ -5399,7 +5412,7 @@ class ArrayOfDVSNetworkResourcePool {
 	}
 }
 
-class DistributedVirtualSwitchPortConnectee {
+class DistributedVirtualSwitchPortConnectee extends phpDynamicProperties {
 	public $connectedEntity; //ManagedObjectReference
 	public $nicKey; //string
 	public $type; //string
@@ -5413,7 +5426,7 @@ class DistributedVirtualSwitchPortConnectee {
 	}
 }
 
-class DistributedVirtualSwitchPortConnection {
+class DistributedVirtualSwitchPortConnection extends phpDynamicProperties {
 	public $switchUuid; //string
 	public $portgroupKey; //string
 	public $portKey; //string
@@ -5427,7 +5440,7 @@ class DistributedVirtualSwitchPortConnection {
 	}
 }
 
-class DistributedVirtualSwitchPortCriteria {
+class DistributedVirtualSwitchPortCriteria extends phpDynamicProperties {
 	public $connected; //boolean
 	public $active; //boolean
 	public $uplinkPort; //boolean
@@ -5447,7 +5460,7 @@ class DistributedVirtualSwitchPortCriteria {
 	}
 }
 
-class DistributedVirtualSwitchPortStatistics {
+class DistributedVirtualSwitchPortStatistics extends phpDynamicProperties {
 	public $packetsInMulticast; //long
 	public $packetsOutMulticast; //long
 	public $bytesInMulticast; //long
@@ -5485,7 +5498,7 @@ class DistributedVirtualSwitchPortStatistics {
 	}
 }
 
-class DistributedVirtualSwitchProductSpec {
+class DistributedVirtualSwitchProductSpec extends phpDynamicProperties {
 	public $name; //string
 	public $vendor; //string
 	public $version; //string
@@ -5505,7 +5518,7 @@ class DistributedVirtualSwitchProductSpec {
 	}
 }
 
-class ArrayOfDistributedVirtualSwitchProductSpec {
+class ArrayOfDistributedVirtualSwitchProductSpec extends phpDynamicProperties {
 	public $DistributedVirtualSwitchProductSpec; //DistributedVirtualSwitchProductSpec
 
 	function __construct($DistributedVirtualSwitchProductSpec = null) {
@@ -5513,7 +5526,7 @@ class ArrayOfDistributedVirtualSwitchProductSpec {
 	}
 }
 
-class VMwareDVSFeatureCapability {
+class VMwareDVSFeatureCapability extends phpDynamicProperties {
 	public $vspanSupported; //boolean
 	public $lldpSupported; //boolean
 	public $ipfixSupported; //boolean
@@ -5525,7 +5538,7 @@ class VMwareDVSFeatureCapability {
 	}
 }
 
-class VMwareVspanPort {
+class VMwareVspanPort extends phpDynamicProperties {
 	public $portKey; //string
 	public $uplinkPortName; //string
 	public $wildcardPortConnecteeType; //string
@@ -5537,7 +5550,7 @@ class VMwareVspanPort {
 	}
 }
 
-class VMwareVspanSession {
+class VMwareVspanSession extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $description; //string
@@ -5565,7 +5578,7 @@ class VMwareVspanSession {
 	}
 }
 
-class ArrayOfVMwareVspanSession {
+class ArrayOfVMwareVspanSession extends phpDynamicProperties {
 	public $VMwareVspanSession; //VMwareVspanSession
 
 	function __construct($VMwareVspanSession = null) {
@@ -5573,7 +5586,7 @@ class ArrayOfVMwareVspanSession {
 	}
 }
 
-class VMwareIpfixConfig {
+class VMwareIpfixConfig extends phpDynamicProperties {
 	public $collectorIpAddress; //string
 	public $collectorPort; //int
 	public $activeFlowTimeout; //int
@@ -5591,7 +5604,7 @@ class VMwareIpfixConfig {
 	}
 }
 
-class VMwareDVSConfigInfo {
+class VMwareDVSConfigInfo extends phpDynamicProperties {
 	public $vspanSession; //VMwareVspanSession
 	public $pvlanConfig; //VMwareDVSPvlanMapEntry
 	public $maxMtu; //int
@@ -5607,7 +5620,7 @@ class VMwareDVSConfigInfo {
 	}
 }
 
-class VMwareDVSConfigSpec {
+class VMwareDVSConfigSpec extends phpDynamicProperties {
 	public $pvlanConfigSpec; //VMwareDVSPvlanConfigSpec
 	public $vspanConfigSpec; //VMwareDVSVspanConfigSpec
 	public $maxMtu; //int
@@ -5623,7 +5636,7 @@ class VMwareDVSConfigSpec {
 	}
 }
 
-class VMwareUplinkPortOrderPolicy {
+class VMwareUplinkPortOrderPolicy extends phpDynamicProperties {
 	public $activeUplinkPort; //string
 	public $standbyUplinkPort; //string
 
@@ -5633,7 +5646,7 @@ class VMwareUplinkPortOrderPolicy {
 	}
 }
 
-class DVSFailureCriteria {
+class DVSFailureCriteria extends phpDynamicProperties {
 	public $checkSpeed; //StringPolicy
 	public $speed; //IntPolicy
 	public $checkDuplex; //BoolPolicy
@@ -5653,7 +5666,7 @@ class DVSFailureCriteria {
 	}
 }
 
-class VmwareUplinkPortTeamingPolicy {
+class VmwareUplinkPortTeamingPolicy extends phpDynamicProperties {
 	public $policy; //StringPolicy
 	public $reversePolicy; //BoolPolicy
 	public $notifySwitches; //BoolPolicy
@@ -5671,10 +5684,10 @@ class VmwareUplinkPortTeamingPolicy {
 	}
 }
 
-class VmwareDistributedVirtualSwitchVlanSpec {
+class VmwareDistributedVirtualSwitchVlanSpec extends phpDynamicProperties {
 }
 
-class VmwareDistributedVirtualSwitchPvlanSpec {
+class VmwareDistributedVirtualSwitchPvlanSpec extends phpDynamicProperties {
 	public $pvlanId; //int
 
 	function __construct($pvlanId = null) {
@@ -5682,7 +5695,7 @@ class VmwareDistributedVirtualSwitchPvlanSpec {
 	}
 }
 
-class VmwareDistributedVirtualSwitchVlanIdSpec {
+class VmwareDistributedVirtualSwitchVlanIdSpec extends phpDynamicProperties {
 	public $vlanId; //int
 
 	function __construct($vlanId = null) {
@@ -5690,7 +5703,7 @@ class VmwareDistributedVirtualSwitchVlanIdSpec {
 	}
 }
 
-class VmwareDistributedVirtualSwitchTrunkVlanSpec {
+class VmwareDistributedVirtualSwitchTrunkVlanSpec extends phpDynamicProperties {
 	public $vlanId; //NumericRange
 
 	function __construct($vlanId = null) {
@@ -5698,7 +5711,7 @@ class VmwareDistributedVirtualSwitchTrunkVlanSpec {
 	}
 }
 
-class DVSSecurityPolicy {
+class DVSSecurityPolicy extends phpDynamicProperties {
 	public $allowPromiscuous; //BoolPolicy
 	public $macChanges; //BoolPolicy
 	public $forgedTransmits; //BoolPolicy
@@ -5710,7 +5723,7 @@ class DVSSecurityPolicy {
 	}
 }
 
-class VMwareDVSPortSetting {
+class VMwareDVSPortSetting extends phpDynamicProperties {
 	public $vlan; //VmwareDistributedVirtualSwitchVlanSpec
 	public $qosTag; //IntPolicy
 	public $uplinkTeamingPolicy; //VmwareUplinkPortTeamingPolicy
@@ -5728,7 +5741,7 @@ class VMwareDVSPortSetting {
 	}
 }
 
-class VMwareDVSPortgroupPolicy {
+class VMwareDVSPortgroupPolicy extends phpDynamicProperties {
 	public $vlanOverrideAllowed; //boolean
 	public $uplinkTeamingOverrideAllowed; //boolean
 	public $securityPolicyOverrideAllowed; //boolean
@@ -5742,7 +5755,7 @@ class VMwareDVSPortgroupPolicy {
 	}
 }
 
-class VMwareDVSPvlanConfigSpec {
+class VMwareDVSPvlanConfigSpec extends phpDynamicProperties {
 	public $pvlanEntry; //VMwareDVSPvlanMapEntry
 	public $operation; //string
 
@@ -5752,7 +5765,7 @@ class VMwareDVSPvlanConfigSpec {
 	}
 }
 
-class ArrayOfVMwareDVSPvlanConfigSpec {
+class ArrayOfVMwareDVSPvlanConfigSpec extends phpDynamicProperties {
 	public $VMwareDVSPvlanConfigSpec; //VMwareDVSPvlanConfigSpec
 
 	function __construct($VMwareDVSPvlanConfigSpec = null) {
@@ -5760,7 +5773,7 @@ class ArrayOfVMwareDVSPvlanConfigSpec {
 	}
 }
 
-class VMwareDVSPvlanMapEntry {
+class VMwareDVSPvlanMapEntry extends phpDynamicProperties {
 	public $primaryVlanId; //int
 	public $secondaryVlanId; //int
 	public $pvlanType; //string
@@ -5772,7 +5785,7 @@ class VMwareDVSPvlanMapEntry {
 	}
 }
 
-class ArrayOfVMwareDVSPvlanMapEntry {
+class ArrayOfVMwareDVSPvlanMapEntry extends phpDynamicProperties {
 	public $VMwareDVSPvlanMapEntry; //VMwareDVSPvlanMapEntry
 
 	function __construct($VMwareDVSPvlanMapEntry = null) {
@@ -5780,7 +5793,7 @@ class ArrayOfVMwareDVSPvlanMapEntry {
 	}
 }
 
-class VMwareDVSVspanConfigSpec {
+class VMwareDVSVspanConfigSpec extends phpDynamicProperties {
 	public $vspanSession; //VMwareVspanSession
 	public $operation; //string
 
@@ -5790,7 +5803,7 @@ class VMwareDVSVspanConfigSpec {
 	}
 }
 
-class ArrayOfVMwareDVSVspanConfigSpec {
+class ArrayOfVMwareDVSVspanConfigSpec extends phpDynamicProperties {
 	public $VMwareDVSVspanConfigSpec; //VMwareDVSVspanConfigSpec
 
 	function __construct($VMwareDVSVspanConfigSpec = null) {
@@ -5798,7 +5811,7 @@ class ArrayOfVMwareDVSVspanConfigSpec {
 	}
 }
 
-class Event {
+class Event extends phpDynamicProperties {
 	public $key; //int
 	public $chainId; //int
 	public $createdTime; //dateTime
@@ -5830,7 +5843,7 @@ class Event {
 	}
 }
 
-class ArrayOfEvent {
+class ArrayOfEvent extends phpDynamicProperties {
 	public $Event; //Event
 
 	function __construct($Event = null) {
@@ -5838,7 +5851,7 @@ class ArrayOfEvent {
 	}
 }
 
-class GeneralEvent {
+class GeneralEvent extends phpDynamicProperties {
 	public $message; //string
 
 	function __construct($message = null) {
@@ -5846,25 +5859,25 @@ class GeneralEvent {
 	}
 }
 
-class GeneralHostInfoEvent {
+class GeneralHostInfoEvent extends phpDynamicProperties {
 }
 
-class GeneralHostWarningEvent {
+class GeneralHostWarningEvent extends phpDynamicProperties {
 }
 
-class GeneralHostErrorEvent {
+class GeneralHostErrorEvent extends phpDynamicProperties {
 }
 
-class GeneralVmInfoEvent {
+class GeneralVmInfoEvent extends phpDynamicProperties {
 }
 
-class GeneralVmWarningEvent {
+class GeneralVmWarningEvent extends phpDynamicProperties {
 }
 
-class GeneralVmErrorEvent {
+class GeneralVmErrorEvent extends phpDynamicProperties {
 }
 
-class GeneralUserEvent {
+class GeneralUserEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 
 	function __construct($entity = null) {
@@ -5872,7 +5885,7 @@ class GeneralUserEvent {
 	}
 }
 
-class ExtendedEventPair {
+class ExtendedEventPair extends phpDynamicProperties {
 	public $key; //string
 	public $value; //string
 
@@ -5882,7 +5895,7 @@ class ExtendedEventPair {
 	}
 }
 
-class ArrayOfExtendedEventPair {
+class ArrayOfExtendedEventPair extends phpDynamicProperties {
 	public $ExtendedEventPair; //ExtendedEventPair
 
 	function __construct($ExtendedEventPair = null) {
@@ -5890,7 +5903,7 @@ class ArrayOfExtendedEventPair {
 	}
 }
 
-class ExtendedEvent {
+class ExtendedEvent extends phpDynamicProperties {
 	public $eventTypeId; //string
 	public $managedObject; //ManagedObjectReference
 	public $data; //ExtendedEventPair
@@ -5902,7 +5915,7 @@ class ExtendedEvent {
 	}
 }
 
-class HealthStatusChangedEvent {
+class HealthStatusChangedEvent extends phpDynamicProperties {
 	public $componentId; //string
 	public $oldStatus; //string
 	public $newStatus; //string
@@ -5916,13 +5929,13 @@ class HealthStatusChangedEvent {
 	}
 }
 
-class HostInventoryUnreadableEvent {
+class HostInventoryUnreadableEvent extends phpDynamicProperties {
 }
 
-class DatacenterEvent {
+class DatacenterEvent extends phpDynamicProperties {
 }
 
-class DatacenterCreatedEvent {
+class DatacenterCreatedEvent extends phpDynamicProperties {
 	public $parent; //FolderEventArgument
 
 	function __construct($parent = null) {
@@ -5930,7 +5943,7 @@ class DatacenterCreatedEvent {
 	}
 }
 
-class DatacenterRenamedEvent {
+class DatacenterRenamedEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -5940,13 +5953,13 @@ class DatacenterRenamedEvent {
 	}
 }
 
-class SessionEvent {
+class SessionEvent extends phpDynamicProperties {
 }
 
-class ServerStartedSessionEvent {
+class ServerStartedSessionEvent extends phpDynamicProperties {
 }
 
-class UserLoginSessionEvent {
+class UserLoginSessionEvent extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $locale; //string
 	public $sessionId; //string
@@ -5958,10 +5971,10 @@ class UserLoginSessionEvent {
 	}
 }
 
-class UserLogoutSessionEvent {
+class UserLogoutSessionEvent extends phpDynamicProperties {
 }
 
-class BadUsernameSessionEvent {
+class BadUsernameSessionEvent extends phpDynamicProperties {
 	public $ipAddress; //string
 
 	function __construct($ipAddress = null) {
@@ -5969,10 +5982,10 @@ class BadUsernameSessionEvent {
 	}
 }
 
-class AlreadyAuthenticatedSessionEvent {
+class AlreadyAuthenticatedSessionEvent extends phpDynamicProperties {
 }
 
-class NoAccessUserEvent {
+class NoAccessUserEvent extends phpDynamicProperties {
 	public $ipAddress; //string
 
 	function __construct($ipAddress = null) {
@@ -5980,7 +5993,7 @@ class NoAccessUserEvent {
 	}
 }
 
-class SessionTerminatedEvent {
+class SessionTerminatedEvent extends phpDynamicProperties {
 	public $sessionId; //string
 	public $terminatedUsername; //string
 
@@ -5990,7 +6003,7 @@ class SessionTerminatedEvent {
 	}
 }
 
-class GlobalMessageChangedEvent {
+class GlobalMessageChangedEvent extends phpDynamicProperties {
 	public $message; //string
 
 	function __construct($message = null) {
@@ -5998,7 +6011,7 @@ class GlobalMessageChangedEvent {
 	}
 }
 
-class UpgradeEvent {
+class UpgradeEvent extends phpDynamicProperties {
 	public $message; //string
 
 	function __construct($message = null) {
@@ -6006,28 +6019,28 @@ class UpgradeEvent {
 	}
 }
 
-class InfoUpgradeEvent {
+class InfoUpgradeEvent extends phpDynamicProperties {
 }
 
-class WarningUpgradeEvent {
+class WarningUpgradeEvent extends phpDynamicProperties {
 }
 
-class ErrorUpgradeEvent {
+class ErrorUpgradeEvent extends phpDynamicProperties {
 }
 
-class UserUpgradeEvent {
+class UserUpgradeEvent extends phpDynamicProperties {
 }
 
-class HostEvent {
+class HostEvent extends phpDynamicProperties {
 }
 
-class HostDasEvent {
+class HostDasEvent extends phpDynamicProperties {
 }
 
-class HostConnectedEvent {
+class HostConnectedEvent extends phpDynamicProperties {
 }
 
-class HostDisconnectedEvent {
+class HostDisconnectedEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -6035,7 +6048,7 @@ class HostDisconnectedEvent {
 	}
 }
 
-class HostSyncFailedEvent {
+class HostSyncFailedEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6043,22 +6056,22 @@ class HostSyncFailedEvent {
 	}
 }
 
-class HostConnectionLostEvent {
+class HostConnectionLostEvent extends phpDynamicProperties {
 }
 
-class HostReconnectionFailedEvent {
+class HostReconnectionFailedEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedNoConnectionEvent {
+class HostCnxFailedNoConnectionEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedBadUsernameEvent {
+class HostCnxFailedBadUsernameEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedBadVersionEvent {
+class HostCnxFailedBadVersionEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedAlreadyManagedEvent {
+class HostCnxFailedAlreadyManagedEvent extends phpDynamicProperties {
 	public $serverName; //string
 
 	function __construct($serverName = null) {
@@ -6066,31 +6079,31 @@ class HostCnxFailedAlreadyManagedEvent {
 	}
 }
 
-class HostCnxFailedNoLicenseEvent {
+class HostCnxFailedNoLicenseEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedNetworkErrorEvent {
+class HostCnxFailedNetworkErrorEvent extends phpDynamicProperties {
 }
 
-class HostRemovedEvent {
+class HostRemovedEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedCcagentUpgradeEvent {
+class HostCnxFailedCcagentUpgradeEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedBadCcagentEvent {
+class HostCnxFailedBadCcagentEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedEvent {
+class HostCnxFailedEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedAccountFailedEvent {
+class HostCnxFailedAccountFailedEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedNoAccessEvent {
+class HostCnxFailedNoAccessEvent extends phpDynamicProperties {
 }
 
-class HostShutdownEvent {
+class HostShutdownEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -6098,43 +6111,43 @@ class HostShutdownEvent {
 	}
 }
 
-class HostCnxFailedNotFoundEvent {
+class HostCnxFailedNotFoundEvent extends phpDynamicProperties {
 }
 
-class HostCnxFailedTimeoutEvent {
+class HostCnxFailedTimeoutEvent extends phpDynamicProperties {
 }
 
-class HostUpgradeFailedEvent {
+class HostUpgradeFailedEvent extends phpDynamicProperties {
 }
 
-class EnteringMaintenanceModeEvent {
+class EnteringMaintenanceModeEvent extends phpDynamicProperties {
 }
 
-class EnteredMaintenanceModeEvent {
+class EnteredMaintenanceModeEvent extends phpDynamicProperties {
 }
 
-class ExitMaintenanceModeEvent {
+class ExitMaintenanceModeEvent extends phpDynamicProperties {
 }
 
-class CanceledHostOperationEvent {
+class CanceledHostOperationEvent extends phpDynamicProperties {
 }
 
-class TimedOutHostOperationEvent {
+class TimedOutHostOperationEvent extends phpDynamicProperties {
 }
 
-class HostDasEnabledEvent {
+class HostDasEnabledEvent extends phpDynamicProperties {
 }
 
-class HostDasDisabledEvent {
+class HostDasDisabledEvent extends phpDynamicProperties {
 }
 
-class HostDasEnablingEvent {
+class HostDasEnablingEvent extends phpDynamicProperties {
 }
 
-class HostDasDisablingEvent {
+class HostDasDisablingEvent extends phpDynamicProperties {
 }
 
-class HostDasErrorEvent {
+class HostDasErrorEvent extends phpDynamicProperties {
 	public $message; //string
 	public $reason; //string
 
@@ -6144,16 +6157,16 @@ class HostDasErrorEvent {
 	}
 }
 
-class HostDasOkEvent {
+class HostDasOkEvent extends phpDynamicProperties {
 }
 
-class VcAgentUpgradedEvent {
+class VcAgentUpgradedEvent extends phpDynamicProperties {
 }
 
-class VcAgentUninstalledEvent {
+class VcAgentUninstalledEvent extends phpDynamicProperties {
 }
 
-class VcAgentUpgradeFailedEvent {
+class VcAgentUpgradeFailedEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -6161,7 +6174,7 @@ class VcAgentUpgradeFailedEvent {
 	}
 }
 
-class VcAgentUninstallFailedEvent {
+class VcAgentUninstallFailedEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -6169,10 +6182,10 @@ class VcAgentUninstallFailedEvent {
 	}
 }
 
-class HostAddedEvent {
+class HostAddedEvent extends phpDynamicProperties {
 }
 
-class HostAddFailedEvent {
+class HostAddFailedEvent extends phpDynamicProperties {
 	public $hostname; //string
 
 	function __construct($hostname = null) {
@@ -6180,7 +6193,7 @@ class HostAddFailedEvent {
 	}
 }
 
-class HostIpChangedEvent {
+class HostIpChangedEvent extends phpDynamicProperties {
 	public $oldIP; //string
 	public $newIP; //string
 
@@ -6190,40 +6203,40 @@ class HostIpChangedEvent {
 	}
 }
 
-class EnteringStandbyModeEvent {
+class EnteringStandbyModeEvent extends phpDynamicProperties {
 }
 
-class DrsEnteringStandbyModeEvent {
+class DrsEnteringStandbyModeEvent extends phpDynamicProperties {
 }
 
-class EnteredStandbyModeEvent {
+class EnteredStandbyModeEvent extends phpDynamicProperties {
 }
 
-class DrsEnteredStandbyModeEvent {
+class DrsEnteredStandbyModeEvent extends phpDynamicProperties {
 }
 
-class ExitingStandbyModeEvent {
+class ExitingStandbyModeEvent extends phpDynamicProperties {
 }
 
-class DrsExitingStandbyModeEvent {
+class DrsExitingStandbyModeEvent extends phpDynamicProperties {
 }
 
-class ExitedStandbyModeEvent {
+class ExitedStandbyModeEvent extends phpDynamicProperties {
 }
 
-class DrsExitedStandbyModeEvent {
+class DrsExitedStandbyModeEvent extends phpDynamicProperties {
 }
 
-class ExitStandbyModeFailedEvent {
+class ExitStandbyModeFailedEvent extends phpDynamicProperties {
 }
 
-class DrsExitStandbyModeFailedEvent {
+class DrsExitStandbyModeFailedEvent extends phpDynamicProperties {
 }
 
-class UpdatedAgentBeingRestartedEvent {
+class UpdatedAgentBeingRestartedEvent extends phpDynamicProperties {
 }
 
-class AccountCreatedEvent {
+class AccountCreatedEvent extends phpDynamicProperties {
 	public $spec; //HostAccountSpec
 	public $group; //boolean
 
@@ -6233,7 +6246,7 @@ class AccountCreatedEvent {
 	}
 }
 
-class AccountRemovedEvent {
+class AccountRemovedEvent extends phpDynamicProperties {
 	public $account; //string
 	public $group; //boolean
 
@@ -6243,7 +6256,7 @@ class AccountRemovedEvent {
 	}
 }
 
-class UserPasswordChanged {
+class UserPasswordChanged extends phpDynamicProperties {
 	public $userLogin; //string
 
 	function __construct($userLogin = null) {
@@ -6251,7 +6264,7 @@ class UserPasswordChanged {
 	}
 }
 
-class AccountUpdatedEvent {
+class AccountUpdatedEvent extends phpDynamicProperties {
 	public $spec; //HostAccountSpec
 	public $group; //boolean
 
@@ -6261,7 +6274,7 @@ class AccountUpdatedEvent {
 	}
 }
 
-class UserAssignedToGroup {
+class UserAssignedToGroup extends phpDynamicProperties {
 	public $userLogin; //string
 	public $group; //string
 
@@ -6271,7 +6284,7 @@ class UserAssignedToGroup {
 	}
 }
 
-class UserUnassignedFromGroup {
+class UserUnassignedFromGroup extends phpDynamicProperties {
 	public $userLogin; //string
 	public $group; //string
 
@@ -6281,7 +6294,7 @@ class UserUnassignedFromGroup {
 	}
 }
 
-class DatastorePrincipalConfigured {
+class DatastorePrincipalConfigured extends phpDynamicProperties {
 	public $datastorePrincipal; //string
 
 	function __construct($datastorePrincipal = null) {
@@ -6289,7 +6302,7 @@ class DatastorePrincipalConfigured {
 	}
 }
 
-class VMFSDatastoreCreatedEvent {
+class VMFSDatastoreCreatedEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6297,7 +6310,7 @@ class VMFSDatastoreCreatedEvent {
 	}
 }
 
-class NASDatastoreCreatedEvent {
+class NASDatastoreCreatedEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6305,7 +6318,7 @@ class NASDatastoreCreatedEvent {
 	}
 }
 
-class LocalDatastoreCreatedEvent {
+class LocalDatastoreCreatedEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6313,7 +6326,7 @@ class LocalDatastoreCreatedEvent {
 	}
 }
 
-class VMFSDatastoreExtendedEvent {
+class VMFSDatastoreExtendedEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6321,7 +6334,7 @@ class VMFSDatastoreExtendedEvent {
 	}
 }
 
-class VMFSDatastoreExpandedEvent {
+class VMFSDatastoreExpandedEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6329,7 +6342,7 @@ class VMFSDatastoreExpandedEvent {
 	}
 }
 
-class DatastoreRemovedOnHostEvent {
+class DatastoreRemovedOnHostEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6337,7 +6350,7 @@ class DatastoreRemovedOnHostEvent {
 	}
 }
 
-class DatastoreRenamedOnHostEvent {
+class DatastoreRenamedOnHostEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -6347,7 +6360,7 @@ class DatastoreRenamedOnHostEvent {
 	}
 }
 
-class DuplicateIpDetectedEvent {
+class DuplicateIpDetectedEvent extends phpDynamicProperties {
 	public $duplicateIP; //string
 	public $macAddress; //string
 
@@ -6357,7 +6370,7 @@ class DuplicateIpDetectedEvent {
 	}
 }
 
-class DatastoreDiscoveredEvent {
+class DatastoreDiscoveredEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -6365,7 +6378,7 @@ class DatastoreDiscoveredEvent {
 	}
 }
 
-class DrsResourceConfigureFailedEvent {
+class DrsResourceConfigureFailedEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6373,13 +6386,13 @@ class DrsResourceConfigureFailedEvent {
 	}
 }
 
-class DrsResourceConfigureSyncedEvent {
+class DrsResourceConfigureSyncedEvent extends phpDynamicProperties {
 }
 
-class HostGetShortNameFailedEvent {
+class HostGetShortNameFailedEvent extends phpDynamicProperties {
 }
 
-class HostShortNameToIpFailedEvent {
+class HostShortNameToIpFailedEvent extends phpDynamicProperties {
 	public $shortName; //string
 
 	function __construct($shortName = null) {
@@ -6387,10 +6400,10 @@ class HostShortNameToIpFailedEvent {
 	}
 }
 
-class HostIpToShortNameFailedEvent {
+class HostIpToShortNameFailedEvent extends phpDynamicProperties {
 }
 
-class HostPrimaryAgentNotShortNameEvent {
+class HostPrimaryAgentNotShortNameEvent extends phpDynamicProperties {
 	public $primaryAgent; //string
 
 	function __construct($primaryAgent = null) {
@@ -6398,10 +6411,10 @@ class HostPrimaryAgentNotShortNameEvent {
 	}
 }
 
-class HostNotInClusterEvent {
+class HostNotInClusterEvent extends phpDynamicProperties {
 }
 
-class HostIsolationIpPingFailedEvent {
+class HostIsolationIpPingFailedEvent extends phpDynamicProperties {
 	public $isolationIp; //string
 
 	function __construct($isolationIp = null) {
@@ -6409,7 +6422,7 @@ class HostIsolationIpPingFailedEvent {
 	}
 }
 
-class HostIpInconsistentEvent {
+class HostIpInconsistentEvent extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $ipAddress2; //string
 
@@ -6419,16 +6432,16 @@ class HostIpInconsistentEvent {
 	}
 }
 
-class HostUserWorldSwapNotEnabledEvent {
+class HostUserWorldSwapNotEnabledEvent extends phpDynamicProperties {
 }
 
-class HostNonCompliantEvent {
+class HostNonCompliantEvent extends phpDynamicProperties {
 }
 
-class HostCompliantEvent {
+class HostCompliantEvent extends phpDynamicProperties {
 }
 
-class HostComplianceCheckedEvent {
+class HostComplianceCheckedEvent extends phpDynamicProperties {
 	public $profile; //ProfileEventArgument
 
 	function __construct($profile = null) {
@@ -6436,7 +6449,7 @@ class HostComplianceCheckedEvent {
 	}
 }
 
-class ClusterComplianceCheckedEvent {
+class ClusterComplianceCheckedEvent extends phpDynamicProperties {
 	public $profile; //ProfileEventArgument
 
 	function __construct($profile = null) {
@@ -6444,7 +6457,7 @@ class ClusterComplianceCheckedEvent {
 	}
 }
 
-class ProfileEvent {
+class ProfileEvent extends phpDynamicProperties {
 	public $profile; //ProfileEventArgument
 
 	function __construct($profile = null) {
@@ -6452,22 +6465,22 @@ class ProfileEvent {
 	}
 }
 
-class ProfileCreatedEvent {
+class ProfileCreatedEvent extends phpDynamicProperties {
 }
 
-class ProfileRemovedEvent {
+class ProfileRemovedEvent extends phpDynamicProperties {
 }
 
-class ProfileAssociatedEvent {
+class ProfileAssociatedEvent extends phpDynamicProperties {
 }
 
-class ProfileDissociatedEvent {
+class ProfileDissociatedEvent extends phpDynamicProperties {
 }
 
-class HostConfigAppliedEvent {
+class HostConfigAppliedEvent extends phpDynamicProperties {
 }
 
-class ProfileReferenceHostChangedEvent {
+class ProfileReferenceHostChangedEvent extends phpDynamicProperties {
 	public $referenceHost; //ManagedObjectReference
 
 	function __construct($referenceHost = null) {
@@ -6475,10 +6488,10 @@ class ProfileReferenceHostChangedEvent {
 	}
 }
 
-class ProfileChangedEvent {
+class ProfileChangedEvent extends phpDynamicProperties {
 }
 
-class HostProfileAppliedEvent {
+class HostProfileAppliedEvent extends phpDynamicProperties {
 	public $profile; //ProfileEventArgument
 
 	function __construct($profile = null) {
@@ -6486,7 +6499,7 @@ class HostProfileAppliedEvent {
 	}
 }
 
-class HostShortNameInconsistentEvent {
+class HostShortNameInconsistentEvent extends phpDynamicProperties {
 	public $shortName; //string
 	public $shortName2; //string
 
@@ -6496,10 +6509,10 @@ class HostShortNameInconsistentEvent {
 	}
 }
 
-class HostNoRedundantManagementNetworkEvent {
+class HostNoRedundantManagementNetworkEvent extends phpDynamicProperties {
 }
 
-class HostNoAvailableNetworksEvent {
+class HostNoAvailableNetworksEvent extends phpDynamicProperties {
 	public $ips; //string
 
 	function __construct($ips = null) {
@@ -6507,7 +6520,7 @@ class HostNoAvailableNetworksEvent {
 	}
 }
 
-class HostExtraNetworksEvent {
+class HostExtraNetworksEvent extends phpDynamicProperties {
 	public $ips; //string
 
 	function __construct($ips = null) {
@@ -6515,10 +6528,10 @@ class HostExtraNetworksEvent {
 	}
 }
 
-class HostNoHAEnabledPortGroupsEvent {
+class HostNoHAEnabledPortGroupsEvent extends phpDynamicProperties {
 }
 
-class HostMissingNetworksEvent {
+class HostMissingNetworksEvent extends phpDynamicProperties {
 	public $ips; //string
 
 	function __construct($ips = null) {
@@ -6526,7 +6539,7 @@ class HostMissingNetworksEvent {
 	}
 }
 
-class VnicPortArgument {
+class VnicPortArgument extends phpDynamicProperties {
 	public $vnic; //string
 	public $port; //DistributedVirtualSwitchPortConnection
 
@@ -6536,7 +6549,7 @@ class VnicPortArgument {
 	}
 }
 
-class ArrayOfVnicPortArgument {
+class ArrayOfVnicPortArgument extends phpDynamicProperties {
 	public $VnicPortArgument; //VnicPortArgument
 
 	function __construct($VnicPortArgument = null) {
@@ -6544,7 +6557,7 @@ class ArrayOfVnicPortArgument {
 	}
 }
 
-class HostVnicConnectedToCustomizedDVPortEvent {
+class HostVnicConnectedToCustomizedDVPortEvent extends phpDynamicProperties {
 	public $vnic; //VnicPortArgument
 
 	function __construct($vnic = null) {
@@ -6552,7 +6565,7 @@ class HostVnicConnectedToCustomizedDVPortEvent {
 	}
 }
 
-class GhostDvsProxySwitchDetectedEvent {
+class GhostDvsProxySwitchDetectedEvent extends phpDynamicProperties {
 	public $switchUuid; //string
 
 	function __construct($switchUuid = null) {
@@ -6560,7 +6573,7 @@ class GhostDvsProxySwitchDetectedEvent {
 	}
 }
 
-class GhostDvsProxySwitchRemovedEvent {
+class GhostDvsProxySwitchRemovedEvent extends phpDynamicProperties {
 	public $switchUuid; //string
 
 	function __construct($switchUuid = null) {
@@ -6568,7 +6581,7 @@ class GhostDvsProxySwitchRemovedEvent {
 	}
 }
 
-class VmEvent {
+class VmEvent extends phpDynamicProperties {
 	public $template; //boolean
 
 	function __construct($template = null) {
@@ -6576,43 +6589,43 @@ class VmEvent {
 	}
 }
 
-class VmPoweredOffEvent {
+class VmPoweredOffEvent extends phpDynamicProperties {
 }
 
-class VmPoweredOnEvent {
+class VmPoweredOnEvent extends phpDynamicProperties {
 }
 
-class VmSuspendedEvent {
+class VmSuspendedEvent extends phpDynamicProperties {
 }
 
-class VmStartingEvent {
+class VmStartingEvent extends phpDynamicProperties {
 }
 
-class VmStoppingEvent {
+class VmStoppingEvent extends phpDynamicProperties {
 }
 
-class VmSuspendingEvent {
+class VmSuspendingEvent extends phpDynamicProperties {
 }
 
-class VmResumingEvent {
+class VmResumingEvent extends phpDynamicProperties {
 }
 
-class VmDisconnectedEvent {
+class VmDisconnectedEvent extends phpDynamicProperties {
 }
 
-class VmRemoteConsoleConnectedEvent {
+class VmRemoteConsoleConnectedEvent extends phpDynamicProperties {
 }
 
-class VmRemoteConsoleDisconnectedEvent {
+class VmRemoteConsoleDisconnectedEvent extends phpDynamicProperties {
 }
 
-class VmDiscoveredEvent {
+class VmDiscoveredEvent extends phpDynamicProperties {
 }
 
-class VmOrphanedEvent {
+class VmOrphanedEvent extends phpDynamicProperties {
 }
 
-class VmBeingCreatedEvent {
+class VmBeingCreatedEvent extends phpDynamicProperties {
 	public $configSpec; //VirtualMachineConfigSpec
 
 	function __construct($configSpec = null) {
@@ -6620,25 +6633,25 @@ class VmBeingCreatedEvent {
 	}
 }
 
-class VmCreatedEvent {
+class VmCreatedEvent extends phpDynamicProperties {
 }
 
-class VmStartRecordingEvent {
+class VmStartRecordingEvent extends phpDynamicProperties {
 }
 
-class VmEndRecordingEvent {
+class VmEndRecordingEvent extends phpDynamicProperties {
 }
 
-class VmStartReplayingEvent {
+class VmStartReplayingEvent extends phpDynamicProperties {
 }
 
-class VmEndReplayingEvent {
+class VmEndReplayingEvent extends phpDynamicProperties {
 }
 
-class VmRegisteredEvent {
+class VmRegisteredEvent extends phpDynamicProperties {
 }
 
-class VmAutoRenameEvent {
+class VmAutoRenameEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -6648,7 +6661,7 @@ class VmAutoRenameEvent {
 	}
 }
 
-class VmBeingHotMigratedEvent {
+class VmBeingHotMigratedEvent extends phpDynamicProperties {
 	public $destHost; //HostEventArgument
 	public $destDatacenter; //DatacenterEventArgument
 	public $destDatastore; //DatastoreEventArgument
@@ -6660,10 +6673,10 @@ class VmBeingHotMigratedEvent {
 	}
 }
 
-class VmResettingEvent {
+class VmResettingEvent extends phpDynamicProperties {
 }
 
-class VmStaticMacConflictEvent {
+class VmStaticMacConflictEvent extends phpDynamicProperties {
 	public $conflictedVm; //VmEventArgument
 	public $mac; //string
 
@@ -6673,7 +6686,7 @@ class VmStaticMacConflictEvent {
 	}
 }
 
-class VmMacConflictEvent {
+class VmMacConflictEvent extends phpDynamicProperties {
 	public $conflictedVm; //VmEventArgument
 	public $mac; //string
 
@@ -6683,7 +6696,7 @@ class VmMacConflictEvent {
 	}
 }
 
-class VmBeingDeployedEvent {
+class VmBeingDeployedEvent extends phpDynamicProperties {
 	public $srcTemplate; //VmEventArgument
 
 	function __construct($srcTemplate = null) {
@@ -6691,7 +6704,7 @@ class VmBeingDeployedEvent {
 	}
 }
 
-class VmDeployFailedEvent {
+class VmDeployFailedEvent extends phpDynamicProperties {
 	public $destDatastore; //EntityEventArgument
 	public $reason; //LocalizedMethodFault
 
@@ -6701,7 +6714,7 @@ class VmDeployFailedEvent {
 	}
 }
 
-class VmDeployedEvent {
+class VmDeployedEvent extends phpDynamicProperties {
 	public $srcTemplate; //VmEventArgument
 
 	function __construct($srcTemplate = null) {
@@ -6709,7 +6722,7 @@ class VmDeployedEvent {
 	}
 }
 
-class VmMacChangedEvent {
+class VmMacChangedEvent extends phpDynamicProperties {
 	public $adapter; //string
 	public $oldMac; //string
 	public $newMac; //string
@@ -6721,7 +6734,7 @@ class VmMacChangedEvent {
 	}
 }
 
-class VmMacAssignedEvent {
+class VmMacAssignedEvent extends phpDynamicProperties {
 	public $adapter; //string
 	public $mac; //string
 
@@ -6731,7 +6744,7 @@ class VmMacAssignedEvent {
 	}
 }
 
-class VmUuidConflictEvent {
+class VmUuidConflictEvent extends phpDynamicProperties {
 	public $conflictedVm; //VmEventArgument
 	public $uuid; //string
 
@@ -6741,7 +6754,7 @@ class VmUuidConflictEvent {
 	}
 }
 
-class VmInstanceUuidConflictEvent {
+class VmInstanceUuidConflictEvent extends phpDynamicProperties {
 	public $conflictedVm; //VmEventArgument
 	public $instanceUuid; //string
 
@@ -6751,7 +6764,7 @@ class VmInstanceUuidConflictEvent {
 	}
 }
 
-class VmBeingMigratedEvent {
+class VmBeingMigratedEvent extends phpDynamicProperties {
 	public $destHost; //HostEventArgument
 	public $destDatacenter; //DatacenterEventArgument
 	public $destDatastore; //DatastoreEventArgument
@@ -6763,7 +6776,7 @@ class VmBeingMigratedEvent {
 	}
 }
 
-class VmFailedMigrateEvent {
+class VmFailedMigrateEvent extends phpDynamicProperties {
 	public $destHost; //HostEventArgument
 	public $reason; //LocalizedMethodFault
 	public $destDatacenter; //DatacenterEventArgument
@@ -6777,7 +6790,7 @@ class VmFailedMigrateEvent {
 	}
 }
 
-class VmMigratedEvent {
+class VmMigratedEvent extends phpDynamicProperties {
 	public $sourceHost; //HostEventArgument
 	public $sourceDatacenter; //DatacenterEventArgument
 	public $sourceDatastore; //DatastoreEventArgument
@@ -6789,7 +6802,7 @@ class VmMigratedEvent {
 	}
 }
 
-class VmUnsupportedStartingEvent {
+class VmUnsupportedStartingEvent extends phpDynamicProperties {
 	public $guestId; //string
 
 	function __construct($guestId = null) {
@@ -6797,22 +6810,22 @@ class VmUnsupportedStartingEvent {
 	}
 }
 
-class DrsVmMigratedEvent {
+class DrsVmMigratedEvent extends phpDynamicProperties {
 }
 
-class DrsVmPoweredOnEvent {
+class DrsVmPoweredOnEvent extends phpDynamicProperties {
 }
 
-class DrsRuleViolationEvent {
+class DrsRuleViolationEvent extends phpDynamicProperties {
 }
 
-class DrsRuleComplianceEvent {
+class DrsRuleComplianceEvent extends phpDynamicProperties {
 }
 
-class VmRelocateSpecEvent {
+class VmRelocateSpecEvent extends phpDynamicProperties {
 }
 
-class VmBeingRelocatedEvent {
+class VmBeingRelocatedEvent extends phpDynamicProperties {
 	public $destHost; //HostEventArgument
 	public $destDatacenter; //DatacenterEventArgument
 	public $destDatastore; //DatastoreEventArgument
@@ -6824,7 +6837,7 @@ class VmBeingRelocatedEvent {
 	}
 }
 
-class VmRelocatedEvent {
+class VmRelocatedEvent extends phpDynamicProperties {
 	public $sourceHost; //HostEventArgument
 	public $sourceDatacenter; //DatacenterEventArgument
 	public $sourceDatastore; //DatastoreEventArgument
@@ -6836,7 +6849,7 @@ class VmRelocatedEvent {
 	}
 }
 
-class VmRelocateFailedEvent {
+class VmRelocateFailedEvent extends phpDynamicProperties {
 	public $destHost; //HostEventArgument
 	public $reason; //LocalizedMethodFault
 	public $destDatacenter; //DatacenterEventArgument
@@ -6850,13 +6863,13 @@ class VmRelocateFailedEvent {
 	}
 }
 
-class VmEmigratingEvent {
+class VmEmigratingEvent extends phpDynamicProperties {
 }
 
-class VmCloneEvent {
+class VmCloneEvent extends phpDynamicProperties {
 }
 
-class VmBeingClonedEvent {
+class VmBeingClonedEvent extends phpDynamicProperties {
 	public $destFolder; //FolderEventArgument
 	public $destName; //string
 	public $destHost; //HostEventArgument
@@ -6868,7 +6881,7 @@ class VmBeingClonedEvent {
 	}
 }
 
-class VmBeingClonedNoFolderEvent {
+class VmBeingClonedNoFolderEvent extends phpDynamicProperties {
 	public $destName; //string
 	public $destHost; //HostEventArgument
 
@@ -6878,7 +6891,7 @@ class VmBeingClonedNoFolderEvent {
 	}
 }
 
-class VmCloneFailedEvent {
+class VmCloneFailedEvent extends phpDynamicProperties {
 	public $destFolder; //FolderEventArgument
 	public $destName; //string
 	public $destHost; //HostEventArgument
@@ -6892,7 +6905,7 @@ class VmCloneFailedEvent {
 	}
 }
 
-class VmClonedEvent {
+class VmClonedEvent extends phpDynamicProperties {
 	public $sourceVm; //VmEventArgument
 
 	function __construct($sourceVm = null) {
@@ -6900,10 +6913,10 @@ class VmClonedEvent {
 	}
 }
 
-class VmResourceReallocatedEvent {
+class VmResourceReallocatedEvent extends phpDynamicProperties {
 }
 
-class VmRenamedEvent {
+class VmRenamedEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -6913,10 +6926,10 @@ class VmRenamedEvent {
 	}
 }
 
-class VmDateRolledBackEvent {
+class VmDateRolledBackEvent extends phpDynamicProperties {
 }
 
-class VmNoNetworkAccessEvent {
+class VmNoNetworkAccessEvent extends phpDynamicProperties {
 	public $destHost; //HostEventArgument
 
 	function __construct($destHost = null) {
@@ -6924,7 +6937,7 @@ class VmNoNetworkAccessEvent {
 	}
 }
 
-class VmDiskFailedEvent {
+class VmDiskFailedEvent extends phpDynamicProperties {
 	public $disk; //string
 	public $reason; //LocalizedMethodFault
 
@@ -6934,7 +6947,7 @@ class VmDiskFailedEvent {
 	}
 }
 
-class VmFailedToPowerOnEvent {
+class VmFailedToPowerOnEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6942,7 +6955,7 @@ class VmFailedToPowerOnEvent {
 	}
 }
 
-class VmFailedToPowerOffEvent {
+class VmFailedToPowerOffEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6950,7 +6963,7 @@ class VmFailedToPowerOffEvent {
 	}
 }
 
-class VmFailedToSuspendEvent {
+class VmFailedToSuspendEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6958,7 +6971,7 @@ class VmFailedToSuspendEvent {
 	}
 }
 
-class VmFailedToResetEvent {
+class VmFailedToResetEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6966,7 +6979,7 @@ class VmFailedToResetEvent {
 	}
 }
 
-class VmFailedToShutdownGuestEvent {
+class VmFailedToShutdownGuestEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6974,7 +6987,7 @@ class VmFailedToShutdownGuestEvent {
 	}
 }
 
-class VmFailedToRebootGuestEvent {
+class VmFailedToRebootGuestEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6982,7 +6995,7 @@ class VmFailedToRebootGuestEvent {
 	}
 }
 
-class VmFailedToStandbyGuestEvent {
+class VmFailedToStandbyGuestEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -6990,19 +7003,19 @@ class VmFailedToStandbyGuestEvent {
 	}
 }
 
-class VmRemovedEvent {
+class VmRemovedEvent extends phpDynamicProperties {
 }
 
-class VmGuestShutdownEvent {
+class VmGuestShutdownEvent extends phpDynamicProperties {
 }
 
-class VmGuestRebootEvent {
+class VmGuestRebootEvent extends phpDynamicProperties {
 }
 
-class VmGuestStandbyEvent {
+class VmGuestStandbyEvent extends phpDynamicProperties {
 }
 
-class VmUpgradingEvent {
+class VmUpgradingEvent extends phpDynamicProperties {
 	public $version; //string
 
 	function __construct($version = null) {
@@ -7010,7 +7023,7 @@ class VmUpgradingEvent {
 	}
 }
 
-class VmUpgradeCompleteEvent {
+class VmUpgradeCompleteEvent extends phpDynamicProperties {
 	public $version; //string
 
 	function __construct($version = null) {
@@ -7018,10 +7031,10 @@ class VmUpgradeCompleteEvent {
 	}
 }
 
-class VmUpgradeFailedEvent {
+class VmUpgradeFailedEvent extends phpDynamicProperties {
 }
 
-class VmRestartedOnAlternateHostEvent {
+class VmRestartedOnAlternateHostEvent extends phpDynamicProperties {
 	public $sourceHost; //HostEventArgument
 
 	function __construct($sourceHost = null) {
@@ -7029,7 +7042,7 @@ class VmRestartedOnAlternateHostEvent {
 	}
 }
 
-class VmReconfiguredEvent {
+class VmReconfiguredEvent extends phpDynamicProperties {
 	public $configSpec; //VirtualMachineConfigSpec
 
 	function __construct($configSpec = null) {
@@ -7037,7 +7050,7 @@ class VmReconfiguredEvent {
 	}
 }
 
-class VmMessageEvent {
+class VmMessageEvent extends phpDynamicProperties {
 	public $message; //string
 	public $messageInfo; //VirtualMachineMessage
 
@@ -7047,7 +7060,7 @@ class VmMessageEvent {
 	}
 }
 
-class VmMessageWarningEvent {
+class VmMessageWarningEvent extends phpDynamicProperties {
 	public $message; //string
 	public $messageInfo; //VirtualMachineMessage
 
@@ -7057,7 +7070,7 @@ class VmMessageWarningEvent {
 	}
 }
 
-class VmMessageErrorEvent {
+class VmMessageErrorEvent extends phpDynamicProperties {
 	public $message; //string
 	public $messageInfo; //VirtualMachineMessage
 
@@ -7067,10 +7080,10 @@ class VmMessageErrorEvent {
 	}
 }
 
-class VmConfigMissingEvent {
+class VmConfigMissingEvent extends phpDynamicProperties {
 }
 
-class VmPowerOffOnIsolationEvent {
+class VmPowerOffOnIsolationEvent extends phpDynamicProperties {
 	public $isolatedHost; //HostEventArgument
 
 	function __construct($isolatedHost = null) {
@@ -7078,7 +7091,7 @@ class VmPowerOffOnIsolationEvent {
 	}
 }
 
-class VmShutdownOnIsolationEvent {
+class VmShutdownOnIsolationEvent extends phpDynamicProperties {
 	public $isolatedHost; //HostEventArgument
 	public $shutdownResult; //string
 
@@ -7088,7 +7101,7 @@ class VmShutdownOnIsolationEvent {
 	}
 }
 
-class VmFailoverFailed {
+class VmFailoverFailed extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -7096,7 +7109,7 @@ class VmFailoverFailed {
 	}
 }
 
-class VmDasBeingResetEvent {
+class VmDasBeingResetEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -7104,16 +7117,16 @@ class VmDasBeingResetEvent {
 	}
 }
 
-class VmDasResetFailedEvent {
+class VmDasResetFailedEvent extends phpDynamicProperties {
 }
 
-class VmMaxRestartCountReached {
+class VmMaxRestartCountReached extends phpDynamicProperties {
 }
 
-class VmMaxFTRestartCountReached {
+class VmMaxFTRestartCountReached extends phpDynamicProperties {
 }
 
-class VmDasBeingResetWithScreenshotEvent {
+class VmDasBeingResetWithScreenshotEvent extends phpDynamicProperties {
 	public $screenshotFilePath; //string
 
 	function __construct($screenshotFilePath = null) {
@@ -7121,10 +7134,10 @@ class VmDasBeingResetWithScreenshotEvent {
 	}
 }
 
-class NotEnoughResourcesToStartVmEvent {
+class NotEnoughResourcesToStartVmEvent extends phpDynamicProperties {
 }
 
-class VmUuidAssignedEvent {
+class VmUuidAssignedEvent extends phpDynamicProperties {
 	public $uuid; //string
 
 	function __construct($uuid = null) {
@@ -7132,7 +7145,7 @@ class VmUuidAssignedEvent {
 	}
 }
 
-class VmInstanceUuidAssignedEvent {
+class VmInstanceUuidAssignedEvent extends phpDynamicProperties {
 	public $instanceUuid; //string
 
 	function __construct($instanceUuid = null) {
@@ -7140,7 +7153,7 @@ class VmInstanceUuidAssignedEvent {
 	}
 }
 
-class VmUuidChangedEvent {
+class VmUuidChangedEvent extends phpDynamicProperties {
 	public $oldUuid; //string
 	public $newUuid; //string
 
@@ -7150,7 +7163,7 @@ class VmUuidChangedEvent {
 	}
 }
 
-class VmInstanceUuidChangedEvent {
+class VmInstanceUuidChangedEvent extends phpDynamicProperties {
 	public $oldInstanceUuid; //string
 	public $newInstanceUuid; //string
 
@@ -7160,7 +7173,7 @@ class VmInstanceUuidChangedEvent {
 	}
 }
 
-class VmWwnConflictEvent {
+class VmWwnConflictEvent extends phpDynamicProperties {
 	public $conflictedVms; //VmEventArgument
 	public $conflictedHosts; //HostEventArgument
 	public $wwn; //long
@@ -7172,10 +7185,10 @@ class VmWwnConflictEvent {
 	}
 }
 
-class VmAcquiredMksTicketEvent {
+class VmAcquiredMksTicketEvent extends phpDynamicProperties {
 }
 
-class VmAcquiredTicketEvent {
+class VmAcquiredTicketEvent extends phpDynamicProperties {
 	public $ticketType; //string
 
 	function __construct($ticketType = null) {
@@ -7183,7 +7196,7 @@ class VmAcquiredTicketEvent {
 	}
 }
 
-class HostWwnConflictEvent {
+class HostWwnConflictEvent extends phpDynamicProperties {
 	public $conflictedVms; //VmEventArgument
 	public $conflictedHosts; //HostEventArgument
 	public $wwn; //long
@@ -7195,7 +7208,7 @@ class HostWwnConflictEvent {
 	}
 }
 
-class VmWwnAssignedEvent {
+class VmWwnAssignedEvent extends phpDynamicProperties {
 	public $nodeWwns; //long
 	public $portWwns; //long
 
@@ -7205,7 +7218,7 @@ class VmWwnAssignedEvent {
 	}
 }
 
-class VmWwnChangedEvent {
+class VmWwnChangedEvent extends phpDynamicProperties {
 	public $oldNodeWwns; //long
 	public $oldPortWwns; //long
 	public $newNodeWwns; //long
@@ -7219,13 +7232,13 @@ class VmWwnChangedEvent {
 	}
 }
 
-class VmSecondaryAddedEvent {
+class VmSecondaryAddedEvent extends phpDynamicProperties {
 }
 
-class VmFaultToleranceTurnedOffEvent {
+class VmFaultToleranceTurnedOffEvent extends phpDynamicProperties {
 }
 
-class VmFaultToleranceStateChangedEvent {
+class VmFaultToleranceStateChangedEvent extends phpDynamicProperties {
 	public $oldState; //VirtualMachineFaultToleranceState
 	public $newState; //VirtualMachineFaultToleranceState
 
@@ -7235,10 +7248,10 @@ class VmFaultToleranceStateChangedEvent {
 	}
 }
 
-class VmSecondaryDisabledEvent {
+class VmSecondaryDisabledEvent extends phpDynamicProperties {
 }
 
-class VmSecondaryDisabledBySystemEvent {
+class VmSecondaryDisabledBySystemEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -7246,19 +7259,19 @@ class VmSecondaryDisabledBySystemEvent {
 	}
 }
 
-class VmSecondaryEnabledEvent {
+class VmSecondaryEnabledEvent extends phpDynamicProperties {
 }
 
-class VmStartingSecondaryEvent {
+class VmStartingSecondaryEvent extends phpDynamicProperties {
 }
 
-class VmSecondaryStartedEvent {
+class VmSecondaryStartedEvent extends phpDynamicProperties {
 }
 
-class VmFailedUpdatingSecondaryConfig {
+class VmFailedUpdatingSecondaryConfig extends phpDynamicProperties {
 }
 
-class VmFailedStartingSecondaryEvent {
+class VmFailedStartingSecondaryEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -7266,7 +7279,7 @@ class VmFailedStartingSecondaryEvent {
 	}
 }
 
-class VmTimedoutStartingSecondaryEvent {
+class VmTimedoutStartingSecondaryEvent extends phpDynamicProperties {
 	public $timeout; //long
 
 	function __construct($timeout = null) {
@@ -7274,10 +7287,10 @@ class VmTimedoutStartingSecondaryEvent {
 	}
 }
 
-class VmNoCompatibleHostForSecondaryEvent {
+class VmNoCompatibleHostForSecondaryEvent extends phpDynamicProperties {
 }
 
-class VmPrimaryFailoverEvent {
+class VmPrimaryFailoverEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -7285,7 +7298,7 @@ class VmPrimaryFailoverEvent {
 	}
 }
 
-class VmFaultToleranceVmTerminatedEvent {
+class VmFaultToleranceVmTerminatedEvent extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -7293,7 +7306,7 @@ class VmFaultToleranceVmTerminatedEvent {
 	}
 }
 
-class HostWwnChangedEvent {
+class HostWwnChangedEvent extends phpDynamicProperties {
 	public $oldNodeWwns; //long
 	public $oldPortWwns; //long
 	public $newNodeWwns; //long
@@ -7307,13 +7320,13 @@ class HostWwnChangedEvent {
 	}
 }
 
-class HostAdminDisableEvent {
+class HostAdminDisableEvent extends phpDynamicProperties {
 }
 
-class HostAdminEnableEvent {
+class HostAdminEnableEvent extends phpDynamicProperties {
 }
 
-class HostEnableAdminFailedEvent {
+class HostEnableAdminFailedEvent extends phpDynamicProperties {
 	public $permissions; //Permission
 
 	function __construct($permissions = null) {
@@ -7321,10 +7334,10 @@ class HostEnableAdminFailedEvent {
 	}
 }
 
-class VmFailedRelayoutOnVmfs2DatastoreEvent {
+class VmFailedRelayoutOnVmfs2DatastoreEvent extends phpDynamicProperties {
 }
 
-class VmFailedRelayoutEvent {
+class VmFailedRelayoutEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -7332,16 +7345,16 @@ class VmFailedRelayoutEvent {
 	}
 }
 
-class VmRelayoutSuccessfulEvent {
+class VmRelayoutSuccessfulEvent extends phpDynamicProperties {
 }
 
-class VmRelayoutUpToDateEvent {
+class VmRelayoutUpToDateEvent extends phpDynamicProperties {
 }
 
-class VmConnectedEvent {
+class VmConnectedEvent extends phpDynamicProperties {
 }
 
-class VmPoweringOnWithCustomizedDVPortEvent {
+class VmPoweringOnWithCustomizedDVPortEvent extends phpDynamicProperties {
 	public $vnic; //VnicPortArgument
 
 	function __construct($vnic = null) {
@@ -7349,16 +7362,16 @@ class VmPoweringOnWithCustomizedDVPortEvent {
 	}
 }
 
-class VmDasUpdateErrorEvent {
+class VmDasUpdateErrorEvent extends phpDynamicProperties {
 }
 
-class NoMaintenanceModeDrsRecommendationForVM {
+class NoMaintenanceModeDrsRecommendationForVM extends phpDynamicProperties {
 }
 
-class VmDasUpdateOkEvent {
+class VmDasUpdateOkEvent extends phpDynamicProperties {
 }
 
-class ScheduledTaskEvent {
+class ScheduledTaskEvent extends phpDynamicProperties {
 	public $scheduledTask; //ScheduledTaskEventArgument
 	public $entity; //ManagedEntityEventArgument
 
@@ -7368,22 +7381,22 @@ class ScheduledTaskEvent {
 	}
 }
 
-class ScheduledTaskCreatedEvent {
+class ScheduledTaskCreatedEvent extends phpDynamicProperties {
 }
 
-class ScheduledTaskStartedEvent {
+class ScheduledTaskStartedEvent extends phpDynamicProperties {
 }
 
-class ScheduledTaskRemovedEvent {
+class ScheduledTaskRemovedEvent extends phpDynamicProperties {
 }
 
-class ScheduledTaskReconfiguredEvent {
+class ScheduledTaskReconfiguredEvent extends phpDynamicProperties {
 }
 
-class ScheduledTaskCompletedEvent {
+class ScheduledTaskCompletedEvent extends phpDynamicProperties {
 }
 
-class ScheduledTaskFailedEvent {
+class ScheduledTaskFailedEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -7391,7 +7404,7 @@ class ScheduledTaskFailedEvent {
 	}
 }
 
-class ScheduledTaskEmailCompletedEvent {
+class ScheduledTaskEmailCompletedEvent extends phpDynamicProperties {
 	public $to; //string
 
 	function __construct($to = null) {
@@ -7399,7 +7412,7 @@ class ScheduledTaskEmailCompletedEvent {
 	}
 }
 
-class ScheduledTaskEmailFailedEvent {
+class ScheduledTaskEmailFailedEvent extends phpDynamicProperties {
 	public $to; //string
 	public $reason; //LocalizedMethodFault
 
@@ -7409,7 +7422,7 @@ class ScheduledTaskEmailFailedEvent {
 	}
 }
 
-class AlarmEvent {
+class AlarmEvent extends phpDynamicProperties {
 	public $alarm; //AlarmEventArgument
 
 	function __construct($alarm = null) {
@@ -7417,7 +7430,7 @@ class AlarmEvent {
 	}
 }
 
-class AlarmCreatedEvent {
+class AlarmCreatedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 
 	function __construct($entity = null) {
@@ -7425,7 +7438,7 @@ class AlarmCreatedEvent {
 	}
 }
 
-class AlarmStatusChangedEvent {
+class AlarmStatusChangedEvent extends phpDynamicProperties {
 	public $source; //ManagedEntityEventArgument
 	public $entity; //ManagedEntityEventArgument
 	public $from; //string
@@ -7439,7 +7452,7 @@ class AlarmStatusChangedEvent {
 	}
 }
 
-class AlarmActionTriggeredEvent {
+class AlarmActionTriggeredEvent extends phpDynamicProperties {
 	public $source; //ManagedEntityEventArgument
 	public $entity; //ManagedEntityEventArgument
 
@@ -7449,7 +7462,7 @@ class AlarmActionTriggeredEvent {
 	}
 }
 
-class AlarmEmailCompletedEvent {
+class AlarmEmailCompletedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $to; //string
 
@@ -7459,7 +7472,7 @@ class AlarmEmailCompletedEvent {
 	}
 }
 
-class AlarmEmailFailedEvent {
+class AlarmEmailFailedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $to; //string
 	public $reason; //LocalizedMethodFault
@@ -7471,7 +7484,7 @@ class AlarmEmailFailedEvent {
 	}
 }
 
-class AlarmSnmpCompletedEvent {
+class AlarmSnmpCompletedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 
 	function __construct($entity = null) {
@@ -7479,7 +7492,7 @@ class AlarmSnmpCompletedEvent {
 	}
 }
 
-class AlarmSnmpFailedEvent {
+class AlarmSnmpFailedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $reason; //LocalizedMethodFault
 
@@ -7489,7 +7502,7 @@ class AlarmSnmpFailedEvent {
 	}
 }
 
-class AlarmScriptCompleteEvent {
+class AlarmScriptCompleteEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $script; //string
 
@@ -7499,7 +7512,7 @@ class AlarmScriptCompleteEvent {
 	}
 }
 
-class AlarmScriptFailedEvent {
+class AlarmScriptFailedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $script; //string
 	public $reason; //LocalizedMethodFault
@@ -7511,7 +7524,7 @@ class AlarmScriptFailedEvent {
 	}
 }
 
-class AlarmRemovedEvent {
+class AlarmRemovedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 
 	function __construct($entity = null) {
@@ -7519,7 +7532,7 @@ class AlarmRemovedEvent {
 	}
 }
 
-class AlarmReconfiguredEvent {
+class AlarmReconfiguredEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 
 	function __construct($entity = null) {
@@ -7527,7 +7540,7 @@ class AlarmReconfiguredEvent {
 	}
 }
 
-class AlarmAcknowledgedEvent {
+class AlarmAcknowledgedEvent extends phpDynamicProperties {
 	public $source; //ManagedEntityEventArgument
 	public $entity; //ManagedEntityEventArgument
 
@@ -7537,7 +7550,7 @@ class AlarmAcknowledgedEvent {
 	}
 }
 
-class AlarmClearedEvent {
+class AlarmClearedEvent extends phpDynamicProperties {
 	public $source; //ManagedEntityEventArgument
 	public $entity; //ManagedEntityEventArgument
 	public $from; //string
@@ -7549,10 +7562,10 @@ class AlarmClearedEvent {
 	}
 }
 
-class CustomFieldEvent {
+class CustomFieldEvent extends phpDynamicProperties {
 }
 
-class CustomFieldDefEvent {
+class CustomFieldDefEvent extends phpDynamicProperties {
 	public $fieldKey; //int
 	public $name; //string
 
@@ -7562,13 +7575,13 @@ class CustomFieldDefEvent {
 	}
 }
 
-class CustomFieldDefAddedEvent {
+class CustomFieldDefAddedEvent extends phpDynamicProperties {
 }
 
-class CustomFieldDefRemovedEvent {
+class CustomFieldDefRemovedEvent extends phpDynamicProperties {
 }
 
-class CustomFieldDefRenamedEvent {
+class CustomFieldDefRenamedEvent extends phpDynamicProperties {
 	public $newName; //string
 
 	function __construct($newName = null) {
@@ -7576,7 +7589,7 @@ class CustomFieldDefRenamedEvent {
 	}
 }
 
-class CustomFieldValueChangedEvent {
+class CustomFieldValueChangedEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $fieldKey; //int
 	public $name; //string
@@ -7590,10 +7603,10 @@ class CustomFieldValueChangedEvent {
 	}
 }
 
-class AuthorizationEvent {
+class AuthorizationEvent extends phpDynamicProperties {
 }
 
-class PermissionEvent {
+class PermissionEvent extends phpDynamicProperties {
 	public $entity; //ManagedEntityEventArgument
 	public $principal; //string
 	public $group; //boolean
@@ -7605,7 +7618,7 @@ class PermissionEvent {
 	}
 }
 
-class PermissionAddedEvent {
+class PermissionAddedEvent extends phpDynamicProperties {
 	public $role; //RoleEventArgument
 	public $propagate; //boolean
 
@@ -7615,7 +7628,7 @@ class PermissionAddedEvent {
 	}
 }
 
-class PermissionUpdatedEvent {
+class PermissionUpdatedEvent extends phpDynamicProperties {
 	public $role; //RoleEventArgument
 	public $propagate; //boolean
 
@@ -7625,10 +7638,10 @@ class PermissionUpdatedEvent {
 	}
 }
 
-class PermissionRemovedEvent {
+class PermissionRemovedEvent extends phpDynamicProperties {
 }
 
-class RoleEvent {
+class RoleEvent extends phpDynamicProperties {
 	public $role; //RoleEventArgument
 
 	function __construct($role = null) {
@@ -7636,7 +7649,7 @@ class RoleEvent {
 	}
 }
 
-class RoleAddedEvent {
+class RoleAddedEvent extends phpDynamicProperties {
 	public $privilegeList; //string
 
 	function __construct($privilegeList = null) {
@@ -7644,7 +7657,7 @@ class RoleAddedEvent {
 	}
 }
 
-class RoleUpdatedEvent {
+class RoleUpdatedEvent extends phpDynamicProperties {
 	public $privilegeList; //string
 
 	function __construct($privilegeList = null) {
@@ -7652,10 +7665,10 @@ class RoleUpdatedEvent {
 	}
 }
 
-class RoleRemovedEvent {
+class RoleRemovedEvent extends phpDynamicProperties {
 }
 
-class DatastoreEvent {
+class DatastoreEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -7663,10 +7676,10 @@ class DatastoreEvent {
 	}
 }
 
-class DatastoreDestroyedEvent {
+class DatastoreDestroyedEvent extends phpDynamicProperties {
 }
 
-class DatastoreRenamedEvent {
+class DatastoreRenamedEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -7676,7 +7689,7 @@ class DatastoreRenamedEvent {
 	}
 }
 
-class DatastoreCapacityIncreasedEvent {
+class DatastoreCapacityIncreasedEvent extends phpDynamicProperties {
 	public $oldCapacity; //long
 	public $newCapacity; //long
 
@@ -7686,10 +7699,10 @@ class DatastoreCapacityIncreasedEvent {
 	}
 }
 
-class DatastoreDuplicatedEvent {
+class DatastoreDuplicatedEvent extends phpDynamicProperties {
 }
 
-class DatastoreFileEvent {
+class DatastoreFileEvent extends phpDynamicProperties {
 	public $targetFile; //string
 
 	function __construct($targetFile = null) {
@@ -7697,7 +7710,7 @@ class DatastoreFileEvent {
 	}
 }
 
-class DatastoreFileCopiedEvent {
+class DatastoreFileCopiedEvent extends phpDynamicProperties {
 	public $sourceDatastore; //DatastoreEventArgument
 	public $sourceFile; //string
 
@@ -7707,7 +7720,7 @@ class DatastoreFileCopiedEvent {
 	}
 }
 
-class DatastoreFileMovedEvent {
+class DatastoreFileMovedEvent extends phpDynamicProperties {
 	public $sourceDatastore; //DatastoreEventArgument
 	public $sourceFile; //string
 
@@ -7717,16 +7730,16 @@ class DatastoreFileMovedEvent {
 	}
 }
 
-class DatastoreFileDeletedEvent {
+class DatastoreFileDeletedEvent extends phpDynamicProperties {
 }
 
-class NonVIWorkloadDetectedOnDatastoreEvent {
+class NonVIWorkloadDetectedOnDatastoreEvent extends phpDynamicProperties {
 }
 
-class DatastoreIORMReconfiguredEvent {
+class DatastoreIORMReconfiguredEvent extends phpDynamicProperties {
 }
 
-class TaskEvent {
+class TaskEvent extends phpDynamicProperties {
 	public $info; //TaskInfo
 
 	function __construct($info = null) {
@@ -7734,13 +7747,13 @@ class TaskEvent {
 	}
 }
 
-class TaskTimeoutEvent {
+class TaskTimeoutEvent extends phpDynamicProperties {
 }
 
-class LicenseEvent {
+class LicenseEvent extends phpDynamicProperties {
 }
 
-class ServerLicenseExpiredEvent {
+class ServerLicenseExpiredEvent extends phpDynamicProperties {
 	public $product; //string
 
 	function __construct($product = null) {
@@ -7748,13 +7761,13 @@ class ServerLicenseExpiredEvent {
 	}
 }
 
-class HostLicenseExpiredEvent {
+class HostLicenseExpiredEvent extends phpDynamicProperties {
 }
 
-class VMotionLicenseExpiredEvent {
+class VMotionLicenseExpiredEvent extends phpDynamicProperties {
 }
 
-class NoLicenseEvent {
+class NoLicenseEvent extends phpDynamicProperties {
 	public $feature; //LicenseFeatureInfo
 
 	function __construct($feature = null) {
@@ -7762,7 +7775,7 @@ class NoLicenseEvent {
 	}
 }
 
-class LicenseServerUnavailableEvent {
+class LicenseServerUnavailableEvent extends phpDynamicProperties {
 	public $licenseServer; //string
 
 	function __construct($licenseServer = null) {
@@ -7770,7 +7783,7 @@ class LicenseServerUnavailableEvent {
 	}
 }
 
-class LicenseServerAvailableEvent {
+class LicenseServerAvailableEvent extends phpDynamicProperties {
 	public $licenseServer; //string
 
 	function __construct($licenseServer = null) {
@@ -7778,7 +7791,7 @@ class LicenseServerAvailableEvent {
 	}
 }
 
-class LicenseExpiredEvent {
+class LicenseExpiredEvent extends phpDynamicProperties {
 	public $feature; //LicenseFeatureInfo
 
 	function __construct($feature = null) {
@@ -7786,7 +7799,7 @@ class LicenseExpiredEvent {
 	}
 }
 
-class InvalidEditionEvent {
+class InvalidEditionEvent extends phpDynamicProperties {
 	public $feature; //string
 
 	function __construct($feature = null) {
@@ -7794,7 +7807,7 @@ class InvalidEditionEvent {
 	}
 }
 
-class HostInventoryFullEvent {
+class HostInventoryFullEvent extends phpDynamicProperties {
 	public $capacity; //int
 
 	function __construct($capacity = null) {
@@ -7802,13 +7815,13 @@ class HostInventoryFullEvent {
 	}
 }
 
-class LicenseRestrictedEvent {
+class LicenseRestrictedEvent extends phpDynamicProperties {
 }
 
-class IncorrectHostInformationEvent {
+class IncorrectHostInformationEvent extends phpDynamicProperties {
 }
 
-class UnlicensedVirtualMachinesEvent {
+class UnlicensedVirtualMachinesEvent extends phpDynamicProperties {
 	public $unlicensed; //int
 	public $available; //int
 
@@ -7818,7 +7831,7 @@ class UnlicensedVirtualMachinesEvent {
 	}
 }
 
-class UnlicensedVirtualMachinesFoundEvent {
+class UnlicensedVirtualMachinesFoundEvent extends phpDynamicProperties {
 	public $available; //int
 
 	function __construct($available = null) {
@@ -7826,10 +7839,10 @@ class UnlicensedVirtualMachinesFoundEvent {
 	}
 }
 
-class AllVirtualMachinesLicensedEvent {
+class AllVirtualMachinesLicensedEvent extends phpDynamicProperties {
 }
 
-class LicenseNonComplianceEvent {
+class LicenseNonComplianceEvent extends phpDynamicProperties {
 	public $url; //string
 
 	function __construct($url = null) {
@@ -7837,7 +7850,7 @@ class LicenseNonComplianceEvent {
 	}
 }
 
-class MigrationEvent {
+class MigrationEvent extends phpDynamicProperties {
 	public $fault; //LocalizedMethodFault
 
 	function __construct($fault = null) {
@@ -7845,13 +7858,13 @@ class MigrationEvent {
 	}
 }
 
-class MigrationWarningEvent {
+class MigrationWarningEvent extends phpDynamicProperties {
 }
 
-class MigrationErrorEvent {
+class MigrationErrorEvent extends phpDynamicProperties {
 }
 
-class MigrationHostWarningEvent {
+class MigrationHostWarningEvent extends phpDynamicProperties {
 	public $dstHost; //HostEventArgument
 
 	function __construct($dstHost = null) {
@@ -7859,7 +7872,7 @@ class MigrationHostWarningEvent {
 	}
 }
 
-class MigrationHostErrorEvent {
+class MigrationHostErrorEvent extends phpDynamicProperties {
 	public $dstHost; //HostEventArgument
 
 	function __construct($dstHost = null) {
@@ -7867,7 +7880,7 @@ class MigrationHostErrorEvent {
 	}
 }
 
-class MigrationResourceWarningEvent {
+class MigrationResourceWarningEvent extends phpDynamicProperties {
 	public $dstPool; //ResourcePoolEventArgument
 	public $dstHost; //HostEventArgument
 
@@ -7877,7 +7890,7 @@ class MigrationResourceWarningEvent {
 	}
 }
 
-class MigrationResourceErrorEvent {
+class MigrationResourceErrorEvent extends phpDynamicProperties {
 	public $dstPool; //ResourcePoolEventArgument
 	public $dstHost; //HostEventArgument
 
@@ -7887,22 +7900,22 @@ class MigrationResourceErrorEvent {
 	}
 }
 
-class ClusterEvent {
+class ClusterEvent extends phpDynamicProperties {
 }
 
-class DasEnabledEvent {
+class DasEnabledEvent extends phpDynamicProperties {
 }
 
-class DasDisabledEvent {
+class DasDisabledEvent extends phpDynamicProperties {
 }
 
-class DasAdmissionControlDisabledEvent {
+class DasAdmissionControlDisabledEvent extends phpDynamicProperties {
 }
 
-class DasAdmissionControlEnabledEvent {
+class DasAdmissionControlEnabledEvent extends phpDynamicProperties {
 }
 
-class DasHostFailedEvent {
+class DasHostFailedEvent extends phpDynamicProperties {
 	public $failedHost; //HostEventArgument
 
 	function __construct($failedHost = null) {
@@ -7910,7 +7923,7 @@ class DasHostFailedEvent {
 	}
 }
 
-class DasHostIsolatedEvent {
+class DasHostIsolatedEvent extends phpDynamicProperties {
 	public $isolatedHost; //HostEventArgument
 
 	function __construct($isolatedHost = null) {
@@ -7918,28 +7931,28 @@ class DasHostIsolatedEvent {
 	}
 }
 
-class DasClusterIsolatedEvent {
+class DasClusterIsolatedEvent extends phpDynamicProperties {
 }
 
-class DasAgentUnavailableEvent {
+class DasAgentUnavailableEvent extends phpDynamicProperties {
 }
 
-class DasAgentFoundEvent {
+class DasAgentFoundEvent extends phpDynamicProperties {
 }
 
-class InsufficientFailoverResourcesEvent {
+class InsufficientFailoverResourcesEvent extends phpDynamicProperties {
 }
 
-class FailoverLevelRestored {
+class FailoverLevelRestored extends phpDynamicProperties {
 }
 
-class ClusterOvercommittedEvent {
+class ClusterOvercommittedEvent extends phpDynamicProperties {
 }
 
-class HostOvercommittedEvent {
+class HostOvercommittedEvent extends phpDynamicProperties {
 }
 
-class ClusterStatusChangedEvent {
+class ClusterStatusChangedEvent extends phpDynamicProperties {
 	public $oldStatus; //string
 	public $newStatus; //string
 
@@ -7949,10 +7962,10 @@ class ClusterStatusChangedEvent {
 	}
 }
 
-class HostStatusChangedEvent {
+class HostStatusChangedEvent extends phpDynamicProperties {
 }
 
-class ClusterCreatedEvent {
+class ClusterCreatedEvent extends phpDynamicProperties {
 	public $parent; //FolderEventArgument
 
 	function __construct($parent = null) {
@@ -7960,10 +7973,10 @@ class ClusterCreatedEvent {
 	}
 }
 
-class ClusterDestroyedEvent {
+class ClusterDestroyedEvent extends phpDynamicProperties {
 }
 
-class DrsEnabledEvent {
+class DrsEnabledEvent extends phpDynamicProperties {
 	public $behavior; //string
 
 	function __construct($behavior = null) {
@@ -7971,13 +7984,13 @@ class DrsEnabledEvent {
 	}
 }
 
-class DrsDisabledEvent {
+class DrsDisabledEvent extends phpDynamicProperties {
 }
 
-class ClusterReconfiguredEvent {
+class ClusterReconfiguredEvent extends phpDynamicProperties {
 }
 
-class HostMonitoringStateChangedEvent {
+class HostMonitoringStateChangedEvent extends phpDynamicProperties {
 	public $state; //string
 
 	function __construct($state = null) {
@@ -7985,7 +7998,7 @@ class HostMonitoringStateChangedEvent {
 	}
 }
 
-class VmHealthMonitoringStateChangedEvent {
+class VmHealthMonitoringStateChangedEvent extends phpDynamicProperties {
 	public $state; //string
 
 	function __construct($state = null) {
@@ -7993,7 +8006,7 @@ class VmHealthMonitoringStateChangedEvent {
 	}
 }
 
-class ResourcePoolEvent {
+class ResourcePoolEvent extends phpDynamicProperties {
 	public $resourcePool; //ResourcePoolEventArgument
 
 	function __construct($resourcePool = null) {
@@ -8001,7 +8014,7 @@ class ResourcePoolEvent {
 	}
 }
 
-class ResourcePoolCreatedEvent {
+class ResourcePoolCreatedEvent extends phpDynamicProperties {
 	public $parent; //ResourcePoolEventArgument
 
 	function __construct($parent = null) {
@@ -8009,10 +8022,10 @@ class ResourcePoolCreatedEvent {
 	}
 }
 
-class ResourcePoolDestroyedEvent {
+class ResourcePoolDestroyedEvent extends phpDynamicProperties {
 }
 
-class ResourcePoolMovedEvent {
+class ResourcePoolMovedEvent extends phpDynamicProperties {
 	public $oldParent; //ResourcePoolEventArgument
 	public $newParent; //ResourcePoolEventArgument
 
@@ -8022,13 +8035,13 @@ class ResourcePoolMovedEvent {
 	}
 }
 
-class ResourcePoolReconfiguredEvent {
+class ResourcePoolReconfiguredEvent extends phpDynamicProperties {
 }
 
-class ResourceViolatedEvent {
+class ResourceViolatedEvent extends phpDynamicProperties {
 }
 
-class VmResourcePoolMovedEvent {
+class VmResourcePoolMovedEvent extends phpDynamicProperties {
 	public $oldParent; //ResourcePoolEventArgument
 	public $newParent; //ResourcePoolEventArgument
 
@@ -8038,7 +8051,7 @@ class VmResourcePoolMovedEvent {
 	}
 }
 
-class TemplateUpgradeEvent {
+class TemplateUpgradeEvent extends phpDynamicProperties {
 	public $legacyTemplate; //string
 
 	function __construct($legacyTemplate = null) {
@@ -8046,10 +8059,10 @@ class TemplateUpgradeEvent {
 	}
 }
 
-class TemplateBeingUpgradedEvent {
+class TemplateBeingUpgradedEvent extends phpDynamicProperties {
 }
 
-class TemplateUpgradeFailedEvent {
+class TemplateUpgradeFailedEvent extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -8057,10 +8070,10 @@ class TemplateUpgradeFailedEvent {
 	}
 }
 
-class TemplateUpgradedEvent {
+class TemplateUpgradedEvent extends phpDynamicProperties {
 }
 
-class CustomizationEvent {
+class CustomizationEvent extends phpDynamicProperties {
 	public $logLocation; //string
 
 	function __construct($logLocation = null) {
@@ -8068,19 +8081,19 @@ class CustomizationEvent {
 	}
 }
 
-class CustomizationStartedEvent {
+class CustomizationStartedEvent extends phpDynamicProperties {
 }
 
-class CustomizationSucceeded {
+class CustomizationSucceeded extends phpDynamicProperties {
 }
 
-class CustomizationFailed {
+class CustomizationFailed extends phpDynamicProperties {
 }
 
-class CustomizationUnknownFailure {
+class CustomizationUnknownFailure extends phpDynamicProperties {
 }
 
-class CustomizationSysprepFailed {
+class CustomizationSysprepFailed extends phpDynamicProperties {
 	public $sysprepVersion; //string
 	public $systemVersion; //string
 
@@ -8090,13 +8103,13 @@ class CustomizationSysprepFailed {
 	}
 }
 
-class CustomizationLinuxIdentityFailed {
+class CustomizationLinuxIdentityFailed extends phpDynamicProperties {
 }
 
-class CustomizationNetworkSetupFailed {
+class CustomizationNetworkSetupFailed extends phpDynamicProperties {
 }
 
-class LockerMisconfiguredEvent {
+class LockerMisconfiguredEvent extends phpDynamicProperties {
 	public $datastore; //DatastoreEventArgument
 
 	function __construct($datastore = null) {
@@ -8104,7 +8117,7 @@ class LockerMisconfiguredEvent {
 	}
 }
 
-class LockerReconfiguredEvent {
+class LockerReconfiguredEvent extends phpDynamicProperties {
 	public $oldDatastore; //DatastoreEventArgument
 	public $newDatastore; //DatastoreEventArgument
 
@@ -8114,31 +8127,31 @@ class LockerReconfiguredEvent {
 	}
 }
 
-class NoDatastoresConfiguredEvent {
+class NoDatastoresConfiguredEvent extends phpDynamicProperties {
 }
 
-class AdminPasswordNotChangedEvent {
+class AdminPasswordNotChangedEvent extends phpDynamicProperties {
 }
 
-class HostInAuditModeEvent {
+class HostInAuditModeEvent extends phpDynamicProperties {
 }
 
-class LocalTSMEnabledEvent {
+class LocalTSMEnabledEvent extends phpDynamicProperties {
 }
 
-class RemoteTSMEnabledEvent {
+class RemoteTSMEnabledEvent extends phpDynamicProperties {
 }
 
-class VimAccountPasswordChangedEvent {
+class VimAccountPasswordChangedEvent extends phpDynamicProperties {
 }
 
-class IScsiBootFailureEvent {
+class IScsiBootFailureEvent extends phpDynamicProperties {
 }
 
-class DvsEvent {
+class DvsEvent extends phpDynamicProperties {
 }
 
-class DvsCreatedEvent {
+class DvsCreatedEvent extends phpDynamicProperties {
 	public $parent; //FolderEventArgument
 
 	function __construct($parent = null) {
@@ -8146,7 +8159,7 @@ class DvsCreatedEvent {
 	}
 }
 
-class DvsRenamedEvent {
+class DvsRenamedEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -8156,7 +8169,7 @@ class DvsRenamedEvent {
 	}
 }
 
-class DvsReconfiguredEvent {
+class DvsReconfiguredEvent extends phpDynamicProperties {
 	public $configSpec; //DVSConfigSpec
 
 	function __construct($configSpec = null) {
@@ -8164,7 +8177,7 @@ class DvsReconfiguredEvent {
 	}
 }
 
-class DvsUpgradeAvailableEvent {
+class DvsUpgradeAvailableEvent extends phpDynamicProperties {
 	public $productInfo; //DistributedVirtualSwitchProductSpec
 
 	function __construct($productInfo = null) {
@@ -8172,7 +8185,7 @@ class DvsUpgradeAvailableEvent {
 	}
 }
 
-class DvsUpgradeInProgressEvent {
+class DvsUpgradeInProgressEvent extends phpDynamicProperties {
 	public $productInfo; //DistributedVirtualSwitchProductSpec
 
 	function __construct($productInfo = null) {
@@ -8180,7 +8193,7 @@ class DvsUpgradeInProgressEvent {
 	}
 }
 
-class DvsUpgradeRejectedEvent {
+class DvsUpgradeRejectedEvent extends phpDynamicProperties {
 	public $productInfo; //DistributedVirtualSwitchProductSpec
 
 	function __construct($productInfo = null) {
@@ -8188,7 +8201,7 @@ class DvsUpgradeRejectedEvent {
 	}
 }
 
-class DvsUpgradedEvent {
+class DvsUpgradedEvent extends phpDynamicProperties {
 	public $productInfo; //DistributedVirtualSwitchProductSpec
 
 	function __construct($productInfo = null) {
@@ -8196,7 +8209,7 @@ class DvsUpgradedEvent {
 	}
 }
 
-class DvsHostJoinedEvent {
+class DvsHostJoinedEvent extends phpDynamicProperties {
 	public $hostJoined; //HostEventArgument
 
 	function __construct($hostJoined = null) {
@@ -8204,7 +8217,7 @@ class DvsHostJoinedEvent {
 	}
 }
 
-class DvsHostLeftEvent {
+class DvsHostLeftEvent extends phpDynamicProperties {
 	public $hostLeft; //HostEventArgument
 
 	function __construct($hostLeft = null) {
@@ -8212,7 +8225,7 @@ class DvsHostLeftEvent {
 	}
 }
 
-class DvsOutOfSyncHostArgument {
+class DvsOutOfSyncHostArgument extends phpDynamicProperties {
 	public $outOfSyncHost; //HostEventArgument
 	public $configParamters; //string
 
@@ -8222,7 +8235,7 @@ class DvsOutOfSyncHostArgument {
 	}
 }
 
-class ArrayOfDvsOutOfSyncHostArgument {
+class ArrayOfDvsOutOfSyncHostArgument extends phpDynamicProperties {
 	public $DvsOutOfSyncHostArgument; //DvsOutOfSyncHostArgument
 
 	function __construct($DvsOutOfSyncHostArgument = null) {
@@ -8230,7 +8243,7 @@ class ArrayOfDvsOutOfSyncHostArgument {
 	}
 }
 
-class OutOfSyncDvsHost {
+class OutOfSyncDvsHost extends phpDynamicProperties {
 	public $hostOutOfSync; //DvsOutOfSyncHostArgument
 
 	function __construct($hostOutOfSync = null) {
@@ -8238,7 +8251,7 @@ class OutOfSyncDvsHost {
 	}
 }
 
-class DvsHostWentOutOfSyncEvent {
+class DvsHostWentOutOfSyncEvent extends phpDynamicProperties {
 	public $hostOutOfSync; //DvsOutOfSyncHostArgument
 
 	function __construct($hostOutOfSync = null) {
@@ -8246,7 +8259,7 @@ class DvsHostWentOutOfSyncEvent {
 	}
 }
 
-class DvsHostBackInSyncEvent {
+class DvsHostBackInSyncEvent extends phpDynamicProperties {
 	public $hostBackInSync; //HostEventArgument
 
 	function __construct($hostBackInSync = null) {
@@ -8254,7 +8267,7 @@ class DvsHostBackInSyncEvent {
 	}
 }
 
-class DvsHostStatusUpdated {
+class DvsHostStatusUpdated extends phpDynamicProperties {
 	public $hostMember; //HostEventArgument
 	public $oldStatus; //string
 	public $newStatus; //string
@@ -8270,7 +8283,7 @@ class DvsHostStatusUpdated {
 	}
 }
 
-class DvsPortCreatedEvent {
+class DvsPortCreatedEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8278,7 +8291,7 @@ class DvsPortCreatedEvent {
 	}
 }
 
-class DvsPortReconfiguredEvent {
+class DvsPortReconfiguredEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8286,7 +8299,7 @@ class DvsPortReconfiguredEvent {
 	}
 }
 
-class DvsPortDeletedEvent {
+class DvsPortDeletedEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8294,7 +8307,7 @@ class DvsPortDeletedEvent {
 	}
 }
 
-class DvsPortConnectedEvent {
+class DvsPortConnectedEvent extends phpDynamicProperties {
 	public $portKey; //string
 	public $connectee; //DistributedVirtualSwitchPortConnectee
 
@@ -8304,7 +8317,7 @@ class DvsPortConnectedEvent {
 	}
 }
 
-class DvsPortDisconnectedEvent {
+class DvsPortDisconnectedEvent extends phpDynamicProperties {
 	public $portKey; //string
 	public $connectee; //DistributedVirtualSwitchPortConnectee
 
@@ -8314,7 +8327,7 @@ class DvsPortDisconnectedEvent {
 	}
 }
 
-class DvsPortLinkUpEvent {
+class DvsPortLinkUpEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8322,7 +8335,7 @@ class DvsPortLinkUpEvent {
 	}
 }
 
-class DvsPortLinkDownEvent {
+class DvsPortLinkDownEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8330,7 +8343,7 @@ class DvsPortLinkDownEvent {
 	}
 }
 
-class DvsPortJoinPortgroupEvent {
+class DvsPortJoinPortgroupEvent extends phpDynamicProperties {
 	public $portKey; //string
 	public $portgroupKey; //string
 	public $portgroupName; //string
@@ -8342,7 +8355,7 @@ class DvsPortJoinPortgroupEvent {
 	}
 }
 
-class DvsPortLeavePortgroupEvent {
+class DvsPortLeavePortgroupEvent extends phpDynamicProperties {
 	public $portKey; //string
 	public $portgroupKey; //string
 	public $portgroupName; //string
@@ -8354,7 +8367,7 @@ class DvsPortLeavePortgroupEvent {
 	}
 }
 
-class DvsPortBlockedEvent {
+class DvsPortBlockedEvent extends phpDynamicProperties {
 	public $portKey; //string
 	public $statusDetail; //string
 
@@ -8364,7 +8377,7 @@ class DvsPortBlockedEvent {
 	}
 }
 
-class DvsPortUnblockedEvent {
+class DvsPortUnblockedEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8372,7 +8385,7 @@ class DvsPortUnblockedEvent {
 	}
 }
 
-class DvsPortEnteredPassthruEvent {
+class DvsPortEnteredPassthruEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8380,7 +8393,7 @@ class DvsPortEnteredPassthruEvent {
 	}
 }
 
-class DvsPortExitedPassthruEvent {
+class DvsPortExitedPassthruEvent extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -8388,10 +8401,10 @@ class DvsPortExitedPassthruEvent {
 	}
 }
 
-class DvsDestroyedEvent {
+class DvsDestroyedEvent extends phpDynamicProperties {
 }
 
-class DvsMergedEvent {
+class DvsMergedEvent extends phpDynamicProperties {
 	public $sourceDvs; //DvsEventArgument
 	public $destinationDvs; //DvsEventArgument
 
@@ -8401,13 +8414,13 @@ class DvsMergedEvent {
 	}
 }
 
-class DVPortgroupEvent {
+class DVPortgroupEvent extends phpDynamicProperties {
 }
 
-class DVPortgroupCreatedEvent {
+class DVPortgroupCreatedEvent extends phpDynamicProperties {
 }
 
-class DVPortgroupRenamedEvent {
+class DVPortgroupRenamedEvent extends phpDynamicProperties {
 	public $oldName; //string
 	public $newName; //string
 
@@ -8417,7 +8430,7 @@ class DVPortgroupRenamedEvent {
 	}
 }
 
-class DVPortgroupReconfiguredEvent {
+class DVPortgroupReconfiguredEvent extends phpDynamicProperties {
 	public $configSpec; //DVPortgroupConfigSpec
 
 	function __construct($configSpec = null) {
@@ -8425,16 +8438,16 @@ class DVPortgroupReconfiguredEvent {
 	}
 }
 
-class DVPortgroupDestroyedEvent {
+class DVPortgroupDestroyedEvent extends phpDynamicProperties {
 }
 
-class DrsInvocationFailedEvent {
+class DrsInvocationFailedEvent extends phpDynamicProperties {
 }
 
-class DrsRecoveredFromFailureEvent {
+class DrsRecoveredFromFailureEvent extends phpDynamicProperties {
 }
 
-class VmReloadFromPathEvent {
+class VmReloadFromPathEvent extends phpDynamicProperties {
 	public $configPath; //string
 
 	function __construct($configPath = null) {
@@ -8442,7 +8455,7 @@ class VmReloadFromPathEvent {
 	}
 }
 
-class VmReloadFromPathFailedEvent {
+class VmReloadFromPathFailedEvent extends phpDynamicProperties {
 	public $configPath; //string
 
 	function __construct($configPath = null) {
@@ -8450,10 +8463,10 @@ class VmReloadFromPathFailedEvent {
 	}
 }
 
-class EventArgument {
+class EventArgument extends phpDynamicProperties {
 }
 
-class RoleEventArgument {
+class RoleEventArgument extends phpDynamicProperties {
 	public $roleId; //int
 	public $name; //string
 
@@ -8463,7 +8476,7 @@ class RoleEventArgument {
 	}
 }
 
-class EntityEventArgument {
+class EntityEventArgument extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -8471,7 +8484,7 @@ class EntityEventArgument {
 	}
 }
 
-class ManagedEntityEventArgument {
+class ManagedEntityEventArgument extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 
 	function __construct($entity = null) {
@@ -8479,7 +8492,7 @@ class ManagedEntityEventArgument {
 	}
 }
 
-class FolderEventArgument {
+class FolderEventArgument extends phpDynamicProperties {
 	public $folder; //ManagedObjectReference
 
 	function __construct($folder = null) {
@@ -8487,7 +8500,7 @@ class FolderEventArgument {
 	}
 }
 
-class DatacenterEventArgument {
+class DatacenterEventArgument extends phpDynamicProperties {
 	public $datacenter; //ManagedObjectReference
 
 	function __construct($datacenter = null) {
@@ -8495,7 +8508,7 @@ class DatacenterEventArgument {
 	}
 }
 
-class ComputeResourceEventArgument {
+class ComputeResourceEventArgument extends phpDynamicProperties {
 	public $computeResource; //ManagedObjectReference
 
 	function __construct($computeResource = null) {
@@ -8503,7 +8516,7 @@ class ComputeResourceEventArgument {
 	}
 }
 
-class ResourcePoolEventArgument {
+class ResourcePoolEventArgument extends phpDynamicProperties {
 	public $resourcePool; //ManagedObjectReference
 
 	function __construct($resourcePool = null) {
@@ -8511,7 +8524,7 @@ class ResourcePoolEventArgument {
 	}
 }
 
-class HostEventArgument {
+class HostEventArgument extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -8519,7 +8532,7 @@ class HostEventArgument {
 	}
 }
 
-class ArrayOfHostEventArgument {
+class ArrayOfHostEventArgument extends phpDynamicProperties {
 	public $HostEventArgument; //HostEventArgument
 
 	function __construct($HostEventArgument = null) {
@@ -8527,7 +8540,7 @@ class ArrayOfHostEventArgument {
 	}
 }
 
-class VmEventArgument {
+class VmEventArgument extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 
 	function __construct($vm = null) {
@@ -8535,7 +8548,7 @@ class VmEventArgument {
 	}
 }
 
-class ArrayOfVmEventArgument {
+class ArrayOfVmEventArgument extends phpDynamicProperties {
 	public $VmEventArgument; //VmEventArgument
 
 	function __construct($VmEventArgument = null) {
@@ -8543,7 +8556,7 @@ class ArrayOfVmEventArgument {
 	}
 }
 
-class DatastoreEventArgument {
+class DatastoreEventArgument extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 
 	function __construct($datastore = null) {
@@ -8551,7 +8564,7 @@ class DatastoreEventArgument {
 	}
 }
 
-class NetworkEventArgument {
+class NetworkEventArgument extends phpDynamicProperties {
 	public $network; //ManagedObjectReference
 
 	function __construct($network = null) {
@@ -8559,7 +8572,7 @@ class NetworkEventArgument {
 	}
 }
 
-class AlarmEventArgument {
+class AlarmEventArgument extends phpDynamicProperties {
 	public $alarm; //ManagedObjectReference
 
 	function __construct($alarm = null) {
@@ -8567,7 +8580,7 @@ class AlarmEventArgument {
 	}
 }
 
-class ScheduledTaskEventArgument {
+class ScheduledTaskEventArgument extends phpDynamicProperties {
 	public $scheduledTask; //ManagedObjectReference
 
 	function __construct($scheduledTask = null) {
@@ -8575,7 +8588,7 @@ class ScheduledTaskEventArgument {
 	}
 }
 
-class ProfileEventArgument {
+class ProfileEventArgument extends phpDynamicProperties {
 	public $profile; //ManagedObjectReference
 	public $name; //string
 
@@ -8585,7 +8598,7 @@ class ProfileEventArgument {
 	}
 }
 
-class DvsEventArgument {
+class DvsEventArgument extends phpDynamicProperties {
 	public $dvs; //ManagedObjectReference
 
 	function __construct($dvs = null) {
@@ -8593,7 +8606,7 @@ class DvsEventArgument {
 	}
 }
 
-class EventArgDesc {
+class EventArgDesc extends phpDynamicProperties {
 	public $name; //string
 	public $type; //string
 	public $description; //ElementDescription
@@ -8605,7 +8618,7 @@ class EventArgDesc {
 	}
 }
 
-class ArrayOfEventArgDesc {
+class ArrayOfEventArgDesc extends phpDynamicProperties {
 	public $EventArgDesc; //EventArgDesc
 
 	function __construct($EventArgDesc = null) {
@@ -8613,7 +8626,7 @@ class ArrayOfEventArgDesc {
 	}
 }
 
-class EventDescriptionEventDetail {
+class EventDescriptionEventDetail extends phpDynamicProperties {
 	public $key; //string
 	public $description; //string
 	public $category; //string
@@ -8637,7 +8650,7 @@ class EventDescriptionEventDetail {
 	}
 }
 
-class ArrayOfEventDescriptionEventDetail {
+class ArrayOfEventDescriptionEventDetail extends phpDynamicProperties {
 	public $EventDescriptionEventDetail; //EventDescriptionEventDetail
 
 	function __construct($EventDescriptionEventDetail = null) {
@@ -8645,7 +8658,7 @@ class ArrayOfEventDescriptionEventDetail {
 	}
 }
 
-class EventDescription {
+class EventDescription extends phpDynamicProperties {
 	public $category; //ElementDescription
 	public $eventInfo; //EventDescriptionEventDetail
 	public $enumeratedTypes; //EnumDescription
@@ -8657,7 +8670,7 @@ class EventDescription {
 	}
 }
 
-class EventEx {
+class EventEx extends phpDynamicProperties {
 	public $eventTypeId; //string
 	public $severity; //string
 	public $message; //string
@@ -8679,7 +8692,7 @@ class EventEx {
 	}
 }
 
-class EventFilterSpecByEntity {
+class EventFilterSpecByEntity extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $recursion; //EventFilterSpecRecursionOption
 
@@ -8689,7 +8702,7 @@ class EventFilterSpecByEntity {
 	}
 }
 
-class EventFilterSpecByTime {
+class EventFilterSpecByTime extends phpDynamicProperties {
 	public $beginTime; //dateTime
 	public $endTime; //dateTime
 
@@ -8699,7 +8712,7 @@ class EventFilterSpecByTime {
 	}
 }
 
-class EventFilterSpecByUsername {
+class EventFilterSpecByUsername extends phpDynamicProperties {
 	public $systemUser; //boolean
 	public $userList; //string
 
@@ -8709,7 +8722,7 @@ class EventFilterSpecByUsername {
 	}
 }
 
-class EventFilterSpec {
+class EventFilterSpec extends phpDynamicProperties {
 	public $entity; //EventFilterSpecByEntity
 	public $time; //EventFilterSpecByTime
 	public $userName; //EventFilterSpecByUsername
@@ -8737,7 +8750,7 @@ class EventFilterSpec {
 	}
 }
 
-class ExtExtendedProductInfo {
+class ExtExtendedProductInfo extends phpDynamicProperties {
 	public $companyUrl; //string
 	public $productUrl; //string
 	public $managementUrl; //string
@@ -8751,7 +8764,7 @@ class ExtExtendedProductInfo {
 	}
 }
 
-class ManagedByInfo {
+class ManagedByInfo extends phpDynamicProperties {
 	public $extensionKey; //string
 	public $type; //string
 
@@ -8761,7 +8774,7 @@ class ManagedByInfo {
 	}
 }
 
-class ExtManagedEntityInfo {
+class ExtManagedEntityInfo extends phpDynamicProperties {
 	public $type; //string
 	public $smallIconUrl; //string
 	public $description; //string
@@ -8773,7 +8786,7 @@ class ExtManagedEntityInfo {
 	}
 }
 
-class ArrayOfExtManagedEntityInfo {
+class ArrayOfExtManagedEntityInfo extends phpDynamicProperties {
 	public $ExtManagedEntityInfo; //ExtManagedEntityInfo
 
 	function __construct($ExtManagedEntityInfo = null) {
@@ -8781,7 +8794,7 @@ class ArrayOfExtManagedEntityInfo {
 	}
 }
 
-class ExtSolutionManagerInfoTabInfo {
+class ExtSolutionManagerInfoTabInfo extends phpDynamicProperties {
 	public $label; //string
 	public $url; //string
 
@@ -8791,7 +8804,7 @@ class ExtSolutionManagerInfoTabInfo {
 	}
 }
 
-class ArrayOfExtSolutionManagerInfoTabInfo {
+class ArrayOfExtSolutionManagerInfoTabInfo extends phpDynamicProperties {
 	public $ExtSolutionManagerInfoTabInfo; //ExtSolutionManagerInfoTabInfo
 
 	function __construct($ExtSolutionManagerInfoTabInfo = null) {
@@ -8799,7 +8812,7 @@ class ArrayOfExtSolutionManagerInfoTabInfo {
 	}
 }
 
-class ExtSolutionManagerInfo {
+class ExtSolutionManagerInfo extends phpDynamicProperties {
 	public $tab; //ExtSolutionManagerInfoTabInfo
 	public $smallIconUrl; //string
 
@@ -8809,7 +8822,7 @@ class ExtSolutionManagerInfo {
 	}
 }
 
-class ActiveDirectoryFault {
+class ActiveDirectoryFault extends phpDynamicProperties {
 	public $errorCode; //int
 
 	function __construct($errorCode = null) {
@@ -8817,13 +8830,13 @@ class ActiveDirectoryFault {
 	}
 }
 
-class AdminDisabled {
+class AdminDisabled extends phpDynamicProperties {
 }
 
-class AdminNotDisabled {
+class AdminNotDisabled extends phpDynamicProperties {
 }
 
-class AffinityConfigured {
+class AffinityConfigured extends phpDynamicProperties {
 	public $configuredAffinity; //string
 
 	function __construct($configuredAffinity = null) {
@@ -8831,7 +8844,7 @@ class AffinityConfigured {
 	}
 }
 
-class AgentInstallFailed {
+class AgentInstallFailed extends phpDynamicProperties {
 	public $reason; //string
 	public $statusCode; //int
 	public $installerOutput; //string
@@ -8843,7 +8856,7 @@ class AgentInstallFailed {
 	}
 }
 
-class AlreadyBeingManaged {
+class AlreadyBeingManaged extends phpDynamicProperties {
 	public $ipAddress; //string
 
 	function __construct($ipAddress = null) {
@@ -8851,7 +8864,7 @@ class AlreadyBeingManaged {
 	}
 }
 
-class AlreadyConnected {
+class AlreadyConnected extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -8859,7 +8872,7 @@ class AlreadyConnected {
 	}
 }
 
-class AlreadyExists {
+class AlreadyExists extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -8867,10 +8880,10 @@ class AlreadyExists {
 	}
 }
 
-class AlreadyUpgraded {
+class AlreadyUpgraded extends phpDynamicProperties {
 }
 
-class AnswerFileUpdateFailure {
+class AnswerFileUpdateFailure extends phpDynamicProperties {
 	public $userInputPath; //ProfilePropertyPath
 	public $errMsg; //LocalizableMessage
 
@@ -8880,7 +8893,7 @@ class AnswerFileUpdateFailure {
 	}
 }
 
-class ArrayOfAnswerFileUpdateFailure {
+class ArrayOfAnswerFileUpdateFailure extends phpDynamicProperties {
 	public $AnswerFileUpdateFailure; //AnswerFileUpdateFailure
 
 	function __construct($AnswerFileUpdateFailure = null) {
@@ -8888,7 +8901,7 @@ class ArrayOfAnswerFileUpdateFailure {
 	}
 }
 
-class AnswerFileUpdateFailed {
+class AnswerFileUpdateFailed extends phpDynamicProperties {
 	public $failure; //AnswerFileUpdateFailure
 
 	function __construct($failure = null) {
@@ -8896,31 +8909,31 @@ class AnswerFileUpdateFailed {
 	}
 }
 
-class ApplicationQuiesceFault {
+class ApplicationQuiesceFault extends phpDynamicProperties {
 }
 
-class AuthMinimumAdminPermission {
+class AuthMinimumAdminPermission extends phpDynamicProperties {
 }
 
-class BlockedByFirewall {
+class BlockedByFirewall extends phpDynamicProperties {
 }
 
-class CAMServerRefusedConnection {
+class CAMServerRefusedConnection extends phpDynamicProperties {
 }
 
-class CannotAccessFile {
+class CannotAccessFile extends phpDynamicProperties {
 }
 
-class CannotAccessLocalSource {
+class CannotAccessLocalSource extends phpDynamicProperties {
 }
 
-class CannotAccessNetwork {
+class CannotAccessNetwork extends phpDynamicProperties {
 }
 
-class CannotAccessVmComponent {
+class CannotAccessVmComponent extends phpDynamicProperties {
 }
 
-class CannotAccessVmConfig {
+class CannotAccessVmConfig extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -8928,7 +8941,7 @@ class CannotAccessVmConfig {
 	}
 }
 
-class CannotAccessVmDevice {
+class CannotAccessVmDevice extends phpDynamicProperties {
 	public $device; //string
 	public $backing; //string
 	public $connected; //boolean
@@ -8940,7 +8953,7 @@ class CannotAccessVmDevice {
 	}
 }
 
-class CannotAccessVmDisk {
+class CannotAccessVmDisk extends phpDynamicProperties {
 	public $fault; //LocalizedMethodFault
 
 	function __construct($fault = null) {
@@ -8948,16 +8961,16 @@ class CannotAccessVmDisk {
 	}
 }
 
-class CannotAddHostWithFTVmAsStandalone {
+class CannotAddHostWithFTVmAsStandalone extends phpDynamicProperties {
 }
 
-class CannotAddHostWithFTVmToDifferentCluster {
+class CannotAddHostWithFTVmToDifferentCluster extends phpDynamicProperties {
 }
 
-class CannotAddHostWithFTVmToNonHACluster {
+class CannotAddHostWithFTVmToNonHACluster extends phpDynamicProperties {
 }
 
-class CannotChangeDrsBehaviorForFtSecondary {
+class CannotChangeDrsBehaviorForFtSecondary extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 
@@ -8967,7 +8980,7 @@ class CannotChangeDrsBehaviorForFtSecondary {
 	}
 }
 
-class CannotChangeHaSettingsForFtSecondary {
+class CannotChangeHaSettingsForFtSecondary extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 
@@ -8977,22 +8990,22 @@ class CannotChangeHaSettingsForFtSecondary {
 	}
 }
 
-class CannotCreateFile {
+class CannotCreateFile extends phpDynamicProperties {
 }
 
-class CannotDecryptPasswords {
+class CannotDecryptPasswords extends phpDynamicProperties {
 }
 
-class CannotDeleteFile {
+class CannotDeleteFile extends phpDynamicProperties {
 }
 
-class CannotDisableDrsOnClustersWithVApps {
+class CannotDisableDrsOnClustersWithVApps extends phpDynamicProperties {
 }
 
-class CannotDisableSnapshot {
+class CannotDisableSnapshot extends phpDynamicProperties {
 }
 
-class CannotDisconnectHostWithFaultToleranceVm {
+class CannotDisconnectHostWithFaultToleranceVm extends phpDynamicProperties {
 	public $hostName; //string
 
 	function __construct($hostName = null) {
@@ -9000,10 +9013,10 @@ class CannotDisconnectHostWithFaultToleranceVm {
 	}
 }
 
-class CannotModifyConfigCpuRequirements {
+class CannotModifyConfigCpuRequirements extends phpDynamicProperties {
 }
 
-class CannotMoveFaultToleranceVm {
+class CannotMoveFaultToleranceVm extends phpDynamicProperties {
 	public $moveType; //string
 	public $vmName; //string
 
@@ -9013,10 +9026,10 @@ class CannotMoveFaultToleranceVm {
 	}
 }
 
-class CannotMoveHostWithFaultToleranceVm {
+class CannotMoveHostWithFaultToleranceVm extends phpDynamicProperties {
 }
 
-class CannotMoveVmWithDeltaDisk {
+class CannotMoveVmWithDeltaDisk extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -9024,10 +9037,10 @@ class CannotMoveVmWithDeltaDisk {
 	}
 }
 
-class CannotMoveVmWithNativeDeltaDisk {
+class CannotMoveVmWithNativeDeltaDisk extends phpDynamicProperties {
 }
 
-class CannotPowerOffVmInCluster {
+class CannotPowerOffVmInCluster extends phpDynamicProperties {
 	public $operation; //string
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
@@ -9039,16 +9052,16 @@ class CannotPowerOffVmInCluster {
 	}
 }
 
-class ClockSkew {
+class ClockSkew extends phpDynamicProperties {
 }
 
-class CloneFromSnapshotNotSupported {
+class CloneFromSnapshotNotSupported extends phpDynamicProperties {
 }
 
-class ConcurrentAccess {
+class ConcurrentAccess extends phpDynamicProperties {
 }
 
-class ConnectedIso {
+class ConnectedIso extends phpDynamicProperties {
 	public $cdrom; //VirtualCdrom
 	public $filename; //string
 
@@ -9058,13 +9071,13 @@ class ConnectedIso {
 	}
 }
 
-class CpuCompatibilityUnknown {
+class CpuCompatibilityUnknown extends phpDynamicProperties {
 }
 
-class CpuHotPlugNotSupported {
+class CpuHotPlugNotSupported extends phpDynamicProperties {
 }
 
-class CpuIncompatible {
+class CpuIncompatible extends phpDynamicProperties {
 	public $level; //int
 	public $registerName; //string
 	public $registerBits; //string
@@ -9080,7 +9093,7 @@ class CpuIncompatible {
 	}
 }
 
-class CpuIncompatible1ECX {
+class CpuIncompatible1ECX extends phpDynamicProperties {
 	public $sse3; //boolean
 	public $pclmulqdq; //boolean
 	public $ssse3; //boolean
@@ -9102,7 +9115,7 @@ class CpuIncompatible1ECX {
 	}
 }
 
-class CpuIncompatible81EDX {
+class CpuIncompatible81EDX extends phpDynamicProperties {
 	public $nx; //boolean
 	public $ffxsr; //boolean
 	public $rdtscp; //boolean
@@ -9120,16 +9133,16 @@ class CpuIncompatible81EDX {
 	}
 }
 
-class CustomizationFault {
+class CustomizationFault extends phpDynamicProperties {
 }
 
-class CustomizationPending {
+class CustomizationPending extends phpDynamicProperties {
 }
 
-class DVPortNotSupported {
+class DVPortNotSupported extends phpDynamicProperties {
 }
 
-class DasConfigFault {
+class DasConfigFault extends phpDynamicProperties {
 	public $reason; //string
 	public $output; //string
 	public $event; //Event
@@ -9141,10 +9154,10 @@ class DasConfigFault {
 	}
 }
 
-class DatabaseError {
+class DatabaseError extends phpDynamicProperties {
 }
 
-class DatacenterMismatchArgument {
+class DatacenterMismatchArgument extends phpDynamicProperties {
 	public $entity; //ManagedObjectReference
 	public $inputDatacenter; //ManagedObjectReference
 
@@ -9154,7 +9167,7 @@ class DatacenterMismatchArgument {
 	}
 }
 
-class ArrayOfDatacenterMismatchArgument {
+class ArrayOfDatacenterMismatchArgument extends phpDynamicProperties {
 	public $DatacenterMismatchArgument; //DatacenterMismatchArgument
 
 	function __construct($DatacenterMismatchArgument = null) {
@@ -9162,7 +9175,7 @@ class ArrayOfDatacenterMismatchArgument {
 	}
 }
 
-class DatacenterMismatch {
+class DatacenterMismatch extends phpDynamicProperties {
 	public $invalidArgument; //DatacenterMismatchArgument
 	public $expectedDatacenter; //ManagedObjectReference
 
@@ -9172,7 +9185,7 @@ class DatacenterMismatch {
 	}
 }
 
-class DatastoreNotWritableOnHost {
+class DatastoreNotWritableOnHost extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -9180,7 +9193,7 @@ class DatastoreNotWritableOnHost {
 	}
 }
 
-class DeltaDiskFormatNotSupported {
+class DeltaDiskFormatNotSupported extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $deltaDiskFormat; //string
 
@@ -9190,10 +9203,10 @@ class DeltaDiskFormatNotSupported {
 	}
 }
 
-class DestinationSwitchFull {
+class DestinationSwitchFull extends phpDynamicProperties {
 }
 
-class DeviceBackingNotSupported {
+class DeviceBackingNotSupported extends phpDynamicProperties {
 	public $backing; //string
 
 	function __construct($backing = null) {
@@ -9201,7 +9214,7 @@ class DeviceBackingNotSupported {
 	}
 }
 
-class DeviceControllerNotSupported {
+class DeviceControllerNotSupported extends phpDynamicProperties {
 	public $controller; //string
 
 	function __construct($controller = null) {
@@ -9209,13 +9222,13 @@ class DeviceControllerNotSupported {
 	}
 }
 
-class DeviceHotPlugNotSupported {
+class DeviceHotPlugNotSupported extends phpDynamicProperties {
 }
 
-class DeviceNotFound {
+class DeviceNotFound extends phpDynamicProperties {
 }
 
-class DeviceNotSupported {
+class DeviceNotSupported extends phpDynamicProperties {
 	public $device; //string
 	public $reason; //string
 
@@ -9225,10 +9238,10 @@ class DeviceNotSupported {
 	}
 }
 
-class DeviceUnsupportedForVmPlatform {
+class DeviceUnsupportedForVmPlatform extends phpDynamicProperties {
 }
 
-class DeviceUnsupportedForVmVersion {
+class DeviceUnsupportedForVmVersion extends phpDynamicProperties {
 	public $currentVersion; //string
 	public $expectedVersion; //string
 
@@ -9238,13 +9251,13 @@ class DeviceUnsupportedForVmVersion {
 	}
 }
 
-class DirectoryNotEmpty {
+class DirectoryNotEmpty extends phpDynamicProperties {
 }
 
-class DisableAdminNotSupported {
+class DisableAdminNotSupported extends phpDynamicProperties {
 }
 
-class DisallowedChangeByService {
+class DisallowedChangeByService extends phpDynamicProperties {
 	public $serviceName; //string
 	public $disallowedChange; //string
 
@@ -9254,10 +9267,10 @@ class DisallowedChangeByService {
 	}
 }
 
-class DisallowedDiskModeChange {
+class DisallowedDiskModeChange extends phpDynamicProperties {
 }
 
-class DisallowedMigrationDeviceAttached {
+class DisallowedMigrationDeviceAttached extends phpDynamicProperties {
 	public $fault; //LocalizedMethodFault
 
 	function __construct($fault = null) {
@@ -9265,7 +9278,7 @@ class DisallowedMigrationDeviceAttached {
 	}
 }
 
-class DisallowedOperationOnFailoverHost {
+class DisallowedOperationOnFailoverHost extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $hostname; //string
 
@@ -9275,10 +9288,10 @@ class DisallowedOperationOnFailoverHost {
 	}
 }
 
-class DiskMoveTypeNotSupported {
+class DiskMoveTypeNotSupported extends phpDynamicProperties {
 }
 
-class DiskNotSupported {
+class DiskNotSupported extends phpDynamicProperties {
 	public $disk; //int
 
 	function __construct($disk = null) {
@@ -9286,7 +9299,7 @@ class DiskNotSupported {
 	}
 }
 
-class DomainNotFound {
+class DomainNotFound extends phpDynamicProperties {
 	public $domainName; //string
 
 	function __construct($domainName = null) {
@@ -9294,10 +9307,10 @@ class DomainNotFound {
 	}
 }
 
-class DrsDisabledOnVm {
+class DrsDisabledOnVm extends phpDynamicProperties {
 }
 
-class DrsVmotionIncompatibleFault {
+class DrsVmotionIncompatibleFault extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -9305,7 +9318,7 @@ class DrsVmotionIncompatibleFault {
 	}
 }
 
-class DuplicateName {
+class DuplicateName extends phpDynamicProperties {
 	public $name; //string
 	public $object; //ManagedObjectReference
 
@@ -9315,10 +9328,10 @@ class DuplicateName {
 	}
 }
 
-class DvsFault {
+class DvsFault extends phpDynamicProperties {
 }
 
-class DvsNotAuthorized {
+class DvsNotAuthorized extends phpDynamicProperties {
 	public $sessionExtensionKey; //string
 	public $dvsExtensionKey; //string
 
@@ -9328,7 +9341,7 @@ class DvsNotAuthorized {
 	}
 }
 
-class DvsOperationBulkFaultFaultOnHost {
+class DvsOperationBulkFaultFaultOnHost extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $fault; //LocalizedMethodFault
 
@@ -9338,7 +9351,7 @@ class DvsOperationBulkFaultFaultOnHost {
 	}
 }
 
-class ArrayOfDvsOperationBulkFaultFaultOnHost {
+class ArrayOfDvsOperationBulkFaultFaultOnHost extends phpDynamicProperties {
 	public $DvsOperationBulkFaultFaultOnHost; //DvsOperationBulkFaultFaultOnHost
 
 	function __construct($DvsOperationBulkFaultFaultOnHost = null) {
@@ -9346,7 +9359,7 @@ class ArrayOfDvsOperationBulkFaultFaultOnHost {
 	}
 }
 
-class DvsOperationBulkFault {
+class DvsOperationBulkFault extends phpDynamicProperties {
 	public $hostFault; //DvsOperationBulkFaultFaultOnHost
 
 	function __construct($hostFault = null) {
@@ -9354,7 +9367,7 @@ class DvsOperationBulkFault {
 	}
 }
 
-class DvsScopeViolated {
+class DvsScopeViolated extends phpDynamicProperties {
 	public $scope; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -9364,10 +9377,10 @@ class DvsScopeViolated {
 	}
 }
 
-class EVCAdmissionFailed {
+class EVCAdmissionFailed extends phpDynamicProperties {
 }
 
-class EVCAdmissionFailedCPUFeaturesForMode {
+class EVCAdmissionFailedCPUFeaturesForMode extends phpDynamicProperties {
 	public $currentEVCModeKey; //string
 
 	function __construct($currentEVCModeKey = null) {
@@ -9375,10 +9388,10 @@ class EVCAdmissionFailedCPUFeaturesForMode {
 	}
 }
 
-class EVCAdmissionFailedCPUModel {
+class EVCAdmissionFailedCPUModel extends phpDynamicProperties {
 }
 
-class EVCAdmissionFailedCPUModelForMode {
+class EVCAdmissionFailedCPUModelForMode extends phpDynamicProperties {
 	public $currentEVCModeKey; //string
 
 	function __construct($currentEVCModeKey = null) {
@@ -9386,7 +9399,7 @@ class EVCAdmissionFailedCPUModelForMode {
 	}
 }
 
-class EVCAdmissionFailedCPUVendor {
+class EVCAdmissionFailedCPUVendor extends phpDynamicProperties {
 	public $clusterCPUVendor; //string
 	public $hostCPUVendor; //string
 
@@ -9396,31 +9409,31 @@ class EVCAdmissionFailedCPUVendor {
 	}
 }
 
-class EVCAdmissionFailedCPUVendorUnknown {
+class EVCAdmissionFailedCPUVendorUnknown extends phpDynamicProperties {
 }
 
-class EVCAdmissionFailedHostDisconnected {
+class EVCAdmissionFailedHostDisconnected extends phpDynamicProperties {
 }
 
-class EVCAdmissionFailedHostSoftware {
+class EVCAdmissionFailedHostSoftware extends phpDynamicProperties {
 }
 
-class EVCAdmissionFailedHostSoftwareForMode {
+class EVCAdmissionFailedHostSoftwareForMode extends phpDynamicProperties {
 }
 
-class EVCAdmissionFailedVmActive {
+class EVCAdmissionFailedVmActive extends phpDynamicProperties {
 }
 
-class EightHostLimitViolated {
+class EightHostLimitViolated extends phpDynamicProperties {
 }
 
-class ExpiredAddonLicense {
+class ExpiredAddonLicense extends phpDynamicProperties {
 }
 
-class ExpiredEditionLicense {
+class ExpiredEditionLicense extends phpDynamicProperties {
 }
 
-class ExpiredFeatureLicense {
+class ExpiredFeatureLicense extends phpDynamicProperties {
 	public $feature; //string
 	public $count; //int
 	public $expirationDate; //dateTime
@@ -9432,7 +9445,7 @@ class ExpiredFeatureLicense {
 	}
 }
 
-class ExtendedFault {
+class ExtendedFault extends phpDynamicProperties {
 	public $faultTypeId; //string
 	public $data; //KeyValue
 
@@ -9442,7 +9455,7 @@ class ExtendedFault {
 	}
 }
 
-class FailToEnableSPBM {
+class FailToEnableSPBM extends phpDynamicProperties {
 	public $cs; //ManagedObjectReference
 	public $csName; //string
 	public $hostLicenseStates; //ComputeResourceHostSPBMLicenseInfo
@@ -9454,7 +9467,7 @@ class FailToEnableSPBM {
 	}
 }
 
-class FailToLockFaultToleranceVMs {
+class FailToLockFaultToleranceVMs extends phpDynamicProperties {
 	public $vmName; //string
 	public $vm; //ManagedObjectReference
 	public $alreadyLockedVm; //ManagedObjectReference
@@ -9466,7 +9479,7 @@ class FailToLockFaultToleranceVMs {
 	}
 }
 
-class FaultToleranceAntiAffinityViolated {
+class FaultToleranceAntiAffinityViolated extends phpDynamicProperties {
 	public $hostName; //string
 	public $host; //ManagedObjectReference
 
@@ -9476,7 +9489,7 @@ class FaultToleranceAntiAffinityViolated {
 	}
 }
 
-class FaultToleranceCannotEditMem {
+class FaultToleranceCannotEditMem extends phpDynamicProperties {
 	public $vmName; //string
 	public $vm; //ManagedObjectReference
 
@@ -9486,7 +9499,7 @@ class FaultToleranceCannotEditMem {
 	}
 }
 
-class FaultToleranceCpuIncompatible {
+class FaultToleranceCpuIncompatible extends phpDynamicProperties {
 	public $model; //boolean
 	public $family; //boolean
 	public $stepping; //boolean
@@ -9498,7 +9511,7 @@ class FaultToleranceCpuIncompatible {
 	}
 }
 
-class FaultToleranceNeedsThickDisk {
+class FaultToleranceNeedsThickDisk extends phpDynamicProperties {
 	public $vmName; //string
 
 	function __construct($vmName = null) {
@@ -9506,7 +9519,7 @@ class FaultToleranceNeedsThickDisk {
 	}
 }
 
-class FaultToleranceNotLicensed {
+class FaultToleranceNotLicensed extends phpDynamicProperties {
 	public $hostName; //string
 
 	function __construct($hostName = null) {
@@ -9514,7 +9527,7 @@ class FaultToleranceNotLicensed {
 	}
 }
 
-class FaultToleranceNotSameBuild {
+class FaultToleranceNotSameBuild extends phpDynamicProperties {
 	public $build; //string
 
 	function __construct($build = null) {
@@ -9522,7 +9535,7 @@ class FaultToleranceNotSameBuild {
 	}
 }
 
-class FaultTolerancePrimaryPowerOnNotAttempted {
+class FaultTolerancePrimaryPowerOnNotAttempted extends phpDynamicProperties {
 	public $secondaryVm; //ManagedObjectReference
 	public $primaryVm; //ManagedObjectReference
 
@@ -9532,7 +9545,7 @@ class FaultTolerancePrimaryPowerOnNotAttempted {
 	}
 }
 
-class FaultToleranceVmNotDasProtected {
+class FaultToleranceVmNotDasProtected extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 
@@ -9542,10 +9555,10 @@ class FaultToleranceVmNotDasProtected {
 	}
 }
 
-class FcoeFault {
+class FcoeFault extends phpDynamicProperties {
 }
 
-class FcoeFaultPnicHasNoPortSet {
+class FcoeFaultPnicHasNoPortSet extends phpDynamicProperties {
 	public $nicDevice; //string
 
 	function __construct($nicDevice = null) {
@@ -9553,13 +9566,13 @@ class FcoeFaultPnicHasNoPortSet {
 	}
 }
 
-class FileAlreadyExists {
+class FileAlreadyExists extends phpDynamicProperties {
 }
 
-class FileBackedPortNotSupported {
+class FileBackedPortNotSupported extends phpDynamicProperties {
 }
 
-class FileFault {
+class FileFault extends phpDynamicProperties {
 	public $file; //string
 
 	function __construct($file = null) {
@@ -9567,19 +9580,19 @@ class FileFault {
 	}
 }
 
-class FileLocked {
+class FileLocked extends phpDynamicProperties {
 }
 
-class FileNameTooLong {
+class FileNameTooLong extends phpDynamicProperties {
 }
 
-class FileNotFound {
+class FileNotFound extends phpDynamicProperties {
 }
 
-class FileNotWritable {
+class FileNotWritable extends phpDynamicProperties {
 }
 
-class FileTooLarge {
+class FileTooLarge extends phpDynamicProperties {
 	public $datastore; //string
 	public $fileSize; //long
 	public $maxFileSize; //long
@@ -9591,10 +9604,10 @@ class FileTooLarge {
 	}
 }
 
-class FilesystemQuiesceFault {
+class FilesystemQuiesceFault extends phpDynamicProperties {
 }
 
-class FtIssuesOnHost {
+class FtIssuesOnHost extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $hostName; //string
 	public $errors; //LocalizedMethodFault
@@ -9606,10 +9619,10 @@ class FtIssuesOnHost {
 	}
 }
 
-class FullStorageVMotionNotSupported {
+class FullStorageVMotionNotSupported extends phpDynamicProperties {
 }
 
-class GenericDrsFault {
+class GenericDrsFault extends phpDynamicProperties {
 	public $hostFaults; //LocalizedMethodFault
 
 	function __construct($hostFaults = null) {
@@ -9617,7 +9630,7 @@ class GenericDrsFault {
 	}
 }
 
-class GenericVmConfigFault {
+class GenericVmConfigFault extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -9625,7 +9638,7 @@ class GenericVmConfigFault {
 	}
 }
 
-class GuestAuthenticationChallenge {
+class GuestAuthenticationChallenge extends phpDynamicProperties {
 	public $serverChallenge; //GuestAuthentication
 	public $sessionID; //long
 
@@ -9635,19 +9648,19 @@ class GuestAuthenticationChallenge {
 	}
 }
 
-class GuestComponentsOutOfDate {
+class GuestComponentsOutOfDate extends phpDynamicProperties {
 }
 
-class GuestOperationsFault {
+class GuestOperationsFault extends phpDynamicProperties {
 }
 
-class GuestOperationsUnavailable {
+class GuestOperationsUnavailable extends phpDynamicProperties {
 }
 
-class GuestPermissionDenied {
+class GuestPermissionDenied extends phpDynamicProperties {
 }
 
-class GuestProcessNotFound {
+class GuestProcessNotFound extends phpDynamicProperties {
 	public $pid; //long
 
 	function __construct($pid = null) {
@@ -9655,10 +9668,10 @@ class GuestProcessNotFound {
 	}
 }
 
-class HAErrorsAtDest {
+class HAErrorsAtDest extends phpDynamicProperties {
 }
 
-class HostAccessRestrictedToManagementServer {
+class HostAccessRestrictedToManagementServer extends phpDynamicProperties {
 	public $managementServer; //string
 
 	function __construct($managementServer = null) {
@@ -9666,7 +9679,7 @@ class HostAccessRestrictedToManagementServer {
 	}
 }
 
-class HostConfigFailed {
+class HostConfigFailed extends phpDynamicProperties {
 	public $failure; //LocalizedMethodFault
 
 	function __construct($failure = null) {
@@ -9674,16 +9687,16 @@ class HostConfigFailed {
 	}
 }
 
-class HostConfigFault {
+class HostConfigFault extends phpDynamicProperties {
 }
 
-class HostConnectFault {
+class HostConnectFault extends phpDynamicProperties {
 }
 
-class HostInDomain {
+class HostInDomain extends phpDynamicProperties {
 }
 
-class HostIncompatibleForFaultTolerance {
+class HostIncompatibleForFaultTolerance extends phpDynamicProperties {
 	public $hostName; //string
 	public $reason; //string
 
@@ -9693,7 +9706,7 @@ class HostIncompatibleForFaultTolerance {
 	}
 }
 
-class HostIncompatibleForRecordReplay {
+class HostIncompatibleForRecordReplay extends phpDynamicProperties {
 	public $hostName; //string
 	public $reason; //string
 
@@ -9703,7 +9716,7 @@ class HostIncompatibleForRecordReplay {
 	}
 }
 
-class HostInventoryFull {
+class HostInventoryFull extends phpDynamicProperties {
 	public $capacity; //int
 
 	function __construct($capacity = null) {
@@ -9711,16 +9724,16 @@ class HostInventoryFull {
 	}
 }
 
-class HostPowerOpFailed {
+class HostPowerOpFailed extends phpDynamicProperties {
 }
 
-class HotSnapshotMoveNotSupported {
+class HotSnapshotMoveNotSupported extends phpDynamicProperties {
 }
 
-class IDEDiskNotSupported {
+class IDEDiskNotSupported extends phpDynamicProperties {
 }
 
-class IORMNotSupportedHostOnDatastore {
+class IORMNotSupportedHostOnDatastore extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $datastoreName; //string
 	public $host; //ManagedObjectReference
@@ -9732,10 +9745,10 @@ class IORMNotSupportedHostOnDatastore {
 	}
 }
 
-class InUseFeatureManipulationDisallowed {
+class InUseFeatureManipulationDisallowed extends phpDynamicProperties {
 }
 
-class InaccessibleDatastore {
+class InaccessibleDatastore extends phpDynamicProperties {
 	public $detail; //string
 
 	function __construct($detail = null) {
@@ -9743,7 +9756,7 @@ class InaccessibleDatastore {
 	}
 }
 
-class IncompatibleDefaultDevice {
+class IncompatibleDefaultDevice extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -9751,7 +9764,7 @@ class IncompatibleDefaultDevice {
 	}
 }
 
-class IncompatibleHostForFtSecondary {
+class IncompatibleHostForFtSecondary extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $error; //LocalizedMethodFault
 
@@ -9761,7 +9774,7 @@ class IncompatibleHostForFtSecondary {
 	}
 }
 
-class IncompatibleSetting {
+class IncompatibleSetting extends phpDynamicProperties {
 	public $conflictingProperty; //string
 
 	function __construct($conflictingProperty = null) {
@@ -9769,16 +9782,16 @@ class IncompatibleSetting {
 	}
 }
 
-class IncorrectFileType {
+class IncorrectFileType extends phpDynamicProperties {
 }
 
-class IncorrectHostInformation {
+class IncorrectHostInformation extends phpDynamicProperties {
 }
 
-class IndependentDiskVMotionNotSupported {
+class IndependentDiskVMotionNotSupported extends phpDynamicProperties {
 }
 
-class InsufficientAgentVmsDeployed {
+class InsufficientAgentVmsDeployed extends phpDynamicProperties {
 	public $hostName; //string
 	public $requiredNumAgentVms; //int
 	public $currentNumAgentVms; //int
@@ -9790,7 +9803,7 @@ class InsufficientAgentVmsDeployed {
 	}
 }
 
-class InsufficientCpuResourcesFault {
+class InsufficientCpuResourcesFault extends phpDynamicProperties {
 	public $unreserved; //long
 	public $requested; //long
 
@@ -9800,10 +9813,10 @@ class InsufficientCpuResourcesFault {
 	}
 }
 
-class InsufficientFailoverResourcesFault {
+class InsufficientFailoverResourcesFault extends phpDynamicProperties {
 }
 
-class InsufficientHostCapacityFault {
+class InsufficientHostCapacityFault extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -9811,7 +9824,7 @@ class InsufficientHostCapacityFault {
 	}
 }
 
-class InsufficientHostCpuCapacityFault {
+class InsufficientHostCpuCapacityFault extends phpDynamicProperties {
 	public $unreserved; //long
 	public $requested; //long
 
@@ -9821,7 +9834,7 @@ class InsufficientHostCpuCapacityFault {
 	}
 }
 
-class InsufficientHostMemoryCapacityFault {
+class InsufficientHostMemoryCapacityFault extends phpDynamicProperties {
 	public $unreserved; //long
 	public $requested; //long
 
@@ -9831,7 +9844,7 @@ class InsufficientHostMemoryCapacityFault {
 	}
 }
 
-class InsufficientMemoryResourcesFault {
+class InsufficientMemoryResourcesFault extends phpDynamicProperties {
 	public $unreserved; //long
 	public $requested; //long
 
@@ -9841,13 +9854,13 @@ class InsufficientMemoryResourcesFault {
 	}
 }
 
-class InsufficientPerCpuCapacity {
+class InsufficientPerCpuCapacity extends phpDynamicProperties {
 }
 
-class InsufficientResourcesFault {
+class InsufficientResourcesFault extends phpDynamicProperties {
 }
 
-class InsufficientStandbyCpuResource {
+class InsufficientStandbyCpuResource extends phpDynamicProperties {
 	public $available; //long
 	public $requested; //long
 
@@ -9857,7 +9870,7 @@ class InsufficientStandbyCpuResource {
 	}
 }
 
-class InsufficientStandbyMemoryResource {
+class InsufficientStandbyMemoryResource extends phpDynamicProperties {
 	public $available; //long
 	public $requested; //long
 
@@ -9867,25 +9880,25 @@ class InsufficientStandbyMemoryResource {
 	}
 }
 
-class InsufficientStandbyResource {
+class InsufficientStandbyResource extends phpDynamicProperties {
 }
 
-class InsufficientStorageSpace {
+class InsufficientStorageSpace extends phpDynamicProperties {
 }
 
-class InvalidAffinitySettingFault {
+class InvalidAffinitySettingFault extends phpDynamicProperties {
 }
 
-class InvalidBmcRole {
+class InvalidBmcRole extends phpDynamicProperties {
 }
 
-class InvalidBundle {
+class InvalidBundle extends phpDynamicProperties {
 }
 
-class InvalidCAMCertificate {
+class InvalidCAMCertificate extends phpDynamicProperties {
 }
 
-class InvalidCAMServer {
+class InvalidCAMServer extends phpDynamicProperties {
 	public $camServer; //string
 
 	function __construct($camServer = null) {
@@ -9893,10 +9906,10 @@ class InvalidCAMServer {
 	}
 }
 
-class InvalidClientCertificate {
+class InvalidClientCertificate extends phpDynamicProperties {
 }
 
-class InvalidController {
+class InvalidController extends phpDynamicProperties {
 	public $controllerKey; //int
 
 	function __construct($controllerKey = null) {
@@ -9904,7 +9917,7 @@ class InvalidController {
 	}
 }
 
-class InvalidDasRestartPriorityForFtVm {
+class InvalidDasRestartPriorityForFtVm extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 
@@ -9914,7 +9927,7 @@ class InvalidDasRestartPriorityForFtVm {
 	}
 }
 
-class InvalidDatastore {
+class InvalidDatastore extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $name; //string
 
@@ -9924,7 +9937,7 @@ class InvalidDatastore {
 	}
 }
 
-class InvalidDatastorePath {
+class InvalidDatastorePath extends phpDynamicProperties {
 	public $datastorePath; //string
 
 	function __construct($datastorePath = null) {
@@ -9932,7 +9945,7 @@ class InvalidDatastorePath {
 	}
 }
 
-class InvalidDatastoreState {
+class InvalidDatastoreState extends phpDynamicProperties {
 	public $datastoreName; //string
 
 	function __construct($datastoreName = null) {
@@ -9940,10 +9953,10 @@ class InvalidDatastoreState {
 	}
 }
 
-class InvalidDeviceBacking {
+class InvalidDeviceBacking extends phpDynamicProperties {
 }
 
-class InvalidDeviceOperation {
+class InvalidDeviceOperation extends phpDynamicProperties {
 	public $badOp; //VirtualDeviceConfigSpecOperation
 	public $badFileOp; //VirtualDeviceConfigSpecFileOperation
 
@@ -9953,7 +9966,7 @@ class InvalidDeviceOperation {
 	}
 }
 
-class InvalidDeviceSpec {
+class InvalidDeviceSpec extends phpDynamicProperties {
 	public $deviceIndex; //int
 
 	function __construct($deviceIndex = null) {
@@ -9961,10 +9974,10 @@ class InvalidDeviceSpec {
 	}
 }
 
-class InvalidDiskFormat {
+class InvalidDiskFormat extends phpDynamicProperties {
 }
 
-class InvalidDrsBehaviorForFtVm {
+class InvalidDrsBehaviorForFtVm extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 
@@ -9974,7 +9987,7 @@ class InvalidDrsBehaviorForFtVm {
 	}
 }
 
-class InvalidEditionLicense {
+class InvalidEditionLicense extends phpDynamicProperties {
 	public $feature; //string
 
 	function __construct($feature = null) {
@@ -9982,10 +9995,10 @@ class InvalidEditionLicense {
 	}
 }
 
-class InvalidEvent {
+class InvalidEvent extends phpDynamicProperties {
 }
 
-class InvalidFolder {
+class InvalidFolder extends phpDynamicProperties {
 	public $target; //ManagedObjectReference
 
 	function __construct($target = null) {
@@ -9993,16 +10006,16 @@ class InvalidFolder {
 	}
 }
 
-class InvalidFormat {
+class InvalidFormat extends phpDynamicProperties {
 }
 
-class InvalidGuestLogin {
+class InvalidGuestLogin extends phpDynamicProperties {
 }
 
-class InvalidHostName {
+class InvalidHostName extends phpDynamicProperties {
 }
 
-class InvalidHostState {
+class InvalidHostState extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -10010,7 +10023,7 @@ class InvalidHostState {
 	}
 }
 
-class InvalidIndexArgument {
+class InvalidIndexArgument extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -10018,10 +10031,10 @@ class InvalidIndexArgument {
 	}
 }
 
-class InvalidIpmiLoginInfo {
+class InvalidIpmiLoginInfo extends phpDynamicProperties {
 }
 
-class InvalidIpmiMacAddress {
+class InvalidIpmiMacAddress extends phpDynamicProperties {
 	public $userProvidedMacAddress; //string
 	public $observedMacAddress; //string
 
@@ -10031,7 +10044,7 @@ class InvalidIpmiMacAddress {
 	}
 }
 
-class InvalidLicense {
+class InvalidLicense extends phpDynamicProperties {
 	public $licenseContent; //string
 
 	function __construct($licenseContent = null) {
@@ -10039,13 +10052,13 @@ class InvalidLicense {
 	}
 }
 
-class InvalidLocale {
+class InvalidLocale extends phpDynamicProperties {
 }
 
-class InvalidLogin {
+class InvalidLogin extends phpDynamicProperties {
 }
 
-class InvalidName {
+class InvalidName extends phpDynamicProperties {
 	public $name; //string
 	public $entity; //ManagedObjectReference
 
@@ -10055,7 +10068,7 @@ class InvalidName {
 	}
 }
 
-class InvalidNasCredentials {
+class InvalidNasCredentials extends phpDynamicProperties {
 	public $userName; //string
 
 	function __construct($userName = null) {
@@ -10063,10 +10076,10 @@ class InvalidNasCredentials {
 	}
 }
 
-class InvalidNetworkInType {
+class InvalidNetworkInType extends phpDynamicProperties {
 }
 
-class InvalidNetworkResource {
+class InvalidNetworkResource extends phpDynamicProperties {
 	public $remoteHost; //string
 	public $remotePath; //string
 
@@ -10076,7 +10089,7 @@ class InvalidNetworkResource {
 	}
 }
 
-class InvalidOperationOnSecondaryVm {
+class InvalidOperationOnSecondaryVm extends phpDynamicProperties {
 	public $instanceUuid; //string
 
 	function __construct($instanceUuid = null) {
@@ -10084,7 +10097,7 @@ class InvalidOperationOnSecondaryVm {
 	}
 }
 
-class InvalidPowerState {
+class InvalidPowerState extends phpDynamicProperties {
 	public $requestedState; //VirtualMachinePowerState
 	public $existingState; //VirtualMachinePowerState
 
@@ -10094,7 +10107,7 @@ class InvalidPowerState {
 	}
 }
 
-class InvalidPrivilege {
+class InvalidPrivilege extends phpDynamicProperties {
 	public $privilege; //string
 
 	function __construct($privilege = null) {
@@ -10102,7 +10115,7 @@ class InvalidPrivilege {
 	}
 }
 
-class InvalidProfileReferenceHost {
+class InvalidProfileReferenceHost extends phpDynamicProperties {
 	public $reason; //string
 	public $host; //ManagedObjectReference
 	public $profile; //ManagedObjectReference
@@ -10114,22 +10127,22 @@ class InvalidProfileReferenceHost {
 	}
 }
 
-class InvalidPropertyType {
+class InvalidPropertyType extends phpDynamicProperties {
 }
 
-class InvalidPropertyValue {
+class InvalidPropertyValue extends phpDynamicProperties {
 }
 
-class InvalidResourcePoolStructureFault {
+class InvalidResourcePoolStructureFault extends phpDynamicProperties {
 }
 
-class InvalidSnapshotFormat {
+class InvalidSnapshotFormat extends phpDynamicProperties {
 }
 
-class InvalidState {
+class InvalidState extends phpDynamicProperties {
 }
 
-class InvalidVmConfig {
+class InvalidVmConfig extends phpDynamicProperties {
 	public $property; //string
 
 	function __construct($property = null) {
@@ -10137,7 +10150,7 @@ class InvalidVmConfig {
 	}
 }
 
-class InventoryHasStandardAloneHosts {
+class InventoryHasStandardAloneHosts extends phpDynamicProperties {
 	public $hosts; //string
 
 	function __construct($hosts = null) {
@@ -10145,13 +10158,13 @@ class InventoryHasStandardAloneHosts {
 	}
 }
 
-class IpHostnameGeneratorError {
+class IpHostnameGeneratorError extends phpDynamicProperties {
 }
 
-class IscsiFault {
+class IscsiFault extends phpDynamicProperties {
 }
 
-class IscsiFaultInvalidVnic {
+class IscsiFaultInvalidVnic extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10159,7 +10172,7 @@ class IscsiFaultInvalidVnic {
 	}
 }
 
-class IscsiFaultPnicInUse {
+class IscsiFaultPnicInUse extends phpDynamicProperties {
 	public $pnicDevice; //string
 
 	function __construct($pnicDevice = null) {
@@ -10167,7 +10180,7 @@ class IscsiFaultPnicInUse {
 	}
 }
 
-class IscsiFaultVnicAlreadyBound {
+class IscsiFaultVnicAlreadyBound extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10175,7 +10188,7 @@ class IscsiFaultVnicAlreadyBound {
 	}
 }
 
-class IscsiFaultVnicHasActivePaths {
+class IscsiFaultVnicHasActivePaths extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10183,7 +10196,7 @@ class IscsiFaultVnicHasActivePaths {
 	}
 }
 
-class IscsiFaultVnicHasMultipleUplinks {
+class IscsiFaultVnicHasMultipleUplinks extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10191,7 +10204,7 @@ class IscsiFaultVnicHasMultipleUplinks {
 	}
 }
 
-class IscsiFaultVnicHasNoUplinks {
+class IscsiFaultVnicHasNoUplinks extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10199,7 +10212,7 @@ class IscsiFaultVnicHasNoUplinks {
 	}
 }
 
-class IscsiFaultVnicHasWrongUplink {
+class IscsiFaultVnicHasWrongUplink extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10207,7 +10220,7 @@ class IscsiFaultVnicHasWrongUplink {
 	}
 }
 
-class IscsiFaultVnicInUse {
+class IscsiFaultVnicInUse extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10215,7 +10228,7 @@ class IscsiFaultVnicInUse {
 	}
 }
 
-class IscsiFaultVnicIsLastPath {
+class IscsiFaultVnicIsLastPath extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10223,7 +10236,7 @@ class IscsiFaultVnicIsLastPath {
 	}
 }
 
-class IscsiFaultVnicNotBound {
+class IscsiFaultVnicNotBound extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10231,7 +10244,7 @@ class IscsiFaultVnicNotBound {
 	}
 }
 
-class IscsiFaultVnicNotFound {
+class IscsiFaultVnicNotFound extends phpDynamicProperties {
 	public $vnicDevice; //string
 
 	function __construct($vnicDevice = null) {
@@ -10239,7 +10252,7 @@ class IscsiFaultVnicNotFound {
 	}
 }
 
-class LargeRDMConversionNotSupported {
+class LargeRDMConversionNotSupported extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -10247,7 +10260,7 @@ class LargeRDMConversionNotSupported {
 	}
 }
 
-class LargeRDMNotSupportedOnDatastore {
+class LargeRDMNotSupportedOnDatastore extends phpDynamicProperties {
 	public $device; //string
 	public $datastore; //ManagedObjectReference
 	public $datastoreName; //string
@@ -10259,10 +10272,10 @@ class LargeRDMNotSupportedOnDatastore {
 	}
 }
 
-class LegacyNetworkInterfaceInUse {
+class LegacyNetworkInterfaceInUse extends phpDynamicProperties {
 }
 
-class LicenseAssignmentFailed {
+class LicenseAssignmentFailed extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -10270,7 +10283,7 @@ class LicenseAssignmentFailed {
 	}
 }
 
-class LicenseDowngradeDisallowed {
+class LicenseDowngradeDisallowed extends phpDynamicProperties {
 	public $edition; //string
 	public $entityId; //string
 	public $features; //KeyAnyValue
@@ -10282,7 +10295,7 @@ class LicenseDowngradeDisallowed {
 	}
 }
 
-class LicenseEntityNotFound {
+class LicenseEntityNotFound extends phpDynamicProperties {
 	public $entityId; //string
 
 	function __construct($entityId = null) {
@@ -10290,7 +10303,7 @@ class LicenseEntityNotFound {
 	}
 }
 
-class LicenseExpired {
+class LicenseExpired extends phpDynamicProperties {
 	public $licenseKey; //string
 
 	function __construct($licenseKey = null) {
@@ -10298,13 +10311,13 @@ class LicenseExpired {
 	}
 }
 
-class LicenseKeyEntityMismatch {
+class LicenseKeyEntityMismatch extends phpDynamicProperties {
 }
 
-class LicenseRestricted {
+class LicenseRestricted extends phpDynamicProperties {
 }
 
-class LicenseServerUnavailable {
+class LicenseServerUnavailable extends phpDynamicProperties {
 	public $licenseServer; //string
 
 	function __construct($licenseServer = null) {
@@ -10312,7 +10325,7 @@ class LicenseServerUnavailable {
 	}
 }
 
-class LicenseSourceUnavailable {
+class LicenseSourceUnavailable extends phpDynamicProperties {
 	public $licenseSource; //LicenseSource
 
 	function __construct($licenseSource = null) {
@@ -10320,7 +10333,7 @@ class LicenseSourceUnavailable {
 	}
 }
 
-class LimitExceeded {
+class LimitExceeded extends phpDynamicProperties {
 	public $property; //string
 	public $limit; //int
 
@@ -10330,19 +10343,19 @@ class LimitExceeded {
 	}
 }
 
-class LinuxVolumeNotClean {
+class LinuxVolumeNotClean extends phpDynamicProperties {
 }
 
-class LogBundlingFailed {
+class LogBundlingFailed extends phpDynamicProperties {
 }
 
-class MaintenanceModeFileMove {
+class MaintenanceModeFileMove extends phpDynamicProperties {
 }
 
-class MemoryHotPlugNotSupported {
+class MemoryHotPlugNotSupported extends phpDynamicProperties {
 }
 
-class MemorySizeNotRecommended {
+class MemorySizeNotRecommended extends phpDynamicProperties {
 	public $memorySizeMB; //int
 	public $minMemorySizeMB; //int
 	public $maxMemorySizeMB; //int
@@ -10354,7 +10367,7 @@ class MemorySizeNotRecommended {
 	}
 }
 
-class MemorySizeNotSupported {
+class MemorySizeNotSupported extends phpDynamicProperties {
 	public $memorySizeMB; //int
 	public $minMemorySizeMB; //int
 	public $maxMemorySizeMB; //int
@@ -10366,7 +10379,7 @@ class MemorySizeNotSupported {
 	}
 }
 
-class MemorySizeNotSupportedByDatastore {
+class MemorySizeNotSupportedByDatastore extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $memorySizeMB; //int
 	public $maxMemorySizeMB; //int
@@ -10378,10 +10391,10 @@ class MemorySizeNotSupportedByDatastore {
 	}
 }
 
-class MemorySnapshotOnIndependentDisk {
+class MemorySnapshotOnIndependentDisk extends phpDynamicProperties {
 }
 
-class MethodAlreadyDisabledFault {
+class MethodAlreadyDisabledFault extends phpDynamicProperties {
 	public $sourceId; //string
 
 	function __construct($sourceId = null) {
@@ -10389,7 +10402,7 @@ class MethodAlreadyDisabledFault {
 	}
 }
 
-class MethodDisabled {
+class MethodDisabled extends phpDynamicProperties {
 	public $source; //string
 
 	function __construct($source = null) {
@@ -10397,13 +10410,13 @@ class MethodDisabled {
 	}
 }
 
-class MigrationDisabled {
+class MigrationDisabled extends phpDynamicProperties {
 }
 
-class MigrationFault {
+class MigrationFault extends phpDynamicProperties {
 }
 
-class MigrationFeatureNotSupported {
+class MigrationFeatureNotSupported extends phpDynamicProperties {
 	public $atSourceHost; //boolean
 	public $failedHostName; //string
 	public $failedHost; //ManagedObjectReference
@@ -10415,7 +10428,7 @@ class MigrationFeatureNotSupported {
 	}
 }
 
-class MigrationNotReady {
+class MigrationNotReady extends phpDynamicProperties {
 	public $reason; //string
 
 	function __construct($reason = null) {
@@ -10423,7 +10436,7 @@ class MigrationNotReady {
 	}
 }
 
-class MismatchedBundle {
+class MismatchedBundle extends phpDynamicProperties {
 	public $bundleUuid; //string
 	public $hostUuid; //string
 	public $bundleBuildNumber; //int
@@ -10437,7 +10450,7 @@ class MismatchedBundle {
 	}
 }
 
-class MismatchedNetworkPolicies {
+class MismatchedNetworkPolicies extends phpDynamicProperties {
 	public $device; //string
 	public $backing; //string
 	public $connected; //boolean
@@ -10449,7 +10462,7 @@ class MismatchedNetworkPolicies {
 	}
 }
 
-class MismatchedVMotionNetworkNames {
+class MismatchedVMotionNetworkNames extends phpDynamicProperties {
 	public $sourceNetwork; //string
 	public $destNetwork; //string
 
@@ -10459,31 +10472,31 @@ class MismatchedVMotionNetworkNames {
 	}
 }
 
-class MissingBmcSupport {
+class MissingBmcSupport extends phpDynamicProperties {
 }
 
-class MissingController {
+class MissingController extends phpDynamicProperties {
 }
 
-class MissingIpPool {
+class MissingIpPool extends phpDynamicProperties {
 }
 
-class MissingLinuxCustResources {
+class MissingLinuxCustResources extends phpDynamicProperties {
 }
 
-class MissingNetworkIpConfig {
+class MissingNetworkIpConfig extends phpDynamicProperties {
 }
 
-class MissingPowerOffConfiguration {
+class MissingPowerOffConfiguration extends phpDynamicProperties {
 }
 
-class MissingPowerOnConfiguration {
+class MissingPowerOnConfiguration extends phpDynamicProperties {
 }
 
-class MissingWindowsCustResources {
+class MissingWindowsCustResources extends phpDynamicProperties {
 }
 
-class MksConnectionLimitReached {
+class MksConnectionLimitReached extends phpDynamicProperties {
 	public $connectionLimit; //int
 
 	function __construct($connectionLimit = null) {
@@ -10491,7 +10504,7 @@ class MksConnectionLimitReached {
 	}
 }
 
-class MountError {
+class MountError extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $diskIndex; //int
 
@@ -10501,7 +10514,7 @@ class MountError {
 	}
 }
 
-class MultipleCertificatesVerifyFaultThumbprintData {
+class MultipleCertificatesVerifyFaultThumbprintData extends phpDynamicProperties {
 	public $port; //int
 	public $thumbprint; //string
 
@@ -10511,7 +10524,7 @@ class MultipleCertificatesVerifyFaultThumbprintData {
 	}
 }
 
-class ArrayOfMultipleCertificatesVerifyFaultThumbprintData {
+class ArrayOfMultipleCertificatesVerifyFaultThumbprintData extends phpDynamicProperties {
 	public $MultipleCertificatesVerifyFaultThumbprintData; //MultipleCertificatesVerifyFaultThumbprintData
 
 	function __construct($MultipleCertificatesVerifyFaultThumbprintData = null) {
@@ -10519,7 +10532,7 @@ class ArrayOfMultipleCertificatesVerifyFaultThumbprintData {
 	}
 }
 
-class MultipleCertificatesVerifyFault {
+class MultipleCertificatesVerifyFault extends phpDynamicProperties {
 	public $thumbprintData; //MultipleCertificatesVerifyFaultThumbprintData
 
 	function __construct($thumbprintData = null) {
@@ -10527,10 +10540,10 @@ class MultipleCertificatesVerifyFault {
 	}
 }
 
-class MultipleSnapshotsNotSupported {
+class MultipleSnapshotsNotSupported extends phpDynamicProperties {
 }
 
-class NasConfigFault {
+class NasConfigFault extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -10538,7 +10551,7 @@ class NasConfigFault {
 	}
 }
 
-class NasConnectionLimitReached {
+class NasConnectionLimitReached extends phpDynamicProperties {
 	public $remoteHost; //string
 	public $remotePath; //string
 
@@ -10548,7 +10561,7 @@ class NasConnectionLimitReached {
 	}
 }
 
-class NasSessionCredentialConflict {
+class NasSessionCredentialConflict extends phpDynamicProperties {
 	public $remoteHost; //string
 	public $remotePath; //string
 	public $userName; //string
@@ -10560,7 +10573,7 @@ class NasSessionCredentialConflict {
 	}
 }
 
-class NasVolumeNotMounted {
+class NasVolumeNotMounted extends phpDynamicProperties {
 	public $remoteHost; //string
 	public $remotePath; //string
 
@@ -10570,13 +10583,13 @@ class NasVolumeNotMounted {
 	}
 }
 
-class NetworkCopyFault {
+class NetworkCopyFault extends phpDynamicProperties {
 }
 
-class NetworkInaccessible {
+class NetworkInaccessible extends phpDynamicProperties {
 }
 
-class NetworksMayNotBeTheSame {
+class NetworksMayNotBeTheSame extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -10584,7 +10597,7 @@ class NetworksMayNotBeTheSame {
 	}
 }
 
-class NicSettingMismatch {
+class NicSettingMismatch extends phpDynamicProperties {
 	public $numberOfNicsInSpec; //int
 	public $numberOfNicsInVM; //int
 
@@ -10594,7 +10607,7 @@ class NicSettingMismatch {
 	}
 }
 
-class NoActiveHostInCluster {
+class NoActiveHostInCluster extends phpDynamicProperties {
 	public $computeResource; //ManagedObjectReference
 
 	function __construct($computeResource = null) {
@@ -10602,7 +10615,7 @@ class NoActiveHostInCluster {
 	}
 }
 
-class NoAvailableIp {
+class NoAvailableIp extends phpDynamicProperties {
 	public $network; //ManagedObjectReference
 
 	function __construct($network = null) {
@@ -10610,13 +10623,13 @@ class NoAvailableIp {
 	}
 }
 
-class NoClientCertificate {
+class NoClientCertificate extends phpDynamicProperties {
 }
 
-class NoCompatibleDatastore {
+class NoCompatibleDatastore extends phpDynamicProperties {
 }
 
-class NoCompatibleHardAffinityHost {
+class NoCompatibleHardAffinityHost extends phpDynamicProperties {
 	public $vmName; //string
 
 	function __construct($vmName = null) {
@@ -10624,7 +10637,7 @@ class NoCompatibleHardAffinityHost {
 	}
 }
 
-class NoCompatibleHost {
+class NoCompatibleHost extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $error; //LocalizedMethodFault
 
@@ -10634,10 +10647,10 @@ class NoCompatibleHost {
 	}
 }
 
-class NoCompatibleHostWithAccessToDevice {
+class NoCompatibleHostWithAccessToDevice extends phpDynamicProperties {
 }
 
-class NoCompatibleSoftAffinityHost {
+class NoCompatibleSoftAffinityHost extends phpDynamicProperties {
 	public $vmName; //string
 
 	function __construct($vmName = null) {
@@ -10645,13 +10658,13 @@ class NoCompatibleSoftAffinityHost {
 	}
 }
 
-class NoConnectedDatastore {
+class NoConnectedDatastore extends phpDynamicProperties {
 }
 
-class NoDiskFound {
+class NoDiskFound extends phpDynamicProperties {
 }
 
-class NoDiskSpace {
+class NoDiskSpace extends phpDynamicProperties {
 	public $datastore; //string
 
 	function __construct($datastore = null) {
@@ -10659,16 +10672,16 @@ class NoDiskSpace {
 	}
 }
 
-class NoDisksToCustomize {
+class NoDisksToCustomize extends phpDynamicProperties {
 }
 
-class NoGateway {
+class NoGateway extends phpDynamicProperties {
 }
 
-class NoGuestHeartbeat {
+class NoGuestHeartbeat extends phpDynamicProperties {
 }
 
-class NoHost {
+class NoHost extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -10676,7 +10689,7 @@ class NoHost {
 	}
 }
 
-class NoHostSuitableForFtSecondary {
+class NoHostSuitableForFtSecondary extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 
@@ -10686,13 +10699,13 @@ class NoHostSuitableForFtSecondary {
 	}
 }
 
-class NoLicenseServerConfigured {
+class NoLicenseServerConfigured extends phpDynamicProperties {
 }
 
-class NoPeerHostFound {
+class NoPeerHostFound extends phpDynamicProperties {
 }
 
-class NoPermission {
+class NoPermission extends phpDynamicProperties {
 	public $object; //ManagedObjectReference
 	public $privilegeId; //string
 
@@ -10702,13 +10715,13 @@ class NoPermission {
 	}
 }
 
-class NoPermissionOnAD {
+class NoPermissionOnAD extends phpDynamicProperties {
 }
 
-class NoPermissionOnHost {
+class NoPermissionOnHost extends phpDynamicProperties {
 }
 
-class NoPermissionOnNasVolume {
+class NoPermissionOnNasVolume extends phpDynamicProperties {
 	public $userName; //string
 
 	function __construct($userName = null) {
@@ -10716,22 +10729,22 @@ class NoPermissionOnNasVolume {
 	}
 }
 
-class NoSubjectName {
+class NoSubjectName extends phpDynamicProperties {
 }
 
-class NoVcManagedIpConfigured {
+class NoVcManagedIpConfigured extends phpDynamicProperties {
 }
 
-class NoVirtualNic {
+class NoVirtualNic extends phpDynamicProperties {
 }
 
-class NoVmInVApp {
+class NoVmInVApp extends phpDynamicProperties {
 }
 
-class NonADUserRequired {
+class NonADUserRequired extends phpDynamicProperties {
 }
 
-class NonHomeRDMVMotionNotSupported {
+class NonHomeRDMVMotionNotSupported extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -10739,19 +10752,19 @@ class NonHomeRDMVMotionNotSupported {
 	}
 }
 
-class NonPersistentDisksNotSupported {
+class NonPersistentDisksNotSupported extends phpDynamicProperties {
 }
 
-class NotADirectory {
+class NotADirectory extends phpDynamicProperties {
 }
 
-class NotAFile {
+class NotAFile extends phpDynamicProperties {
 }
 
-class NotAuthenticated {
+class NotAuthenticated extends phpDynamicProperties {
 }
 
-class NotEnoughCpus {
+class NotEnoughCpus extends phpDynamicProperties {
 	public $numCpuDest; //int
 	public $numCpuVm; //int
 
@@ -10761,7 +10774,7 @@ class NotEnoughCpus {
 	}
 }
 
-class NotEnoughLogicalCpus {
+class NotEnoughLogicalCpus extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 
 	function __construct($host = null) {
@@ -10769,10 +10782,10 @@ class NotEnoughLogicalCpus {
 	}
 }
 
-class NotFound {
+class NotFound extends phpDynamicProperties {
 }
 
-class NotSupportedDeviceForFT {
+class NotSupportedDeviceForFT extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $hostName; //string
 	public $vm; //ManagedObjectReference
@@ -10790,7 +10803,7 @@ class NotSupportedDeviceForFT {
 	}
 }
 
-class NotSupportedHost {
+class NotSupportedHost extends phpDynamicProperties {
 	public $productName; //string
 	public $productVersion; //string
 
@@ -10800,10 +10813,10 @@ class NotSupportedHost {
 	}
 }
 
-class NotSupportedHostInCluster {
+class NotSupportedHostInCluster extends phpDynamicProperties {
 }
 
-class NotSupportedHostInDvs {
+class NotSupportedHostInDvs extends phpDynamicProperties {
 	public $switchProductSpec; //DistributedVirtualSwitchProductSpec
 
 	function __construct($switchProductSpec = null) {
@@ -10811,7 +10824,7 @@ class NotSupportedHostInDvs {
 	}
 }
 
-class NotSupportedHostInHACluster {
+class NotSupportedHostInHACluster extends phpDynamicProperties {
 	public $hostName; //string
 	public $build; //string
 
@@ -10821,10 +10834,10 @@ class NotSupportedHostInHACluster {
 	}
 }
 
-class NotUserConfigurableProperty {
+class NotUserConfigurableProperty extends phpDynamicProperties {
 }
 
-class NumVirtualCoresPerSocketNotSupported {
+class NumVirtualCoresPerSocketNotSupported extends phpDynamicProperties {
 	public $maxSupportedCoresPerSocketDest; //int
 	public $numCoresPerSocketVm; //int
 
@@ -10834,7 +10847,7 @@ class NumVirtualCoresPerSocketNotSupported {
 	}
 }
 
-class NumVirtualCpusExceedsLimit {
+class NumVirtualCpusExceedsLimit extends phpDynamicProperties {
 	public $maxSupportedVcpus; //int
 
 	function __construct($maxSupportedVcpus = null) {
@@ -10842,7 +10855,7 @@ class NumVirtualCpusExceedsLimit {
 	}
 }
 
-class NumVirtualCpusIncompatible {
+class NumVirtualCpusIncompatible extends phpDynamicProperties {
 	public $reason; //string
 	public $numCpu; //int
 
@@ -10852,7 +10865,7 @@ class NumVirtualCpusIncompatible {
 	}
 }
 
-class NumVirtualCpusNotSupported {
+class NumVirtualCpusNotSupported extends phpDynamicProperties {
 	public $maxSupportedVcpusDest; //int
 	public $numCpuVm; //int
 
@@ -10862,16 +10875,16 @@ class NumVirtualCpusNotSupported {
 	}
 }
 
-class OperationDisabledByGuest {
+class OperationDisabledByGuest extends phpDynamicProperties {
 }
 
-class OperationDisallowedOnHost {
+class OperationDisallowedOnHost extends phpDynamicProperties {
 }
 
-class OperationNotSupportedByGuest {
+class OperationNotSupportedByGuest extends phpDynamicProperties {
 }
 
-class OutOfBounds {
+class OutOfBounds extends phpDynamicProperties {
 	public $argumentName; //string
 
 	function __construct($argumentName = null) {
@@ -10879,7 +10892,7 @@ class OutOfBounds {
 	}
 }
 
-class OvfAttribute {
+class OvfAttribute extends phpDynamicProperties {
 	public $elementName; //string
 	public $attributeName; //string
 
@@ -10889,10 +10902,10 @@ class OvfAttribute {
 	}
 }
 
-class OvfConnectedDevice {
+class OvfConnectedDevice extends phpDynamicProperties {
 }
 
-class OvfConnectedDeviceFloppy {
+class OvfConnectedDeviceFloppy extends phpDynamicProperties {
 	public $filename; //string
 
 	function __construct($filename = null) {
@@ -10900,7 +10913,7 @@ class OvfConnectedDeviceFloppy {
 	}
 }
 
-class OvfConnectedDeviceIso {
+class OvfConnectedDeviceIso extends phpDynamicProperties {
 	public $filename; //string
 
 	function __construct($filename = null) {
@@ -10908,7 +10921,7 @@ class OvfConnectedDeviceIso {
 	}
 }
 
-class OvfConstraint {
+class OvfConstraint extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -10916,7 +10929,7 @@ class OvfConstraint {
 	}
 }
 
-class OvfConsumerCallbackFault {
+class OvfConsumerCallbackFault extends phpDynamicProperties {
 	public $extensionKey; //string
 	public $extensionName; //string
 
@@ -10926,7 +10939,7 @@ class OvfConsumerCallbackFault {
 	}
 }
 
-class OvfConsumerCommunicationError {
+class OvfConsumerCommunicationError extends phpDynamicProperties {
 	public $description; //string
 
 	function __construct($description = null) {
@@ -10934,7 +10947,7 @@ class OvfConsumerCommunicationError {
 	}
 }
 
-class OvfConsumerFault {
+class OvfConsumerFault extends phpDynamicProperties {
 	public $errorKey; //string
 	public $message; //string
 	public $params; //KeyValue
@@ -10946,7 +10959,7 @@ class OvfConsumerFault {
 	}
 }
 
-class OvfConsumerInvalidSection {
+class OvfConsumerInvalidSection extends phpDynamicProperties {
 	public $lineNumber; //int
 	public $description; //string
 
@@ -10956,7 +10969,7 @@ class OvfConsumerInvalidSection {
 	}
 }
 
-class OvfConsumerPowerOnFault {
+class OvfConsumerPowerOnFault extends phpDynamicProperties {
 	public $extensionKey; //string
 	public $extensionName; //string
 	public $description; //string
@@ -10968,7 +10981,7 @@ class OvfConsumerPowerOnFault {
 	}
 }
 
-class OvfConsumerUndeclaredSection {
+class OvfConsumerUndeclaredSection extends phpDynamicProperties {
 	public $qualifiedSectionType; //string
 
 	function __construct($qualifiedSectionType = null) {
@@ -10976,7 +10989,7 @@ class OvfConsumerUndeclaredSection {
 	}
 }
 
-class OvfConsumerUndefinedPrefix {
+class OvfConsumerUndefinedPrefix extends phpDynamicProperties {
 	public $prefix; //string
 
 	function __construct($prefix = null) {
@@ -10984,7 +10997,7 @@ class OvfConsumerUndefinedPrefix {
 	}
 }
 
-class OvfConsumerValidationFault {
+class OvfConsumerValidationFault extends phpDynamicProperties {
 	public $extensionKey; //string
 	public $extensionName; //string
 	public $message; //string
@@ -10996,7 +11009,7 @@ class OvfConsumerValidationFault {
 	}
 }
 
-class OvfCpuCompatibility {
+class OvfCpuCompatibility extends phpDynamicProperties {
 	public $registerName; //string
 	public $level; //int
 	public $registerValue; //string
@@ -11010,10 +11023,10 @@ class OvfCpuCompatibility {
 	}
 }
 
-class OvfCpuCompatibilityCheckNotSupported {
+class OvfCpuCompatibilityCheckNotSupported extends phpDynamicProperties {
 }
 
-class OvfDiskMappingNotFound {
+class OvfDiskMappingNotFound extends phpDynamicProperties {
 	public $diskName; //string
 	public $vmName; //string
 
@@ -11023,13 +11036,13 @@ class OvfDiskMappingNotFound {
 	}
 }
 
-class OvfDiskOrderConstraint {
+class OvfDiskOrderConstraint extends phpDynamicProperties {
 }
 
-class OvfDuplicateElement {
+class OvfDuplicateElement extends phpDynamicProperties {
 }
 
-class OvfDuplicatedElementBoundary {
+class OvfDuplicatedElementBoundary extends phpDynamicProperties {
 	public $boundary; //string
 
 	function __construct($boundary = null) {
@@ -11037,7 +11050,7 @@ class OvfDuplicatedElementBoundary {
 	}
 }
 
-class OvfDuplicatedPropertyIdExport {
+class OvfDuplicatedPropertyIdExport extends phpDynamicProperties {
 	public $fqid; //string
 
 	function __construct($fqid = null) {
@@ -11045,10 +11058,10 @@ class OvfDuplicatedPropertyIdExport {
 	}
 }
 
-class OvfDuplicatedPropertyIdImport {
+class OvfDuplicatedPropertyIdImport extends phpDynamicProperties {
 }
 
-class OvfElement {
+class OvfElement extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -11056,7 +11069,7 @@ class OvfElement {
 	}
 }
 
-class OvfElementInvalidValue {
+class OvfElementInvalidValue extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -11064,19 +11077,19 @@ class OvfElementInvalidValue {
 	}
 }
 
-class OvfExport {
+class OvfExport extends phpDynamicProperties {
 }
 
-class OvfExportFailed {
+class OvfExportFailed extends phpDynamicProperties {
 }
 
-class OvfFault {
+class OvfFault extends phpDynamicProperties {
 }
 
-class OvfHardwareCheck {
+class OvfHardwareCheck extends phpDynamicProperties {
 }
 
-class OvfHardwareExport {
+class OvfHardwareExport extends phpDynamicProperties {
 	public $device; //VirtualDevice
 	public $vmPath; //string
 
@@ -11086,7 +11099,7 @@ class OvfHardwareExport {
 	}
 }
 
-class OvfHostResourceConstraint {
+class OvfHostResourceConstraint extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -11094,7 +11107,7 @@ class OvfHostResourceConstraint {
 	}
 }
 
-class OvfHostValueNotParsed {
+class OvfHostValueNotParsed extends phpDynamicProperties {
 	public $property; //string
 	public $value; //string
 
@@ -11104,16 +11117,16 @@ class OvfHostValueNotParsed {
 	}
 }
 
-class OvfImport {
+class OvfImport extends phpDynamicProperties {
 }
 
-class OvfImportFailed {
+class OvfImportFailed extends phpDynamicProperties {
 }
 
-class OvfInternalError {
+class OvfInternalError extends phpDynamicProperties {
 }
 
-class OvfInvalidPackage {
+class OvfInvalidPackage extends phpDynamicProperties {
 	public $lineNumber; //int
 
 	function __construct($lineNumber = null) {
@@ -11121,7 +11134,7 @@ class OvfInvalidPackage {
 	}
 }
 
-class OvfInvalidValue {
+class OvfInvalidValue extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -11129,19 +11142,19 @@ class OvfInvalidValue {
 	}
 }
 
-class OvfInvalidValueConfiguration {
+class OvfInvalidValueConfiguration extends phpDynamicProperties {
 }
 
-class OvfInvalidValueEmpty {
+class OvfInvalidValueEmpty extends phpDynamicProperties {
 }
 
-class OvfInvalidValueFormatMalformed {
+class OvfInvalidValueFormatMalformed extends phpDynamicProperties {
 }
 
-class OvfInvalidValueReference {
+class OvfInvalidValueReference extends phpDynamicProperties {
 }
 
-class OvfInvalidVmName {
+class OvfInvalidVmName extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -11149,7 +11162,7 @@ class OvfInvalidVmName {
 	}
 }
 
-class OvfMappedOsId {
+class OvfMappedOsId extends phpDynamicProperties {
 	public $ovfId; //int
 	public $ovfDescription; //string
 	public $targetDescription; //string
@@ -11161,13 +11174,13 @@ class OvfMappedOsId {
 	}
 }
 
-class OvfMissingAttribute {
+class OvfMissingAttribute extends phpDynamicProperties {
 }
 
-class OvfMissingElement {
+class OvfMissingElement extends phpDynamicProperties {
 }
 
-class OvfMissingElementNormalBoundary {
+class OvfMissingElementNormalBoundary extends phpDynamicProperties {
 	public $boundary; //string
 
 	function __construct($boundary = null) {
@@ -11175,7 +11188,7 @@ class OvfMissingElementNormalBoundary {
 	}
 }
 
-class OvfMissingHardware {
+class OvfMissingHardware extends phpDynamicProperties {
 	public $name; //string
 	public $resourceType; //int
 
@@ -11185,10 +11198,10 @@ class OvfMissingHardware {
 	}
 }
 
-class OvfNoHostNic {
+class OvfNoHostNic extends phpDynamicProperties {
 }
 
-class OvfNoSpaceOnController {
+class OvfNoSpaceOnController extends phpDynamicProperties {
 	public $parent; //string
 
 	function __construct($parent = null) {
@@ -11196,7 +11209,7 @@ class OvfNoSpaceOnController {
 	}
 }
 
-class OvfNoSupportedHardwareFamily {
+class OvfNoSupportedHardwareFamily extends phpDynamicProperties {
 	public $version; //string
 
 	function __construct($version = null) {
@@ -11204,7 +11217,7 @@ class OvfNoSupportedHardwareFamily {
 	}
 }
 
-class OvfProperty {
+class OvfProperty extends phpDynamicProperties {
 	public $type; //string
 	public $value; //string
 
@@ -11214,7 +11227,7 @@ class OvfProperty {
 	}
 }
 
-class OvfPropertyExport {
+class OvfPropertyExport extends phpDynamicProperties {
 	public $type; //string
 	public $value; //string
 
@@ -11224,10 +11237,10 @@ class OvfPropertyExport {
 	}
 }
 
-class OvfPropertyNetwork {
+class OvfPropertyNetwork extends phpDynamicProperties {
 }
 
-class OvfPropertyNetworkExport {
+class OvfPropertyNetworkExport extends phpDynamicProperties {
 	public $network; //string
 
 	function __construct($network = null) {
@@ -11235,7 +11248,7 @@ class OvfPropertyNetworkExport {
 	}
 }
 
-class OvfPropertyQualifier {
+class OvfPropertyQualifier extends phpDynamicProperties {
 	public $qualifier; //string
 
 	function __construct($qualifier = null) {
@@ -11243,7 +11256,7 @@ class OvfPropertyQualifier {
 	}
 }
 
-class OvfPropertyQualifierDuplicate {
+class OvfPropertyQualifierDuplicate extends phpDynamicProperties {
 	public $qualifier; //string
 
 	function __construct($qualifier = null) {
@@ -11251,7 +11264,7 @@ class OvfPropertyQualifierDuplicate {
 	}
 }
 
-class OvfPropertyQualifierIgnored {
+class OvfPropertyQualifierIgnored extends phpDynamicProperties {
 	public $qualifier; //string
 
 	function __construct($qualifier = null) {
@@ -11259,16 +11272,16 @@ class OvfPropertyQualifierIgnored {
 	}
 }
 
-class OvfPropertyType {
+class OvfPropertyType extends phpDynamicProperties {
 }
 
-class OvfPropertyValue {
+class OvfPropertyValue extends phpDynamicProperties {
 }
 
-class OvfSystemFault {
+class OvfSystemFault extends phpDynamicProperties {
 }
 
-class OvfToXmlUnsupportedElement {
+class OvfToXmlUnsupportedElement extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -11276,7 +11289,7 @@ class OvfToXmlUnsupportedElement {
 	}
 }
 
-class OvfUnableToExportDisk {
+class OvfUnableToExportDisk extends phpDynamicProperties {
 	public $diskName; //string
 
 	function __construct($diskName = null) {
@@ -11284,10 +11297,10 @@ class OvfUnableToExportDisk {
 	}
 }
 
-class OvfUnexpectedElement {
+class OvfUnexpectedElement extends phpDynamicProperties {
 }
 
-class OvfUnknownDevice {
+class OvfUnknownDevice extends phpDynamicProperties {
 	public $device; //VirtualDevice
 	public $vmName; //string
 
@@ -11297,7 +11310,7 @@ class OvfUnknownDevice {
 	}
 }
 
-class OvfUnknownDeviceBacking {
+class OvfUnknownDeviceBacking extends phpDynamicProperties {
 	public $backing; //VirtualDeviceBackingInfo
 
 	function __construct($backing = null) {
@@ -11305,7 +11318,7 @@ class OvfUnknownDeviceBacking {
 	}
 }
 
-class OvfUnknownEntity {
+class OvfUnknownEntity extends phpDynamicProperties {
 	public $lineNumber; //int
 
 	function __construct($lineNumber = null) {
@@ -11313,7 +11326,7 @@ class OvfUnknownEntity {
 	}
 }
 
-class OvfUnsupportedAttribute {
+class OvfUnsupportedAttribute extends phpDynamicProperties {
 	public $elementName; //string
 	public $attributeName; //string
 
@@ -11323,7 +11336,7 @@ class OvfUnsupportedAttribute {
 	}
 }
 
-class OvfUnsupportedAttributeValue {
+class OvfUnsupportedAttributeValue extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -11331,7 +11344,7 @@ class OvfUnsupportedAttributeValue {
 	}
 }
 
-class OvfUnsupportedDeviceBackingInfo {
+class OvfUnsupportedDeviceBackingInfo extends phpDynamicProperties {
 	public $elementName; //string
 	public $instanceId; //string
 	public $deviceName; //string
@@ -11345,7 +11358,7 @@ class OvfUnsupportedDeviceBackingInfo {
 	}
 }
 
-class OvfUnsupportedDeviceBackingOption {
+class OvfUnsupportedDeviceBackingOption extends phpDynamicProperties {
 	public $elementName; //string
 	public $instanceId; //string
 	public $deviceName; //string
@@ -11359,10 +11372,10 @@ class OvfUnsupportedDeviceBackingOption {
 	}
 }
 
-class OvfUnsupportedDeviceExport {
+class OvfUnsupportedDeviceExport extends phpDynamicProperties {
 }
 
-class OvfUnsupportedDiskProvisioning {
+class OvfUnsupportedDiskProvisioning extends phpDynamicProperties {
 	public $diskProvisioning; //string
 	public $supportedDiskProvisioning; //string
 
@@ -11372,7 +11385,7 @@ class OvfUnsupportedDiskProvisioning {
 	}
 }
 
-class OvfUnsupportedElement {
+class OvfUnsupportedElement extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -11380,7 +11393,7 @@ class OvfUnsupportedElement {
 	}
 }
 
-class OvfUnsupportedElementValue {
+class OvfUnsupportedElementValue extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -11388,7 +11401,7 @@ class OvfUnsupportedElementValue {
 	}
 }
 
-class OvfUnsupportedPackage {
+class OvfUnsupportedPackage extends phpDynamicProperties {
 	public $lineNumber; //int
 
 	function __construct($lineNumber = null) {
@@ -11396,7 +11409,7 @@ class OvfUnsupportedPackage {
 	}
 }
 
-class OvfUnsupportedSection {
+class OvfUnsupportedSection extends phpDynamicProperties {
 	public $info; //string
 
 	function __construct($info = null) {
@@ -11404,7 +11417,7 @@ class OvfUnsupportedSection {
 	}
 }
 
-class OvfUnsupportedSubType {
+class OvfUnsupportedSubType extends phpDynamicProperties {
 	public $elementName; //string
 	public $instanceId; //string
 	public $deviceType; //int
@@ -11418,7 +11431,7 @@ class OvfUnsupportedSubType {
 	}
 }
 
-class OvfUnsupportedType {
+class OvfUnsupportedType extends phpDynamicProperties {
 	public $name; //string
 	public $instanceId; //string
 	public $deviceType; //int
@@ -11430,10 +11443,10 @@ class OvfUnsupportedType {
 	}
 }
 
-class OvfWrongElement {
+class OvfWrongElement extends phpDynamicProperties {
 }
 
-class OvfWrongNamespace {
+class OvfWrongNamespace extends phpDynamicProperties {
 	public $namespaceName; //string
 
 	function __construct($namespaceName = null) {
@@ -11441,7 +11454,7 @@ class OvfWrongNamespace {
 	}
 }
 
-class OvfXmlFormat {
+class OvfXmlFormat extends phpDynamicProperties {
 	public $description; //string
 
 	function __construct($description = null) {
@@ -11449,10 +11462,10 @@ class OvfXmlFormat {
 	}
 }
 
-class PatchAlreadyInstalled {
+class PatchAlreadyInstalled extends phpDynamicProperties {
 }
 
-class PatchBinariesNotFound {
+class PatchBinariesNotFound extends phpDynamicProperties {
 	public $patchID; //string
 	public $binary; //string
 
@@ -11462,7 +11475,7 @@ class PatchBinariesNotFound {
 	}
 }
 
-class PatchInstallFailed {
+class PatchInstallFailed extends phpDynamicProperties {
 	public $rolledBack; //boolean
 
 	function __construct($rolledBack = null) {
@@ -11470,13 +11483,13 @@ class PatchInstallFailed {
 	}
 }
 
-class PatchIntegrityError {
+class PatchIntegrityError extends phpDynamicProperties {
 }
 
-class PatchMetadataCorrupted {
+class PatchMetadataCorrupted extends phpDynamicProperties {
 }
 
-class PatchMetadataInvalid {
+class PatchMetadataInvalid extends phpDynamicProperties {
 	public $patchID; //string
 	public $metaData; //string
 
@@ -11486,10 +11499,10 @@ class PatchMetadataInvalid {
 	}
 }
 
-class PatchMetadataNotFound {
+class PatchMetadataNotFound extends phpDynamicProperties {
 }
 
-class PatchMissingDependencies {
+class PatchMissingDependencies extends phpDynamicProperties {
 	public $prerequisitePatch; //string
 	public $prerequisiteLib; //string
 
@@ -11499,7 +11512,7 @@ class PatchMissingDependencies {
 	}
 }
 
-class PatchNotApplicable {
+class PatchNotApplicable extends phpDynamicProperties {
 	public $patchID; //string
 
 	function __construct($patchID = null) {
@@ -11507,7 +11520,7 @@ class PatchNotApplicable {
 	}
 }
 
-class PatchSuperseded {
+class PatchSuperseded extends phpDynamicProperties {
 	public $supersede; //string
 
 	function __construct($supersede = null) {
@@ -11515,10 +11528,10 @@ class PatchSuperseded {
 	}
 }
 
-class PhysCompatRDMNotSupported {
+class PhysCompatRDMNotSupported extends phpDynamicProperties {
 }
 
-class PlatformConfigFault {
+class PlatformConfigFault extends phpDynamicProperties {
 	public $text; //string
 
 	function __construct($text = null) {
@@ -11526,7 +11539,7 @@ class PlatformConfigFault {
 	}
 }
 
-class PowerOnFtSecondaryFailed {
+class PowerOnFtSecondaryFailed extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 	public $hostSelectionBy; //FtIssuesOnHostHostSelectionType
@@ -11542,7 +11555,7 @@ class PowerOnFtSecondaryFailed {
 	}
 }
 
-class PowerOnFtSecondaryTimedout {
+class PowerOnFtSecondaryTimedout extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $vmName; //string
 	public $timeout; //int
@@ -11554,7 +11567,7 @@ class PowerOnFtSecondaryTimedout {
 	}
 }
 
-class ProfileUpdateFailedUpdateFailure {
+class ProfileUpdateFailedUpdateFailure extends phpDynamicProperties {
 	public $profilePath; //ProfilePropertyPath
 	public $errMsg; //LocalizableMessage
 
@@ -11564,7 +11577,7 @@ class ProfileUpdateFailedUpdateFailure {
 	}
 }
 
-class ArrayOfProfileUpdateFailedUpdateFailure {
+class ArrayOfProfileUpdateFailedUpdateFailure extends phpDynamicProperties {
 	public $ProfileUpdateFailedUpdateFailure; //ProfileUpdateFailedUpdateFailure
 
 	function __construct($ProfileUpdateFailedUpdateFailure = null) {
@@ -11572,7 +11585,7 @@ class ArrayOfProfileUpdateFailedUpdateFailure {
 	}
 }
 
-class ProfileUpdateFailed {
+class ProfileUpdateFailed extends phpDynamicProperties {
 	public $failure; //ProfileUpdateFailedUpdateFailure
 
 	function __construct($failure = null) {
@@ -11580,7 +11593,7 @@ class ProfileUpdateFailed {
 	}
 }
 
-class QuestionPending {
+class QuestionPending extends phpDynamicProperties {
 	public $text; //string
 
 	function __construct($text = null) {
@@ -11588,7 +11601,7 @@ class QuestionPending {
 	}
 }
 
-class QuiesceDatastoreIOForHAFailed {
+class QuiesceDatastoreIOForHAFailed extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $hostName; //string
 	public $ds; //ManagedObjectReference
@@ -11602,7 +11615,7 @@ class QuiesceDatastoreIOForHAFailed {
 	}
 }
 
-class RDMConversionNotSupported {
+class RDMConversionNotSupported extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -11610,7 +11623,7 @@ class RDMConversionNotSupported {
 	}
 }
 
-class RDMNotPreserved {
+class RDMNotPreserved extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -11618,10 +11631,10 @@ class RDMNotPreserved {
 	}
 }
 
-class RDMNotSupported {
+class RDMNotSupported extends phpDynamicProperties {
 }
 
-class RDMNotSupportedOnDatastore {
+class RDMNotSupportedOnDatastore extends phpDynamicProperties {
 	public $device; //string
 	public $datastore; //ManagedObjectReference
 	public $datastoreName; //string
@@ -11633,16 +11646,16 @@ class RDMNotSupportedOnDatastore {
 	}
 }
 
-class RDMPointsToInaccessibleDisk {
+class RDMPointsToInaccessibleDisk extends phpDynamicProperties {
 }
 
-class RawDiskNotSupported {
+class RawDiskNotSupported extends phpDynamicProperties {
 }
 
-class ReadHostResourcePoolTreeFailed {
+class ReadHostResourcePoolTreeFailed extends phpDynamicProperties {
 }
 
-class ReadOnlyDisksWithLegacyDestination {
+class ReadOnlyDisksWithLegacyDestination extends phpDynamicProperties {
 	public $roDiskCount; //int
 	public $timeoutDanger; //boolean
 
@@ -11652,7 +11665,7 @@ class ReadOnlyDisksWithLegacyDestination {
 	}
 }
 
-class RebootRequired {
+class RebootRequired extends phpDynamicProperties {
 	public $patch; //string
 
 	function __construct($patch = null) {
@@ -11660,19 +11673,19 @@ class RebootRequired {
 	}
 }
 
-class RecordReplayDisabled {
+class RecordReplayDisabled extends phpDynamicProperties {
 }
 
-class RemoteDeviceNotSupported {
+class RemoteDeviceNotSupported extends phpDynamicProperties {
 }
 
-class RemoveFailed {
+class RemoveFailed extends phpDynamicProperties {
 }
 
-class ReplicationConfigFault {
+class ReplicationConfigFault extends phpDynamicProperties {
 }
 
-class ReplicationDiskConfigFault {
+class ReplicationDiskConfigFault extends phpDynamicProperties {
 	public $reason; //string
 	public $vmRef; //ManagedObjectReference
 	public $key; //int
@@ -11684,13 +11697,13 @@ class ReplicationDiskConfigFault {
 	}
 }
 
-class ReplicationFault {
+class ReplicationFault extends phpDynamicProperties {
 }
 
-class ReplicationIncompatibleWithFT {
+class ReplicationIncompatibleWithFT extends phpDynamicProperties {
 }
 
-class ReplicationInvalidOptions {
+class ReplicationInvalidOptions extends phpDynamicProperties {
 	public $options; //string
 	public $entity; //ManagedObjectReference
 
@@ -11700,10 +11713,10 @@ class ReplicationInvalidOptions {
 	}
 }
 
-class ReplicationNotSupportedOnHost {
+class ReplicationNotSupportedOnHost extends phpDynamicProperties {
 }
 
-class ReplicationVmConfigFault {
+class ReplicationVmConfigFault extends phpDynamicProperties {
 	public $reason; //string
 	public $vmRef; //ManagedObjectReference
 
@@ -11713,7 +11726,7 @@ class ReplicationVmConfigFault {
 	}
 }
 
-class ReplicationVmFault {
+class ReplicationVmFault extends phpDynamicProperties {
 	public $reason; //string
 	public $state; //string
 	public $instanceId; //string
@@ -11727,7 +11740,7 @@ class ReplicationVmFault {
 	}
 }
 
-class ResourceInUse {
+class ResourceInUse extends phpDynamicProperties {
 	public $type; //string
 	public $name; //string
 
@@ -11737,7 +11750,7 @@ class ResourceInUse {
 	}
 }
 
-class ResourceNotAvailable {
+class ResourceNotAvailable extends phpDynamicProperties {
 	public $containerType; //string
 	public $containerName; //string
 	public $type; //string
@@ -11749,10 +11762,10 @@ class ResourceNotAvailable {
 	}
 }
 
-class RestrictedVersion {
+class RestrictedVersion extends phpDynamicProperties {
 }
 
-class RuleViolation {
+class RuleViolation extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $rule; //ClusterRuleInfo
 
@@ -11762,10 +11775,10 @@ class RuleViolation {
 	}
 }
 
-class SSLDisabledFault {
+class SSLDisabledFault extends phpDynamicProperties {
 }
 
-class SSLVerifyFault {
+class SSLVerifyFault extends phpDynamicProperties {
 	public $selfSigned; //boolean
 	public $thumbprint; //string
 
@@ -11775,7 +11788,7 @@ class SSLVerifyFault {
 	}
 }
 
-class SSPIChallenge {
+class SSPIChallenge extends phpDynamicProperties {
 	public $base64Token; //string
 
 	function __construct($base64Token = null) {
@@ -11783,7 +11796,7 @@ class SSPIChallenge {
 	}
 }
 
-class SecondaryVmAlreadyDisabled {
+class SecondaryVmAlreadyDisabled extends phpDynamicProperties {
 	public $instanceUuid; //string
 
 	function __construct($instanceUuid = null) {
@@ -11791,7 +11804,7 @@ class SecondaryVmAlreadyDisabled {
 	}
 }
 
-class SecondaryVmAlreadyEnabled {
+class SecondaryVmAlreadyEnabled extends phpDynamicProperties {
 	public $instanceUuid; //string
 
 	function __construct($instanceUuid = null) {
@@ -11799,7 +11812,7 @@ class SecondaryVmAlreadyEnabled {
 	}
 }
 
-class SecondaryVmAlreadyRegistered {
+class SecondaryVmAlreadyRegistered extends phpDynamicProperties {
 	public $instanceUuid; //string
 
 	function __construct($instanceUuid = null) {
@@ -11807,7 +11820,7 @@ class SecondaryVmAlreadyRegistered {
 	}
 }
 
-class SecondaryVmNotRegistered {
+class SecondaryVmNotRegistered extends phpDynamicProperties {
 	public $instanceUuid; //string
 
 	function __construct($instanceUuid = null) {
@@ -11815,22 +11828,22 @@ class SecondaryVmNotRegistered {
 	}
 }
 
-class SharedBusControllerNotSupported {
+class SharedBusControllerNotSupported extends phpDynamicProperties {
 }
 
-class SnapshotCloneNotSupported {
+class SnapshotCloneNotSupported extends phpDynamicProperties {
 }
 
-class SnapshotCopyNotSupported {
+class SnapshotCopyNotSupported extends phpDynamicProperties {
 }
 
-class SnapshotDisabled {
+class SnapshotDisabled extends phpDynamicProperties {
 }
 
-class SnapshotFault {
+class SnapshotFault extends phpDynamicProperties {
 }
 
-class SnapshotIncompatibleDeviceInVm {
+class SnapshotIncompatibleDeviceInVm extends phpDynamicProperties {
 	public $fault; //LocalizedMethodFault
 
 	function __construct($fault = null) {
@@ -11838,22 +11851,22 @@ class SnapshotIncompatibleDeviceInVm {
 	}
 }
 
-class SnapshotLocked {
+class SnapshotLocked extends phpDynamicProperties {
 }
 
-class SnapshotMoveFromNonHomeNotSupported {
+class SnapshotMoveFromNonHomeNotSupported extends phpDynamicProperties {
 }
 
-class SnapshotMoveNotSupported {
+class SnapshotMoveNotSupported extends phpDynamicProperties {
 }
 
-class SnapshotMoveToNonHomeNotSupported {
+class SnapshotMoveToNonHomeNotSupported extends phpDynamicProperties {
 }
 
-class SnapshotNoChange {
+class SnapshotNoChange extends phpDynamicProperties {
 }
 
-class SnapshotRevertIssue {
+class SnapshotRevertIssue extends phpDynamicProperties {
 	public $snapshotName; //string
 	public $event; //Event
 	public $errors; //boolean
@@ -11865,7 +11878,7 @@ class SnapshotRevertIssue {
 	}
 }
 
-class SoftRuleVioCorrectionDisallowed {
+class SoftRuleVioCorrectionDisallowed extends phpDynamicProperties {
 	public $vmName; //string
 
 	function __construct($vmName = null) {
@@ -11873,7 +11886,7 @@ class SoftRuleVioCorrectionDisallowed {
 	}
 }
 
-class SoftRuleVioCorrectionImpact {
+class SoftRuleVioCorrectionImpact extends phpDynamicProperties {
 	public $vmName; //string
 
 	function __construct($vmName = null) {
@@ -11881,16 +11894,16 @@ class SoftRuleVioCorrectionImpact {
 	}
 }
 
-class StorageDrsDisabledOnVm {
+class StorageDrsDisabledOnVm extends phpDynamicProperties {
 }
 
-class StorageDrsIolbDisabledInternally {
+class StorageDrsIolbDisabledInternally extends phpDynamicProperties {
 }
 
-class StorageVMotionNotSupported {
+class StorageVMotionNotSupported extends phpDynamicProperties {
 }
 
-class StorageVmotionIncompatible {
+class StorageVmotionIncompatible extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 
 	function __construct($datastore = null) {
@@ -11898,22 +11911,22 @@ class StorageVmotionIncompatible {
 	}
 }
 
-class SuspendedRelocateNotSupported {
+class SuspendedRelocateNotSupported extends phpDynamicProperties {
 }
 
-class SwapDatastoreNotWritableOnHost {
+class SwapDatastoreNotWritableOnHost extends phpDynamicProperties {
 }
 
-class SwapDatastoreUnset {
+class SwapDatastoreUnset extends phpDynamicProperties {
 }
 
-class SwapPlacementOverrideNotSupported {
+class SwapPlacementOverrideNotSupported extends phpDynamicProperties {
 }
 
-class SwitchNotInUpgradeMode {
+class SwitchNotInUpgradeMode extends phpDynamicProperties {
 }
 
-class TaskInProgress {
+class TaskInProgress extends phpDynamicProperties {
 	public $task; //ManagedObjectReference
 
 	function __construct($task = null) {
@@ -11921,7 +11934,7 @@ class TaskInProgress {
 	}
 }
 
-class ThirdPartyLicenseAssignmentFailed {
+class ThirdPartyLicenseAssignmentFailed extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $module; //string
 	public $reason; //string
@@ -11933,19 +11946,19 @@ class ThirdPartyLicenseAssignmentFailed {
 	}
 }
 
-class Timedout {
+class Timedout extends phpDynamicProperties {
 }
 
-class TooManyConcurrentNativeClones {
+class TooManyConcurrentNativeClones extends phpDynamicProperties {
 }
 
-class TooManyConsecutiveOverrides {
+class TooManyConsecutiveOverrides extends phpDynamicProperties {
 }
 
-class TooManyDevices {
+class TooManyDevices extends phpDynamicProperties {
 }
 
-class TooManyDisksOnLegacyHost {
+class TooManyDisksOnLegacyHost extends phpDynamicProperties {
 	public $diskCount; //int
 	public $timeoutDanger; //boolean
 
@@ -11955,49 +11968,49 @@ class TooManyDisksOnLegacyHost {
 	}
 }
 
-class TooManyGuestLogons {
+class TooManyGuestLogons extends phpDynamicProperties {
 }
 
-class TooManyHosts {
+class TooManyHosts extends phpDynamicProperties {
 }
 
-class TooManyNativeCloneLevels {
+class TooManyNativeCloneLevels extends phpDynamicProperties {
 }
 
-class TooManyNativeClonesOnFile {
+class TooManyNativeClonesOnFile extends phpDynamicProperties {
 }
 
-class TooManySnapshotLevels {
+class TooManySnapshotLevels extends phpDynamicProperties {
 }
 
-class ToolsAlreadyUpgraded {
+class ToolsAlreadyUpgraded extends phpDynamicProperties {
 }
 
-class ToolsAutoUpgradeNotSupported {
+class ToolsAutoUpgradeNotSupported extends phpDynamicProperties {
 }
 
-class ToolsImageNotAvailable {
+class ToolsImageNotAvailable extends phpDynamicProperties {
 }
 
-class ToolsImageSignatureCheckFailed {
+class ToolsImageSignatureCheckFailed extends phpDynamicProperties {
 }
 
-class ToolsInstallationInProgress {
+class ToolsInstallationInProgress extends phpDynamicProperties {
 }
 
-class ToolsUnavailable {
+class ToolsUnavailable extends phpDynamicProperties {
 }
 
-class ToolsUpgradeCancelled {
+class ToolsUpgradeCancelled extends phpDynamicProperties {
 }
 
-class UncommittedUndoableDisk {
+class UncommittedUndoableDisk extends phpDynamicProperties {
 }
 
-class UnconfiguredPropertyValue {
+class UnconfiguredPropertyValue extends phpDynamicProperties {
 }
 
-class UncustomizableGuest {
+class UncustomizableGuest extends phpDynamicProperties {
 	public $uncustomizableGuestOS; //string
 
 	function __construct($uncustomizableGuestOS = null) {
@@ -12005,10 +12018,10 @@ class UncustomizableGuest {
 	}
 }
 
-class UnexpectedCustomizationFault {
+class UnexpectedCustomizationFault extends phpDynamicProperties {
 }
 
-class UnrecognizedHost {
+class UnrecognizedHost extends phpDynamicProperties {
 	public $hostName; //string
 
 	function __construct($hostName = null) {
@@ -12016,10 +12029,10 @@ class UnrecognizedHost {
 	}
 }
 
-class UnsharedSwapVMotionNotSupported {
+class UnsharedSwapVMotionNotSupported extends phpDynamicProperties {
 }
 
-class UnsupportedDatastore {
+class UnsupportedDatastore extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 
 	function __construct($datastore = null) {
@@ -12027,7 +12040,7 @@ class UnsupportedDatastore {
 	}
 }
 
-class UnsupportedGuest {
+class UnsupportedGuest extends phpDynamicProperties {
 	public $unsupportedGuestOS; //string
 
 	function __construct($unsupportedGuestOS = null) {
@@ -12035,7 +12048,7 @@ class UnsupportedGuest {
 	}
 }
 
-class UnsupportedVimApiVersion {
+class UnsupportedVimApiVersion extends phpDynamicProperties {
 	public $version; //string
 
 	function __construct($version = null) {
@@ -12043,13 +12056,13 @@ class UnsupportedVimApiVersion {
 	}
 }
 
-class UnsupportedVmxLocation {
+class UnsupportedVmxLocation extends phpDynamicProperties {
 }
 
-class UnusedVirtualDiskBlocksNotScrubbed {
+class UnusedVirtualDiskBlocksNotScrubbed extends phpDynamicProperties {
 }
 
-class UserNotFound {
+class UserNotFound extends phpDynamicProperties {
 	public $principal; //string
 	public $unresolved; //boolean
 
@@ -12059,16 +12072,16 @@ class UserNotFound {
 	}
 }
 
-class VAppConfigFault {
+class VAppConfigFault extends phpDynamicProperties {
 }
 
-class VAppNotRunning {
+class VAppNotRunning extends phpDynamicProperties {
 }
 
-class VAppOperationInProgress {
+class VAppOperationInProgress extends phpDynamicProperties {
 }
 
-class VAppPropertyFault {
+class VAppPropertyFault extends phpDynamicProperties {
 	public $id; //string
 	public $category; //string
 	public $label; //string
@@ -12084,19 +12097,19 @@ class VAppPropertyFault {
 	}
 }
 
-class VAppTaskInProgress {
+class VAppTaskInProgress extends phpDynamicProperties {
 }
 
-class VMINotSupported {
+class VMINotSupported extends phpDynamicProperties {
 }
 
-class VMOnConflictDVPort {
+class VMOnConflictDVPort extends phpDynamicProperties {
 }
 
-class VMOnVirtualIntranet {
+class VMOnVirtualIntranet extends phpDynamicProperties {
 }
 
-class VMotionInterfaceIssue {
+class VMotionInterfaceIssue extends phpDynamicProperties {
 	public $atSourceHost; //boolean
 	public $failedHost; //string
 	public $failedHostEntity; //ManagedObjectReference
@@ -12108,7 +12121,7 @@ class VMotionInterfaceIssue {
 	}
 }
 
-class VMotionLinkCapacityLow {
+class VMotionLinkCapacityLow extends phpDynamicProperties {
 	public $network; //string
 
 	function __construct($network = null) {
@@ -12116,7 +12129,7 @@ class VMotionLinkCapacityLow {
 	}
 }
 
-class VMotionLinkDown {
+class VMotionLinkDown extends phpDynamicProperties {
 	public $network; //string
 
 	function __construct($network = null) {
@@ -12124,25 +12137,25 @@ class VMotionLinkDown {
 	}
 }
 
-class VMotionNotConfigured {
+class VMotionNotConfigured extends phpDynamicProperties {
 }
 
-class VMotionNotLicensed {
+class VMotionNotLicensed extends phpDynamicProperties {
 }
 
-class VMotionNotSupported {
+class VMotionNotSupported extends phpDynamicProperties {
 }
 
-class VMotionProtocolIncompatible {
+class VMotionProtocolIncompatible extends phpDynamicProperties {
 }
 
-class VimFault {
+class VimFault extends phpDynamicProperties {
 }
 
-class VirtualDiskBlocksNotFullyProvisioned {
+class VirtualDiskBlocksNotFullyProvisioned extends phpDynamicProperties {
 }
 
-class VirtualDiskModeNotSupported {
+class VirtualDiskModeNotSupported extends phpDynamicProperties {
 	public $mode; //string
 
 	function __construct($mode = null) {
@@ -12150,13 +12163,13 @@ class VirtualDiskModeNotSupported {
 	}
 }
 
-class VirtualEthernetCardNotSupported {
+class VirtualEthernetCardNotSupported extends phpDynamicProperties {
 }
 
-class VirtualHardwareCompatibilityIssue {
+class VirtualHardwareCompatibilityIssue extends phpDynamicProperties {
 }
 
-class VirtualHardwareVersionNotSupported {
+class VirtualHardwareVersionNotSupported extends phpDynamicProperties {
 	public $hostName; //string
 	public $host; //ManagedObjectReference
 
@@ -12166,7 +12179,7 @@ class VirtualHardwareVersionNotSupported {
 	}
 }
 
-class VmAlreadyExistsInDatacenter {
+class VmAlreadyExistsInDatacenter extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $hostname; //string
 	public $vm; //ManagedObjectReference
@@ -12178,10 +12191,10 @@ class VmAlreadyExistsInDatacenter {
 	}
 }
 
-class VmConfigFault {
+class VmConfigFault extends phpDynamicProperties {
 }
 
-class VmConfigIncompatibleForFaultTolerance {
+class VmConfigIncompatibleForFaultTolerance extends phpDynamicProperties {
 	public $fault; //LocalizedMethodFault
 
 	function __construct($fault = null) {
@@ -12189,7 +12202,7 @@ class VmConfigIncompatibleForFaultTolerance {
 	}
 }
 
-class VmConfigIncompatibleForRecordReplay {
+class VmConfigIncompatibleForRecordReplay extends phpDynamicProperties {
 	public $fault; //LocalizedMethodFault
 
 	function __construct($fault = null) {
@@ -12197,7 +12210,7 @@ class VmConfigIncompatibleForRecordReplay {
 	}
 }
 
-class VmFaultToleranceConfigIssue {
+class VmFaultToleranceConfigIssue extends phpDynamicProperties {
 	public $reason; //string
 	public $entityName; //string
 	public $entity; //ManagedObjectReference
@@ -12209,7 +12222,7 @@ class VmFaultToleranceConfigIssue {
 	}
 }
 
-class VmFaultToleranceConfigIssueWrapper {
+class VmFaultToleranceConfigIssueWrapper extends phpDynamicProperties {
 	public $entityName; //string
 	public $entity; //ManagedObjectReference
 	public $error; //LocalizedMethodFault
@@ -12221,7 +12234,7 @@ class VmFaultToleranceConfigIssueWrapper {
 	}
 }
 
-class VmFaultToleranceInvalidFileBacking {
+class VmFaultToleranceInvalidFileBacking extends phpDynamicProperties {
 	public $backingType; //string
 	public $backingFilename; //string
 
@@ -12231,10 +12244,10 @@ class VmFaultToleranceInvalidFileBacking {
 	}
 }
 
-class VmFaultToleranceIssue {
+class VmFaultToleranceIssue extends phpDynamicProperties {
 }
 
-class VmFaultToleranceOpIssuesList {
+class VmFaultToleranceOpIssuesList extends phpDynamicProperties {
 	public $errors; //LocalizedMethodFault
 	public $warnings; //LocalizedMethodFault
 
@@ -12244,7 +12257,7 @@ class VmFaultToleranceOpIssuesList {
 	}
 }
 
-class VmFaultToleranceTooManyVMsOnHost {
+class VmFaultToleranceTooManyVMsOnHost extends phpDynamicProperties {
 	public $hostName; //string
 	public $maxNumFtVms; //int
 
@@ -12254,7 +12267,7 @@ class VmFaultToleranceTooManyVMsOnHost {
 	}
 }
 
-class VmHostAffinityRuleViolation {
+class VmHostAffinityRuleViolation extends phpDynamicProperties {
 	public $vmName; //string
 	public $hostName; //string
 
@@ -12264,7 +12277,7 @@ class VmHostAffinityRuleViolation {
 	}
 }
 
-class VmLimitLicense {
+class VmLimitLicense extends phpDynamicProperties {
 	public $limit; //int
 
 	function __construct($limit = null) {
@@ -12272,16 +12285,16 @@ class VmLimitLicense {
 	}
 }
 
-class VmMonitorIncompatibleForFaultTolerance {
+class VmMonitorIncompatibleForFaultTolerance extends phpDynamicProperties {
 }
 
-class VmPowerOnDisabled {
+class VmPowerOnDisabled extends phpDynamicProperties {
 }
 
-class VmToolsUpgradeFault {
+class VmToolsUpgradeFault extends phpDynamicProperties {
 }
 
-class VmValidateMaxDevice {
+class VmValidateMaxDevice extends phpDynamicProperties {
 	public $device; //string
 	public $max; //int
 	public $count; //int
@@ -12293,7 +12306,7 @@ class VmValidateMaxDevice {
 	}
 }
 
-class VmWwnConflict {
+class VmWwnConflict extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $name; //string
@@ -12307,13 +12320,13 @@ class VmWwnConflict {
 	}
 }
 
-class VmfsAlreadyMounted {
+class VmfsAlreadyMounted extends phpDynamicProperties {
 }
 
-class VmfsAmbiguousMount {
+class VmfsAmbiguousMount extends phpDynamicProperties {
 }
 
-class VmfsMountFault {
+class VmfsMountFault extends phpDynamicProperties {
 	public $uuid; //string
 
 	function __construct($uuid = null) {
@@ -12321,13 +12334,13 @@ class VmfsMountFault {
 	}
 }
 
-class VmotionInterfaceNotEnabled {
+class VmotionInterfaceNotEnabled extends phpDynamicProperties {
 }
 
-class VolumeEditorError {
+class VolumeEditorError extends phpDynamicProperties {
 }
 
-class VramLimitLicense {
+class VramLimitLicense extends phpDynamicProperties {
 	public $limit; //int
 
 	function __construct($limit = null) {
@@ -12335,7 +12348,7 @@ class VramLimitLicense {
 	}
 }
 
-class VspanDestPortConflict {
+class VspanDestPortConflict extends phpDynamicProperties {
 	public $vspanSessionKey1; //string
 	public $vspanSessionKey2; //string
 	public $portKey; //string
@@ -12347,7 +12360,7 @@ class VspanDestPortConflict {
 	}
 }
 
-class VspanPortConflict {
+class VspanPortConflict extends phpDynamicProperties {
 	public $vspanSessionKey1; //string
 	public $vspanSessionKey2; //string
 	public $portKey; //string
@@ -12359,7 +12372,7 @@ class VspanPortConflict {
 	}
 }
 
-class VspanPortMoveFault {
+class VspanPortMoveFault extends phpDynamicProperties {
 	public $srcPortgroupName; //string
 	public $destPortgroupName; //string
 	public $portKey; //string
@@ -12371,7 +12384,7 @@ class VspanPortMoveFault {
 	}
 }
 
-class VspanPortPromiscChangeFault {
+class VspanPortPromiscChangeFault extends phpDynamicProperties {
 	public $portKey; //string
 
 	function __construct($portKey = null) {
@@ -12379,7 +12392,7 @@ class VspanPortPromiscChangeFault {
 	}
 }
 
-class VspanPortgroupPromiscChangeFault {
+class VspanPortgroupPromiscChangeFault extends phpDynamicProperties {
 	public $portgroupName; //string
 
 	function __construct($portgroupName = null) {
@@ -12387,7 +12400,7 @@ class VspanPortgroupPromiscChangeFault {
 	}
 }
 
-class VspanPortgroupTypeChangeFault {
+class VspanPortgroupTypeChangeFault extends phpDynamicProperties {
 	public $portgroupName; //string
 
 	function __construct($portgroupName = null) {
@@ -12395,7 +12408,7 @@ class VspanPortgroupTypeChangeFault {
 	}
 }
 
-class VspanPromiscuousPortNotSupported {
+class VspanPromiscuousPortNotSupported extends phpDynamicProperties {
 	public $vspanSessionKey; //string
 	public $portKey; //string
 
@@ -12405,7 +12418,7 @@ class VspanPromiscuousPortNotSupported {
 	}
 }
 
-class VspanSameSessionPortConflict {
+class VspanSameSessionPortConflict extends phpDynamicProperties {
 	public $vspanSessionKey; //string
 	public $portKey; //string
 
@@ -12415,13 +12428,13 @@ class VspanSameSessionPortConflict {
 	}
 }
 
-class WakeOnLanNotSupported {
+class WakeOnLanNotSupported extends phpDynamicProperties {
 }
 
-class WakeOnLanNotSupportedByVmotionNIC {
+class WakeOnLanNotSupportedByVmotionNIC extends phpDynamicProperties {
 }
 
-class WillLoseHAProtection {
+class WillLoseHAProtection extends phpDynamicProperties {
 	public $resolution; //string
 
 	function __construct($resolution = null) {
@@ -12429,13 +12442,13 @@ class WillLoseHAProtection {
 	}
 }
 
-class WillModifyConfigCpuRequirements {
+class WillModifyConfigCpuRequirements extends phpDynamicProperties {
 }
 
-class WillResetSnapshotDirectory {
+class WillResetSnapshotDirectory extends phpDynamicProperties {
 }
 
-class HostActiveDirectoryInfo {
+class HostActiveDirectoryInfo extends phpDynamicProperties {
 	public $joinedDomain; //string
 	public $trustedDomain; //string
 	public $domainMembershipStatus; //string
@@ -12447,7 +12460,7 @@ class HostActiveDirectoryInfo {
 	}
 }
 
-class HostActiveDirectorySpec {
+class HostActiveDirectorySpec extends phpDynamicProperties {
 	public $domainName; //string
 	public $userName; //string
 	public $password; //string
@@ -12463,7 +12476,7 @@ class HostActiveDirectorySpec {
 	}
 }
 
-class HostActiveDirectory {
+class HostActiveDirectory extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $spec; //HostActiveDirectorySpec
 
@@ -12473,7 +12486,7 @@ class HostActiveDirectory {
 	}
 }
 
-class ArrayOfHostActiveDirectory {
+class ArrayOfHostActiveDirectory extends phpDynamicProperties {
 	public $HostActiveDirectory; //HostActiveDirectory
 
 	function __construct($HostActiveDirectory = null) {
@@ -12481,7 +12494,7 @@ class ArrayOfHostActiveDirectory {
 	}
 }
 
-class HostAuthenticationManagerInfo {
+class HostAuthenticationManagerInfo extends phpDynamicProperties {
 	public $authConfig; //HostAuthenticationStoreInfo
 
 	function __construct($authConfig = null) {
@@ -12489,7 +12502,7 @@ class HostAuthenticationManagerInfo {
 	}
 }
 
-class HostAuthenticationStoreInfo {
+class HostAuthenticationStoreInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 
 	function __construct($enabled = null) {
@@ -12497,7 +12510,7 @@ class HostAuthenticationStoreInfo {
 	}
 }
 
-class ArrayOfHostAuthenticationStoreInfo {
+class ArrayOfHostAuthenticationStoreInfo extends phpDynamicProperties {
 	public $HostAuthenticationStoreInfo; //HostAuthenticationStoreInfo
 
 	function __construct($HostAuthenticationStoreInfo = null) {
@@ -12505,7 +12518,7 @@ class ArrayOfHostAuthenticationStoreInfo {
 	}
 }
 
-class AutoStartDefaults {
+class AutoStartDefaults extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $startDelay; //int
 	public $stopDelay; //int
@@ -12521,7 +12534,7 @@ class AutoStartDefaults {
 	}
 }
 
-class AutoStartPowerInfo {
+class AutoStartPowerInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $startOrder; //int
 	public $startDelay; //int
@@ -12541,7 +12554,7 @@ class AutoStartPowerInfo {
 	}
 }
 
-class ArrayOfAutoStartPowerInfo {
+class ArrayOfAutoStartPowerInfo extends phpDynamicProperties {
 	public $AutoStartPowerInfo; //AutoStartPowerInfo
 
 	function __construct($AutoStartPowerInfo = null) {
@@ -12549,7 +12562,7 @@ class ArrayOfAutoStartPowerInfo {
 	}
 }
 
-class HostAutoStartManagerConfig {
+class HostAutoStartManagerConfig extends phpDynamicProperties {
 	public $defaults; //AutoStartDefaults
 	public $powerInfo; //AutoStartPowerInfo
 
@@ -12559,7 +12572,7 @@ class HostAutoStartManagerConfig {
 	}
 }
 
-class HostBootDeviceInfo {
+class HostBootDeviceInfo extends phpDynamicProperties {
 	public $bootDevices; //HostBootDevice
 	public $currentBootDeviceKey; //string
 
@@ -12569,7 +12582,7 @@ class HostBootDeviceInfo {
 	}
 }
 
-class HostBootDevice {
+class HostBootDevice extends phpDynamicProperties {
 	public $key; //string
 	public $description; //string
 
@@ -12579,7 +12592,7 @@ class HostBootDevice {
 	}
 }
 
-class ArrayOfHostBootDevice {
+class ArrayOfHostBootDevice extends phpDynamicProperties {
 	public $HostBootDevice; //HostBootDevice
 
 	function __construct($HostBootDevice = null) {
@@ -12587,7 +12600,7 @@ class ArrayOfHostBootDevice {
 	}
 }
 
-class HostCacheConfigurationSpec {
+class HostCacheConfigurationSpec extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $swapSize; //long
 
@@ -12597,7 +12610,7 @@ class HostCacheConfigurationSpec {
 	}
 }
 
-class HostCacheConfigurationInfo {
+class HostCacheConfigurationInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $swapSize; //long
 
@@ -12607,7 +12620,7 @@ class HostCacheConfigurationInfo {
 	}
 }
 
-class ArrayOfHostCacheConfigurationInfo {
+class ArrayOfHostCacheConfigurationInfo extends phpDynamicProperties {
 	public $HostCacheConfigurationInfo; //HostCacheConfigurationInfo
 
 	function __construct($HostCacheConfigurationInfo = null) {
@@ -12615,7 +12628,7 @@ class ArrayOfHostCacheConfigurationInfo {
 	}
 }
 
-class HostCapability {
+class HostCapability extends phpDynamicProperties {
 	public $recursiveResourcePoolsSupported; //boolean
 	public $cpuMemoryResourceConfigurationSupported; //boolean
 	public $rebootSupported; //boolean
@@ -12727,10 +12740,10 @@ class HostCapability {
 	}
 }
 
-class HostConfigChange {
+class HostConfigChange extends phpDynamicProperties {
 }
 
-class HostConfigInfo {
+class HostConfigInfo extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $product; //AboutInfo
 	public $hyperThread; //HostHyperThreadScheduleInfo
@@ -12812,7 +12825,7 @@ class HostConfigInfo {
 	}
 }
 
-class HostConfigManager {
+class HostConfigManager extends phpDynamicProperties {
 	public $cpuScheduler; //ManagedObjectReference
 	public $datastoreSystem; //ManagedObjectReference
 	public $memoryManager; //ManagedObjectReference
@@ -12872,7 +12885,7 @@ class HostConfigManager {
 	}
 }
 
-class HostConfigSpec {
+class HostConfigSpec extends phpDynamicProperties {
 	public $nasDatastore; //HostNasVolumeConfig
 	public $network; //HostNetworkConfig
 	public $nicTypeSelection; //HostVirtualNicManagerNicTypeSelection
@@ -12912,7 +12925,7 @@ class HostConfigSpec {
 	}
 }
 
-class HostConnectInfoNetworkInfo {
+class HostConnectInfoNetworkInfo extends phpDynamicProperties {
 	public $summary; //NetworkSummary
 
 	function __construct($summary = null) {
@@ -12920,7 +12933,7 @@ class HostConnectInfoNetworkInfo {
 	}
 }
 
-class ArrayOfHostConnectInfoNetworkInfo {
+class ArrayOfHostConnectInfoNetworkInfo extends phpDynamicProperties {
 	public $HostConnectInfoNetworkInfo; //HostConnectInfoNetworkInfo
 
 	function __construct($HostConnectInfoNetworkInfo = null) {
@@ -12928,10 +12941,10 @@ class ArrayOfHostConnectInfoNetworkInfo {
 	}
 }
 
-class HostNewNetworkConnectInfo {
+class HostNewNetworkConnectInfo extends phpDynamicProperties {
 }
 
-class HostDatastoreConnectInfo {
+class HostDatastoreConnectInfo extends phpDynamicProperties {
 	public $summary; //DatastoreSummary
 
 	function __construct($summary = null) {
@@ -12939,7 +12952,7 @@ class HostDatastoreConnectInfo {
 	}
 }
 
-class ArrayOfHostDatastoreConnectInfo {
+class ArrayOfHostDatastoreConnectInfo extends phpDynamicProperties {
 	public $HostDatastoreConnectInfo; //HostDatastoreConnectInfo
 
 	function __construct($HostDatastoreConnectInfo = null) {
@@ -12947,7 +12960,7 @@ class ArrayOfHostDatastoreConnectInfo {
 	}
 }
 
-class HostDatastoreExistsConnectInfo {
+class HostDatastoreExistsConnectInfo extends phpDynamicProperties {
 	public $newDatastoreName; //string
 
 	function __construct($newDatastoreName = null) {
@@ -12955,7 +12968,7 @@ class HostDatastoreExistsConnectInfo {
 	}
 }
 
-class HostDatastoreNameConflictConnectInfo {
+class HostDatastoreNameConflictConnectInfo extends phpDynamicProperties {
 	public $newDatastoreName; //string
 
 	function __construct($newDatastoreName = null) {
@@ -12963,7 +12976,7 @@ class HostDatastoreNameConflictConnectInfo {
 	}
 }
 
-class HostLicenseConnectInfo {
+class HostLicenseConnectInfo extends phpDynamicProperties {
 	public $license; //LicenseManagerLicenseInfo
 	public $evaluation; //LicenseManagerEvaluationInfo
 	public $resource; //HostLicensableResourceInfo
@@ -12975,7 +12988,7 @@ class HostLicenseConnectInfo {
 	}
 }
 
-class HostConnectInfo {
+class HostConnectInfo extends phpDynamicProperties {
 	public $serverIp; //string
 	public $inDasCluster; //boolean
 	public $host; //HostListSummary
@@ -12999,7 +13012,7 @@ class HostConnectInfo {
 	}
 }
 
-class HostConnectSpec {
+class HostConnectSpec extends phpDynamicProperties {
 	public $hostName; //string
 	public $port; //int
 	public $sslThumbprint; //string
@@ -13025,7 +13038,7 @@ class HostConnectSpec {
 	}
 }
 
-class HostCpuIdInfo {
+class HostCpuIdInfo extends phpDynamicProperties {
 	public $level; //int
 	public $vendor; //string
 	public $eax; //string
@@ -13043,7 +13056,7 @@ class HostCpuIdInfo {
 	}
 }
 
-class ArrayOfHostCpuIdInfo {
+class ArrayOfHostCpuIdInfo extends phpDynamicProperties {
 	public $HostCpuIdInfo; //HostCpuIdInfo
 
 	function __construct($HostCpuIdInfo = null) {
@@ -13051,7 +13064,7 @@ class ArrayOfHostCpuIdInfo {
 	}
 }
 
-class HostHyperThreadScheduleInfo {
+class HostHyperThreadScheduleInfo extends phpDynamicProperties {
 	public $available; //boolean
 	public $active; //boolean
 	public $config; //boolean
@@ -13063,7 +13076,7 @@ class HostHyperThreadScheduleInfo {
 	}
 }
 
-class FileQueryFlags {
+class FileQueryFlags extends phpDynamicProperties {
 	public $fileType; //boolean
 	public $fileSize; //boolean
 	public $modification; //boolean
@@ -13077,7 +13090,7 @@ class FileQueryFlags {
 	}
 }
 
-class FileInfo {
+class FileInfo extends phpDynamicProperties {
 	public $path; //string
 	public $fileSize; //long
 	public $modification; //dateTime
@@ -13091,7 +13104,7 @@ class FileInfo {
 	}
 }
 
-class ArrayOfFileInfo {
+class ArrayOfFileInfo extends phpDynamicProperties {
 	public $FileInfo; //FileInfo
 
 	function __construct($FileInfo = null) {
@@ -13099,10 +13112,10 @@ class ArrayOfFileInfo {
 	}
 }
 
-class FileQuery {
+class FileQuery extends phpDynamicProperties {
 }
 
-class ArrayOfFileQuery {
+class ArrayOfFileQuery extends phpDynamicProperties {
 	public $FileQuery; //FileQuery
 
 	function __construct($FileQuery = null) {
@@ -13110,7 +13123,7 @@ class ArrayOfFileQuery {
 	}
 }
 
-class VmConfigFileQueryFilter {
+class VmConfigFileQueryFilter extends phpDynamicProperties {
 	public $matchConfigVersion; //int
 
 	function __construct($matchConfigVersion = null) {
@@ -13118,7 +13131,7 @@ class VmConfigFileQueryFilter {
 	}
 }
 
-class VmConfigFileQueryFlags {
+class VmConfigFileQueryFlags extends phpDynamicProperties {
 	public $configVersion; //boolean
 
 	function __construct($configVersion = null) {
@@ -13126,7 +13139,7 @@ class VmConfigFileQueryFlags {
 	}
 }
 
-class VmConfigFileQuery {
+class VmConfigFileQuery extends phpDynamicProperties {
 	public $filter; //VmConfigFileQueryFilter
 	public $details; //VmConfigFileQueryFlags
 
@@ -13136,10 +13149,10 @@ class VmConfigFileQuery {
 	}
 }
 
-class TemplateConfigFileQuery {
+class TemplateConfigFileQuery extends phpDynamicProperties {
 }
 
-class VmDiskFileQueryFilter {
+class VmDiskFileQueryFilter extends phpDynamicProperties {
 	public $diskType; //string
 	public $matchHardwareVersion; //int
 	public $controllerType; //string
@@ -13153,7 +13166,7 @@ class VmDiskFileQueryFilter {
 	}
 }
 
-class VmDiskFileQueryFlags {
+class VmDiskFileQueryFlags extends phpDynamicProperties {
 	public $diskType; //boolean
 	public $capacityKb; //boolean
 	public $hardwareVersion; //boolean
@@ -13171,7 +13184,7 @@ class VmDiskFileQueryFlags {
 	}
 }
 
-class VmDiskFileQuery {
+class VmDiskFileQuery extends phpDynamicProperties {
 	public $filter; //VmDiskFileQueryFilter
 	public $details; //VmDiskFileQueryFlags
 
@@ -13181,25 +13194,25 @@ class VmDiskFileQuery {
 	}
 }
 
-class FolderFileQuery {
+class FolderFileQuery extends phpDynamicProperties {
 }
 
-class VmSnapshotFileQuery {
+class VmSnapshotFileQuery extends phpDynamicProperties {
 }
 
-class IsoImageFileQuery {
+class IsoImageFileQuery extends phpDynamicProperties {
 }
 
-class FloppyImageFileQuery {
+class FloppyImageFileQuery extends phpDynamicProperties {
 }
 
-class VmNvramFileQuery {
+class VmNvramFileQuery extends phpDynamicProperties {
 }
 
-class VmLogFileQuery {
+class VmLogFileQuery extends phpDynamicProperties {
 }
 
-class VmConfigFileInfo {
+class VmConfigFileInfo extends phpDynamicProperties {
 	public $configVersion; //int
 
 	function __construct($configVersion = null) {
@@ -13207,10 +13220,10 @@ class VmConfigFileInfo {
 	}
 }
 
-class TemplateConfigFileInfo {
+class TemplateConfigFileInfo extends phpDynamicProperties {
 }
 
-class VmDiskFileInfo {
+class VmDiskFileInfo extends phpDynamicProperties {
 	public $diskType; //string
 	public $capacityKb; //long
 	public $hardwareVersion; //int
@@ -13228,25 +13241,25 @@ class VmDiskFileInfo {
 	}
 }
 
-class FolderFileInfo {
+class FolderFileInfo extends phpDynamicProperties {
 }
 
-class VmSnapshotFileInfo {
+class VmSnapshotFileInfo extends phpDynamicProperties {
 }
 
-class IsoImageFileInfo {
+class IsoImageFileInfo extends phpDynamicProperties {
 }
 
-class FloppyImageFileInfo {
+class FloppyImageFileInfo extends phpDynamicProperties {
 }
 
-class VmNvramFileInfo {
+class VmNvramFileInfo extends phpDynamicProperties {
 }
 
-class VmLogFileInfo {
+class VmLogFileInfo extends phpDynamicProperties {
 }
 
-class HostDatastoreBrowserSearchSpec {
+class HostDatastoreBrowserSearchSpec extends phpDynamicProperties {
 	public $query; //FileQuery
 	public $details; //FileQueryFlags
 	public $searchCaseInsensitive; //boolean
@@ -13262,7 +13275,7 @@ class HostDatastoreBrowserSearchSpec {
 	}
 }
 
-class HostDatastoreBrowserSearchResults {
+class HostDatastoreBrowserSearchResults extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $folderPath; //string
 	public $file; //FileInfo
@@ -13274,7 +13287,7 @@ class HostDatastoreBrowserSearchResults {
 	}
 }
 
-class ArrayOfHostDatastoreBrowserSearchResults {
+class ArrayOfHostDatastoreBrowserSearchResults extends phpDynamicProperties {
 	public $HostDatastoreBrowserSearchResults; //HostDatastoreBrowserSearchResults
 
 	function __construct($HostDatastoreBrowserSearchResults = null) {
@@ -13282,7 +13295,7 @@ class ArrayOfHostDatastoreBrowserSearchResults {
 	}
 }
 
-class HostDatastoreSystemCapabilities {
+class HostDatastoreSystemCapabilities extends phpDynamicProperties {
 	public $nfsMountCreationRequired; //boolean
 	public $nfsMountCreationSupported; //boolean
 	public $localDatastoreSupported; //boolean
@@ -13296,7 +13309,7 @@ class HostDatastoreSystemCapabilities {
 	}
 }
 
-class VmfsDatastoreInfo {
+class VmfsDatastoreInfo extends phpDynamicProperties {
 	public $vmfs; //HostVmfsVolume
 
 	function __construct($vmfs = null) {
@@ -13304,7 +13317,7 @@ class VmfsDatastoreInfo {
 	}
 }
 
-class NasDatastoreInfo {
+class NasDatastoreInfo extends phpDynamicProperties {
 	public $nas; //HostNasVolume
 
 	function __construct($nas = null) {
@@ -13312,7 +13325,7 @@ class NasDatastoreInfo {
 	}
 }
 
-class LocalDatastoreInfo {
+class LocalDatastoreInfo extends phpDynamicProperties {
 	public $path; //string
 
 	function __construct($path = null) {
@@ -13320,7 +13333,7 @@ class LocalDatastoreInfo {
 	}
 }
 
-class VmfsDatastoreSpec {
+class VmfsDatastoreSpec extends phpDynamicProperties {
 	public $diskUuid; //string
 
 	function __construct($diskUuid = null) {
@@ -13328,7 +13341,7 @@ class VmfsDatastoreSpec {
 	}
 }
 
-class VmfsDatastoreCreateSpec {
+class VmfsDatastoreCreateSpec extends phpDynamicProperties {
 	public $partition; //HostDiskPartitionSpec
 	public $vmfs; //HostVmfsSpec
 	public $extent; //HostScsiDiskPartition
@@ -13340,7 +13353,7 @@ class VmfsDatastoreCreateSpec {
 	}
 }
 
-class VmfsDatastoreExtendSpec {
+class VmfsDatastoreExtendSpec extends phpDynamicProperties {
 	public $partition; //HostDiskPartitionSpec
 	public $extent; //HostScsiDiskPartition
 
@@ -13350,7 +13363,7 @@ class VmfsDatastoreExtendSpec {
 	}
 }
 
-class VmfsDatastoreExpandSpec {
+class VmfsDatastoreExpandSpec extends phpDynamicProperties {
 	public $partition; //HostDiskPartitionSpec
 	public $extent; //HostScsiDiskPartition
 
@@ -13360,7 +13373,7 @@ class VmfsDatastoreExpandSpec {
 	}
 }
 
-class VmfsDatastoreBaseOption {
+class VmfsDatastoreBaseOption extends phpDynamicProperties {
 	public $layout; //HostDiskPartitionLayout
 	public $partitionFormatChange; //boolean
 
@@ -13370,7 +13383,7 @@ class VmfsDatastoreBaseOption {
 	}
 }
 
-class VmfsDatastoreSingleExtentOption {
+class VmfsDatastoreSingleExtentOption extends phpDynamicProperties {
 	public $vmfsExtent; //HostDiskPartitionBlockRange
 
 	function __construct($vmfsExtent = null) {
@@ -13378,10 +13391,10 @@ class VmfsDatastoreSingleExtentOption {
 	}
 }
 
-class VmfsDatastoreAllExtentOption {
+class VmfsDatastoreAllExtentOption extends phpDynamicProperties {
 }
 
-class VmfsDatastoreMultipleExtentOption {
+class VmfsDatastoreMultipleExtentOption extends phpDynamicProperties {
 	public $vmfsExtent; //HostDiskPartitionBlockRange
 
 	function __construct($vmfsExtent = null) {
@@ -13389,7 +13402,7 @@ class VmfsDatastoreMultipleExtentOption {
 	}
 }
 
-class VmfsDatastoreOption {
+class VmfsDatastoreOption extends phpDynamicProperties {
 	public $info; //VmfsDatastoreBaseOption
 	public $spec; //VmfsDatastoreSpec
 
@@ -13399,7 +13412,7 @@ class VmfsDatastoreOption {
 	}
 }
 
-class ArrayOfVmfsDatastoreOption {
+class ArrayOfVmfsDatastoreOption extends phpDynamicProperties {
 	public $VmfsDatastoreOption; //VmfsDatastoreOption
 
 	function __construct($VmfsDatastoreOption = null) {
@@ -13407,7 +13420,7 @@ class ArrayOfVmfsDatastoreOption {
 	}
 }
 
-class HostDateTimeConfig {
+class HostDateTimeConfig extends phpDynamicProperties {
 	public $timeZone; //string
 	public $ntpConfig; //HostNtpConfig
 
@@ -13417,7 +13430,7 @@ class HostDateTimeConfig {
 	}
 }
 
-class HostDateTimeInfo {
+class HostDateTimeInfo extends phpDynamicProperties {
 	public $timeZone; //HostDateTimeSystemTimeZone
 	public $ntpConfig; //HostNtpConfig
 
@@ -13427,7 +13440,7 @@ class HostDateTimeInfo {
 	}
 }
 
-class HostDateTimeSystemTimeZone {
+class HostDateTimeSystemTimeZone extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $description; //string
@@ -13441,7 +13454,7 @@ class HostDateTimeSystemTimeZone {
 	}
 }
 
-class ArrayOfHostDateTimeSystemTimeZone {
+class ArrayOfHostDateTimeSystemTimeZone extends phpDynamicProperties {
 	public $HostDateTimeSystemTimeZone; //HostDateTimeSystemTimeZone
 
 	function __construct($HostDateTimeSystemTimeZone = null) {
@@ -13449,7 +13462,7 @@ class ArrayOfHostDateTimeSystemTimeZone {
 	}
 }
 
-class HostDevice {
+class HostDevice extends phpDynamicProperties {
 	public $deviceName; //string
 	public $deviceType; //string
 
@@ -13459,7 +13472,7 @@ class HostDevice {
 	}
 }
 
-class HostDhcpServiceSpec {
+class HostDhcpServiceSpec extends phpDynamicProperties {
 	public $virtualSwitch; //string
 	public $defaultLeaseDuration; //int
 	public $leaseBeginIp; //string
@@ -13481,7 +13494,7 @@ class HostDhcpServiceSpec {
 	}
 }
 
-class HostDhcpServiceConfig {
+class HostDhcpServiceConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $key; //string
 	public $spec; //HostDhcpServiceSpec
@@ -13493,7 +13506,7 @@ class HostDhcpServiceConfig {
 	}
 }
 
-class ArrayOfHostDhcpServiceConfig {
+class ArrayOfHostDhcpServiceConfig extends phpDynamicProperties {
 	public $HostDhcpServiceConfig; //HostDhcpServiceConfig
 
 	function __construct($HostDhcpServiceConfig = null) {
@@ -13501,7 +13514,7 @@ class ArrayOfHostDhcpServiceConfig {
 	}
 }
 
-class HostDhcpService {
+class HostDhcpService extends phpDynamicProperties {
 	public $key; //string
 	public $spec; //HostDhcpServiceSpec
 
@@ -13511,7 +13524,7 @@ class HostDhcpService {
 	}
 }
 
-class ArrayOfHostDhcpService {
+class ArrayOfHostDhcpService extends phpDynamicProperties {
 	public $HostDhcpService; //HostDhcpService
 
 	function __construct($HostDhcpService = null) {
@@ -13519,7 +13532,7 @@ class ArrayOfHostDhcpService {
 	}
 }
 
-class HostDiagnosticPartitionCreateOption {
+class HostDiagnosticPartitionCreateOption extends phpDynamicProperties {
 	public $storageType; //string
 	public $diagnosticType; //string
 	public $disk; //HostScsiDisk
@@ -13531,7 +13544,7 @@ class HostDiagnosticPartitionCreateOption {
 	}
 }
 
-class ArrayOfHostDiagnosticPartitionCreateOption {
+class ArrayOfHostDiagnosticPartitionCreateOption extends phpDynamicProperties {
 	public $HostDiagnosticPartitionCreateOption; //HostDiagnosticPartitionCreateOption
 
 	function __construct($HostDiagnosticPartitionCreateOption = null) {
@@ -13539,7 +13552,7 @@ class ArrayOfHostDiagnosticPartitionCreateOption {
 	}
 }
 
-class HostDiagnosticPartitionCreateSpec {
+class HostDiagnosticPartitionCreateSpec extends phpDynamicProperties {
 	public $storageType; //string
 	public $diagnosticType; //string
 	public $id; //HostScsiDiskPartition
@@ -13555,7 +13568,7 @@ class HostDiagnosticPartitionCreateSpec {
 	}
 }
 
-class HostDiagnosticPartitionCreateDescription {
+class HostDiagnosticPartitionCreateDescription extends phpDynamicProperties {
 	public $layout; //HostDiskPartitionLayout
 	public $diskUuid; //string
 	public $spec; //HostDiagnosticPartitionCreateSpec
@@ -13567,7 +13580,7 @@ class HostDiagnosticPartitionCreateDescription {
 	}
 }
 
-class HostDiagnosticPartition {
+class HostDiagnosticPartition extends phpDynamicProperties {
 	public $storageType; //string
 	public $diagnosticType; //string
 	public $slots; //int
@@ -13581,7 +13594,7 @@ class HostDiagnosticPartition {
 	}
 }
 
-class ArrayOfHostDiagnosticPartition {
+class ArrayOfHostDiagnosticPartition extends phpDynamicProperties {
 	public $HostDiagnosticPartition; //HostDiagnosticPartition
 
 	function __construct($HostDiagnosticPartition = null) {
@@ -13589,10 +13602,10 @@ class ArrayOfHostDiagnosticPartition {
 	}
 }
 
-class HostDirectoryStoreInfo {
+class HostDirectoryStoreInfo extends phpDynamicProperties {
 }
 
-class HostDiskDimensionsChs {
+class HostDiskDimensionsChs extends phpDynamicProperties {
 	public $cylinder; //long
 	public $head; //int
 	public $sector; //int
@@ -13604,7 +13617,7 @@ class HostDiskDimensionsChs {
 	}
 }
 
-class HostDiskDimensionsLba {
+class HostDiskDimensionsLba extends phpDynamicProperties {
 	public $blockSize; //int
 	public $block; //long
 
@@ -13614,10 +13627,10 @@ class HostDiskDimensionsLba {
 	}
 }
 
-class HostDiskDimensions {
+class HostDiskDimensions extends phpDynamicProperties {
 }
 
-class HostDiskPartitionAttributes {
+class HostDiskPartitionAttributes extends phpDynamicProperties {
 	public $partition; //int
 	public $startSector; //long
 	public $endSector; //long
@@ -13639,7 +13652,7 @@ class HostDiskPartitionAttributes {
 	}
 }
 
-class ArrayOfHostDiskPartitionAttributes {
+class ArrayOfHostDiskPartitionAttributes extends phpDynamicProperties {
 	public $HostDiskPartitionAttributes; //HostDiskPartitionAttributes
 
 	function __construct($HostDiskPartitionAttributes = null) {
@@ -13647,7 +13660,7 @@ class ArrayOfHostDiskPartitionAttributes {
 	}
 }
 
-class HostDiskPartitionBlockRange {
+class HostDiskPartitionBlockRange extends phpDynamicProperties {
 	public $partition; //int
 	public $type; //string
 	public $start; //HostDiskDimensionsLba
@@ -13661,7 +13674,7 @@ class HostDiskPartitionBlockRange {
 	}
 }
 
-class ArrayOfHostDiskPartitionBlockRange {
+class ArrayOfHostDiskPartitionBlockRange extends phpDynamicProperties {
 	public $HostDiskPartitionBlockRange; //HostDiskPartitionBlockRange
 
 	function __construct($HostDiskPartitionBlockRange = null) {
@@ -13669,7 +13682,7 @@ class ArrayOfHostDiskPartitionBlockRange {
 	}
 }
 
-class HostDiskPartitionSpec {
+class HostDiskPartitionSpec extends phpDynamicProperties {
 	public $partitionFormat; //string
 	public $chs; //HostDiskDimensionsChs
 	public $totalSectors; //long
@@ -13683,7 +13696,7 @@ class HostDiskPartitionSpec {
 	}
 }
 
-class HostDiskPartitionLayout {
+class HostDiskPartitionLayout extends phpDynamicProperties {
 	public $total; //HostDiskDimensionsLba
 	public $partition; //HostDiskPartitionBlockRange
 
@@ -13693,7 +13706,7 @@ class HostDiskPartitionLayout {
 	}
 }
 
-class HostDiskPartitionInfo {
+class HostDiskPartitionInfo extends phpDynamicProperties {
 	public $deviceName; //string
 	public $spec; //HostDiskPartitionSpec
 	public $layout; //HostDiskPartitionLayout
@@ -13705,7 +13718,7 @@ class HostDiskPartitionInfo {
 	}
 }
 
-class ArrayOfHostDiskPartitionInfo {
+class ArrayOfHostDiskPartitionInfo extends phpDynamicProperties {
 	public $HostDiskPartitionInfo; //HostDiskPartitionInfo
 
 	function __construct($HostDiskPartitionInfo = null) {
@@ -13713,7 +13726,7 @@ class ArrayOfHostDiskPartitionInfo {
 	}
 }
 
-class HostDnsConfig {
+class HostDnsConfig extends phpDynamicProperties {
 	public $dhcp; //boolean
 	public $virtualNicDevice; //string
 	public $hostName; //string
@@ -13731,7 +13744,7 @@ class HostDnsConfig {
 	}
 }
 
-class HostDnsConfigSpec {
+class HostDnsConfigSpec extends phpDynamicProperties {
 	public $virtualNicConnection; //HostVirtualNicConnection
 
 	function __construct($virtualNicConnection = null) {
@@ -13739,7 +13752,7 @@ class HostDnsConfigSpec {
 	}
 }
 
-class HostEsxAgentHostManagerConfigInfo {
+class HostEsxAgentHostManagerConfigInfo extends phpDynamicProperties {
 	public $agentVmDatastore; //ManagedObjectReference
 	public $agentVmNetwork; //ManagedObjectReference
 
@@ -13749,7 +13762,7 @@ class HostEsxAgentHostManagerConfigInfo {
 	}
 }
 
-class FcoeConfigVlanRange {
+class FcoeConfigVlanRange extends phpDynamicProperties {
 	public $vlanLow; //int
 	public $vlanHigh; //int
 
@@ -13759,7 +13772,7 @@ class FcoeConfigVlanRange {
 	}
 }
 
-class ArrayOfFcoeConfigVlanRange {
+class ArrayOfFcoeConfigVlanRange extends phpDynamicProperties {
 	public $FcoeConfigVlanRange; //FcoeConfigVlanRange
 
 	function __construct($FcoeConfigVlanRange = null) {
@@ -13767,7 +13780,7 @@ class ArrayOfFcoeConfigVlanRange {
 	}
 }
 
-class FcoeConfigFcoeCapabilities {
+class FcoeConfigFcoeCapabilities extends phpDynamicProperties {
 	public $priorityClass; //boolean
 	public $sourceMacAddress; //boolean
 	public $vlanRange; //boolean
@@ -13779,7 +13792,7 @@ class FcoeConfigFcoeCapabilities {
 	}
 }
 
-class FcoeConfigFcoeSpecification {
+class FcoeConfigFcoeSpecification extends phpDynamicProperties {
 	public $underlyingPnic; //string
 	public $priorityClass; //int
 	public $sourceMac; //string
@@ -13793,7 +13806,7 @@ class FcoeConfigFcoeSpecification {
 	}
 }
 
-class FcoeConfig {
+class FcoeConfig extends phpDynamicProperties {
 	public $priorityClass; //int
 	public $sourceMac; //string
 	public $vlanRange; //FcoeConfigVlanRange
@@ -13809,7 +13822,7 @@ class FcoeConfig {
 	}
 }
 
-class HostFeatureVersionInfo {
+class HostFeatureVersionInfo extends phpDynamicProperties {
 	public $key; //string
 	public $value; //string
 
@@ -13819,7 +13832,7 @@ class HostFeatureVersionInfo {
 	}
 }
 
-class ArrayOfHostFeatureVersionInfo {
+class ArrayOfHostFeatureVersionInfo extends phpDynamicProperties {
 	public $HostFeatureVersionInfo; //HostFeatureVersionInfo
 
 	function __construct($HostFeatureVersionInfo = null) {
@@ -13827,7 +13840,7 @@ class ArrayOfHostFeatureVersionInfo {
 	}
 }
 
-class ModeInfo {
+class ModeInfo extends phpDynamicProperties {
 	public $browse; //string
 	public $read; //string
 	public $modify; //string
@@ -13845,7 +13858,7 @@ class ModeInfo {
 	}
 }
 
-class HostFileAccess {
+class HostFileAccess extends phpDynamicProperties {
 	public $who; //string
 	public $what; //string
 
@@ -13855,7 +13868,7 @@ class HostFileAccess {
 	}
 }
 
-class HostFileSystemVolumeInfo {
+class HostFileSystemVolumeInfo extends phpDynamicProperties {
 	public $volumeTypeList; //string
 	public $mountInfo; //HostFileSystemMountInfo
 
@@ -13865,7 +13878,7 @@ class HostFileSystemVolumeInfo {
 	}
 }
 
-class HostFileSystemMountInfo {
+class HostFileSystemMountInfo extends phpDynamicProperties {
 	public $mountInfo; //HostMountInfo
 	public $volume; //HostFileSystemVolume
 	public $vStorageSupport; //string
@@ -13877,7 +13890,7 @@ class HostFileSystemMountInfo {
 	}
 }
 
-class ArrayOfHostFileSystemMountInfo {
+class ArrayOfHostFileSystemMountInfo extends phpDynamicProperties {
 	public $HostFileSystemMountInfo; //HostFileSystemMountInfo
 
 	function __construct($HostFileSystemMountInfo = null) {
@@ -13885,7 +13898,7 @@ class ArrayOfHostFileSystemMountInfo {
 	}
 }
 
-class HostFileSystemVolume {
+class HostFileSystemVolume extends phpDynamicProperties {
 	public $type; //string
 	public $name; //string
 	public $capacity; //long
@@ -13897,7 +13910,7 @@ class HostFileSystemVolume {
 	}
 }
 
-class HostNasVolumeSpec {
+class HostNasVolumeSpec extends phpDynamicProperties {
 	public $remoteHost; //string
 	public $remotePath; //string
 	public $localPath; //string
@@ -13917,7 +13930,7 @@ class HostNasVolumeSpec {
 	}
 }
 
-class HostNasVolumeConfig {
+class HostNasVolumeConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $spec; //HostNasVolumeSpec
 
@@ -13927,7 +13940,7 @@ class HostNasVolumeConfig {
 	}
 }
 
-class ArrayOfHostNasVolumeConfig {
+class ArrayOfHostNasVolumeConfig extends phpDynamicProperties {
 	public $HostNasVolumeConfig; //HostNasVolumeConfig
 
 	function __construct($HostNasVolumeConfig = null) {
@@ -13935,7 +13948,7 @@ class ArrayOfHostNasVolumeConfig {
 	}
 }
 
-class HostNasVolume {
+class HostNasVolume extends phpDynamicProperties {
 	public $remoteHost; //string
 	public $remotePath; //string
 	public $userName; //string
@@ -13947,7 +13960,7 @@ class HostNasVolume {
 	}
 }
 
-class HostLocalFileSystemVolumeSpec {
+class HostLocalFileSystemVolumeSpec extends phpDynamicProperties {
 	public $device; //string
 	public $localPath; //string
 
@@ -13957,7 +13970,7 @@ class HostLocalFileSystemVolumeSpec {
 	}
 }
 
-class HostLocalFileSystemVolume {
+class HostLocalFileSystemVolume extends phpDynamicProperties {
 	public $device; //string
 
 	function __construct($device = null) {
@@ -13965,10 +13978,10 @@ class HostLocalFileSystemVolume {
 	}
 }
 
-class HostVfatVolume {
+class HostVfatVolume extends phpDynamicProperties {
 }
 
-class HostFirewallConfigRuleSetConfig {
+class HostFirewallConfigRuleSetConfig extends phpDynamicProperties {
 	public $rulesetId; //string
 	public $enabled; //boolean
 	public $allowedHosts; //HostFirewallRulesetIpList
@@ -13980,7 +13993,7 @@ class HostFirewallConfigRuleSetConfig {
 	}
 }
 
-class ArrayOfHostFirewallConfigRuleSetConfig {
+class ArrayOfHostFirewallConfigRuleSetConfig extends phpDynamicProperties {
 	public $HostFirewallConfigRuleSetConfig; //HostFirewallConfigRuleSetConfig
 
 	function __construct($HostFirewallConfigRuleSetConfig = null) {
@@ -13988,7 +14001,7 @@ class ArrayOfHostFirewallConfigRuleSetConfig {
 	}
 }
 
-class HostFirewallConfig {
+class HostFirewallConfig extends phpDynamicProperties {
 	public $rule; //HostFirewallConfigRuleSetConfig
 	public $defaultBlockingPolicy; //HostFirewallDefaultPolicy
 
@@ -13998,7 +14011,7 @@ class HostFirewallConfig {
 	}
 }
 
-class HostFirewallDefaultPolicy {
+class HostFirewallDefaultPolicy extends phpDynamicProperties {
 	public $incomingBlocked; //boolean
 	public $outgoingBlocked; //boolean
 
@@ -14008,7 +14021,7 @@ class HostFirewallDefaultPolicy {
 	}
 }
 
-class HostFirewallInfo {
+class HostFirewallInfo extends phpDynamicProperties {
 	public $defaultPolicy; //HostFirewallDefaultPolicy
 	public $ruleset; //HostFirewallRuleset
 
@@ -14018,7 +14031,7 @@ class HostFirewallInfo {
 	}
 }
 
-class HostFlagInfo {
+class HostFlagInfo extends phpDynamicProperties {
 	public $backgroundSnapshotsEnabled; //boolean
 
 	function __construct($backgroundSnapshotsEnabled = null) {
@@ -14026,7 +14039,7 @@ class HostFlagInfo {
 	}
 }
 
-class HostForceMountedInfo {
+class HostForceMountedInfo extends phpDynamicProperties {
 	public $persist; //boolean
 	public $mounted; //boolean
 
@@ -14036,7 +14049,7 @@ class HostForceMountedInfo {
 	}
 }
 
-class HostHardwareInfo {
+class HostHardwareInfo extends phpDynamicProperties {
 	public $systemInfo; //HostSystemInfo
 	public $cpuPowerManagementInfo; //HostCpuPowerManagementInfo
 	public $cpuInfo; //HostCpuInfo
@@ -14062,7 +14075,7 @@ class HostHardwareInfo {
 	}
 }
 
-class HostSystemInfo {
+class HostSystemInfo extends phpDynamicProperties {
 	public $vendor; //string
 	public $model; //string
 	public $uuid; //string
@@ -14076,7 +14089,7 @@ class HostSystemInfo {
 	}
 }
 
-class HostCpuPowerManagementInfo {
+class HostCpuPowerManagementInfo extends phpDynamicProperties {
 	public $currentPolicy; //string
 	public $hardwareSupport; //string
 
@@ -14086,7 +14099,7 @@ class HostCpuPowerManagementInfo {
 	}
 }
 
-class HostCpuInfo {
+class HostCpuInfo extends phpDynamicProperties {
 	public $numCpuPackages; //short
 	public $numCpuCores; //short
 	public $numCpuThreads; //short
@@ -14100,7 +14113,7 @@ class HostCpuInfo {
 	}
 }
 
-class HostCpuPackage {
+class HostCpuPackage extends phpDynamicProperties {
 	public $index; //short
 	public $vendor; //string
 	public $hz; //long
@@ -14120,7 +14133,7 @@ class HostCpuPackage {
 	}
 }
 
-class ArrayOfHostCpuPackage {
+class ArrayOfHostCpuPackage extends phpDynamicProperties {
 	public $HostCpuPackage; //HostCpuPackage
 
 	function __construct($HostCpuPackage = null) {
@@ -14128,7 +14141,7 @@ class ArrayOfHostCpuPackage {
 	}
 }
 
-class HostNumaInfo {
+class HostNumaInfo extends phpDynamicProperties {
 	public $type; //string
 	public $numNodes; //int
 	public $numaNode; //HostNumaNode
@@ -14140,7 +14153,7 @@ class HostNumaInfo {
 	}
 }
 
-class HostNumaNode {
+class HostNumaNode extends phpDynamicProperties {
 	public $typeId; //byte
 	public $cpuID; //short
 	public $memoryRangeBegin; //long
@@ -14154,7 +14167,7 @@ class HostNumaNode {
 	}
 }
 
-class ArrayOfHostNumaNode {
+class ArrayOfHostNumaNode extends phpDynamicProperties {
 	public $HostNumaNode; //HostNumaNode
 
 	function __construct($HostNumaNode = null) {
@@ -14162,7 +14175,7 @@ class ArrayOfHostNumaNode {
 	}
 }
 
-class HostBIOSInfo {
+class HostBIOSInfo extends phpDynamicProperties {
 	public $biosVersion; //string
 	public $releaseDate; //dateTime
 
@@ -14172,7 +14185,7 @@ class HostBIOSInfo {
 	}
 }
 
-class HostHardwareElementInfo {
+class HostHardwareElementInfo extends phpDynamicProperties {
 	public $name; //string
 	public $status; //ElementDescription
 
@@ -14182,7 +14195,7 @@ class HostHardwareElementInfo {
 	}
 }
 
-class ArrayOfHostHardwareElementInfo {
+class ArrayOfHostHardwareElementInfo extends phpDynamicProperties {
 	public $HostHardwareElementInfo; //HostHardwareElementInfo
 
 	function __construct($HostHardwareElementInfo = null) {
@@ -14190,7 +14203,7 @@ class ArrayOfHostHardwareElementInfo {
 	}
 }
 
-class HostStorageOperationalInfo {
+class HostStorageOperationalInfo extends phpDynamicProperties {
 	public $property; //string
 	public $value; //string
 
@@ -14200,7 +14213,7 @@ class HostStorageOperationalInfo {
 	}
 }
 
-class ArrayOfHostStorageOperationalInfo {
+class ArrayOfHostStorageOperationalInfo extends phpDynamicProperties {
 	public $HostStorageOperationalInfo; //HostStorageOperationalInfo
 
 	function __construct($HostStorageOperationalInfo = null) {
@@ -14208,7 +14221,7 @@ class ArrayOfHostStorageOperationalInfo {
 	}
 }
 
-class HostStorageElementInfo {
+class HostStorageElementInfo extends phpDynamicProperties {
 	public $operationalInfo; //HostStorageOperationalInfo
 
 	function __construct($operationalInfo = null) {
@@ -14216,7 +14229,7 @@ class HostStorageElementInfo {
 	}
 }
 
-class ArrayOfHostStorageElementInfo {
+class ArrayOfHostStorageElementInfo extends phpDynamicProperties {
 	public $HostStorageElementInfo; //HostStorageElementInfo
 
 	function __construct($HostStorageElementInfo = null) {
@@ -14224,7 +14237,7 @@ class ArrayOfHostStorageElementInfo {
 	}
 }
 
-class HostHardwareStatusInfo {
+class HostHardwareStatusInfo extends phpDynamicProperties {
 	public $memoryStatusInfo; //HostHardwareElementInfo
 	public $cpuStatusInfo; //HostHardwareElementInfo
 	public $storageStatusInfo; //HostStorageElementInfo
@@ -14236,7 +14249,7 @@ class HostHardwareStatusInfo {
 	}
 }
 
-class HealthSystemRuntime {
+class HealthSystemRuntime extends phpDynamicProperties {
 	public $systemHealthInfo; //HostSystemHealthInfo
 	public $hardwareStatusInfo; //HostHardwareStatusInfo
 
@@ -14246,7 +14259,7 @@ class HealthSystemRuntime {
 	}
 }
 
-class HostHostBusAdapter {
+class HostHostBusAdapter extends phpDynamicProperties {
 	public $key; //string
 	public $device; //string
 	public $bus; //int
@@ -14266,7 +14279,7 @@ class HostHostBusAdapter {
 	}
 }
 
-class ArrayOfHostHostBusAdapter {
+class ArrayOfHostHostBusAdapter extends phpDynamicProperties {
 	public $HostHostBusAdapter; //HostHostBusAdapter
 
 	function __construct($HostHostBusAdapter = null) {
@@ -14274,13 +14287,13 @@ class ArrayOfHostHostBusAdapter {
 	}
 }
 
-class HostParallelScsiHba {
+class HostParallelScsiHba extends phpDynamicProperties {
 }
 
-class HostBlockHba {
+class HostBlockHba extends phpDynamicProperties {
 }
 
-class HostFibreChannelHba {
+class HostFibreChannelHba extends phpDynamicProperties {
 	public $portWorldWideName; //long
 	public $nodeWorldWideName; //long
 	public $portType; //FibreChannelPortType
@@ -14294,7 +14307,7 @@ class HostFibreChannelHba {
 	}
 }
 
-class HostInternetScsiHbaParamValue {
+class HostInternetScsiHbaParamValue extends phpDynamicProperties {
 	public $isInherited; //boolean
 
 	function __construct($isInherited = null) {
@@ -14302,7 +14315,7 @@ class HostInternetScsiHbaParamValue {
 	}
 }
 
-class ArrayOfHostInternetScsiHbaParamValue {
+class ArrayOfHostInternetScsiHbaParamValue extends phpDynamicProperties {
 	public $HostInternetScsiHbaParamValue; //HostInternetScsiHbaParamValue
 
 	function __construct($HostInternetScsiHbaParamValue = null) {
@@ -14310,7 +14323,7 @@ class ArrayOfHostInternetScsiHbaParamValue {
 	}
 }
 
-class HostInternetScsiHbaDiscoveryCapabilities {
+class HostInternetScsiHbaDiscoveryCapabilities extends phpDynamicProperties {
 	public $iSnsDiscoverySettable; //boolean
 	public $slpDiscoverySettable; //boolean
 	public $staticTargetDiscoverySettable; //boolean
@@ -14324,7 +14337,7 @@ class HostInternetScsiHbaDiscoveryCapabilities {
 	}
 }
 
-class HostInternetScsiHbaDiscoveryProperties {
+class HostInternetScsiHbaDiscoveryProperties extends phpDynamicProperties {
 	public $iSnsDiscoveryEnabled; //boolean
 	public $iSnsDiscoveryMethod; //string
 	public $iSnsHost; //string
@@ -14346,7 +14359,7 @@ class HostInternetScsiHbaDiscoveryProperties {
 	}
 }
 
-class HostInternetScsiHbaAuthenticationCapabilities {
+class HostInternetScsiHbaAuthenticationCapabilities extends phpDynamicProperties {
 	public $chapAuthSettable; //boolean
 	public $krb5AuthSettable; //boolean
 	public $srpAuthSettable; //boolean
@@ -14366,7 +14379,7 @@ class HostInternetScsiHbaAuthenticationCapabilities {
 	}
 }
 
-class HostInternetScsiHbaAuthenticationProperties {
+class HostInternetScsiHbaAuthenticationProperties extends phpDynamicProperties {
 	public $chapAuthEnabled; //boolean
 	public $chapName; //string
 	public $chapSecret; //string
@@ -14390,7 +14403,7 @@ class HostInternetScsiHbaAuthenticationProperties {
 	}
 }
 
-class HostInternetScsiHbaDigestCapabilities {
+class HostInternetScsiHbaDigestCapabilities extends phpDynamicProperties {
 	public $headerDigestSettable; //boolean
 	public $dataDigestSettable; //boolean
 	public $targetHeaderDigestSettable; //boolean
@@ -14404,7 +14417,7 @@ class HostInternetScsiHbaDigestCapabilities {
 	}
 }
 
-class HostInternetScsiHbaDigestProperties {
+class HostInternetScsiHbaDigestProperties extends phpDynamicProperties {
 	public $headerDigestType; //string
 	public $headerDigestInherited; //boolean
 	public $dataDigestType; //string
@@ -14418,7 +14431,7 @@ class HostInternetScsiHbaDigestProperties {
 	}
 }
 
-class HostInternetScsiHbaIPCapabilities {
+class HostInternetScsiHbaIPCapabilities extends phpDynamicProperties {
 	public $addressSettable; //boolean
 	public $ipConfigurationMethodSettable; //boolean
 	public $subnetMaskSettable; //boolean
@@ -14446,7 +14459,7 @@ class HostInternetScsiHbaIPCapabilities {
 	}
 }
 
-class HostInternetScsiHbaIPProperties {
+class HostInternetScsiHbaIPProperties extends phpDynamicProperties {
 	public $mac; //string
 	public $address; //string
 	public $dhcpConfigurationEnabled; //boolean
@@ -14478,7 +14491,7 @@ class HostInternetScsiHbaIPProperties {
 	}
 }
 
-class HostInternetScsiHbaSendTarget {
+class HostInternetScsiHbaSendTarget extends phpDynamicProperties {
 	public $address; //string
 	public $port; //int
 	public $authenticationProperties; //HostInternetScsiHbaAuthenticationProperties
@@ -14498,7 +14511,7 @@ class HostInternetScsiHbaSendTarget {
 	}
 }
 
-class ArrayOfHostInternetScsiHbaSendTarget {
+class ArrayOfHostInternetScsiHbaSendTarget extends phpDynamicProperties {
 	public $HostInternetScsiHbaSendTarget; //HostInternetScsiHbaSendTarget
 
 	function __construct($HostInternetScsiHbaSendTarget = null) {
@@ -14506,7 +14519,7 @@ class ArrayOfHostInternetScsiHbaSendTarget {
 	}
 }
 
-class HostInternetScsiHbaStaticTarget {
+class HostInternetScsiHbaStaticTarget extends phpDynamicProperties {
 	public $address; //string
 	public $port; //int
 	public $iScsiName; //string
@@ -14528,7 +14541,7 @@ class HostInternetScsiHbaStaticTarget {
 	}
 }
 
-class ArrayOfHostInternetScsiHbaStaticTarget {
+class ArrayOfHostInternetScsiHbaStaticTarget extends phpDynamicProperties {
 	public $HostInternetScsiHbaStaticTarget; //HostInternetScsiHbaStaticTarget
 
 	function __construct($HostInternetScsiHbaStaticTarget = null) {
@@ -14536,7 +14549,7 @@ class ArrayOfHostInternetScsiHbaStaticTarget {
 	}
 }
 
-class HostInternetScsiHbaTargetSet {
+class HostInternetScsiHbaTargetSet extends phpDynamicProperties {
 	public $staticTargets; //HostInternetScsiHbaStaticTarget
 	public $sendTargets; //HostInternetScsiHbaSendTarget
 
@@ -14546,7 +14559,7 @@ class HostInternetScsiHbaTargetSet {
 	}
 }
 
-class HostInternetScsiHba {
+class HostInternetScsiHba extends phpDynamicProperties {
 	public $isSoftwareBased; //boolean
 	public $canBeDisabled; //boolean
 	public $networkBindingSupport; //HostInternetScsiHbaNetworkBindingSupportType
@@ -14590,7 +14603,7 @@ class HostInternetScsiHba {
 	}
 }
 
-class HostFibreChannelOverEthernetHbaLinkInfo {
+class HostFibreChannelOverEthernetHbaLinkInfo extends phpDynamicProperties {
 	public $vnportMac; //string
 	public $fcfMac; //string
 	public $vlanId; //int
@@ -14602,7 +14615,7 @@ class HostFibreChannelOverEthernetHbaLinkInfo {
 	}
 }
 
-class HostFibreChannelOverEthernetHba {
+class HostFibreChannelOverEthernetHba extends phpDynamicProperties {
 	public $underlyingNic; //string
 	public $linkInfo; //HostFibreChannelOverEthernetHbaLinkInfo
 	public $isSoftwareFcoe; //boolean
@@ -14616,7 +14629,7 @@ class HostFibreChannelOverEthernetHba {
 	}
 }
 
-class HostProxySwitchSpec {
+class HostProxySwitchSpec extends phpDynamicProperties {
 	public $backing; //DistributedVirtualSwitchHostMemberBacking
 
 	function __construct($backing = null) {
@@ -14624,7 +14637,7 @@ class HostProxySwitchSpec {
 	}
 }
 
-class HostProxySwitchConfig {
+class HostProxySwitchConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $uuid; //string
 	public $spec; //HostProxySwitchSpec
@@ -14636,7 +14649,7 @@ class HostProxySwitchConfig {
 	}
 }
 
-class ArrayOfHostProxySwitchConfig {
+class ArrayOfHostProxySwitchConfig extends phpDynamicProperties {
 	public $HostProxySwitchConfig; //HostProxySwitchConfig
 
 	function __construct($HostProxySwitchConfig = null) {
@@ -14644,7 +14657,7 @@ class ArrayOfHostProxySwitchConfig {
 	}
 }
 
-class HostProxySwitch {
+class HostProxySwitch extends phpDynamicProperties {
 	public $dvsUuid; //string
 	public $dvsName; //string
 	public $key; //string
@@ -14670,7 +14683,7 @@ class HostProxySwitch {
 	}
 }
 
-class ArrayOfHostProxySwitch {
+class ArrayOfHostProxySwitch extends phpDynamicProperties {
 	public $HostProxySwitch; //HostProxySwitch
 
 	function __construct($HostProxySwitch = null) {
@@ -14678,7 +14691,7 @@ class ArrayOfHostProxySwitch {
 	}
 }
 
-class HostImageProfileSummary {
+class HostImageProfileSummary extends phpDynamicProperties {
 	public $name; //string
 	public $vendor; //string
 
@@ -14688,7 +14701,7 @@ class HostImageProfileSummary {
 	}
 }
 
-class HostIpConfigIpV6Address {
+class HostIpConfigIpV6Address extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $prefixLength; //int
 	public $origin; //string
@@ -14706,7 +14719,7 @@ class HostIpConfigIpV6Address {
 	}
 }
 
-class ArrayOfHostIpConfigIpV6Address {
+class ArrayOfHostIpConfigIpV6Address extends phpDynamicProperties {
 	public $HostIpConfigIpV6Address; //HostIpConfigIpV6Address
 
 	function __construct($HostIpConfigIpV6Address = null) {
@@ -14714,7 +14727,7 @@ class ArrayOfHostIpConfigIpV6Address {
 	}
 }
 
-class HostIpConfigIpV6AddressConfiguration {
+class HostIpConfigIpV6AddressConfiguration extends phpDynamicProperties {
 	public $ipV6Address; //HostIpConfigIpV6Address
 	public $autoConfigurationEnabled; //boolean
 	public $dhcpV6Enabled; //boolean
@@ -14726,7 +14739,7 @@ class HostIpConfigIpV6AddressConfiguration {
 	}
 }
 
-class HostIpConfig {
+class HostIpConfig extends phpDynamicProperties {
 	public $dhcp; //boolean
 	public $ipAddress; //string
 	public $subnetMask; //string
@@ -14740,7 +14753,7 @@ class HostIpConfig {
 	}
 }
 
-class HostIpRouteConfig {
+class HostIpRouteConfig extends phpDynamicProperties {
 	public $defaultGateway; //string
 	public $gatewayDevice; //string
 	public $ipV6DefaultGateway; //string
@@ -14754,7 +14767,7 @@ class HostIpRouteConfig {
 	}
 }
 
-class HostIpRouteConfigSpec {
+class HostIpRouteConfigSpec extends phpDynamicProperties {
 	public $gatewayDeviceConnection; //HostVirtualNicConnection
 	public $ipV6GatewayDeviceConnection; //HostVirtualNicConnection
 
@@ -14764,7 +14777,7 @@ class HostIpRouteConfigSpec {
 	}
 }
 
-class HostIpRouteEntry {
+class HostIpRouteEntry extends phpDynamicProperties {
 	public $network; //string
 	public $prefixLength; //int
 	public $gateway; //string
@@ -14778,7 +14791,7 @@ class HostIpRouteEntry {
 	}
 }
 
-class ArrayOfHostIpRouteEntry {
+class ArrayOfHostIpRouteEntry extends phpDynamicProperties {
 	public $HostIpRouteEntry; //HostIpRouteEntry
 
 	function __construct($HostIpRouteEntry = null) {
@@ -14786,7 +14799,7 @@ class ArrayOfHostIpRouteEntry {
 	}
 }
 
-class HostIpRouteOp {
+class HostIpRouteOp extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $route; //HostIpRouteEntry
 
@@ -14796,7 +14809,7 @@ class HostIpRouteOp {
 	}
 }
 
-class ArrayOfHostIpRouteOp {
+class ArrayOfHostIpRouteOp extends phpDynamicProperties {
 	public $HostIpRouteOp; //HostIpRouteOp
 
 	function __construct($HostIpRouteOp = null) {
@@ -14804,7 +14817,7 @@ class ArrayOfHostIpRouteOp {
 	}
 }
 
-class HostIpRouteTableConfig {
+class HostIpRouteTableConfig extends phpDynamicProperties {
 	public $ipRoute; //HostIpRouteOp
 	public $ipv6Route; //HostIpRouteOp
 
@@ -14814,7 +14827,7 @@ class HostIpRouteTableConfig {
 	}
 }
 
-class HostIpRouteTableInfo {
+class HostIpRouteTableInfo extends phpDynamicProperties {
 	public $ipRoute; //HostIpRouteEntry
 	public $ipv6Route; //HostIpRouteEntry
 
@@ -14824,7 +14837,7 @@ class HostIpRouteTableInfo {
 	}
 }
 
-class HostIpmiInfo {
+class HostIpmiInfo extends phpDynamicProperties {
 	public $bmcIpAddress; //string
 	public $bmcMacAddress; //string
 	public $login; //string
@@ -14838,7 +14851,7 @@ class HostIpmiInfo {
 	}
 }
 
-class IscsiStatus {
+class IscsiStatus extends phpDynamicProperties {
 	public $reason; //LocalizedMethodFault
 
 	function __construct($reason = null) {
@@ -14846,7 +14859,7 @@ class IscsiStatus {
 	}
 }
 
-class IscsiPortInfo {
+class IscsiPortInfo extends phpDynamicProperties {
 	public $vnicDevice; //string
 	public $vnic; //HostVirtualNic
 	public $pnicDevice; //string
@@ -14874,7 +14887,7 @@ class IscsiPortInfo {
 	}
 }
 
-class ArrayOfIscsiPortInfo {
+class ArrayOfIscsiPortInfo extends phpDynamicProperties {
 	public $IscsiPortInfo; //IscsiPortInfo
 
 	function __construct($IscsiPortInfo = null) {
@@ -14882,7 +14895,7 @@ class ArrayOfIscsiPortInfo {
 	}
 }
 
-class IscsiDependencyEntity {
+class IscsiDependencyEntity extends phpDynamicProperties {
 	public $pnicDevice; //string
 	public $vnicDevice; //string
 	public $vmhbaName; //string
@@ -14894,7 +14907,7 @@ class IscsiDependencyEntity {
 	}
 }
 
-class ArrayOfIscsiDependencyEntity {
+class ArrayOfIscsiDependencyEntity extends phpDynamicProperties {
 	public $IscsiDependencyEntity; //IscsiDependencyEntity
 
 	function __construct($IscsiDependencyEntity = null) {
@@ -14902,7 +14915,7 @@ class ArrayOfIscsiDependencyEntity {
 	}
 }
 
-class IscsiMigrationDependency {
+class IscsiMigrationDependency extends phpDynamicProperties {
 	public $migrationAllowed; //boolean
 	public $disallowReason; //IscsiStatus
 	public $dependency; //IscsiDependencyEntity
@@ -14914,7 +14927,7 @@ class IscsiMigrationDependency {
 	}
 }
 
-class KernelModuleSectionInfo {
+class KernelModuleSectionInfo extends phpDynamicProperties {
 	public $address; //long
 	public $length; //int
 
@@ -14924,7 +14937,7 @@ class KernelModuleSectionInfo {
 	}
 }
 
-class KernelModuleInfo {
+class KernelModuleInfo extends phpDynamicProperties {
 	public $id; //int
 	public $name; //string
 	public $version; //string
@@ -14956,7 +14969,7 @@ class KernelModuleInfo {
 	}
 }
 
-class ArrayOfKernelModuleInfo {
+class ArrayOfKernelModuleInfo extends phpDynamicProperties {
 	public $KernelModuleInfo; //KernelModuleInfo
 
 	function __construct($KernelModuleInfo = null) {
@@ -14964,7 +14977,7 @@ class ArrayOfKernelModuleInfo {
 	}
 }
 
-class HostLicenseSpec {
+class HostLicenseSpec extends phpDynamicProperties {
 	public $source; //LicenseSource
 	public $editionKey; //string
 	public $disabledFeatureKey; //string
@@ -14978,7 +14991,7 @@ class HostLicenseSpec {
 	}
 }
 
-class LinkDiscoveryProtocolConfig {
+class LinkDiscoveryProtocolConfig extends phpDynamicProperties {
 	public $protocol; //string
 	public $operation; //string
 
@@ -14988,7 +15001,7 @@ class LinkDiscoveryProtocolConfig {
 	}
 }
 
-class HostAccountSpec {
+class HostAccountSpec extends phpDynamicProperties {
 	public $id; //string
 	public $password; //string
 	public $description; //string
@@ -15000,7 +15013,7 @@ class HostAccountSpec {
 	}
 }
 
-class ArrayOfHostAccountSpec {
+class ArrayOfHostAccountSpec extends phpDynamicProperties {
 	public $HostAccountSpec; //HostAccountSpec
 
 	function __construct($HostAccountSpec = null) {
@@ -15008,7 +15021,7 @@ class ArrayOfHostAccountSpec {
 	}
 }
 
-class HostPosixAccountSpec {
+class HostPosixAccountSpec extends phpDynamicProperties {
 	public $posixId; //int
 	public $shellAccess; //boolean
 
@@ -15018,10 +15031,10 @@ class HostPosixAccountSpec {
 	}
 }
 
-class HostLocalAuthenticationInfo {
+class HostLocalAuthenticationInfo extends phpDynamicProperties {
 }
 
-class HostLowLevelProvisioningManagerDiskLayoutSpec {
+class HostLowLevelProvisioningManagerDiskLayoutSpec extends phpDynamicProperties {
 	public $controllerType; //string
 	public $busNumber; //int
 	public $unitNumber; //int
@@ -15037,7 +15050,7 @@ class HostLowLevelProvisioningManagerDiskLayoutSpec {
 	}
 }
 
-class ArrayOfHostLowLevelProvisioningManagerDiskLayoutSpec {
+class ArrayOfHostLowLevelProvisioningManagerDiskLayoutSpec extends phpDynamicProperties {
 	public $HostLowLevelProvisioningManagerDiskLayoutSpec; //HostLowLevelProvisioningManagerDiskLayoutSpec
 
 	function __construct($HostLowLevelProvisioningManagerDiskLayoutSpec = null) {
@@ -15045,7 +15058,7 @@ class ArrayOfHostLowLevelProvisioningManagerDiskLayoutSpec {
 	}
 }
 
-class HostLowLevelProvisioningManagerSnapshotLayoutSpec {
+class HostLowLevelProvisioningManagerSnapshotLayoutSpec extends phpDynamicProperties {
 	public $id; //int
 	public $srcFilename; //string
 	public $dstFilename; //string
@@ -15059,7 +15072,7 @@ class HostLowLevelProvisioningManagerSnapshotLayoutSpec {
 	}
 }
 
-class ArrayOfHostLowLevelProvisioningManagerSnapshotLayoutSpec {
+class ArrayOfHostLowLevelProvisioningManagerSnapshotLayoutSpec extends phpDynamicProperties {
 	public $HostLowLevelProvisioningManagerSnapshotLayoutSpec; //HostLowLevelProvisioningManagerSnapshotLayoutSpec
 
 	function __construct($HostLowLevelProvisioningManagerSnapshotLayoutSpec = null) {
@@ -15067,7 +15080,7 @@ class ArrayOfHostLowLevelProvisioningManagerSnapshotLayoutSpec {
 	}
 }
 
-class ServiceConsoleReservationInfo {
+class ServiceConsoleReservationInfo extends phpDynamicProperties {
 	public $serviceConsoleReservedCfg; //long
 	public $serviceConsoleReserved; //long
 	public $unreserved; //long
@@ -15079,7 +15092,7 @@ class ServiceConsoleReservationInfo {
 	}
 }
 
-class VirtualMachineMemoryReservationInfo {
+class VirtualMachineMemoryReservationInfo extends phpDynamicProperties {
 	public $virtualMachineMin; //long
 	public $virtualMachineMax; //long
 	public $virtualMachineReserved; //long
@@ -15093,7 +15106,7 @@ class VirtualMachineMemoryReservationInfo {
 	}
 }
 
-class VirtualMachineMemoryReservationSpec {
+class VirtualMachineMemoryReservationSpec extends phpDynamicProperties {
 	public $virtualMachineReserved; //long
 	public $allocationPolicy; //string
 
@@ -15103,7 +15116,7 @@ class VirtualMachineMemoryReservationSpec {
 	}
 }
 
-class HostMemorySpec {
+class HostMemorySpec extends phpDynamicProperties {
 	public $serviceConsoleReservation; //long
 
 	function __construct($serviceConsoleReservation = null) {
@@ -15111,7 +15124,7 @@ class HostMemorySpec {
 	}
 }
 
-class HostMountInfo {
+class HostMountInfo extends phpDynamicProperties {
 	public $path; //string
 	public $accessMode; //string
 	public $mounted; //boolean
@@ -15125,7 +15138,7 @@ class HostMountInfo {
 	}
 }
 
-class HostMultipathInfoLogicalUnitPolicy {
+class HostMultipathInfoLogicalUnitPolicy extends phpDynamicProperties {
 	public $policy; //string
 
 	function __construct($policy = null) {
@@ -15133,7 +15146,7 @@ class HostMultipathInfoLogicalUnitPolicy {
 	}
 }
 
-class HostMultipathInfoLogicalUnitStorageArrayTypePolicy {
+class HostMultipathInfoLogicalUnitStorageArrayTypePolicy extends phpDynamicProperties {
 	public $policy; //string
 
 	function __construct($policy = null) {
@@ -15141,7 +15154,7 @@ class HostMultipathInfoLogicalUnitStorageArrayTypePolicy {
 	}
 }
 
-class HostMultipathInfoFixedLogicalUnitPolicy {
+class HostMultipathInfoFixedLogicalUnitPolicy extends phpDynamicProperties {
 	public $prefer; //string
 
 	function __construct($prefer = null) {
@@ -15149,7 +15162,7 @@ class HostMultipathInfoFixedLogicalUnitPolicy {
 	}
 }
 
-class HostMultipathInfoLogicalUnit {
+class HostMultipathInfoLogicalUnit extends phpDynamicProperties {
 	public $key; //string
 	public $id; //string
 	public $lun; //string
@@ -15167,7 +15180,7 @@ class HostMultipathInfoLogicalUnit {
 	}
 }
 
-class ArrayOfHostMultipathInfoLogicalUnit {
+class ArrayOfHostMultipathInfoLogicalUnit extends phpDynamicProperties {
 	public $HostMultipathInfoLogicalUnit; //HostMultipathInfoLogicalUnit
 
 	function __construct($HostMultipathInfoLogicalUnit = null) {
@@ -15175,7 +15188,7 @@ class ArrayOfHostMultipathInfoLogicalUnit {
 	}
 }
 
-class HostMultipathInfoPath {
+class HostMultipathInfoPath extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $pathState; //string
@@ -15197,7 +15210,7 @@ class HostMultipathInfoPath {
 	}
 }
 
-class ArrayOfHostMultipathInfoPath {
+class ArrayOfHostMultipathInfoPath extends phpDynamicProperties {
 	public $HostMultipathInfoPath; //HostMultipathInfoPath
 
 	function __construct($HostMultipathInfoPath = null) {
@@ -15205,7 +15218,7 @@ class ArrayOfHostMultipathInfoPath {
 	}
 }
 
-class HostMultipathInfo {
+class HostMultipathInfo extends phpDynamicProperties {
 	public $lun; //HostMultipathInfoLogicalUnit
 
 	function __construct($lun = null) {
@@ -15213,7 +15226,7 @@ class HostMultipathInfo {
 	}
 }
 
-class HostMultipathStateInfoPath {
+class HostMultipathStateInfoPath extends phpDynamicProperties {
 	public $name; //string
 	public $pathState; //string
 
@@ -15223,7 +15236,7 @@ class HostMultipathStateInfoPath {
 	}
 }
 
-class ArrayOfHostMultipathStateInfoPath {
+class ArrayOfHostMultipathStateInfoPath extends phpDynamicProperties {
 	public $HostMultipathStateInfoPath; //HostMultipathStateInfoPath
 
 	function __construct($HostMultipathStateInfoPath = null) {
@@ -15231,7 +15244,7 @@ class ArrayOfHostMultipathStateInfoPath {
 	}
 }
 
-class HostMultipathStateInfo {
+class HostMultipathStateInfo extends phpDynamicProperties {
 	public $path; //HostMultipathStateInfoPath
 
 	function __construct($path = null) {
@@ -15239,7 +15252,7 @@ class HostMultipathStateInfo {
 	}
 }
 
-class HostNatServicePortForwardSpec {
+class HostNatServicePortForwardSpec extends phpDynamicProperties {
 	public $type; //string
 	public $name; //string
 	public $hostPort; //int
@@ -15255,7 +15268,7 @@ class HostNatServicePortForwardSpec {
 	}
 }
 
-class ArrayOfHostNatServicePortForwardSpec {
+class ArrayOfHostNatServicePortForwardSpec extends phpDynamicProperties {
 	public $HostNatServicePortForwardSpec; //HostNatServicePortForwardSpec
 
 	function __construct($HostNatServicePortForwardSpec = null) {
@@ -15263,7 +15276,7 @@ class ArrayOfHostNatServicePortForwardSpec {
 	}
 }
 
-class HostNatServiceNameServiceSpec {
+class HostNatServiceNameServiceSpec extends phpDynamicProperties {
 	public $dnsAutoDetect; //boolean
 	public $dnsPolicy; //string
 	public $dnsRetries; //int
@@ -15285,7 +15298,7 @@ class HostNatServiceNameServiceSpec {
 	}
 }
 
-class HostNatServiceSpec {
+class HostNatServiceSpec extends phpDynamicProperties {
 	public $virtualSwitch; //string
 	public $activeFtp; //boolean
 	public $allowAnyOui; //boolean
@@ -15307,7 +15320,7 @@ class HostNatServiceSpec {
 	}
 }
 
-class HostNatServiceConfig {
+class HostNatServiceConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $key; //string
 	public $spec; //HostNatServiceSpec
@@ -15319,7 +15332,7 @@ class HostNatServiceConfig {
 	}
 }
 
-class ArrayOfHostNatServiceConfig {
+class ArrayOfHostNatServiceConfig extends phpDynamicProperties {
 	public $HostNatServiceConfig; //HostNatServiceConfig
 
 	function __construct($HostNatServiceConfig = null) {
@@ -15327,7 +15340,7 @@ class ArrayOfHostNatServiceConfig {
 	}
 }
 
-class HostNatService {
+class HostNatService extends phpDynamicProperties {
 	public $key; //string
 	public $spec; //HostNatServiceSpec
 
@@ -15337,7 +15350,7 @@ class HostNatService {
 	}
 }
 
-class ArrayOfHostNatService {
+class ArrayOfHostNatService extends phpDynamicProperties {
 	public $HostNatService; //HostNatService
 
 	function __construct($HostNatService = null) {
@@ -15345,7 +15358,7 @@ class ArrayOfHostNatService {
 	}
 }
 
-class HostNetCapabilities {
+class HostNetCapabilities extends phpDynamicProperties {
 	public $canSetPhysicalNicLinkSpeed; //boolean
 	public $supportsNicTeaming; //boolean
 	public $nicTeamingPolicy; //string
@@ -15377,7 +15390,7 @@ class HostNetCapabilities {
 	}
 }
 
-class HostNetOffloadCapabilities {
+class HostNetOffloadCapabilities extends phpDynamicProperties {
 	public $csumOffload; //boolean
 	public $tcpSegmentation; //boolean
 	public $zeroCopyXmit; //boolean
@@ -15389,7 +15402,7 @@ class HostNetOffloadCapabilities {
 	}
 }
 
-class HostNetworkConfigResult {
+class HostNetworkConfigResult extends phpDynamicProperties {
 	public $vnicDevice; //string
 	public $consoleVnicDevice; //string
 
@@ -15399,7 +15412,7 @@ class HostNetworkConfigResult {
 	}
 }
 
-class HostNetworkConfig {
+class HostNetworkConfig extends phpDynamicProperties {
 	public $vswitch; //HostVirtualSwitchConfig
 	public $proxySwitch; //HostProxySwitchConfig
 	public $portgroup; //HostPortGroupConfig
@@ -15431,7 +15444,7 @@ class HostNetworkConfig {
 	}
 }
 
-class HostNetworkInfo {
+class HostNetworkInfo extends phpDynamicProperties {
 	public $vswitch; //HostVirtualSwitch
 	public $proxySwitch; //HostProxySwitch
 	public $portgroup; //HostPortGroup
@@ -15465,7 +15478,7 @@ class HostNetworkInfo {
 	}
 }
 
-class HostNetworkSecurityPolicy {
+class HostNetworkSecurityPolicy extends phpDynamicProperties {
 	public $allowPromiscuous; //boolean
 	public $macChanges; //boolean
 	public $forgedTransmits; //boolean
@@ -15477,7 +15490,7 @@ class HostNetworkSecurityPolicy {
 	}
 }
 
-class HostNetworkTrafficShapingPolicy {
+class HostNetworkTrafficShapingPolicy extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $averageBandwidth; //long
 	public $peakBandwidth; //long
@@ -15491,7 +15504,7 @@ class HostNetworkTrafficShapingPolicy {
 	}
 }
 
-class HostNicFailureCriteria {
+class HostNicFailureCriteria extends phpDynamicProperties {
 	public $checkSpeed; //string
 	public $speed; //int
 	public $checkDuplex; //boolean
@@ -15511,7 +15524,7 @@ class HostNicFailureCriteria {
 	}
 }
 
-class HostNicOrderPolicy {
+class HostNicOrderPolicy extends phpDynamicProperties {
 	public $activeNic; //string
 	public $standbyNic; //string
 
@@ -15521,7 +15534,7 @@ class HostNicOrderPolicy {
 	}
 }
 
-class HostNicTeamingPolicy {
+class HostNicTeamingPolicy extends phpDynamicProperties {
 	public $policy; //string
 	public $reversePolicy; //boolean
 	public $notifySwitches; //boolean
@@ -15539,7 +15552,7 @@ class HostNicTeamingPolicy {
 	}
 }
 
-class HostNetworkPolicy {
+class HostNetworkPolicy extends phpDynamicProperties {
 	public $security; //HostNetworkSecurityPolicy
 	public $nicTeaming; //HostNicTeamingPolicy
 	public $offloadPolicy; //HostNetOffloadCapabilities
@@ -15553,7 +15566,7 @@ class HostNetworkPolicy {
 	}
 }
 
-class HostNtpConfig {
+class HostNtpConfig extends phpDynamicProperties {
 	public $server; //string
 
 	function __construct($server = null) {
@@ -15561,7 +15574,7 @@ class HostNtpConfig {
 	}
 }
 
-class HostNumericSensorInfo {
+class HostNumericSensorInfo extends phpDynamicProperties {
 	public $name; //string
 	public $healthState; //ElementDescription
 	public $currentReading; //long
@@ -15581,7 +15594,7 @@ class HostNumericSensorInfo {
 	}
 }
 
-class ArrayOfHostNumericSensorInfo {
+class ArrayOfHostNumericSensorInfo extends phpDynamicProperties {
 	public $HostNumericSensorInfo; //HostNumericSensorInfo
 
 	function __construct($HostNumericSensorInfo = null) {
@@ -15589,7 +15602,7 @@ class ArrayOfHostNumericSensorInfo {
 	}
 }
 
-class HostPatchManagerResult {
+class HostPatchManagerResult extends phpDynamicProperties {
 	public $version; //string
 	public $status; //HostPatchManagerStatus
 	public $xmlResult; //string
@@ -15601,7 +15614,7 @@ class HostPatchManagerResult {
 	}
 }
 
-class HostPatchManagerStatusPrerequisitePatch {
+class HostPatchManagerStatusPrerequisitePatch extends phpDynamicProperties {
 	public $id; //string
 	public $installState; //string
 
@@ -15611,7 +15624,7 @@ class HostPatchManagerStatusPrerequisitePatch {
 	}
 }
 
-class ArrayOfHostPatchManagerStatusPrerequisitePatch {
+class ArrayOfHostPatchManagerStatusPrerequisitePatch extends phpDynamicProperties {
 	public $HostPatchManagerStatusPrerequisitePatch; //HostPatchManagerStatusPrerequisitePatch
 
 	function __construct($HostPatchManagerStatusPrerequisitePatch = null) {
@@ -15619,7 +15632,7 @@ class ArrayOfHostPatchManagerStatusPrerequisitePatch {
 	}
 }
 
-class HostPatchManagerStatus {
+class HostPatchManagerStatus extends phpDynamicProperties {
 	public $id; //string
 	public $applicable; //boolean
 	public $reason; //string
@@ -15647,7 +15660,7 @@ class HostPatchManagerStatus {
 	}
 }
 
-class ArrayOfHostPatchManagerStatus {
+class ArrayOfHostPatchManagerStatus extends phpDynamicProperties {
 	public $HostPatchManagerStatus; //HostPatchManagerStatus
 
 	function __construct($HostPatchManagerStatus = null) {
@@ -15655,7 +15668,7 @@ class ArrayOfHostPatchManagerStatus {
 	}
 }
 
-class HostPatchManagerLocator {
+class HostPatchManagerLocator extends phpDynamicProperties {
 	public $url; //string
 	public $proxy; //string
 
@@ -15665,7 +15678,7 @@ class HostPatchManagerLocator {
 	}
 }
 
-class HostPatchManagerPatchManagerOperationSpec {
+class HostPatchManagerPatchManagerOperationSpec extends phpDynamicProperties {
 	public $proxy; //string
 	public $port; //int
 	public $userName; //string
@@ -15681,7 +15694,7 @@ class HostPatchManagerPatchManagerOperationSpec {
 	}
 }
 
-class HostPathSelectionPolicyOption {
+class HostPathSelectionPolicyOption extends phpDynamicProperties {
 	public $policy; //ElementDescription
 
 	function __construct($policy = null) {
@@ -15689,7 +15702,7 @@ class HostPathSelectionPolicyOption {
 	}
 }
 
-class ArrayOfHostPathSelectionPolicyOption {
+class ArrayOfHostPathSelectionPolicyOption extends phpDynamicProperties {
 	public $HostPathSelectionPolicyOption; //HostPathSelectionPolicyOption
 
 	function __construct($HostPathSelectionPolicyOption = null) {
@@ -15697,7 +15710,7 @@ class ArrayOfHostPathSelectionPolicyOption {
 	}
 }
 
-class HostPciDevice {
+class HostPciDevice extends phpDynamicProperties {
 	public $id; //string
 	public $classId; //short
 	public $bus; //byte
@@ -15727,7 +15740,7 @@ class HostPciDevice {
 	}
 }
 
-class ArrayOfHostPciDevice {
+class ArrayOfHostPciDevice extends phpDynamicProperties {
 	public $HostPciDevice; //HostPciDevice
 
 	function __construct($HostPciDevice = null) {
@@ -15735,7 +15748,7 @@ class ArrayOfHostPciDevice {
 	}
 }
 
-class HostPciPassthruConfig {
+class HostPciPassthruConfig extends phpDynamicProperties {
 	public $id; //string
 	public $passthruEnabled; //boolean
 
@@ -15745,7 +15758,7 @@ class HostPciPassthruConfig {
 	}
 }
 
-class ArrayOfHostPciPassthruConfig {
+class ArrayOfHostPciPassthruConfig extends phpDynamicProperties {
 	public $HostPciPassthruConfig; //HostPciPassthruConfig
 
 	function __construct($HostPciPassthruConfig = null) {
@@ -15753,7 +15766,7 @@ class ArrayOfHostPciPassthruConfig {
 	}
 }
 
-class HostPciPassthruInfo {
+class HostPciPassthruInfo extends phpDynamicProperties {
 	public $id; //string
 	public $dependentDevice; //string
 	public $passthruEnabled; //boolean
@@ -15769,7 +15782,7 @@ class HostPciPassthruInfo {
 	}
 }
 
-class ArrayOfHostPciPassthruInfo {
+class ArrayOfHostPciPassthruInfo extends phpDynamicProperties {
 	public $HostPciPassthruInfo; //HostPciPassthruInfo
 
 	function __construct($HostPciPassthruInfo = null) {
@@ -15777,7 +15790,7 @@ class ArrayOfHostPciPassthruInfo {
 	}
 }
 
-class PhysicalNicSpec {
+class PhysicalNicSpec extends phpDynamicProperties {
 	public $ip; //HostIpConfig
 	public $linkSpeed; //PhysicalNicLinkInfo
 
@@ -15787,7 +15800,7 @@ class PhysicalNicSpec {
 	}
 }
 
-class PhysicalNicConfig {
+class PhysicalNicConfig extends phpDynamicProperties {
 	public $device; //string
 	public $spec; //PhysicalNicSpec
 
@@ -15797,7 +15810,7 @@ class PhysicalNicConfig {
 	}
 }
 
-class ArrayOfPhysicalNicConfig {
+class ArrayOfPhysicalNicConfig extends phpDynamicProperties {
 	public $PhysicalNicConfig; //PhysicalNicConfig
 
 	function __construct($PhysicalNicConfig = null) {
@@ -15805,7 +15818,7 @@ class ArrayOfPhysicalNicConfig {
 	}
 }
 
-class PhysicalNicLinkInfo {
+class PhysicalNicLinkInfo extends phpDynamicProperties {
 	public $speedMb; //int
 	public $duplex; //boolean
 
@@ -15815,7 +15828,7 @@ class PhysicalNicLinkInfo {
 	}
 }
 
-class ArrayOfPhysicalNicLinkInfo {
+class ArrayOfPhysicalNicLinkInfo extends phpDynamicProperties {
 	public $PhysicalNicLinkInfo; //PhysicalNicLinkInfo
 
 	function __construct($PhysicalNicLinkInfo = null) {
@@ -15823,7 +15836,7 @@ class ArrayOfPhysicalNicLinkInfo {
 	}
 }
 
-class PhysicalNicHint {
+class PhysicalNicHint extends phpDynamicProperties {
 	public $vlanId; //int
 
 	function __construct($vlanId = null) {
@@ -15831,7 +15844,7 @@ class PhysicalNicHint {
 	}
 }
 
-class PhysicalNicIpHint {
+class PhysicalNicIpHint extends phpDynamicProperties {
 	public $ipSubnet; //string
 
 	function __construct($ipSubnet = null) {
@@ -15839,7 +15852,7 @@ class PhysicalNicIpHint {
 	}
 }
 
-class ArrayOfPhysicalNicIpHint {
+class ArrayOfPhysicalNicIpHint extends phpDynamicProperties {
 	public $PhysicalNicIpHint; //PhysicalNicIpHint
 
 	function __construct($PhysicalNicIpHint = null) {
@@ -15847,7 +15860,7 @@ class ArrayOfPhysicalNicIpHint {
 	}
 }
 
-class PhysicalNicNameHint {
+class PhysicalNicNameHint extends phpDynamicProperties {
 	public $network; //string
 
 	function __construct($network = null) {
@@ -15855,7 +15868,7 @@ class PhysicalNicNameHint {
 	}
 }
 
-class ArrayOfPhysicalNicNameHint {
+class ArrayOfPhysicalNicNameHint extends phpDynamicProperties {
 	public $PhysicalNicNameHint; //PhysicalNicNameHint
 
 	function __construct($PhysicalNicNameHint = null) {
@@ -15863,7 +15876,7 @@ class ArrayOfPhysicalNicNameHint {
 	}
 }
 
-class PhysicalNicHintInfo {
+class PhysicalNicHintInfo extends phpDynamicProperties {
 	public $device; //string
 	public $subnet; //PhysicalNicIpHint
 	public $network; //PhysicalNicNameHint
@@ -15879,7 +15892,7 @@ class PhysicalNicHintInfo {
 	}
 }
 
-class ArrayOfPhysicalNicHintInfo {
+class ArrayOfPhysicalNicHintInfo extends phpDynamicProperties {
 	public $PhysicalNicHintInfo; //PhysicalNicHintInfo
 
 	function __construct($PhysicalNicHintInfo = null) {
@@ -15887,7 +15900,7 @@ class ArrayOfPhysicalNicHintInfo {
 	}
 }
 
-class PhysicalNicCdpDeviceCapability {
+class PhysicalNicCdpDeviceCapability extends phpDynamicProperties {
 	public $router; //boolean
 	public $transparentBridge; //boolean
 	public $sourceRouteBridge; //boolean
@@ -15907,7 +15920,7 @@ class PhysicalNicCdpDeviceCapability {
 	}
 }
 
-class PhysicalNicCdpInfo {
+class PhysicalNicCdpInfo extends phpDynamicProperties {
 	public $cdpVersion; //int
 	public $timeout; //int
 	public $ttl; //int
@@ -15951,7 +15964,7 @@ class PhysicalNicCdpInfo {
 	}
 }
 
-class LinkLayerDiscoveryProtocolInfo {
+class LinkLayerDiscoveryProtocolInfo extends phpDynamicProperties {
 	public $chassisId; //string
 	public $portId; //string
 	public $timeToLive; //int
@@ -15965,7 +15978,7 @@ class LinkLayerDiscoveryProtocolInfo {
 	}
 }
 
-class PhysicalNic {
+class PhysicalNic extends phpDynamicProperties {
 	public $key; //string
 	public $device; //string
 	public $pci; //string
@@ -16001,7 +16014,7 @@ class PhysicalNic {
 	}
 }
 
-class ArrayOfPhysicalNic {
+class ArrayOfPhysicalNic extends phpDynamicProperties {
 	public $PhysicalNic; //PhysicalNic
 
 	function __construct($PhysicalNic = null) {
@@ -16009,7 +16022,7 @@ class ArrayOfPhysicalNic {
 	}
 }
 
-class HostPlugStoreTopologyAdapter {
+class HostPlugStoreTopologyAdapter extends phpDynamicProperties {
 	public $key; //string
 	public $adapter; //string
 	public $path; //string
@@ -16021,7 +16034,7 @@ class HostPlugStoreTopologyAdapter {
 	}
 }
 
-class ArrayOfHostPlugStoreTopologyAdapter {
+class ArrayOfHostPlugStoreTopologyAdapter extends phpDynamicProperties {
 	public $HostPlugStoreTopologyAdapter; //HostPlugStoreTopologyAdapter
 
 	function __construct($HostPlugStoreTopologyAdapter = null) {
@@ -16029,7 +16042,7 @@ class ArrayOfHostPlugStoreTopologyAdapter {
 	}
 }
 
-class HostPlugStoreTopologyPath {
+class HostPlugStoreTopologyPath extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $channelNumber; //int
@@ -16051,7 +16064,7 @@ class HostPlugStoreTopologyPath {
 	}
 }
 
-class ArrayOfHostPlugStoreTopologyPath {
+class ArrayOfHostPlugStoreTopologyPath extends phpDynamicProperties {
 	public $HostPlugStoreTopologyPath; //HostPlugStoreTopologyPath
 
 	function __construct($HostPlugStoreTopologyPath = null) {
@@ -16059,7 +16072,7 @@ class ArrayOfHostPlugStoreTopologyPath {
 	}
 }
 
-class HostPlugStoreTopologyDevice {
+class HostPlugStoreTopologyDevice extends phpDynamicProperties {
 	public $key; //string
 	public $lun; //string
 	public $path; //string
@@ -16071,7 +16084,7 @@ class HostPlugStoreTopologyDevice {
 	}
 }
 
-class ArrayOfHostPlugStoreTopologyDevice {
+class ArrayOfHostPlugStoreTopologyDevice extends phpDynamicProperties {
 	public $HostPlugStoreTopologyDevice; //HostPlugStoreTopologyDevice
 
 	function __construct($HostPlugStoreTopologyDevice = null) {
@@ -16079,7 +16092,7 @@ class ArrayOfHostPlugStoreTopologyDevice {
 	}
 }
 
-class HostPlugStoreTopologyPlugin {
+class HostPlugStoreTopologyPlugin extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $device; //string
@@ -16093,7 +16106,7 @@ class HostPlugStoreTopologyPlugin {
 	}
 }
 
-class ArrayOfHostPlugStoreTopologyPlugin {
+class ArrayOfHostPlugStoreTopologyPlugin extends phpDynamicProperties {
 	public $HostPlugStoreTopologyPlugin; //HostPlugStoreTopologyPlugin
 
 	function __construct($HostPlugStoreTopologyPlugin = null) {
@@ -16101,7 +16114,7 @@ class ArrayOfHostPlugStoreTopologyPlugin {
 	}
 }
 
-class HostPlugStoreTopologyTarget {
+class HostPlugStoreTopologyTarget extends phpDynamicProperties {
 	public $key; //string
 	public $transport; //HostTargetTransport
 
@@ -16111,7 +16124,7 @@ class HostPlugStoreTopologyTarget {
 	}
 }
 
-class ArrayOfHostPlugStoreTopologyTarget {
+class ArrayOfHostPlugStoreTopologyTarget extends phpDynamicProperties {
 	public $HostPlugStoreTopologyTarget; //HostPlugStoreTopologyTarget
 
 	function __construct($HostPlugStoreTopologyTarget = null) {
@@ -16119,7 +16132,7 @@ class ArrayOfHostPlugStoreTopologyTarget {
 	}
 }
 
-class HostPlugStoreTopology {
+class HostPlugStoreTopology extends phpDynamicProperties {
 	public $adapter; //HostPlugStoreTopologyAdapter
 	public $path; //HostPlugStoreTopologyPath
 	public $target; //HostPlugStoreTopologyTarget
@@ -16135,7 +16148,7 @@ class HostPlugStoreTopology {
 	}
 }
 
-class HostPortGroupSpec {
+class HostPortGroupSpec extends phpDynamicProperties {
 	public $name; //string
 	public $vlanId; //int
 	public $vswitchName; //string
@@ -16149,7 +16162,7 @@ class HostPortGroupSpec {
 	}
 }
 
-class HostPortGroupConfig {
+class HostPortGroupConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $spec; //HostPortGroupSpec
 
@@ -16159,7 +16172,7 @@ class HostPortGroupConfig {
 	}
 }
 
-class ArrayOfHostPortGroupConfig {
+class ArrayOfHostPortGroupConfig extends phpDynamicProperties {
 	public $HostPortGroupConfig; //HostPortGroupConfig
 
 	function __construct($HostPortGroupConfig = null) {
@@ -16167,7 +16180,7 @@ class ArrayOfHostPortGroupConfig {
 	}
 }
 
-class HostPortGroupPort {
+class HostPortGroupPort extends phpDynamicProperties {
 	public $key; //string
 	public $mac; //string
 	public $type; //string
@@ -16179,7 +16192,7 @@ class HostPortGroupPort {
 	}
 }
 
-class ArrayOfHostPortGroupPort {
+class ArrayOfHostPortGroupPort extends phpDynamicProperties {
 	public $HostPortGroupPort; //HostPortGroupPort
 
 	function __construct($HostPortGroupPort = null) {
@@ -16187,7 +16200,7 @@ class ArrayOfHostPortGroupPort {
 	}
 }
 
-class HostPortGroup {
+class HostPortGroup extends phpDynamicProperties {
 	public $key; //string
 	public $port; //HostPortGroupPort
 	public $vswitch; //string
@@ -16203,7 +16216,7 @@ class HostPortGroup {
 	}
 }
 
-class ArrayOfHostPortGroup {
+class ArrayOfHostPortGroup extends phpDynamicProperties {
 	public $HostPortGroup; //HostPortGroup
 
 	function __construct($HostPortGroup = null) {
@@ -16211,7 +16224,7 @@ class ArrayOfHostPortGroup {
 	}
 }
 
-class HostPowerPolicy {
+class HostPowerPolicy extends phpDynamicProperties {
 	public $key; //int
 	public $name; //string
 	public $shortName; //string
@@ -16225,7 +16238,7 @@ class HostPowerPolicy {
 	}
 }
 
-class ArrayOfHostPowerPolicy {
+class ArrayOfHostPowerPolicy extends phpDynamicProperties {
 	public $HostPowerPolicy; //HostPowerPolicy
 
 	function __construct($HostPowerPolicy = null) {
@@ -16233,7 +16246,7 @@ class ArrayOfHostPowerPolicy {
 	}
 }
 
-class PowerSystemCapability {
+class PowerSystemCapability extends phpDynamicProperties {
 	public $availablePolicy; //HostPowerPolicy
 
 	function __construct($availablePolicy = null) {
@@ -16241,7 +16254,7 @@ class PowerSystemCapability {
 	}
 }
 
-class PowerSystemInfo {
+class PowerSystemInfo extends phpDynamicProperties {
 	public $currentPolicy; //HostPowerPolicy
 
 	function __construct($currentPolicy = null) {
@@ -16249,7 +16262,7 @@ class PowerSystemInfo {
 	}
 }
 
-class HostResignatureRescanResult {
+class HostResignatureRescanResult extends phpDynamicProperties {
 	public $rescan; //HostVmfsRescanResult
 	public $result; //ManagedObjectReference
 
@@ -16259,7 +16272,7 @@ class HostResignatureRescanResult {
 	}
 }
 
-class HostFirewallRulesetIpNetwork {
+class HostFirewallRulesetIpNetwork extends phpDynamicProperties {
 	public $network; //string
 	public $prefixLength; //int
 
@@ -16269,7 +16282,7 @@ class HostFirewallRulesetIpNetwork {
 	}
 }
 
-class ArrayOfHostFirewallRulesetIpNetwork {
+class ArrayOfHostFirewallRulesetIpNetwork extends phpDynamicProperties {
 	public $HostFirewallRulesetIpNetwork; //HostFirewallRulesetIpNetwork
 
 	function __construct($HostFirewallRulesetIpNetwork = null) {
@@ -16277,7 +16290,7 @@ class ArrayOfHostFirewallRulesetIpNetwork {
 	}
 }
 
-class HostFirewallRulesetIpList {
+class HostFirewallRulesetIpList extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $ipNetwork; //HostFirewallRulesetIpNetwork
 	public $allIp; //boolean
@@ -16289,7 +16302,7 @@ class HostFirewallRulesetIpList {
 	}
 }
 
-class HostFirewallRulesetRulesetSpec {
+class HostFirewallRulesetRulesetSpec extends phpDynamicProperties {
 	public $allowedHosts; //HostFirewallRulesetIpList
 
 	function __construct($allowedHosts = null) {
@@ -16297,7 +16310,7 @@ class HostFirewallRulesetRulesetSpec {
 	}
 }
 
-class HostFirewallRule {
+class HostFirewallRule extends phpDynamicProperties {
 	public $port; //int
 	public $endPort; //int
 	public $direction; //HostFirewallRuleDirection
@@ -16313,7 +16326,7 @@ class HostFirewallRule {
 	}
 }
 
-class ArrayOfHostFirewallRule {
+class ArrayOfHostFirewallRule extends phpDynamicProperties {
 	public $HostFirewallRule; //HostFirewallRule
 
 	function __construct($HostFirewallRule = null) {
@@ -16321,7 +16334,7 @@ class ArrayOfHostFirewallRule {
 	}
 }
 
-class HostFirewallRuleset {
+class HostFirewallRuleset extends phpDynamicProperties {
 	public $key; //string
 	public $label; //string
 	public $required; //boolean
@@ -16341,7 +16354,7 @@ class HostFirewallRuleset {
 	}
 }
 
-class ArrayOfHostFirewallRuleset {
+class ArrayOfHostFirewallRuleset extends phpDynamicProperties {
 	public $HostFirewallRuleset; //HostFirewallRuleset
 
 	function __construct($HostFirewallRuleset = null) {
@@ -16349,7 +16362,7 @@ class ArrayOfHostFirewallRuleset {
 	}
 }
 
-class HostRuntimeInfo {
+class HostRuntimeInfo extends phpDynamicProperties {
 	public $connectionState; //HostSystemConnectionState
 	public $powerState; //HostSystemPowerState
 	public $standbyMode; //string
@@ -16371,7 +16384,7 @@ class HostRuntimeInfo {
 	}
 }
 
-class HostScsiDiskPartition {
+class HostScsiDiskPartition extends phpDynamicProperties {
 	public $diskName; //string
 	public $partition; //int
 
@@ -16381,7 +16394,7 @@ class HostScsiDiskPartition {
 	}
 }
 
-class ArrayOfHostScsiDiskPartition {
+class ArrayOfHostScsiDiskPartition extends phpDynamicProperties {
 	public $HostScsiDiskPartition; //HostScsiDiskPartition
 
 	function __construct($HostScsiDiskPartition = null) {
@@ -16389,7 +16402,7 @@ class ArrayOfHostScsiDiskPartition {
 	}
 }
 
-class HostScsiDisk {
+class HostScsiDisk extends phpDynamicProperties {
 	public $capacity; //HostDiskDimensionsLba
 	public $devicePath; //string
 	public $ssd; //boolean
@@ -16401,7 +16414,7 @@ class HostScsiDisk {
 	}
 }
 
-class ArrayOfHostScsiDisk {
+class ArrayOfHostScsiDisk extends phpDynamicProperties {
 	public $HostScsiDisk; //HostScsiDisk
 
 	function __construct($HostScsiDisk = null) {
@@ -16409,7 +16422,7 @@ class ArrayOfHostScsiDisk {
 	}
 }
 
-class ScsiLunCapabilities {
+class ScsiLunCapabilities extends phpDynamicProperties {
 	public $updateDisplayNameSupported; //boolean
 
 	function __construct($updateDisplayNameSupported = null) {
@@ -16417,7 +16430,7 @@ class ScsiLunCapabilities {
 	}
 }
 
-class ScsiLunDurableName {
+class ScsiLunDurableName extends phpDynamicProperties {
 	public $namespace; //string
 	public $namespaceId; //byte
 	public $data; //byte
@@ -16429,7 +16442,7 @@ class ScsiLunDurableName {
 	}
 }
 
-class ArrayOfScsiLunDurableName {
+class ArrayOfScsiLunDurableName extends phpDynamicProperties {
 	public $ScsiLunDurableName; //ScsiLunDurableName
 
 	function __construct($ScsiLunDurableName = null) {
@@ -16437,7 +16450,7 @@ class ArrayOfScsiLunDurableName {
 	}
 }
 
-class ScsiLunDescriptor {
+class ScsiLunDescriptor extends phpDynamicProperties {
 	public $quality; //string
 	public $id; //string
 
@@ -16447,7 +16460,7 @@ class ScsiLunDescriptor {
 	}
 }
 
-class ArrayOfScsiLunDescriptor {
+class ArrayOfScsiLunDescriptor extends phpDynamicProperties {
 	public $ScsiLunDescriptor; //ScsiLunDescriptor
 
 	function __construct($ScsiLunDescriptor = null) {
@@ -16455,7 +16468,7 @@ class ArrayOfScsiLunDescriptor {
 	}
 }
 
-class ScsiLun {
+class ScsiLun extends phpDynamicProperties {
 	public $key; //string
 	public $uuid; //string
 	public $descriptor; //ScsiLunDescriptor
@@ -16497,7 +16510,7 @@ class ScsiLun {
 	}
 }
 
-class ArrayOfScsiLun {
+class ArrayOfScsiLun extends phpDynamicProperties {
 	public $ScsiLun; //ScsiLun
 
 	function __construct($ScsiLun = null) {
@@ -16505,7 +16518,7 @@ class ArrayOfScsiLun {
 	}
 }
 
-class HostScsiTopologyInterface {
+class HostScsiTopologyInterface extends phpDynamicProperties {
 	public $key; //string
 	public $adapter; //string
 	public $target; //HostScsiTopologyTarget
@@ -16517,7 +16530,7 @@ class HostScsiTopologyInterface {
 	}
 }
 
-class ArrayOfHostScsiTopologyInterface {
+class ArrayOfHostScsiTopologyInterface extends phpDynamicProperties {
 	public $HostScsiTopologyInterface; //HostScsiTopologyInterface
 
 	function __construct($HostScsiTopologyInterface = null) {
@@ -16525,7 +16538,7 @@ class ArrayOfHostScsiTopologyInterface {
 	}
 }
 
-class HostScsiTopologyTarget {
+class HostScsiTopologyTarget extends phpDynamicProperties {
 	public $key; //string
 	public $target; //int
 	public $lun; //HostScsiTopologyLun
@@ -16539,7 +16552,7 @@ class HostScsiTopologyTarget {
 	}
 }
 
-class ArrayOfHostScsiTopologyTarget {
+class ArrayOfHostScsiTopologyTarget extends phpDynamicProperties {
 	public $HostScsiTopologyTarget; //HostScsiTopologyTarget
 
 	function __construct($HostScsiTopologyTarget = null) {
@@ -16547,7 +16560,7 @@ class ArrayOfHostScsiTopologyTarget {
 	}
 }
 
-class HostScsiTopologyLun {
+class HostScsiTopologyLun extends phpDynamicProperties {
 	public $key; //string
 	public $lun; //int
 	public $scsiLun; //string
@@ -16559,7 +16572,7 @@ class HostScsiTopologyLun {
 	}
 }
 
-class ArrayOfHostScsiTopologyLun {
+class ArrayOfHostScsiTopologyLun extends phpDynamicProperties {
 	public $HostScsiTopologyLun; //HostScsiTopologyLun
 
 	function __construct($HostScsiTopologyLun = null) {
@@ -16567,7 +16580,7 @@ class ArrayOfHostScsiTopologyLun {
 	}
 }
 
-class HostScsiTopology {
+class HostScsiTopology extends phpDynamicProperties {
 	public $adapter; //HostScsiTopologyInterface
 
 	function __construct($adapter = null) {
@@ -16575,7 +16588,7 @@ class HostScsiTopology {
 	}
 }
 
-class HostSecuritySpec {
+class HostSecuritySpec extends phpDynamicProperties {
 	public $adminPassword; //string
 	public $removePermission; //Permission
 	public $addPermission; //Permission
@@ -16587,7 +16600,7 @@ class HostSecuritySpec {
 	}
 }
 
-class HostServiceSourcePackage {
+class HostServiceSourcePackage extends phpDynamicProperties {
 	public $sourcePackageName; //string
 	public $description; //string
 
@@ -16597,7 +16610,7 @@ class HostServiceSourcePackage {
 	}
 }
 
-class HostService {
+class HostService extends phpDynamicProperties {
 	public $key; //string
 	public $label; //string
 	public $required; //boolean
@@ -16619,7 +16632,7 @@ class HostService {
 	}
 }
 
-class ArrayOfHostService {
+class ArrayOfHostService extends phpDynamicProperties {
 	public $HostService; //HostService
 
 	function __construct($HostService = null) {
@@ -16627,7 +16640,7 @@ class ArrayOfHostService {
 	}
 }
 
-class HostServiceConfig {
+class HostServiceConfig extends phpDynamicProperties {
 	public $serviceId; //string
 	public $startupPolicy; //string
 
@@ -16637,7 +16650,7 @@ class HostServiceConfig {
 	}
 }
 
-class ArrayOfHostServiceConfig {
+class ArrayOfHostServiceConfig extends phpDynamicProperties {
 	public $HostServiceConfig; //HostServiceConfig
 
 	function __construct($HostServiceConfig = null) {
@@ -16645,7 +16658,7 @@ class ArrayOfHostServiceConfig {
 	}
 }
 
-class HostServiceInfo {
+class HostServiceInfo extends phpDynamicProperties {
 	public $service; //HostService
 
 	function __construct($service = null) {
@@ -16653,7 +16666,7 @@ class HostServiceInfo {
 	}
 }
 
-class HostSnmpDestination {
+class HostSnmpDestination extends phpDynamicProperties {
 	public $hostName; //string
 	public $port; //int
 	public $community; //string
@@ -16665,7 +16678,7 @@ class HostSnmpDestination {
 	}
 }
 
-class ArrayOfHostSnmpDestination {
+class ArrayOfHostSnmpDestination extends phpDynamicProperties {
 	public $HostSnmpDestination; //HostSnmpDestination
 
 	function __construct($HostSnmpDestination = null) {
@@ -16673,7 +16686,7 @@ class ArrayOfHostSnmpDestination {
 	}
 }
 
-class HostSnmpConfigSpec {
+class HostSnmpConfigSpec extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $port; //int
 	public $readOnlyCommunities; //string
@@ -16689,7 +16702,7 @@ class HostSnmpConfigSpec {
 	}
 }
 
-class HostSnmpSystemAgentLimits {
+class HostSnmpSystemAgentLimits extends phpDynamicProperties {
 	public $maxReadOnlyCommunities; //int
 	public $maxTrapDestinations; //int
 	public $maxCommunityLength; //int
@@ -16705,7 +16718,7 @@ class HostSnmpSystemAgentLimits {
 	}
 }
 
-class HostSslThumbprintInfo {
+class HostSslThumbprintInfo extends phpDynamicProperties {
 	public $principal; //string
 	public $ownerTag; //string
 	public $sslThumbprints; //string
@@ -16717,7 +16730,7 @@ class HostSslThumbprintInfo {
 	}
 }
 
-class ArrayOfHostSslThumbprintInfo {
+class ArrayOfHostSslThumbprintInfo extends phpDynamicProperties {
 	public $HostSslThumbprintInfo; //HostSslThumbprintInfo
 
 	function __construct($HostSslThumbprintInfo = null) {
@@ -16725,7 +16738,7 @@ class ArrayOfHostSslThumbprintInfo {
 	}
 }
 
-class HostStorageArrayTypePolicyOption {
+class HostStorageArrayTypePolicyOption extends phpDynamicProperties {
 	public $policy; //ElementDescription
 
 	function __construct($policy = null) {
@@ -16733,7 +16746,7 @@ class HostStorageArrayTypePolicyOption {
 	}
 }
 
-class ArrayOfHostStorageArrayTypePolicyOption {
+class ArrayOfHostStorageArrayTypePolicyOption extends phpDynamicProperties {
 	public $HostStorageArrayTypePolicyOption; //HostStorageArrayTypePolicyOption
 
 	function __construct($HostStorageArrayTypePolicyOption = null) {
@@ -16741,7 +16754,7 @@ class ArrayOfHostStorageArrayTypePolicyOption {
 	}
 }
 
-class HostStorageDeviceInfo {
+class HostStorageDeviceInfo extends phpDynamicProperties {
 	public $hostBusAdapter; //HostHostBusAdapter
 	public $scsiLun; //ScsiLun
 	public $scsiTopology; //HostScsiTopology
@@ -16759,7 +16772,7 @@ class HostStorageDeviceInfo {
 	}
 }
 
-class HostHardwareSummary {
+class HostHardwareSummary extends phpDynamicProperties {
 	public $vendor; //string
 	public $model; //string
 	public $uuid; //string
@@ -16789,7 +16802,7 @@ class HostHardwareSummary {
 	}
 }
 
-class HostListSummaryQuickStats {
+class HostListSummaryQuickStats extends phpDynamicProperties {
 	public $overallCpuUsage; //int
 	public $overallMemoryUsage; //int
 	public $distributedCpuFairness; //int
@@ -16805,7 +16818,7 @@ class HostListSummaryQuickStats {
 	}
 }
 
-class HostConfigSummary {
+class HostConfigSummary extends phpDynamicProperties {
 	public $name; //string
 	public $port; //int
 	public $sslThumbprint; //string
@@ -16829,7 +16842,7 @@ class HostConfigSummary {
 	}
 }
 
-class HostListSummary {
+class HostListSummary extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $hardware; //HostHardwareSummary
 	public $runtime; //HostRuntimeInfo
@@ -16857,7 +16870,7 @@ class HostListSummary {
 	}
 }
 
-class HostSystemHealthInfo {
+class HostSystemHealthInfo extends phpDynamicProperties {
 	public $numericSensorInfo; //HostNumericSensorInfo
 
 	function __construct($numericSensorInfo = null) {
@@ -16865,7 +16878,7 @@ class HostSystemHealthInfo {
 	}
 }
 
-class HostSystemIdentificationInfo {
+class HostSystemIdentificationInfo extends phpDynamicProperties {
 	public $identifierValue; //string
 	public $identifierType; //ElementDescription
 
@@ -16875,7 +16888,7 @@ class HostSystemIdentificationInfo {
 	}
 }
 
-class ArrayOfHostSystemIdentificationInfo {
+class ArrayOfHostSystemIdentificationInfo extends phpDynamicProperties {
 	public $HostSystemIdentificationInfo; //HostSystemIdentificationInfo
 
 	function __construct($HostSystemIdentificationInfo = null) {
@@ -16883,7 +16896,7 @@ class ArrayOfHostSystemIdentificationInfo {
 	}
 }
 
-class HostSystemResourceInfo {
+class HostSystemResourceInfo extends phpDynamicProperties {
 	public $key; //string
 	public $config; //ResourceConfigSpec
 	public $child; //HostSystemResourceInfo
@@ -16895,7 +16908,7 @@ class HostSystemResourceInfo {
 	}
 }
 
-class ArrayOfHostSystemResourceInfo {
+class ArrayOfHostSystemResourceInfo extends phpDynamicProperties {
 	public $HostSystemResourceInfo; //HostSystemResourceInfo
 
 	function __construct($HostSystemResourceInfo = null) {
@@ -16903,16 +16916,16 @@ class ArrayOfHostSystemResourceInfo {
 	}
 }
 
-class HostTargetTransport {
+class HostTargetTransport extends phpDynamicProperties {
 }
 
-class HostParallelScsiTargetTransport {
+class HostParallelScsiTargetTransport extends phpDynamicProperties {
 }
 
-class HostBlockAdapterTargetTransport {
+class HostBlockAdapterTargetTransport extends phpDynamicProperties {
 }
 
-class HostFibreChannelTargetTransport {
+class HostFibreChannelTargetTransport extends phpDynamicProperties {
 	public $portWorldWideName; //long
 	public $nodeWorldWideName; //long
 
@@ -16922,7 +16935,7 @@ class HostFibreChannelTargetTransport {
 	}
 }
 
-class HostInternetScsiTargetTransport {
+class HostInternetScsiTargetTransport extends phpDynamicProperties {
 	public $iScsiName; //string
 	public $iScsiAlias; //string
 	public $address; //string
@@ -16934,7 +16947,7 @@ class HostInternetScsiTargetTransport {
 	}
 }
 
-class HostFibreChannelOverEthernetTargetTransport {
+class HostFibreChannelOverEthernetTargetTransport extends phpDynamicProperties {
 	public $vnportMac; //string
 	public $fcfMac; //string
 	public $vlanId; //int
@@ -16946,7 +16959,7 @@ class HostFibreChannelOverEthernetTargetTransport {
 	}
 }
 
-class HostDigestInfo {
+class HostDigestInfo extends phpDynamicProperties {
 	public $digestMethod; //string
 	public $digestValue; //byte
 	public $objectName; //string
@@ -16958,7 +16971,7 @@ class HostDigestInfo {
 	}
 }
 
-class HostTpmDigestInfo {
+class HostTpmDigestInfo extends phpDynamicProperties {
 	public $pcrNumber; //int
 
 	function __construct($pcrNumber = null) {
@@ -16966,7 +16979,7 @@ class HostTpmDigestInfo {
 	}
 }
 
-class ArrayOfHostTpmDigestInfo {
+class ArrayOfHostTpmDigestInfo extends phpDynamicProperties {
 	public $HostTpmDigestInfo; //HostTpmDigestInfo
 
 	function __construct($HostTpmDigestInfo = null) {
@@ -16974,7 +16987,7 @@ class ArrayOfHostTpmDigestInfo {
 	}
 }
 
-class HostUnresolvedVmfsExtent {
+class HostUnresolvedVmfsExtent extends phpDynamicProperties {
 	public $device; //HostScsiDiskPartition
 	public $devicePath; //string
 	public $vmfsUuid; //string
@@ -16996,7 +17009,7 @@ class HostUnresolvedVmfsExtent {
 	}
 }
 
-class ArrayOfHostUnresolvedVmfsExtent {
+class ArrayOfHostUnresolvedVmfsExtent extends phpDynamicProperties {
 	public $HostUnresolvedVmfsExtent; //HostUnresolvedVmfsExtent
 
 	function __construct($HostUnresolvedVmfsExtent = null) {
@@ -17004,7 +17017,7 @@ class ArrayOfHostUnresolvedVmfsExtent {
 	}
 }
 
-class HostUnresolvedVmfsResignatureSpec {
+class HostUnresolvedVmfsResignatureSpec extends phpDynamicProperties {
 	public $extentDevicePath; //string
 
 	function __construct($extentDevicePath = null) {
@@ -17012,7 +17025,7 @@ class HostUnresolvedVmfsResignatureSpec {
 	}
 }
 
-class HostUnresolvedVmfsResolutionResult {
+class HostUnresolvedVmfsResolutionResult extends phpDynamicProperties {
 	public $spec; //HostUnresolvedVmfsResolutionSpec
 	public $vmfs; //HostVmfsVolume
 	public $fault; //LocalizedMethodFault
@@ -17024,7 +17037,7 @@ class HostUnresolvedVmfsResolutionResult {
 	}
 }
 
-class ArrayOfHostUnresolvedVmfsResolutionResult {
+class ArrayOfHostUnresolvedVmfsResolutionResult extends phpDynamicProperties {
 	public $HostUnresolvedVmfsResolutionResult; //HostUnresolvedVmfsResolutionResult
 
 	function __construct($HostUnresolvedVmfsResolutionResult = null) {
@@ -17032,7 +17045,7 @@ class ArrayOfHostUnresolvedVmfsResolutionResult {
 	}
 }
 
-class HostUnresolvedVmfsResolutionSpec {
+class HostUnresolvedVmfsResolutionSpec extends phpDynamicProperties {
 	public $extentDevicePath; //string
 	public $uuidResolution; //string
 
@@ -17042,7 +17055,7 @@ class HostUnresolvedVmfsResolutionSpec {
 	}
 }
 
-class ArrayOfHostUnresolvedVmfsResolutionSpec {
+class ArrayOfHostUnresolvedVmfsResolutionSpec extends phpDynamicProperties {
 	public $HostUnresolvedVmfsResolutionSpec; //HostUnresolvedVmfsResolutionSpec
 
 	function __construct($HostUnresolvedVmfsResolutionSpec = null) {
@@ -17050,7 +17063,7 @@ class ArrayOfHostUnresolvedVmfsResolutionSpec {
 	}
 }
 
-class HostUnresolvedVmfsVolumeResolveStatus {
+class HostUnresolvedVmfsVolumeResolveStatus extends phpDynamicProperties {
 	public $resolvable; //boolean
 	public $incompleteExtents; //boolean
 	public $multipleCopies; //boolean
@@ -17062,7 +17075,7 @@ class HostUnresolvedVmfsVolumeResolveStatus {
 	}
 }
 
-class HostUnresolvedVmfsVolume {
+class HostUnresolvedVmfsVolume extends phpDynamicProperties {
 	public $extent; //HostUnresolvedVmfsExtent
 	public $vmfsLabel; //string
 	public $vmfsUuid; //string
@@ -17078,7 +17091,7 @@ class HostUnresolvedVmfsVolume {
 	}
 }
 
-class ArrayOfHostUnresolvedVmfsVolume {
+class ArrayOfHostUnresolvedVmfsVolume extends phpDynamicProperties {
 	public $HostUnresolvedVmfsVolume; //HostUnresolvedVmfsVolume
 
 	function __construct($HostUnresolvedVmfsVolume = null) {
@@ -17086,7 +17099,7 @@ class ArrayOfHostUnresolvedVmfsVolume {
 	}
 }
 
-class HostVMotionConfig {
+class HostVMotionConfig extends phpDynamicProperties {
 	public $vmotionNicKey; //string
 	public $enabled; //boolean
 
@@ -17096,7 +17109,7 @@ class HostVMotionConfig {
 	}
 }
 
-class HostVMotionInfo {
+class HostVMotionInfo extends phpDynamicProperties {
 	public $netConfig; //HostVMotionNetConfig
 	public $ipConfig; //HostIpConfig
 
@@ -17106,7 +17119,7 @@ class HostVMotionInfo {
 	}
 }
 
-class HostVMotionNetConfig {
+class HostVMotionNetConfig extends phpDynamicProperties {
 	public $candidateVnic; //HostVirtualNic
 	public $selectedVnic; //string
 
@@ -17116,7 +17129,7 @@ class HostVMotionNetConfig {
 	}
 }
 
-class HostVirtualNicSpec {
+class HostVirtualNicSpec extends phpDynamicProperties {
 	public $ip; //HostIpConfig
 	public $mac; //string
 	public $distributedVirtualPort; //DistributedVirtualSwitchPortConnection
@@ -17134,7 +17147,7 @@ class HostVirtualNicSpec {
 	}
 }
 
-class HostVirtualNicConfig {
+class HostVirtualNicConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $device; //string
 	public $portgroup; //string
@@ -17148,7 +17161,7 @@ class HostVirtualNicConfig {
 	}
 }
 
-class ArrayOfHostVirtualNicConfig {
+class ArrayOfHostVirtualNicConfig extends phpDynamicProperties {
 	public $HostVirtualNicConfig; //HostVirtualNicConfig
 
 	function __construct($HostVirtualNicConfig = null) {
@@ -17156,7 +17169,7 @@ class ArrayOfHostVirtualNicConfig {
 	}
 }
 
-class HostVirtualNic {
+class HostVirtualNic extends phpDynamicProperties {
 	public $device; //string
 	public $key; //string
 	public $portgroup; //string
@@ -17172,7 +17185,7 @@ class HostVirtualNic {
 	}
 }
 
-class ArrayOfHostVirtualNic {
+class ArrayOfHostVirtualNic extends phpDynamicProperties {
 	public $HostVirtualNic; //HostVirtualNic
 
 	function __construct($HostVirtualNic = null) {
@@ -17180,7 +17193,7 @@ class ArrayOfHostVirtualNic {
 	}
 }
 
-class HostVirtualNicConnection {
+class HostVirtualNicConnection extends phpDynamicProperties {
 	public $portgroup; //string
 	public $dvPort; //DistributedVirtualSwitchPortConnection
 
@@ -17190,7 +17203,7 @@ class HostVirtualNicConnection {
 	}
 }
 
-class HostVirtualNicManagerNicTypeSelection {
+class HostVirtualNicManagerNicTypeSelection extends phpDynamicProperties {
 	public $vnic; //HostVirtualNicConnection
 	public $nicType; //string
 
@@ -17200,7 +17213,7 @@ class HostVirtualNicManagerNicTypeSelection {
 	}
 }
 
-class ArrayOfHostVirtualNicManagerNicTypeSelection {
+class ArrayOfHostVirtualNicManagerNicTypeSelection extends phpDynamicProperties {
 	public $HostVirtualNicManagerNicTypeSelection; //HostVirtualNicManagerNicTypeSelection
 
 	function __construct($HostVirtualNicManagerNicTypeSelection = null) {
@@ -17208,7 +17221,7 @@ class ArrayOfHostVirtualNicManagerNicTypeSelection {
 	}
 }
 
-class VirtualNicManagerNetConfig {
+class VirtualNicManagerNetConfig extends phpDynamicProperties {
 	public $nicType; //string
 	public $multiSelectAllowed; //boolean
 	public $candidateVnic; //HostVirtualNic
@@ -17222,7 +17235,7 @@ class VirtualNicManagerNetConfig {
 	}
 }
 
-class ArrayOfVirtualNicManagerNetConfig {
+class ArrayOfVirtualNicManagerNetConfig extends phpDynamicProperties {
 	public $VirtualNicManagerNetConfig; //VirtualNicManagerNetConfig
 
 	function __construct($VirtualNicManagerNetConfig = null) {
@@ -17230,7 +17243,7 @@ class ArrayOfVirtualNicManagerNetConfig {
 	}
 }
 
-class HostVirtualNicManagerInfo {
+class HostVirtualNicManagerInfo extends phpDynamicProperties {
 	public $netConfig; //VirtualNicManagerNetConfig
 
 	function __construct($netConfig = null) {
@@ -17238,10 +17251,10 @@ class HostVirtualNicManagerInfo {
 	}
 }
 
-class HostVirtualSwitchBridge {
+class HostVirtualSwitchBridge extends phpDynamicProperties {
 }
 
-class HostVirtualSwitchAutoBridge {
+class HostVirtualSwitchAutoBridge extends phpDynamicProperties {
 	public $excludedNicDevice; //string
 
 	function __construct($excludedNicDevice = null) {
@@ -17249,7 +17262,7 @@ class HostVirtualSwitchAutoBridge {
 	}
 }
 
-class HostVirtualSwitchSimpleBridge {
+class HostVirtualSwitchSimpleBridge extends phpDynamicProperties {
 	public $nicDevice; //string
 
 	function __construct($nicDevice = null) {
@@ -17257,7 +17270,7 @@ class HostVirtualSwitchSimpleBridge {
 	}
 }
 
-class HostVirtualSwitchBondBridge {
+class HostVirtualSwitchBondBridge extends phpDynamicProperties {
 	public $nicDevice; //string
 	public $beacon; //HostVirtualSwitchBeaconConfig
 	public $linkDiscoveryProtocolConfig; //LinkDiscoveryProtocolConfig
@@ -17269,7 +17282,7 @@ class HostVirtualSwitchBondBridge {
 	}
 }
 
-class HostVirtualSwitchBeaconConfig {
+class HostVirtualSwitchBeaconConfig extends phpDynamicProperties {
 	public $interval; //int
 
 	function __construct($interval = null) {
@@ -17277,7 +17290,7 @@ class HostVirtualSwitchBeaconConfig {
 	}
 }
 
-class HostVirtualSwitchSpec {
+class HostVirtualSwitchSpec extends phpDynamicProperties {
 	public $numPorts; //int
 	public $bridge; //HostVirtualSwitchBridge
 	public $policy; //HostNetworkPolicy
@@ -17291,7 +17304,7 @@ class HostVirtualSwitchSpec {
 	}
 }
 
-class HostVirtualSwitchConfig {
+class HostVirtualSwitchConfig extends phpDynamicProperties {
 	public $changeOperation; //string
 	public $name; //string
 	public $spec; //HostVirtualSwitchSpec
@@ -17303,7 +17316,7 @@ class HostVirtualSwitchConfig {
 	}
 }
 
-class ArrayOfHostVirtualSwitchConfig {
+class ArrayOfHostVirtualSwitchConfig extends phpDynamicProperties {
 	public $HostVirtualSwitchConfig; //HostVirtualSwitchConfig
 
 	function __construct($HostVirtualSwitchConfig = null) {
@@ -17311,7 +17324,7 @@ class ArrayOfHostVirtualSwitchConfig {
 	}
 }
 
-class HostVirtualSwitch {
+class HostVirtualSwitch extends phpDynamicProperties {
 	public $name; //string
 	public $key; //string
 	public $numPorts; //int
@@ -17333,7 +17346,7 @@ class HostVirtualSwitch {
 	}
 }
 
-class ArrayOfHostVirtualSwitch {
+class ArrayOfHostVirtualSwitch extends phpDynamicProperties {
 	public $HostVirtualSwitch; //HostVirtualSwitch
 
 	function __construct($HostVirtualSwitch = null) {
@@ -17341,7 +17354,7 @@ class ArrayOfHostVirtualSwitch {
 	}
 }
 
-class HostVmciAccessManagerAccessSpec {
+class HostVmciAccessManagerAccessSpec extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $services; //string
 	public $mode; //string
@@ -17353,7 +17366,7 @@ class HostVmciAccessManagerAccessSpec {
 	}
 }
 
-class ArrayOfHostVmciAccessManagerAccessSpec {
+class ArrayOfHostVmciAccessManagerAccessSpec extends phpDynamicProperties {
 	public $HostVmciAccessManagerAccessSpec; //HostVmciAccessManagerAccessSpec
 
 	function __construct($HostVmciAccessManagerAccessSpec = null) {
@@ -17361,7 +17374,7 @@ class ArrayOfHostVmciAccessManagerAccessSpec {
 	}
 }
 
-class HostVmfsRescanResult {
+class HostVmfsRescanResult extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $fault; //LocalizedMethodFault
 
@@ -17371,7 +17384,7 @@ class HostVmfsRescanResult {
 	}
 }
 
-class ArrayOfHostVmfsRescanResult {
+class ArrayOfHostVmfsRescanResult extends phpDynamicProperties {
 	public $HostVmfsRescanResult; //HostVmfsRescanResult
 
 	function __construct($HostVmfsRescanResult = null) {
@@ -17379,7 +17392,7 @@ class ArrayOfHostVmfsRescanResult {
 	}
 }
 
-class HostVmfsSpec {
+class HostVmfsSpec extends phpDynamicProperties {
 	public $extent; //HostScsiDiskPartition
 	public $blockSizeMb; //int
 	public $majorVersion; //int
@@ -17393,7 +17406,7 @@ class HostVmfsSpec {
 	}
 }
 
-class HostVmfsVolume {
+class HostVmfsVolume extends phpDynamicProperties {
 	public $blockSizeMb; //int
 	public $maxBlocks; //int
 	public $majorVersion; //int
@@ -17417,7 +17430,7 @@ class HostVmfsVolume {
 	}
 }
 
-class NetDhcpConfigInfoDhcpOptions {
+class NetDhcpConfigInfoDhcpOptions extends phpDynamicProperties {
 	public $enable; //boolean
 	public $config; //KeyValue
 
@@ -17427,7 +17440,7 @@ class NetDhcpConfigInfoDhcpOptions {
 	}
 }
 
-class NetDhcpConfigInfo {
+class NetDhcpConfigInfo extends phpDynamicProperties {
 	public $ipv6; //NetDhcpConfigInfoDhcpOptions
 	public $ipv4; //NetDhcpConfigInfoDhcpOptions
 
@@ -17437,7 +17450,7 @@ class NetDhcpConfigInfo {
 	}
 }
 
-class NetDhcpConfigSpecDhcpOptionsSpec {
+class NetDhcpConfigSpecDhcpOptionsSpec extends phpDynamicProperties {
 	public $enable; //boolean
 	public $config; //KeyValue
 	public $operation; //string
@@ -17449,7 +17462,7 @@ class NetDhcpConfigSpecDhcpOptionsSpec {
 	}
 }
 
-class NetDhcpConfigSpec {
+class NetDhcpConfigSpec extends phpDynamicProperties {
 	public $ipv6; //NetDhcpConfigSpecDhcpOptionsSpec
 	public $ipv4; //NetDhcpConfigSpecDhcpOptionsSpec
 
@@ -17459,7 +17472,7 @@ class NetDhcpConfigSpec {
 	}
 }
 
-class NetDnsConfigInfo {
+class NetDnsConfigInfo extends phpDynamicProperties {
 	public $dhcp; //boolean
 	public $hostName; //string
 	public $domainName; //string
@@ -17475,7 +17488,7 @@ class NetDnsConfigInfo {
 	}
 }
 
-class NetDnsConfigSpec {
+class NetDnsConfigSpec extends phpDynamicProperties {
 	public $dhcp; //boolean
 	public $hostName; //string
 	public $domainName; //string
@@ -17491,7 +17504,7 @@ class NetDnsConfigSpec {
 	}
 }
 
-class NetIpConfigInfoIpAddress {
+class NetIpConfigInfoIpAddress extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $prefixLength; //int
 	public $origin; //string
@@ -17507,7 +17520,7 @@ class NetIpConfigInfoIpAddress {
 	}
 }
 
-class ArrayOfNetIpConfigInfoIpAddress {
+class ArrayOfNetIpConfigInfoIpAddress extends phpDynamicProperties {
 	public $NetIpConfigInfoIpAddress; //NetIpConfigInfoIpAddress
 
 	function __construct($NetIpConfigInfoIpAddress = null) {
@@ -17515,7 +17528,7 @@ class ArrayOfNetIpConfigInfoIpAddress {
 	}
 }
 
-class NetIpConfigInfo {
+class NetIpConfigInfo extends phpDynamicProperties {
 	public $ipAddress; //NetIpConfigInfoIpAddress
 	public $dhcp; //NetDhcpConfigInfo
 	public $autoConfigurationEnabled; //boolean
@@ -17527,7 +17540,7 @@ class NetIpConfigInfo {
 	}
 }
 
-class NetIpConfigSpecIpAddressSpec {
+class NetIpConfigSpecIpAddressSpec extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $prefixLength; //int
 	public $operation; //string
@@ -17539,7 +17552,7 @@ class NetIpConfigSpecIpAddressSpec {
 	}
 }
 
-class ArrayOfNetIpConfigSpecIpAddressSpec {
+class ArrayOfNetIpConfigSpecIpAddressSpec extends phpDynamicProperties {
 	public $NetIpConfigSpecIpAddressSpec; //NetIpConfigSpecIpAddressSpec
 
 	function __construct($NetIpConfigSpecIpAddressSpec = null) {
@@ -17547,7 +17560,7 @@ class ArrayOfNetIpConfigSpecIpAddressSpec {
 	}
 }
 
-class NetIpConfigSpec {
+class NetIpConfigSpec extends phpDynamicProperties {
 	public $ipAddress; //NetIpConfigSpecIpAddressSpec
 	public $dhcp; //NetDhcpConfigSpec
 	public $autoConfigurationEnabled; //boolean
@@ -17559,7 +17572,7 @@ class NetIpConfigSpec {
 	}
 }
 
-class NetIpRouteConfigInfoGateway {
+class NetIpRouteConfigInfoGateway extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $device; //string
 
@@ -17569,7 +17582,7 @@ class NetIpRouteConfigInfoGateway {
 	}
 }
 
-class NetIpRouteConfigInfoIpRoute {
+class NetIpRouteConfigInfoIpRoute extends phpDynamicProperties {
 	public $network; //string
 	public $prefixLength; //int
 	public $gateway; //NetIpRouteConfigInfoGateway
@@ -17581,7 +17594,7 @@ class NetIpRouteConfigInfoIpRoute {
 	}
 }
 
-class ArrayOfNetIpRouteConfigInfoIpRoute {
+class ArrayOfNetIpRouteConfigInfoIpRoute extends phpDynamicProperties {
 	public $NetIpRouteConfigInfoIpRoute; //NetIpRouteConfigInfoIpRoute
 
 	function __construct($NetIpRouteConfigInfoIpRoute = null) {
@@ -17589,7 +17602,7 @@ class ArrayOfNetIpRouteConfigInfoIpRoute {
 	}
 }
 
-class NetIpRouteConfigInfo {
+class NetIpRouteConfigInfo extends phpDynamicProperties {
 	public $ipRoute; //NetIpRouteConfigInfoIpRoute
 
 	function __construct($ipRoute = null) {
@@ -17597,7 +17610,7 @@ class NetIpRouteConfigInfo {
 	}
 }
 
-class NetIpRouteConfigSpecGatewaySpec {
+class NetIpRouteConfigSpecGatewaySpec extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $device; //string
 
@@ -17607,7 +17620,7 @@ class NetIpRouteConfigSpecGatewaySpec {
 	}
 }
 
-class NetIpRouteConfigSpecIpRouteSpec {
+class NetIpRouteConfigSpecIpRouteSpec extends phpDynamicProperties {
 	public $network; //string
 	public $prefixLength; //int
 	public $gateway; //NetIpRouteConfigSpecGatewaySpec
@@ -17621,7 +17634,7 @@ class NetIpRouteConfigSpecIpRouteSpec {
 	}
 }
 
-class ArrayOfNetIpRouteConfigSpecIpRouteSpec {
+class ArrayOfNetIpRouteConfigSpecIpRouteSpec extends phpDynamicProperties {
 	public $NetIpRouteConfigSpecIpRouteSpec; //NetIpRouteConfigSpecIpRouteSpec
 
 	function __construct($NetIpRouteConfigSpecIpRouteSpec = null) {
@@ -17629,7 +17642,7 @@ class ArrayOfNetIpRouteConfigSpecIpRouteSpec {
 	}
 }
 
-class NetIpRouteConfigSpec {
+class NetIpRouteConfigSpec extends phpDynamicProperties {
 	public $ipRoute; //NetIpRouteConfigSpecIpRouteSpec
 
 	function __construct($ipRoute = null) {
@@ -17637,7 +17650,7 @@ class NetIpRouteConfigSpec {
 	}
 }
 
-class NetIpStackInfoNetToMedia {
+class NetIpStackInfoNetToMedia extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $physicalAddress; //string
 	public $device; //string
@@ -17651,7 +17664,7 @@ class NetIpStackInfoNetToMedia {
 	}
 }
 
-class ArrayOfNetIpStackInfoNetToMedia {
+class ArrayOfNetIpStackInfoNetToMedia extends phpDynamicProperties {
 	public $NetIpStackInfoNetToMedia; //NetIpStackInfoNetToMedia
 
 	function __construct($NetIpStackInfoNetToMedia = null) {
@@ -17659,7 +17672,7 @@ class ArrayOfNetIpStackInfoNetToMedia {
 	}
 }
 
-class NetIpStackInfoDefaultRouter {
+class NetIpStackInfoDefaultRouter extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $device; //string
 	public $lifetime; //dateTime
@@ -17673,7 +17686,7 @@ class NetIpStackInfoDefaultRouter {
 	}
 }
 
-class ArrayOfNetIpStackInfoDefaultRouter {
+class ArrayOfNetIpStackInfoDefaultRouter extends phpDynamicProperties {
 	public $NetIpStackInfoDefaultRouter; //NetIpStackInfoDefaultRouter
 
 	function __construct($NetIpStackInfoDefaultRouter = null) {
@@ -17681,7 +17694,7 @@ class ArrayOfNetIpStackInfoDefaultRouter {
 	}
 }
 
-class NetIpStackInfo {
+class NetIpStackInfo extends phpDynamicProperties {
 	public $neighbor; //NetIpStackInfoNetToMedia
 	public $defaultRouter; //NetIpStackInfoDefaultRouter
 
@@ -17691,7 +17704,7 @@ class NetIpStackInfo {
 	}
 }
 
-class NetBIOSConfigInfo {
+class NetBIOSConfigInfo extends phpDynamicProperties {
 	public $mode; //string
 
 	function __construct($mode = null) {
@@ -17699,7 +17712,7 @@ class NetBIOSConfigInfo {
 	}
 }
 
-class WinNetBIOSConfigInfo {
+class WinNetBIOSConfigInfo extends phpDynamicProperties {
 	public $primaryWINS; //string
 	public $secondaryWINS; //string
 
@@ -17709,7 +17722,7 @@ class WinNetBIOSConfigInfo {
 	}
 }
 
-class ArrayUpdateSpec {
+class ArrayUpdateSpec extends phpDynamicProperties {
 	public $operation; //ArrayUpdateOperation
 	public $removeKey; //anyType
 
@@ -17719,7 +17732,7 @@ class ArrayUpdateSpec {
 	}
 }
 
-class BoolOption {
+class BoolOption extends phpDynamicProperties {
 	public $supported; //boolean
 	public $defaultValue; //boolean
 
@@ -17729,7 +17742,7 @@ class BoolOption {
 	}
 }
 
-class ChoiceOption {
+class ChoiceOption extends phpDynamicProperties {
 	public $choiceInfo; //ElementDescription
 	public $defaultIndex; //int
 
@@ -17739,7 +17752,7 @@ class ChoiceOption {
 	}
 }
 
-class FloatOption {
+class FloatOption extends phpDynamicProperties {
 	public $min; //float
 	public $max; //float
 	public $defaultValue; //float
@@ -17751,7 +17764,7 @@ class FloatOption {
 	}
 }
 
-class IntOption {
+class IntOption extends phpDynamicProperties {
 	public $min; //int
 	public $max; //int
 	public $defaultValue; //int
@@ -17763,7 +17776,7 @@ class IntOption {
 	}
 }
 
-class LongOption {
+class LongOption extends phpDynamicProperties {
 	public $min; //long
 	public $max; //long
 	public $defaultValue; //long
@@ -17775,7 +17788,7 @@ class LongOption {
 	}
 }
 
-class OptionDef {
+class OptionDef extends phpDynamicProperties {
 	public $optionType; //OptionType
 
 	function __construct($optionType = null) {
@@ -17783,7 +17796,7 @@ class OptionDef {
 	}
 }
 
-class ArrayOfOptionDef {
+class ArrayOfOptionDef extends phpDynamicProperties {
 	public $OptionDef; //OptionDef
 
 	function __construct($OptionDef = null) {
@@ -17791,7 +17804,7 @@ class ArrayOfOptionDef {
 	}
 }
 
-class OptionType {
+class OptionType extends phpDynamicProperties {
 	public $valueIsReadonly; //boolean
 
 	function __construct($valueIsReadonly = null) {
@@ -17799,7 +17812,7 @@ class OptionType {
 	}
 }
 
-class OptionValue {
+class OptionValue extends phpDynamicProperties {
 	public $key; //string
 	public $value; //anyType
 
@@ -17809,7 +17822,7 @@ class OptionValue {
 	}
 }
 
-class ArrayOfOptionValue {
+class ArrayOfOptionValue extends phpDynamicProperties {
 	public $OptionValue; //OptionValue
 
 	function __construct($OptionValue = null) {
@@ -17817,7 +17830,7 @@ class ArrayOfOptionValue {
 	}
 }
 
-class StringOption {
+class StringOption extends phpDynamicProperties {
 	public $defaultValue; //string
 	public $validCharacters; //string
 
@@ -17827,7 +17840,7 @@ class StringOption {
 	}
 }
 
-class ApplyProfile {
+class ApplyProfile extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $policy; //ProfilePolicy
 	public $profileTypeName; //string
@@ -17843,7 +17856,7 @@ class ApplyProfile {
 	}
 }
 
-class ArrayOfApplyProfile {
+class ArrayOfApplyProfile extends phpDynamicProperties {
 	public $ApplyProfile; //ApplyProfile
 
 	function __construct($ApplyProfile = null) {
@@ -17851,7 +17864,7 @@ class ArrayOfApplyProfile {
 	}
 }
 
-class ProfileApplyProfileElement {
+class ProfileApplyProfileElement extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -17859,7 +17872,7 @@ class ProfileApplyProfileElement {
 	}
 }
 
-class ProfileApplyProfileProperty {
+class ProfileApplyProfileProperty extends phpDynamicProperties {
 	public $propertyName; //string
 	public $array; //boolean
 	public $profile; //ApplyProfile
@@ -17871,7 +17884,7 @@ class ProfileApplyProfileProperty {
 	}
 }
 
-class ArrayOfProfileApplyProfileProperty {
+class ArrayOfProfileApplyProfileProperty extends phpDynamicProperties {
 	public $ProfileApplyProfileProperty; //ProfileApplyProfileProperty
 
 	function __construct($ProfileApplyProfileProperty = null) {
@@ -17879,7 +17892,7 @@ class ArrayOfProfileApplyProfileProperty {
 	}
 }
 
-class ComplianceLocator {
+class ComplianceLocator extends phpDynamicProperties {
 	public $expressionName; //string
 	public $applyPath; //ProfilePropertyPath
 
@@ -17889,7 +17902,7 @@ class ComplianceLocator {
 	}
 }
 
-class ArrayOfComplianceLocator {
+class ArrayOfComplianceLocator extends phpDynamicProperties {
 	public $ComplianceLocator; //ComplianceLocator
 
 	function __construct($ComplianceLocator = null) {
@@ -17897,7 +17910,7 @@ class ArrayOfComplianceLocator {
 	}
 }
 
-class ComplianceProfile {
+class ComplianceProfile extends phpDynamicProperties {
 	public $expression; //ProfileExpression
 	public $rootExpression; //string
 
@@ -17907,7 +17920,7 @@ class ComplianceProfile {
 	}
 }
 
-class ComplianceFailure {
+class ComplianceFailure extends phpDynamicProperties {
 	public $failureType; //string
 	public $message; //LocalizableMessage
 	public $expressionName; //string
@@ -17919,7 +17932,7 @@ class ComplianceFailure {
 	}
 }
 
-class ArrayOfComplianceFailure {
+class ArrayOfComplianceFailure extends phpDynamicProperties {
 	public $ComplianceFailure; //ComplianceFailure
 
 	function __construct($ComplianceFailure = null) {
@@ -17927,7 +17940,7 @@ class ArrayOfComplianceFailure {
 	}
 }
 
-class ComplianceResult {
+class ComplianceResult extends phpDynamicProperties {
 	public $profile; //ManagedObjectReference
 	public $complianceStatus; //string
 	public $entity; //ManagedObjectReference
@@ -17943,7 +17956,7 @@ class ComplianceResult {
 	}
 }
 
-class ArrayOfComplianceResult {
+class ArrayOfComplianceResult extends phpDynamicProperties {
 	public $ComplianceResult; //ComplianceResult
 
 	function __construct($ComplianceResult = null) {
@@ -17951,7 +17964,7 @@ class ArrayOfComplianceResult {
 	}
 }
 
-class ProfileDeferredPolicyOptionParameter {
+class ProfileDeferredPolicyOptionParameter extends phpDynamicProperties {
 	public $inputPath; //ProfilePropertyPath
 	public $parameter; //KeyAnyValue
 
@@ -17961,7 +17974,7 @@ class ProfileDeferredPolicyOptionParameter {
 	}
 }
 
-class ArrayOfProfileDeferredPolicyOptionParameter {
+class ArrayOfProfileDeferredPolicyOptionParameter extends phpDynamicProperties {
 	public $ProfileDeferredPolicyOptionParameter; //ProfileDeferredPolicyOptionParameter
 
 	function __construct($ProfileDeferredPolicyOptionParameter = null) {
@@ -17969,7 +17982,7 @@ class ArrayOfProfileDeferredPolicyOptionParameter {
 	}
 }
 
-class ProfileExpression {
+class ProfileExpression extends phpDynamicProperties {
 	public $id; //string
 	public $displayName; //string
 	public $negated; //boolean
@@ -17981,7 +17994,7 @@ class ProfileExpression {
 	}
 }
 
-class ArrayOfProfileExpression {
+class ArrayOfProfileExpression extends phpDynamicProperties {
 	public $ProfileExpression; //ProfileExpression
 
 	function __construct($ProfileExpression = null) {
@@ -17989,7 +18002,7 @@ class ArrayOfProfileExpression {
 	}
 }
 
-class ProfileSimpleExpression {
+class ProfileSimpleExpression extends phpDynamicProperties {
 	public $expressionType; //string
 	public $parameter; //KeyAnyValue
 
@@ -17999,7 +18012,7 @@ class ProfileSimpleExpression {
 	}
 }
 
-class ProfileCompositeExpression {
+class ProfileCompositeExpression extends phpDynamicProperties {
 	public $operator; //string
 	public $expressionName; //string
 
@@ -18009,7 +18022,7 @@ class ProfileCompositeExpression {
 	}
 }
 
-class ProfileExpressionMetadata {
+class ProfileExpressionMetadata extends phpDynamicProperties {
 	public $expressionId; //ExtendedElementDescription
 	public $parameter; //ProfileParameterMetadata
 
@@ -18019,7 +18032,7 @@ class ProfileExpressionMetadata {
 	}
 }
 
-class ArrayOfProfileExpressionMetadata {
+class ArrayOfProfileExpressionMetadata extends phpDynamicProperties {
 	public $ProfileExpressionMetadata; //ProfileExpressionMetadata
 
 	function __construct($ProfileExpressionMetadata = null) {
@@ -18027,7 +18040,7 @@ class ArrayOfProfileExpressionMetadata {
 	}
 }
 
-class ProfileParameterMetadata {
+class ProfileParameterMetadata extends phpDynamicProperties {
 	public $id; //ExtendedElementDescription
 	public $type; //string
 	public $optional; //boolean
@@ -18041,7 +18054,7 @@ class ProfileParameterMetadata {
 	}
 }
 
-class ArrayOfProfileParameterMetadata {
+class ArrayOfProfileParameterMetadata extends phpDynamicProperties {
 	public $ProfileParameterMetadata; //ProfileParameterMetadata
 
 	function __construct($ProfileParameterMetadata = null) {
@@ -18049,7 +18062,7 @@ class ArrayOfProfileParameterMetadata {
 	}
 }
 
-class ProfilePolicy {
+class ProfilePolicy extends phpDynamicProperties {
 	public $id; //string
 	public $policyOption; //PolicyOption
 
@@ -18059,7 +18072,7 @@ class ProfilePolicy {
 	}
 }
 
-class ArrayOfProfilePolicy {
+class ArrayOfProfilePolicy extends phpDynamicProperties {
 	public $ProfilePolicy; //ProfilePolicy
 
 	function __construct($ProfilePolicy = null) {
@@ -18067,7 +18080,7 @@ class ArrayOfProfilePolicy {
 	}
 }
 
-class ProfilePolicyOptionMetadata {
+class ProfilePolicyOptionMetadata extends phpDynamicProperties {
 	public $id; //ExtendedElementDescription
 	public $parameter; //ProfileParameterMetadata
 
@@ -18077,7 +18090,7 @@ class ProfilePolicyOptionMetadata {
 	}
 }
 
-class ArrayOfProfilePolicyOptionMetadata {
+class ArrayOfProfilePolicyOptionMetadata extends phpDynamicProperties {
 	public $ProfilePolicyOptionMetadata; //ProfilePolicyOptionMetadata
 
 	function __construct($ProfilePolicyOptionMetadata = null) {
@@ -18085,7 +18098,7 @@ class ArrayOfProfilePolicyOptionMetadata {
 	}
 }
 
-class ProfileCompositePolicyOptionMetadata {
+class ProfileCompositePolicyOptionMetadata extends phpDynamicProperties {
 	public $option; //string
 
 	function __construct($option = null) {
@@ -18093,7 +18106,7 @@ class ProfileCompositePolicyOptionMetadata {
 	}
 }
 
-class UserInputRequiredParameterMetadata {
+class UserInputRequiredParameterMetadata extends phpDynamicProperties {
 	public $userInputParameter; //ProfileParameterMetadata
 
 	function __construct($userInputParameter = null) {
@@ -18101,7 +18114,7 @@ class UserInputRequiredParameterMetadata {
 	}
 }
 
-class ProfilePolicyMetadata {
+class ProfilePolicyMetadata extends phpDynamicProperties {
 	public $id; //ExtendedElementDescription
 	public $possibleOption; //ProfilePolicyOptionMetadata
 
@@ -18111,7 +18124,7 @@ class ProfilePolicyMetadata {
 	}
 }
 
-class ArrayOfProfilePolicyMetadata {
+class ArrayOfProfilePolicyMetadata extends phpDynamicProperties {
 	public $ProfilePolicyMetadata; //ProfilePolicyMetadata
 
 	function __construct($ProfilePolicyMetadata = null) {
@@ -18119,7 +18132,7 @@ class ArrayOfProfilePolicyMetadata {
 	}
 }
 
-class PolicyOption {
+class PolicyOption extends phpDynamicProperties {
 	public $id; //string
 	public $parameter; //KeyAnyValue
 
@@ -18129,7 +18142,7 @@ class PolicyOption {
 	}
 }
 
-class ArrayOfPolicyOption {
+class ArrayOfPolicyOption extends phpDynamicProperties {
 	public $PolicyOption; //PolicyOption
 
 	function __construct($PolicyOption = null) {
@@ -18137,7 +18150,7 @@ class ArrayOfPolicyOption {
 	}
 }
 
-class CompositePolicyOption {
+class CompositePolicyOption extends phpDynamicProperties {
 	public $option; //PolicyOption
 
 	function __construct($option = null) {
@@ -18145,7 +18158,7 @@ class CompositePolicyOption {
 	}
 }
 
-class ProfileCreateSpec {
+class ProfileCreateSpec extends phpDynamicProperties {
 	public $name; //string
 	public $annotation; //string
 	public $enabled; //boolean
@@ -18157,7 +18170,7 @@ class ProfileCreateSpec {
 	}
 }
 
-class ProfileSerializedCreateSpec {
+class ProfileSerializedCreateSpec extends phpDynamicProperties {
 	public $profileConfigString; //string
 
 	function __construct($profileConfigString = null) {
@@ -18165,7 +18178,7 @@ class ProfileSerializedCreateSpec {
 	}
 }
 
-class ProfileConfigInfo {
+class ProfileConfigInfo extends phpDynamicProperties {
 	public $name; //string
 	public $annotation; //string
 	public $enabled; //boolean
@@ -18177,7 +18190,7 @@ class ProfileConfigInfo {
 	}
 }
 
-class ProfileDescriptionSection {
+class ProfileDescriptionSection extends phpDynamicProperties {
 	public $description; //ExtendedElementDescription
 	public $message; //LocalizableMessage
 
@@ -18187,7 +18200,7 @@ class ProfileDescriptionSection {
 	}
 }
 
-class ArrayOfProfileDescriptionSection {
+class ArrayOfProfileDescriptionSection extends phpDynamicProperties {
 	public $ProfileDescriptionSection; //ProfileDescriptionSection
 
 	function __construct($ProfileDescriptionSection = null) {
@@ -18195,7 +18208,7 @@ class ArrayOfProfileDescriptionSection {
 	}
 }
 
-class ProfileDescription {
+class ProfileDescription extends phpDynamicProperties {
 	public $section; //ProfileDescriptionSection
 
 	function __construct($section = null) {
@@ -18203,7 +18216,7 @@ class ProfileDescription {
 	}
 }
 
-class ProfileMetadataProfileSortSpec {
+class ProfileMetadataProfileSortSpec extends phpDynamicProperties {
 	public $policyId; //string
 	public $parameter; //string
 
@@ -18213,7 +18226,7 @@ class ProfileMetadataProfileSortSpec {
 	}
 }
 
-class ArrayOfProfileMetadataProfileSortSpec {
+class ArrayOfProfileMetadataProfileSortSpec extends phpDynamicProperties {
 	public $ProfileMetadataProfileSortSpec; //ProfileMetadataProfileSortSpec
 
 	function __construct($ProfileMetadataProfileSortSpec = null) {
@@ -18221,7 +18234,7 @@ class ArrayOfProfileMetadataProfileSortSpec {
 	}
 }
 
-class ProfileMetadata {
+class ProfileMetadata extends phpDynamicProperties {
 	public $key; //string
 	public $profileTypeName; //string
 	public $description; //ExtendedDescription
@@ -18235,7 +18248,7 @@ class ProfileMetadata {
 	}
 }
 
-class ArrayOfProfileMetadata {
+class ArrayOfProfileMetadata extends phpDynamicProperties {
 	public $ProfileMetadata; //ProfileMetadata
 
 	function __construct($ProfileMetadata = null) {
@@ -18243,7 +18256,7 @@ class ArrayOfProfileMetadata {
 	}
 }
 
-class ProfilePropertyPath {
+class ProfilePropertyPath extends phpDynamicProperties {
 	public $profilePath; //string
 	public $policyId; //string
 
@@ -18253,7 +18266,7 @@ class ProfilePropertyPath {
 	}
 }
 
-class ArrayOfProfilePropertyPath {
+class ArrayOfProfilePropertyPath extends phpDynamicProperties {
 	public $ProfilePropertyPath; //ProfilePropertyPath
 
 	function __construct($ProfilePropertyPath = null) {
@@ -18261,7 +18274,7 @@ class ArrayOfProfilePropertyPath {
 	}
 }
 
-class ProfileProfileStructure {
+class ProfileProfileStructure extends phpDynamicProperties {
 	public $profileTypeName; //string
 	public $child; //ProfileProfileStructureProperty
 
@@ -18271,7 +18284,7 @@ class ProfileProfileStructure {
 	}
 }
 
-class ProfileProfileStructureProperty {
+class ProfileProfileStructureProperty extends phpDynamicProperties {
 	public $propertyName; //string
 	public $array; //boolean
 	public $element; //ProfileProfileStructure
@@ -18283,7 +18296,7 @@ class ProfileProfileStructureProperty {
 	}
 }
 
-class ArrayOfProfileProfileStructureProperty {
+class ArrayOfProfileProfileStructureProperty extends phpDynamicProperties {
 	public $ProfileProfileStructureProperty; //ProfileProfileStructureProperty
 
 	function __construct($ProfileProfileStructureProperty = null) {
@@ -18291,7 +18304,7 @@ class ArrayOfProfileProfileStructureProperty {
 	}
 }
 
-class ClusterProfileConfigInfo {
+class ClusterProfileConfigInfo extends phpDynamicProperties {
 	public $complyProfile; //ComplianceProfile
 
 	function __construct($complyProfile = null) {
@@ -18299,13 +18312,13 @@ class ClusterProfileConfigInfo {
 	}
 }
 
-class ClusterProfileCreateSpec {
+class ClusterProfileCreateSpec extends phpDynamicProperties {
 }
 
-class ClusterProfileConfigSpec {
+class ClusterProfileConfigSpec extends phpDynamicProperties {
 }
 
-class ClusterProfileCompleteConfigSpec {
+class ClusterProfileCompleteConfigSpec extends phpDynamicProperties {
 	public $complyProfile; //ComplianceProfile
 
 	function __construct($complyProfile = null) {
@@ -18313,7 +18326,7 @@ class ClusterProfileCompleteConfigSpec {
 	}
 }
 
-class ClusterProfileConfigServiceCreateSpec {
+class ClusterProfileConfigServiceCreateSpec extends phpDynamicProperties {
 	public $serviceType; //string
 
 	function __construct($serviceType = null) {
@@ -18321,7 +18334,7 @@ class ClusterProfileConfigServiceCreateSpec {
 	}
 }
 
-class AnswerFile {
+class AnswerFile extends phpDynamicProperties {
 	public $userInput; //ProfileDeferredPolicyOptionParameter
 	public $createdTime; //dateTime
 	public $modifiedTime; //dateTime
@@ -18333,7 +18346,7 @@ class AnswerFile {
 	}
 }
 
-class AnswerFileStatusError {
+class AnswerFileStatusError extends phpDynamicProperties {
 	public $userInputPath; //ProfilePropertyPath
 	public $errMsg; //LocalizableMessage
 
@@ -18343,7 +18356,7 @@ class AnswerFileStatusError {
 	}
 }
 
-class ArrayOfAnswerFileStatusError {
+class ArrayOfAnswerFileStatusError extends phpDynamicProperties {
 	public $AnswerFileStatusError; //AnswerFileStatusError
 
 	function __construct($AnswerFileStatusError = null) {
@@ -18351,7 +18364,7 @@ class ArrayOfAnswerFileStatusError {
 	}
 }
 
-class AnswerFileStatusResult {
+class AnswerFileStatusResult extends phpDynamicProperties {
 	public $checkedTime; //dateTime
 	public $host; //ManagedObjectReference
 	public $status; //string
@@ -18365,7 +18378,7 @@ class AnswerFileStatusResult {
 	}
 }
 
-class ArrayOfAnswerFileStatusResult {
+class ArrayOfAnswerFileStatusResult extends phpDynamicProperties {
 	public $AnswerFileStatusResult; //AnswerFileStatusResult
 
 	function __construct($AnswerFileStatusResult = null) {
@@ -18373,7 +18386,7 @@ class ArrayOfAnswerFileStatusResult {
 	}
 }
 
-class ProfileExecuteError {
+class ProfileExecuteError extends phpDynamicProperties {
 	public $path; //ProfilePropertyPath
 	public $message; //LocalizableMessage
 
@@ -18383,7 +18396,7 @@ class ProfileExecuteError {
 	}
 }
 
-class ArrayOfProfileExecuteError {
+class ArrayOfProfileExecuteError extends phpDynamicProperties {
 	public $ProfileExecuteError; //ProfileExecuteError
 
 	function __construct($ProfileExecuteError = null) {
@@ -18391,7 +18404,7 @@ class ArrayOfProfileExecuteError {
 	}
 }
 
-class ProfileExecuteResult {
+class ProfileExecuteResult extends phpDynamicProperties {
 	public $status; //string
 	public $configSpec; //HostConfigSpec
 	public $inapplicablePath; //string
@@ -18407,7 +18420,7 @@ class ProfileExecuteResult {
 	}
 }
 
-class HostApplyProfile {
+class HostApplyProfile extends phpDynamicProperties {
 	public $memory; //HostMemoryProfile
 	public $storage; //StorageProfile
 	public $network; //NetworkProfile
@@ -18435,7 +18448,7 @@ class HostApplyProfile {
 	}
 }
 
-class PhysicalNicProfile {
+class PhysicalNicProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18443,7 +18456,7 @@ class PhysicalNicProfile {
 	}
 }
 
-class ArrayOfPhysicalNicProfile {
+class ArrayOfPhysicalNicProfile extends phpDynamicProperties {
 	public $PhysicalNicProfile; //PhysicalNicProfile
 
 	function __construct($PhysicalNicProfile = null) {
@@ -18451,10 +18464,10 @@ class ArrayOfPhysicalNicProfile {
 	}
 }
 
-class HostMemoryProfile {
+class HostMemoryProfile extends phpDynamicProperties {
 }
 
-class UserProfile {
+class UserProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18462,7 +18475,7 @@ class UserProfile {
 	}
 }
 
-class ArrayOfUserProfile {
+class ArrayOfUserProfile extends phpDynamicProperties {
 	public $UserProfile; //UserProfile
 
 	function __construct($UserProfile = null) {
@@ -18470,7 +18483,7 @@ class ArrayOfUserProfile {
 	}
 }
 
-class UserGroupProfile {
+class UserGroupProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18478,7 +18491,7 @@ class UserGroupProfile {
 	}
 }
 
-class ArrayOfUserGroupProfile {
+class ArrayOfUserGroupProfile extends phpDynamicProperties {
 	public $UserGroupProfile; //UserGroupProfile
 
 	function __construct($UserGroupProfile = null) {
@@ -18486,7 +18499,7 @@ class ArrayOfUserGroupProfile {
 	}
 }
 
-class SecurityProfile {
+class SecurityProfile extends phpDynamicProperties {
 	public $permission; //PermissionProfile
 
 	function __construct($permission = null) {
@@ -18494,7 +18507,7 @@ class SecurityProfile {
 	}
 }
 
-class OptionProfile {
+class OptionProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18502,7 +18515,7 @@ class OptionProfile {
 	}
 }
 
-class ArrayOfOptionProfile {
+class ArrayOfOptionProfile extends phpDynamicProperties {
 	public $OptionProfile; //OptionProfile
 
 	function __construct($OptionProfile = null) {
@@ -18510,10 +18523,10 @@ class ArrayOfOptionProfile {
 	}
 }
 
-class DateTimeProfile {
+class DateTimeProfile extends phpDynamicProperties {
 }
 
-class ServiceProfile {
+class ServiceProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18521,7 +18534,7 @@ class ServiceProfile {
 	}
 }
 
-class ArrayOfServiceProfile {
+class ArrayOfServiceProfile extends phpDynamicProperties {
 	public $ServiceProfile; //ServiceProfile
 
 	function __construct($ServiceProfile = null) {
@@ -18529,7 +18542,7 @@ class ArrayOfServiceProfile {
 	}
 }
 
-class FirewallProfileRulesetProfile {
+class FirewallProfileRulesetProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18537,7 +18550,7 @@ class FirewallProfileRulesetProfile {
 	}
 }
 
-class ArrayOfFirewallProfileRulesetProfile {
+class ArrayOfFirewallProfileRulesetProfile extends phpDynamicProperties {
 	public $FirewallProfileRulesetProfile; //FirewallProfileRulesetProfile
 
 	function __construct($FirewallProfileRulesetProfile = null) {
@@ -18545,7 +18558,7 @@ class ArrayOfFirewallProfileRulesetProfile {
 	}
 }
 
-class FirewallProfile {
+class FirewallProfile extends phpDynamicProperties {
 	public $ruleset; //FirewallProfileRulesetProfile
 
 	function __construct($ruleset = null) {
@@ -18553,7 +18566,7 @@ class FirewallProfile {
 	}
 }
 
-class NasStorageProfile {
+class NasStorageProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18561,7 +18574,7 @@ class NasStorageProfile {
 	}
 }
 
-class ArrayOfNasStorageProfile {
+class ArrayOfNasStorageProfile extends phpDynamicProperties {
 	public $NasStorageProfile; //NasStorageProfile
 
 	function __construct($NasStorageProfile = null) {
@@ -18569,7 +18582,7 @@ class ArrayOfNasStorageProfile {
 	}
 }
 
-class StorageProfile {
+class StorageProfile extends phpDynamicProperties {
 	public $nasStorage; //NasStorageProfile
 
 	function __construct($nasStorage = null) {
@@ -18577,10 +18590,10 @@ class StorageProfile {
 	}
 }
 
-class NetworkProfileDnsConfigProfile {
+class NetworkProfileDnsConfigProfile extends phpDynamicProperties {
 }
 
-class NetworkProfile {
+class NetworkProfile extends phpDynamicProperties {
 	public $vswitch; //VirtualSwitchProfile
 	public $vmPortGroup; //VmPortGroupProfile
 	public $hostPortGroup; //HostPortGroupProfile
@@ -18608,7 +18621,7 @@ class NetworkProfile {
 	}
 }
 
-class DvsVNicProfile {
+class DvsVNicProfile extends phpDynamicProperties {
 	public $key; //string
 	public $ipConfig; //IpAddressProfile
 
@@ -18618,10 +18631,10 @@ class DvsVNicProfile {
 	}
 }
 
-class DvsServiceConsoleVNicProfile {
+class DvsServiceConsoleVNicProfile extends phpDynamicProperties {
 }
 
-class ArrayOfDvsServiceConsoleVNicProfile {
+class ArrayOfDvsServiceConsoleVNicProfile extends phpDynamicProperties {
 	public $DvsServiceConsoleVNicProfile; //DvsServiceConsoleVNicProfile
 
 	function __construct($DvsServiceConsoleVNicProfile = null) {
@@ -18629,10 +18642,10 @@ class ArrayOfDvsServiceConsoleVNicProfile {
 	}
 }
 
-class DvsHostVNicProfile {
+class DvsHostVNicProfile extends phpDynamicProperties {
 }
 
-class ArrayOfDvsHostVNicProfile {
+class ArrayOfDvsHostVNicProfile extends phpDynamicProperties {
 	public $DvsHostVNicProfile; //DvsHostVNicProfile
 
 	function __construct($DvsHostVNicProfile = null) {
@@ -18640,7 +18653,7 @@ class ArrayOfDvsHostVNicProfile {
 	}
 }
 
-class DvsProfile {
+class DvsProfile extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $uplink; //PnicUplinkProfile
@@ -18652,7 +18665,7 @@ class DvsProfile {
 	}
 }
 
-class ArrayOfDvsProfile {
+class ArrayOfDvsProfile extends phpDynamicProperties {
 	public $DvsProfile; //DvsProfile
 
 	function __construct($DvsProfile = null) {
@@ -18660,7 +18673,7 @@ class ArrayOfDvsProfile {
 	}
 }
 
-class PnicUplinkProfile {
+class PnicUplinkProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18668,7 +18681,7 @@ class PnicUplinkProfile {
 	}
 }
 
-class ArrayOfPnicUplinkProfile {
+class ArrayOfPnicUplinkProfile extends phpDynamicProperties {
 	public $PnicUplinkProfile; //PnicUplinkProfile
 
 	function __construct($PnicUplinkProfile = null) {
@@ -18676,7 +18689,7 @@ class ArrayOfPnicUplinkProfile {
 	}
 }
 
-class IpRouteProfile {
+class IpRouteProfile extends phpDynamicProperties {
 	public $staticRoute; //StaticRouteProfile
 
 	function __construct($staticRoute = null) {
@@ -18684,10 +18697,10 @@ class IpRouteProfile {
 	}
 }
 
-class StaticRouteProfile {
+class StaticRouteProfile extends phpDynamicProperties {
 }
 
-class ArrayOfStaticRouteProfile {
+class ArrayOfStaticRouteProfile extends phpDynamicProperties {
 	public $StaticRouteProfile; //StaticRouteProfile
 
 	function __construct($StaticRouteProfile = null) {
@@ -18695,13 +18708,13 @@ class ArrayOfStaticRouteProfile {
 	}
 }
 
-class LinkProfile {
+class LinkProfile extends phpDynamicProperties {
 }
 
-class NumPortsProfile {
+class NumPortsProfile extends phpDynamicProperties {
 }
 
-class VirtualSwitchProfile {
+class VirtualSwitchProfile extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $link; //LinkProfile
@@ -18717,7 +18730,7 @@ class VirtualSwitchProfile {
 	}
 }
 
-class ArrayOfVirtualSwitchProfile {
+class ArrayOfVirtualSwitchProfile extends phpDynamicProperties {
 	public $VirtualSwitchProfile; //VirtualSwitchProfile
 
 	function __construct($VirtualSwitchProfile = null) {
@@ -18725,13 +18738,13 @@ class ArrayOfVirtualSwitchProfile {
 	}
 }
 
-class VlanProfile {
+class VlanProfile extends phpDynamicProperties {
 }
 
-class VirtualSwitchSelectionProfile {
+class VirtualSwitchSelectionProfile extends phpDynamicProperties {
 }
 
-class PortGroupProfile {
+class PortGroupProfile extends phpDynamicProperties {
 	public $key; //string
 	public $name; //string
 	public $vlan; //VlanProfile
@@ -18747,10 +18760,10 @@ class PortGroupProfile {
 	}
 }
 
-class VmPortGroupProfile {
+class VmPortGroupProfile extends phpDynamicProperties {
 }
 
-class ArrayOfVmPortGroupProfile {
+class ArrayOfVmPortGroupProfile extends phpDynamicProperties {
 	public $VmPortGroupProfile; //VmPortGroupProfile
 
 	function __construct($VmPortGroupProfile = null) {
@@ -18758,7 +18771,7 @@ class ArrayOfVmPortGroupProfile {
 	}
 }
 
-class HostPortGroupProfile {
+class HostPortGroupProfile extends phpDynamicProperties {
 	public $ipConfig; //IpAddressProfile
 
 	function __construct($ipConfig = null) {
@@ -18766,7 +18779,7 @@ class HostPortGroupProfile {
 	}
 }
 
-class ArrayOfHostPortGroupProfile {
+class ArrayOfHostPortGroupProfile extends phpDynamicProperties {
 	public $HostPortGroupProfile; //HostPortGroupProfile
 
 	function __construct($HostPortGroupProfile = null) {
@@ -18774,7 +18787,7 @@ class ArrayOfHostPortGroupProfile {
 	}
 }
 
-class ServiceConsolePortGroupProfile {
+class ServiceConsolePortGroupProfile extends phpDynamicProperties {
 	public $ipConfig; //IpAddressProfile
 
 	function __construct($ipConfig = null) {
@@ -18782,7 +18795,7 @@ class ServiceConsolePortGroupProfile {
 	}
 }
 
-class ArrayOfServiceConsolePortGroupProfile {
+class ArrayOfServiceConsolePortGroupProfile extends phpDynamicProperties {
 	public $ServiceConsolePortGroupProfile; //ServiceConsolePortGroupProfile
 
 	function __construct($ServiceConsolePortGroupProfile = null) {
@@ -18790,13 +18803,13 @@ class ArrayOfServiceConsolePortGroupProfile {
 	}
 }
 
-class NetworkPolicyProfile {
+class NetworkPolicyProfile extends phpDynamicProperties {
 }
 
-class IpAddressProfile {
+class IpAddressProfile extends phpDynamicProperties {
 }
 
-class AuthenticationProfile {
+class AuthenticationProfile extends phpDynamicProperties {
 	public $activeDirectory; //ActiveDirectoryProfile
 
 	function __construct($activeDirectory = null) {
@@ -18804,10 +18817,10 @@ class AuthenticationProfile {
 	}
 }
 
-class ActiveDirectoryProfile {
+class ActiveDirectoryProfile extends phpDynamicProperties {
 }
 
-class PermissionProfile {
+class PermissionProfile extends phpDynamicProperties {
 	public $key; //string
 
 	function __construct($key = null) {
@@ -18815,7 +18828,7 @@ class PermissionProfile {
 	}
 }
 
-class ArrayOfPermissionProfile {
+class ArrayOfPermissionProfile extends phpDynamicProperties {
 	public $PermissionProfile; //PermissionProfile
 
 	function __construct($PermissionProfile = null) {
@@ -18823,7 +18836,7 @@ class ArrayOfPermissionProfile {
 	}
 }
 
-class HostProfileConfigInfo {
+class HostProfileConfigInfo extends phpDynamicProperties {
 	public $applyProfile; //HostApplyProfile
 	public $defaultComplyProfile; //ComplianceProfile
 	public $defaultComplyLocator; //ComplianceLocator
@@ -18839,10 +18852,10 @@ class HostProfileConfigInfo {
 	}
 }
 
-class HostProfileConfigSpec {
+class HostProfileConfigSpec extends phpDynamicProperties {
 }
 
-class HostProfileSerializedHostProfileSpec {
+class HostProfileSerializedHostProfileSpec extends phpDynamicProperties {
 	public $validatorHost; //ManagedObjectReference
 
 	function __construct($validatorHost = null) {
@@ -18850,7 +18863,7 @@ class HostProfileSerializedHostProfileSpec {
 	}
 }
 
-class HostProfileCompleteConfigSpec {
+class HostProfileCompleteConfigSpec extends phpDynamicProperties {
 	public $applyProfile; //HostApplyProfile
 	public $customComplyProfile; //ComplianceProfile
 	public $disabledExpressionListChanged; //boolean
@@ -18866,7 +18879,7 @@ class HostProfileCompleteConfigSpec {
 	}
 }
 
-class HostProfileHostBasedConfigSpec {
+class HostProfileHostBasedConfigSpec extends phpDynamicProperties {
 	public $host; //ManagedObjectReference
 	public $useHostProfileEngine; //boolean
 
@@ -18876,7 +18889,7 @@ class HostProfileHostBasedConfigSpec {
 	}
 }
 
-class HostProfileManagerConfigTaskList {
+class HostProfileManagerConfigTaskList extends phpDynamicProperties {
 	public $configSpec; //HostConfigSpec
 	public $taskDescription; //LocalizableMessage
 
@@ -18886,10 +18899,10 @@ class HostProfileManagerConfigTaskList {
 	}
 }
 
-class AnswerFileCreateSpec {
+class AnswerFileCreateSpec extends phpDynamicProperties {
 }
 
-class AnswerFileOptionsCreateSpec {
+class AnswerFileOptionsCreateSpec extends phpDynamicProperties {
 	public $userInput; //ProfileDeferredPolicyOptionParameter
 
 	function __construct($userInput = null) {
@@ -18897,7 +18910,7 @@ class AnswerFileOptionsCreateSpec {
 	}
 }
 
-class AnswerFileSerializedCreateSpec {
+class AnswerFileSerializedCreateSpec extends phpDynamicProperties {
 	public $answerFileConfigString; //string
 
 	function __construct($answerFileConfigString = null) {
@@ -18905,7 +18918,7 @@ class AnswerFileSerializedCreateSpec {
 	}
 }
 
-class ScheduledTaskDetail {
+class ScheduledTaskDetail extends phpDynamicProperties {
 	public $frequency; //string
 
 	function __construct($frequency = null) {
@@ -18913,7 +18926,7 @@ class ScheduledTaskDetail {
 	}
 }
 
-class ArrayOfScheduledTaskDetail {
+class ArrayOfScheduledTaskDetail extends phpDynamicProperties {
 	public $ScheduledTaskDetail; //ScheduledTaskDetail
 
 	function __construct($ScheduledTaskDetail = null) {
@@ -18921,7 +18934,7 @@ class ArrayOfScheduledTaskDetail {
 	}
 }
 
-class ScheduledTaskDescription {
+class ScheduledTaskDescription extends phpDynamicProperties {
 	public $action; //TypeDescription
 	public $schedulerInfo; //ScheduledTaskDetail
 	public $state; //ElementDescription
@@ -18937,7 +18950,7 @@ class ScheduledTaskDescription {
 	}
 }
 
-class ScheduledTaskInfo {
+class ScheduledTaskInfo extends phpDynamicProperties {
 	public $scheduledTask; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $lastModifiedTime; //dateTime
@@ -18967,7 +18980,7 @@ class ScheduledTaskInfo {
 	}
 }
 
-class TaskScheduler {
+class TaskScheduler extends phpDynamicProperties {
 	public $activeTime; //dateTime
 	public $expireTime; //dateTime
 
@@ -18977,7 +18990,7 @@ class TaskScheduler {
 	}
 }
 
-class AfterStartupTaskScheduler {
+class AfterStartupTaskScheduler extends phpDynamicProperties {
 	public $minute; //int
 
 	function __construct($minute = null) {
@@ -18985,7 +18998,7 @@ class AfterStartupTaskScheduler {
 	}
 }
 
-class OnceTaskScheduler {
+class OnceTaskScheduler extends phpDynamicProperties {
 	public $runAt; //dateTime
 
 	function __construct($runAt = null) {
@@ -18993,7 +19006,7 @@ class OnceTaskScheduler {
 	}
 }
 
-class RecurrentTaskScheduler {
+class RecurrentTaskScheduler extends phpDynamicProperties {
 	public $interval; //int
 
 	function __construct($interval = null) {
@@ -19001,7 +19014,7 @@ class RecurrentTaskScheduler {
 	}
 }
 
-class HourlyTaskScheduler {
+class HourlyTaskScheduler extends phpDynamicProperties {
 	public $minute; //int
 
 	function __construct($minute = null) {
@@ -19009,7 +19022,7 @@ class HourlyTaskScheduler {
 	}
 }
 
-class DailyTaskScheduler {
+class DailyTaskScheduler extends phpDynamicProperties {
 	public $hour; //int
 
 	function __construct($hour = null) {
@@ -19017,7 +19030,7 @@ class DailyTaskScheduler {
 	}
 }
 
-class WeeklyTaskScheduler {
+class WeeklyTaskScheduler extends phpDynamicProperties {
 	public $sunday; //boolean
 	public $monday; //boolean
 	public $tuesday; //boolean
@@ -19037,10 +19050,10 @@ class WeeklyTaskScheduler {
 	}
 }
 
-class MonthlyTaskScheduler {
+class MonthlyTaskScheduler extends phpDynamicProperties {
 }
 
-class MonthlyByDayTaskScheduler {
+class MonthlyByDayTaskScheduler extends phpDynamicProperties {
 	public $day; //int
 
 	function __construct($day = null) {
@@ -19048,7 +19061,7 @@ class MonthlyByDayTaskScheduler {
 	}
 }
 
-class MonthlyByWeekdayTaskScheduler {
+class MonthlyByWeekdayTaskScheduler extends phpDynamicProperties {
 	public $offset; //WeekOfMonth
 	public $weekday; //DayOfWeek
 
@@ -19058,7 +19071,7 @@ class MonthlyByWeekdayTaskScheduler {
 	}
 }
 
-class ScheduledTaskSpec {
+class ScheduledTaskSpec extends phpDynamicProperties {
 	public $name; //string
 	public $description; //string
 	public $enabled; //boolean
@@ -19076,7 +19089,7 @@ class ScheduledTaskSpec {
 	}
 }
 
-class ApplyStorageRecommendationResult {
+class ApplyStorageRecommendationResult extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 
 	function __construct($vm = null) {
@@ -19084,7 +19097,7 @@ class ApplyStorageRecommendationResult {
 	}
 }
 
-class StorageDrsConfigInfo {
+class StorageDrsConfigInfo extends phpDynamicProperties {
 	public $podConfig; //StorageDrsPodConfigInfo
 	public $vmConfig; //StorageDrsVmConfigInfo
 
@@ -19094,7 +19107,7 @@ class StorageDrsConfigInfo {
 	}
 }
 
-class StorageDrsConfigSpec {
+class StorageDrsConfigSpec extends phpDynamicProperties {
 	public $podConfigSpec; //StorageDrsPodConfigSpec
 	public $vmConfigSpec; //StorageDrsVmConfigSpec
 
@@ -19104,7 +19117,7 @@ class StorageDrsConfigSpec {
 	}
 }
 
-class StorageDrsVmConfigSpec {
+class StorageDrsVmConfigSpec extends phpDynamicProperties {
 	public $info; //StorageDrsVmConfigInfo
 
 	function __construct($info = null) {
@@ -19112,7 +19125,7 @@ class StorageDrsVmConfigSpec {
 	}
 }
 
-class ArrayOfStorageDrsVmConfigSpec {
+class ArrayOfStorageDrsVmConfigSpec extends phpDynamicProperties {
 	public $StorageDrsVmConfigSpec; //StorageDrsVmConfigSpec
 
 	function __construct($StorageDrsVmConfigSpec = null) {
@@ -19120,7 +19133,7 @@ class ArrayOfStorageDrsVmConfigSpec {
 	}
 }
 
-class StorageDrsPodConfigInfo {
+class StorageDrsPodConfigInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $ioLoadBalanceEnabled; //boolean
 	public $defaultVmBehavior; //string
@@ -19144,7 +19157,7 @@ class StorageDrsPodConfigInfo {
 	}
 }
 
-class StorageDrsSpaceLoadBalanceConfig {
+class StorageDrsSpaceLoadBalanceConfig extends phpDynamicProperties {
 	public $spaceUtilizationThreshold; //int
 	public $minSpaceUtilizationDifference; //int
 
@@ -19154,7 +19167,7 @@ class StorageDrsSpaceLoadBalanceConfig {
 	}
 }
 
-class StorageDrsIoLoadBalanceConfig {
+class StorageDrsIoLoadBalanceConfig extends phpDynamicProperties {
 	public $ioLatencyThreshold; //int
 	public $ioLoadImbalanceThreshold; //int
 
@@ -19164,7 +19177,7 @@ class StorageDrsIoLoadBalanceConfig {
 	}
 }
 
-class StorageDrsPodConfigSpec {
+class StorageDrsPodConfigSpec extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $ioLoadBalanceEnabled; //boolean
 	public $defaultVmBehavior; //string
@@ -19188,7 +19201,7 @@ class StorageDrsPodConfigSpec {
 	}
 }
 
-class StorageDrsOptionSpec {
+class StorageDrsOptionSpec extends phpDynamicProperties {
 	public $option; //OptionValue
 
 	function __construct($option = null) {
@@ -19196,7 +19209,7 @@ class StorageDrsOptionSpec {
 	}
 }
 
-class ArrayOfStorageDrsOptionSpec {
+class ArrayOfStorageDrsOptionSpec extends phpDynamicProperties {
 	public $StorageDrsOptionSpec; //StorageDrsOptionSpec
 
 	function __construct($StorageDrsOptionSpec = null) {
@@ -19204,7 +19217,7 @@ class ArrayOfStorageDrsOptionSpec {
 	}
 }
 
-class VmPodConfigForPlacement {
+class VmPodConfigForPlacement extends phpDynamicProperties {
 	public $storagePod; //ManagedObjectReference
 	public $disk; //PodDiskLocator
 	public $vmConfig; //StorageDrsVmConfigInfo
@@ -19218,7 +19231,7 @@ class VmPodConfigForPlacement {
 	}
 }
 
-class ArrayOfVmPodConfigForPlacement {
+class ArrayOfVmPodConfigForPlacement extends phpDynamicProperties {
 	public $VmPodConfigForPlacement; //VmPodConfigForPlacement
 
 	function __construct($VmPodConfigForPlacement = null) {
@@ -19226,7 +19239,7 @@ class ArrayOfVmPodConfigForPlacement {
 	}
 }
 
-class PodDiskLocator {
+class PodDiskLocator extends phpDynamicProperties {
 	public $diskId; //int
 	public $diskMoveType; //string
 	public $diskBackingInfo; //VirtualDeviceBackingInfo
@@ -19238,7 +19251,7 @@ class PodDiskLocator {
 	}
 }
 
-class ArrayOfPodDiskLocator {
+class ArrayOfPodDiskLocator extends phpDynamicProperties {
 	public $PodDiskLocator; //PodDiskLocator
 
 	function __construct($PodDiskLocator = null) {
@@ -19246,7 +19259,7 @@ class ArrayOfPodDiskLocator {
 	}
 }
 
-class StorageDrsPodSelectionSpec {
+class StorageDrsPodSelectionSpec extends phpDynamicProperties {
 	public $initialVmConfig; //VmPodConfigForPlacement
 	public $storagePod; //ManagedObjectReference
 
@@ -19256,7 +19269,7 @@ class StorageDrsPodSelectionSpec {
 	}
 }
 
-class StorageMigrationAction {
+class StorageMigrationAction extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $relocateSpec; //VirtualMachineRelocateSpec
 	public $source; //ManagedObjectReference
@@ -19284,7 +19297,7 @@ class StorageMigrationAction {
 	}
 }
 
-class StoragePlacementAction {
+class StoragePlacementAction extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $relocateSpec; //VirtualMachineRelocateSpec
 	public $destination; //ManagedObjectReference
@@ -19302,7 +19315,7 @@ class StoragePlacementAction {
 	}
 }
 
-class StoragePlacementResult {
+class StoragePlacementResult extends phpDynamicProperties {
 	public $recommendations; //ClusterRecommendation
 	public $drsFault; //ClusterDrsFaults
 	public $task; //ManagedObjectReference
@@ -19314,7 +19327,7 @@ class StoragePlacementResult {
 	}
 }
 
-class StoragePlacementSpec {
+class StoragePlacementSpec extends phpDynamicProperties {
 	public $type; //string
 	public $priority; //VirtualMachineMovePriority
 	public $vm; //ManagedObjectReference
@@ -19342,7 +19355,7 @@ class StoragePlacementSpec {
 	}
 }
 
-class VirtualDiskAntiAffinityRuleSpec {
+class VirtualDiskAntiAffinityRuleSpec extends phpDynamicProperties {
 	public $diskId; //int
 
 	function __construct($diskId = null) {
@@ -19350,7 +19363,7 @@ class VirtualDiskAntiAffinityRuleSpec {
 	}
 }
 
-class StorageDrsVmConfigInfo {
+class StorageDrsVmConfigInfo extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $enabled; //boolean
 	public $behavior; //string
@@ -19366,7 +19379,7 @@ class StorageDrsVmConfigInfo {
 	}
 }
 
-class ArrayOfStorageDrsVmConfigInfo {
+class ArrayOfStorageDrsVmConfigInfo extends phpDynamicProperties {
 	public $StorageDrsVmConfigInfo; //StorageDrsVmConfigInfo
 
 	function __construct($StorageDrsVmConfigInfo = null) {
@@ -19374,7 +19387,7 @@ class ArrayOfStorageDrsVmConfigInfo {
 	}
 }
 
-class VAppCloneSpecNetworkMappingPair {
+class VAppCloneSpecNetworkMappingPair extends phpDynamicProperties {
 	public $source; //ManagedObjectReference
 	public $destination; //ManagedObjectReference
 
@@ -19384,7 +19397,7 @@ class VAppCloneSpecNetworkMappingPair {
 	}
 }
 
-class ArrayOfVAppCloneSpecNetworkMappingPair {
+class ArrayOfVAppCloneSpecNetworkMappingPair extends phpDynamicProperties {
 	public $VAppCloneSpecNetworkMappingPair; //VAppCloneSpecNetworkMappingPair
 
 	function __construct($VAppCloneSpecNetworkMappingPair = null) {
@@ -19392,7 +19405,7 @@ class ArrayOfVAppCloneSpecNetworkMappingPair {
 	}
 }
 
-class VAppCloneSpecResourceMap {
+class VAppCloneSpecResourceMap extends phpDynamicProperties {
 	public $source; //ManagedObjectReference
 	public $parent; //ManagedObjectReference
 	public $resourceSpec; //ResourceConfigSpec
@@ -19406,7 +19419,7 @@ class VAppCloneSpecResourceMap {
 	}
 }
 
-class ArrayOfVAppCloneSpecResourceMap {
+class ArrayOfVAppCloneSpecResourceMap extends phpDynamicProperties {
 	public $VAppCloneSpecResourceMap; //VAppCloneSpecResourceMap
 
 	function __construct($VAppCloneSpecResourceMap = null) {
@@ -19414,7 +19427,7 @@ class ArrayOfVAppCloneSpecResourceMap {
 	}
 }
 
-class VAppCloneSpec {
+class VAppCloneSpec extends phpDynamicProperties {
 	public $location; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $resourceSpec; //ResourceConfigSpec
@@ -19436,7 +19449,7 @@ class VAppCloneSpec {
 	}
 }
 
-class VAppEntityConfigInfo {
+class VAppEntityConfigInfo extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $tag; //string
 	public $startOrder; //int
@@ -19460,7 +19473,7 @@ class VAppEntityConfigInfo {
 	}
 }
 
-class ArrayOfVAppEntityConfigInfo {
+class ArrayOfVAppEntityConfigInfo extends phpDynamicProperties {
 	public $VAppEntityConfigInfo; //VAppEntityConfigInfo
 
 	function __construct($VAppEntityConfigInfo = null) {
@@ -19468,7 +19481,7 @@ class ArrayOfVAppEntityConfigInfo {
 	}
 }
 
-class VAppIPAssignmentInfo {
+class VAppIPAssignmentInfo extends phpDynamicProperties {
 	public $supportedAllocationScheme; //string
 	public $ipAllocationPolicy; //string
 	public $supportedIpProtocol; //string
@@ -19482,7 +19495,7 @@ class VAppIPAssignmentInfo {
 	}
 }
 
-class IpPoolIpPoolConfigInfo {
+class IpPoolIpPoolConfigInfo extends phpDynamicProperties {
 	public $subnetAddress; //string
 	public $netmask; //string
 	public $gateway; //string
@@ -19502,7 +19515,7 @@ class IpPoolIpPoolConfigInfo {
 	}
 }
 
-class IpPoolAssociation {
+class IpPoolAssociation extends phpDynamicProperties {
 	public $network; //ManagedObjectReference
 	public $networkName; //string
 
@@ -19512,7 +19525,7 @@ class IpPoolAssociation {
 	}
 }
 
-class ArrayOfIpPoolAssociation {
+class ArrayOfIpPoolAssociation extends phpDynamicProperties {
 	public $IpPoolAssociation; //IpPoolAssociation
 
 	function __construct($IpPoolAssociation = null) {
@@ -19520,7 +19533,7 @@ class ArrayOfIpPoolAssociation {
 	}
 }
 
-class IpPool {
+class IpPool extends phpDynamicProperties {
 	public $id; //int
 	public $name; //string
 	public $ipv4Config; //IpPoolIpPoolConfigInfo
@@ -19544,7 +19557,7 @@ class IpPool {
 	}
 }
 
-class ArrayOfIpPool {
+class ArrayOfIpPool extends phpDynamicProperties {
 	public $IpPool; //IpPool
 
 	function __construct($IpPool = null) {
@@ -19552,7 +19565,7 @@ class ArrayOfIpPool {
 	}
 }
 
-class VAppOvfSectionInfo {
+class VAppOvfSectionInfo extends phpDynamicProperties {
 	public $key; //int
 	public $namespace; //string
 	public $type; //string
@@ -19568,7 +19581,7 @@ class VAppOvfSectionInfo {
 	}
 }
 
-class ArrayOfVAppOvfSectionInfo {
+class ArrayOfVAppOvfSectionInfo extends phpDynamicProperties {
 	public $VAppOvfSectionInfo; //VAppOvfSectionInfo
 
 	function __construct($VAppOvfSectionInfo = null) {
@@ -19576,7 +19589,7 @@ class ArrayOfVAppOvfSectionInfo {
 	}
 }
 
-class VAppProductInfo {
+class VAppProductInfo extends phpDynamicProperties {
 	public $key; //int
 	public $classId; //string
 	public $instanceId; //string
@@ -19602,7 +19615,7 @@ class VAppProductInfo {
 	}
 }
 
-class ArrayOfVAppProductInfo {
+class ArrayOfVAppProductInfo extends phpDynamicProperties {
 	public $VAppProductInfo; //VAppProductInfo
 
 	function __construct($VAppProductInfo = null) {
@@ -19610,7 +19623,7 @@ class ArrayOfVAppProductInfo {
 	}
 }
 
-class VAppPropertyInfo {
+class VAppPropertyInfo extends phpDynamicProperties {
 	public $key; //int
 	public $classId; //string
 	public $instanceId; //string
@@ -19638,7 +19651,7 @@ class VAppPropertyInfo {
 	}
 }
 
-class ArrayOfVAppPropertyInfo {
+class ArrayOfVAppPropertyInfo extends phpDynamicProperties {
 	public $VAppPropertyInfo; //VAppPropertyInfo
 
 	function __construct($VAppPropertyInfo = null) {
@@ -19646,7 +19659,7 @@ class ArrayOfVAppPropertyInfo {
 	}
 }
 
-class VAppConfigInfo {
+class VAppConfigInfo extends phpDynamicProperties {
 	public $entityConfig; //VAppEntityConfigInfo
 	public $annotation; //string
 	public $instanceUuid; //string
@@ -19660,7 +19673,7 @@ class VAppConfigInfo {
 	}
 }
 
-class VAppConfigSpec {
+class VAppConfigSpec extends phpDynamicProperties {
 	public $entityConfig; //VAppEntityConfigInfo
 	public $annotation; //string
 	public $instanceUuid; //string
@@ -19674,7 +19687,7 @@ class VAppConfigSpec {
 	}
 }
 
-class VirtualAppImportSpec {
+class VirtualAppImportSpec extends phpDynamicProperties {
 	public $name; //string
 	public $vAppConfigSpec; //VAppConfigSpec
 	public $resourcePoolSpec; //ResourceConfigSpec
@@ -19688,7 +19701,7 @@ class VirtualAppImportSpec {
 	}
 }
 
-class VmConfigInfo {
+class VmConfigInfo extends phpDynamicProperties {
 	public $product; //VAppProductInfo
 	public $property; //VAppPropertyInfo
 	public $ipAssignment; //VAppIPAssignmentInfo
@@ -19710,7 +19723,7 @@ class VmConfigInfo {
 	}
 }
 
-class VmConfigSpec {
+class VmConfigSpec extends phpDynamicProperties {
 	public $product; //VAppProductSpec
 	public $property; //VAppPropertySpec
 	public $ipAssignment; //VAppIPAssignmentInfo
@@ -19732,7 +19745,7 @@ class VmConfigSpec {
 	}
 }
 
-class VAppProductSpec {
+class VAppProductSpec extends phpDynamicProperties {
 	public $info; //VAppProductInfo
 
 	function __construct($info = null) {
@@ -19740,7 +19753,7 @@ class VAppProductSpec {
 	}
 }
 
-class ArrayOfVAppProductSpec {
+class ArrayOfVAppProductSpec extends phpDynamicProperties {
 	public $VAppProductSpec; //VAppProductSpec
 
 	function __construct($VAppProductSpec = null) {
@@ -19748,7 +19761,7 @@ class ArrayOfVAppProductSpec {
 	}
 }
 
-class VAppPropertySpec {
+class VAppPropertySpec extends phpDynamicProperties {
 	public $info; //VAppPropertyInfo
 
 	function __construct($info = null) {
@@ -19756,7 +19769,7 @@ class VAppPropertySpec {
 	}
 }
 
-class ArrayOfVAppPropertySpec {
+class ArrayOfVAppPropertySpec extends phpDynamicProperties {
 	public $VAppPropertySpec; //VAppPropertySpec
 
 	function __construct($VAppPropertySpec = null) {
@@ -19764,7 +19777,7 @@ class ArrayOfVAppPropertySpec {
 	}
 }
 
-class VAppOvfSectionSpec {
+class VAppOvfSectionSpec extends phpDynamicProperties {
 	public $info; //VAppOvfSectionInfo
 
 	function __construct($info = null) {
@@ -19772,7 +19785,7 @@ class VAppOvfSectionSpec {
 	}
 }
 
-class ArrayOfVAppOvfSectionSpec {
+class ArrayOfVAppOvfSectionSpec extends phpDynamicProperties {
 	public $VAppOvfSectionSpec; //VAppOvfSectionSpec
 
 	function __construct($VAppOvfSectionSpec = null) {
@@ -19780,7 +19793,7 @@ class ArrayOfVAppOvfSectionSpec {
 	}
 }
 
-class VirtualMachineAffinityInfo {
+class VirtualMachineAffinityInfo extends phpDynamicProperties {
 	public $affinitySet; //int
 
 	function __construct($affinitySet = null) {
@@ -19788,10 +19801,10 @@ class VirtualMachineAffinityInfo {
 	}
 }
 
-class VirtualMachineBootOptionsBootableDevice {
+class VirtualMachineBootOptionsBootableDevice extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualMachineBootOptionsBootableDevice {
+class ArrayOfVirtualMachineBootOptionsBootableDevice extends phpDynamicProperties {
 	public $VirtualMachineBootOptionsBootableDevice; //VirtualMachineBootOptionsBootableDevice
 
 	function __construct($VirtualMachineBootOptionsBootableDevice = null) {
@@ -19799,7 +19812,7 @@ class ArrayOfVirtualMachineBootOptionsBootableDevice {
 	}
 }
 
-class VirtualMachineBootOptionsBootableDiskDevice {
+class VirtualMachineBootOptionsBootableDiskDevice extends phpDynamicProperties {
 	public $deviceKey; //int
 
 	function __construct($deviceKey = null) {
@@ -19807,7 +19820,7 @@ class VirtualMachineBootOptionsBootableDiskDevice {
 	}
 }
 
-class VirtualMachineBootOptionsBootableEthernetDevice {
+class VirtualMachineBootOptionsBootableEthernetDevice extends phpDynamicProperties {
 	public $deviceKey; //int
 
 	function __construct($deviceKey = null) {
@@ -19815,13 +19828,13 @@ class VirtualMachineBootOptionsBootableEthernetDevice {
 	}
 }
 
-class VirtualMachineBootOptionsBootableFloppyDevice {
+class VirtualMachineBootOptionsBootableFloppyDevice extends phpDynamicProperties {
 }
 
-class VirtualMachineBootOptionsBootableCdromDevice {
+class VirtualMachineBootOptionsBootableCdromDevice extends phpDynamicProperties {
 }
 
-class VirtualMachineBootOptions {
+class VirtualMachineBootOptions extends phpDynamicProperties {
 	public $bootDelay; //long
 	public $enterBIOSSetup; //boolean
 	public $bootRetryEnabled; //boolean
@@ -19837,7 +19850,7 @@ class VirtualMachineBootOptions {
 	}
 }
 
-class VirtualMachineCapability {
+class VirtualMachineCapability extends phpDynamicProperties {
 	public $snapshotOperationsSupported; //boolean
 	public $multipleSnapshotsSupported; //boolean
 	public $snapshotConfigSupported; //boolean
@@ -19907,10 +19920,10 @@ class VirtualMachineCapability {
 	}
 }
 
-class VirtualMachineCdromInfo {
+class VirtualMachineCdromInfo extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualMachineCdromInfo {
+class ArrayOfVirtualMachineCdromInfo extends phpDynamicProperties {
 	public $VirtualMachineCdromInfo; //VirtualMachineCdromInfo
 
 	function __construct($VirtualMachineCdromInfo = null) {
@@ -19918,7 +19931,7 @@ class ArrayOfVirtualMachineCdromInfo {
 	}
 }
 
-class VirtualMachineCloneSpec {
+class VirtualMachineCloneSpec extends phpDynamicProperties {
 	public $location; //VirtualMachineRelocateSpec
 	public $template; //boolean
 	public $config; //VirtualMachineConfigSpec
@@ -19936,7 +19949,7 @@ class VirtualMachineCloneSpec {
 	}
 }
 
-class VirtualMachineConfigInfoDatastoreUrlPair {
+class VirtualMachineConfigInfoDatastoreUrlPair extends phpDynamicProperties {
 	public $name; //string
 	public $url; //string
 
@@ -19946,7 +19959,7 @@ class VirtualMachineConfigInfoDatastoreUrlPair {
 	}
 }
 
-class ArrayOfVirtualMachineConfigInfoDatastoreUrlPair {
+class ArrayOfVirtualMachineConfigInfoDatastoreUrlPair extends phpDynamicProperties {
 	public $VirtualMachineConfigInfoDatastoreUrlPair; //VirtualMachineConfigInfoDatastoreUrlPair
 
 	function __construct($VirtualMachineConfigInfoDatastoreUrlPair = null) {
@@ -19954,7 +19967,7 @@ class ArrayOfVirtualMachineConfigInfoDatastoreUrlPair {
 	}
 }
 
-class VirtualMachineConfigInfoOverheadInfo {
+class VirtualMachineConfigInfoOverheadInfo extends phpDynamicProperties {
 	public $initialMemoryReservation; //long
 	public $initialSwapReservation; //long
 
@@ -19964,7 +19977,7 @@ class VirtualMachineConfigInfoOverheadInfo {
 	}
 }
 
-class VirtualMachineConfigInfo {
+class VirtualMachineConfigInfo extends phpDynamicProperties {
 	public $changeVersion; //string
 	public $modified; //dateTime
 	public $name; //string
@@ -20070,7 +20083,7 @@ class VirtualMachineConfigInfo {
 	}
 }
 
-class VirtualMachineConfigOption {
+class VirtualMachineConfigOption extends phpDynamicProperties {
 	public $version; //string
 	public $description; //string
 	public $guestOSDescriptor; //GuestOsDescriptor
@@ -20098,7 +20111,7 @@ class VirtualMachineConfigOption {
 	}
 }
 
-class VirtualMachineConfigOptionDescriptor {
+class VirtualMachineConfigOptionDescriptor extends phpDynamicProperties {
 	public $key; //string
 	public $description; //string
 	public $host; //ManagedObjectReference
@@ -20114,7 +20127,7 @@ class VirtualMachineConfigOptionDescriptor {
 	}
 }
 
-class ArrayOfVirtualMachineConfigOptionDescriptor {
+class ArrayOfVirtualMachineConfigOptionDescriptor extends phpDynamicProperties {
 	public $VirtualMachineConfigOptionDescriptor; //VirtualMachineConfigOptionDescriptor
 
 	function __construct($VirtualMachineConfigOptionDescriptor = null) {
@@ -20122,7 +20135,7 @@ class ArrayOfVirtualMachineConfigOptionDescriptor {
 	}
 }
 
-class VirtualMachineCpuIdInfoSpec {
+class VirtualMachineCpuIdInfoSpec extends phpDynamicProperties {
 	public $info; //HostCpuIdInfo
 
 	function __construct($info = null) {
@@ -20130,7 +20143,7 @@ class VirtualMachineCpuIdInfoSpec {
 	}
 }
 
-class ArrayOfVirtualMachineCpuIdInfoSpec {
+class ArrayOfVirtualMachineCpuIdInfoSpec extends phpDynamicProperties {
 	public $VirtualMachineCpuIdInfoSpec; //VirtualMachineCpuIdInfoSpec
 
 	function __construct($VirtualMachineCpuIdInfoSpec = null) {
@@ -20138,7 +20151,7 @@ class ArrayOfVirtualMachineCpuIdInfoSpec {
 	}
 }
 
-class VirtualMachineConfigSpec {
+class VirtualMachineConfigSpec extends phpDynamicProperties {
 	public $changeVersion; //string
 	public $name; //string
 	public $version; //string
@@ -20244,7 +20257,7 @@ class VirtualMachineConfigSpec {
 	}
 }
 
-class ConfigTarget {
+class ConfigTarget extends phpDynamicProperties {
 	public $numCpus; //int
 	public $numCpuCores; //int
 	public $numNumaNodes; //int
@@ -20294,7 +20307,7 @@ class ConfigTarget {
 	}
 }
 
-class VirtualMachineConsolePreferences {
+class VirtualMachineConsolePreferences extends phpDynamicProperties {
 	public $powerOnWhenOpened; //boolean
 	public $enterFullScreenOnPowerOn; //boolean
 	public $closeOnPowerOffOrSuspend; //boolean
@@ -20306,7 +20319,7 @@ class VirtualMachineConsolePreferences {
 	}
 }
 
-class VirtualMachineDatastoreInfo {
+class VirtualMachineDatastoreInfo extends phpDynamicProperties {
 	public $datastore; //DatastoreSummary
 	public $capability; //DatastoreCapability
 	public $maxFileSize; //long
@@ -20322,7 +20335,7 @@ class VirtualMachineDatastoreInfo {
 	}
 }
 
-class ArrayOfVirtualMachineDatastoreInfo {
+class ArrayOfVirtualMachineDatastoreInfo extends phpDynamicProperties {
 	public $VirtualMachineDatastoreInfo; //VirtualMachineDatastoreInfo
 
 	function __construct($VirtualMachineDatastoreInfo = null) {
@@ -20330,7 +20343,7 @@ class ArrayOfVirtualMachineDatastoreInfo {
 	}
 }
 
-class VirtualMachineDatastoreVolumeOption {
+class VirtualMachineDatastoreVolumeOption extends phpDynamicProperties {
 	public $fileSystemType; //string
 	public $majorVersion; //int
 
@@ -20340,7 +20353,7 @@ class VirtualMachineDatastoreVolumeOption {
 	}
 }
 
-class ArrayOfVirtualMachineDatastoreVolumeOption {
+class ArrayOfVirtualMachineDatastoreVolumeOption extends phpDynamicProperties {
 	public $VirtualMachineDatastoreVolumeOption; //VirtualMachineDatastoreVolumeOption
 
 	function __construct($VirtualMachineDatastoreVolumeOption = null) {
@@ -20348,7 +20361,7 @@ class ArrayOfVirtualMachineDatastoreVolumeOption {
 	}
 }
 
-class DatastoreOption {
+class DatastoreOption extends phpDynamicProperties {
 	public $unsupportedVolumes; //VirtualMachineDatastoreVolumeOption
 
 	function __construct($unsupportedVolumes = null) {
@@ -20356,7 +20369,7 @@ class DatastoreOption {
 	}
 }
 
-class VirtualMachineDefaultPowerOpInfo {
+class VirtualMachineDefaultPowerOpInfo extends phpDynamicProperties {
 	public $powerOffType; //string
 	public $suspendType; //string
 	public $resetType; //string
@@ -20376,10 +20389,10 @@ class VirtualMachineDefaultPowerOpInfo {
 	}
 }
 
-class VirtualMachineDeviceRuntimeInfoDeviceRuntimeState {
+class VirtualMachineDeviceRuntimeInfoDeviceRuntimeState extends phpDynamicProperties {
 }
 
-class VirtualMachineDeviceRuntimeInfoVirtualEthernetCardRuntimeState {
+class VirtualMachineDeviceRuntimeInfoVirtualEthernetCardRuntimeState extends phpDynamicProperties {
 	public $vmDirectPathGen2Active; //boolean
 	public $vmDirectPathGen2InactiveReasonVm; //string
 	public $vmDirectPathGen2InactiveReasonOther; //string
@@ -20393,7 +20406,7 @@ class VirtualMachineDeviceRuntimeInfoVirtualEthernetCardRuntimeState {
 	}
 }
 
-class VirtualMachineDeviceRuntimeInfo {
+class VirtualMachineDeviceRuntimeInfo extends phpDynamicProperties {
 	public $runtimeState; //VirtualMachineDeviceRuntimeInfoDeviceRuntimeState
 	public $key; //int
 
@@ -20403,7 +20416,7 @@ class VirtualMachineDeviceRuntimeInfo {
 	}
 }
 
-class ArrayOfVirtualMachineDeviceRuntimeInfo {
+class ArrayOfVirtualMachineDeviceRuntimeInfo extends phpDynamicProperties {
 	public $VirtualMachineDeviceRuntimeInfo; //VirtualMachineDeviceRuntimeInfo
 
 	function __construct($VirtualMachineDeviceRuntimeInfo = null) {
@@ -20411,7 +20424,7 @@ class ArrayOfVirtualMachineDeviceRuntimeInfo {
 	}
 }
 
-class VirtualMachineDiskDeviceInfo {
+class VirtualMachineDiskDeviceInfo extends phpDynamicProperties {
 	public $capacity; //long
 	public $vm; //ManagedObjectReference
 
@@ -20421,7 +20434,7 @@ class VirtualMachineDiskDeviceInfo {
 	}
 }
 
-class FaultToleranceConfigInfo {
+class FaultToleranceConfigInfo extends phpDynamicProperties {
 	public $role; //int
 	public $instanceUuids; //string
 	public $configPaths; //string
@@ -20433,7 +20446,7 @@ class FaultToleranceConfigInfo {
 	}
 }
 
-class FaultTolerancePrimaryConfigInfo {
+class FaultTolerancePrimaryConfigInfo extends phpDynamicProperties {
 	public $secondaries; //ManagedObjectReference
 
 	function __construct($secondaries = null) {
@@ -20441,7 +20454,7 @@ class FaultTolerancePrimaryConfigInfo {
 	}
 }
 
-class FaultToleranceSecondaryConfigInfo {
+class FaultToleranceSecondaryConfigInfo extends phpDynamicProperties {
 	public $primaryVM; //ManagedObjectReference
 
 	function __construct($primaryVM = null) {
@@ -20449,7 +20462,7 @@ class FaultToleranceSecondaryConfigInfo {
 	}
 }
 
-class FaultToleranceSecondaryOpResult {
+class FaultToleranceSecondaryOpResult extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $powerOnAttempted; //boolean
 	public $powerOnResult; //ClusterPowerOnVmResult
@@ -20461,7 +20474,7 @@ class FaultToleranceSecondaryOpResult {
 	}
 }
 
-class VirtualMachineFileInfo {
+class VirtualMachineFileInfo extends phpDynamicProperties {
 	public $vmPathName; //string
 	public $snapshotDirectory; //string
 	public $suspendDirectory; //string
@@ -20475,7 +20488,7 @@ class VirtualMachineFileInfo {
 	}
 }
 
-class VirtualMachineFileLayoutDiskLayout {
+class VirtualMachineFileLayoutDiskLayout extends phpDynamicProperties {
 	public $key; //int
 	public $diskFile; //string
 
@@ -20485,7 +20498,7 @@ class VirtualMachineFileLayoutDiskLayout {
 	}
 }
 
-class ArrayOfVirtualMachineFileLayoutDiskLayout {
+class ArrayOfVirtualMachineFileLayoutDiskLayout extends phpDynamicProperties {
 	public $VirtualMachineFileLayoutDiskLayout; //VirtualMachineFileLayoutDiskLayout
 
 	function __construct($VirtualMachineFileLayoutDiskLayout = null) {
@@ -20493,7 +20506,7 @@ class ArrayOfVirtualMachineFileLayoutDiskLayout {
 	}
 }
 
-class VirtualMachineFileLayoutSnapshotLayout {
+class VirtualMachineFileLayoutSnapshotLayout extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $snapshotFile; //string
 
@@ -20503,7 +20516,7 @@ class VirtualMachineFileLayoutSnapshotLayout {
 	}
 }
 
-class ArrayOfVirtualMachineFileLayoutSnapshotLayout {
+class ArrayOfVirtualMachineFileLayoutSnapshotLayout extends phpDynamicProperties {
 	public $VirtualMachineFileLayoutSnapshotLayout; //VirtualMachineFileLayoutSnapshotLayout
 
 	function __construct($VirtualMachineFileLayoutSnapshotLayout = null) {
@@ -20511,7 +20524,7 @@ class ArrayOfVirtualMachineFileLayoutSnapshotLayout {
 	}
 }
 
-class VirtualMachineFileLayout {
+class VirtualMachineFileLayout extends phpDynamicProperties {
 	public $configFile; //string
 	public $logFile; //string
 	public $disk; //VirtualMachineFileLayoutDiskLayout
@@ -20527,7 +20540,7 @@ class VirtualMachineFileLayout {
 	}
 }
 
-class VirtualMachineFileLayoutExFileInfo {
+class VirtualMachineFileLayoutExFileInfo extends phpDynamicProperties {
 	public $key; //int
 	public $name; //string
 	public $type; //string
@@ -20541,7 +20554,7 @@ class VirtualMachineFileLayoutExFileInfo {
 	}
 }
 
-class ArrayOfVirtualMachineFileLayoutExFileInfo {
+class ArrayOfVirtualMachineFileLayoutExFileInfo extends phpDynamicProperties {
 	public $VirtualMachineFileLayoutExFileInfo; //VirtualMachineFileLayoutExFileInfo
 
 	function __construct($VirtualMachineFileLayoutExFileInfo = null) {
@@ -20549,7 +20562,7 @@ class ArrayOfVirtualMachineFileLayoutExFileInfo {
 	}
 }
 
-class VirtualMachineFileLayoutExDiskUnit {
+class VirtualMachineFileLayoutExDiskUnit extends phpDynamicProperties {
 	public $fileKey; //int
 
 	function __construct($fileKey = null) {
@@ -20557,7 +20570,7 @@ class VirtualMachineFileLayoutExDiskUnit {
 	}
 }
 
-class ArrayOfVirtualMachineFileLayoutExDiskUnit {
+class ArrayOfVirtualMachineFileLayoutExDiskUnit extends phpDynamicProperties {
 	public $VirtualMachineFileLayoutExDiskUnit; //VirtualMachineFileLayoutExDiskUnit
 
 	function __construct($VirtualMachineFileLayoutExDiskUnit = null) {
@@ -20565,7 +20578,7 @@ class ArrayOfVirtualMachineFileLayoutExDiskUnit {
 	}
 }
 
-class VirtualMachineFileLayoutExDiskLayout {
+class VirtualMachineFileLayoutExDiskLayout extends phpDynamicProperties {
 	public $key; //int
 	public $chain; //VirtualMachineFileLayoutExDiskUnit
 
@@ -20575,7 +20588,7 @@ class VirtualMachineFileLayoutExDiskLayout {
 	}
 }
 
-class ArrayOfVirtualMachineFileLayoutExDiskLayout {
+class ArrayOfVirtualMachineFileLayoutExDiskLayout extends phpDynamicProperties {
 	public $VirtualMachineFileLayoutExDiskLayout; //VirtualMachineFileLayoutExDiskLayout
 
 	function __construct($VirtualMachineFileLayoutExDiskLayout = null) {
@@ -20583,7 +20596,7 @@ class ArrayOfVirtualMachineFileLayoutExDiskLayout {
 	}
 }
 
-class VirtualMachineFileLayoutExSnapshotLayout {
+class VirtualMachineFileLayoutExSnapshotLayout extends phpDynamicProperties {
 	public $key; //ManagedObjectReference
 	public $dataKey; //int
 	public $disk; //VirtualMachineFileLayoutExDiskLayout
@@ -20595,7 +20608,7 @@ class VirtualMachineFileLayoutExSnapshotLayout {
 	}
 }
 
-class ArrayOfVirtualMachineFileLayoutExSnapshotLayout {
+class ArrayOfVirtualMachineFileLayoutExSnapshotLayout extends phpDynamicProperties {
 	public $VirtualMachineFileLayoutExSnapshotLayout; //VirtualMachineFileLayoutExSnapshotLayout
 
 	function __construct($VirtualMachineFileLayoutExSnapshotLayout = null) {
@@ -20603,7 +20616,7 @@ class ArrayOfVirtualMachineFileLayoutExSnapshotLayout {
 	}
 }
 
-class VirtualMachineFileLayoutEx {
+class VirtualMachineFileLayoutEx extends phpDynamicProperties {
 	public $file; //VirtualMachineFileLayoutExFileInfo
 	public $disk; //VirtualMachineFileLayoutExDiskLayout
 	public $snapshot; //VirtualMachineFileLayoutExSnapshotLayout
@@ -20617,7 +20630,7 @@ class VirtualMachineFileLayoutEx {
 	}
 }
 
-class VirtualMachineFlagInfo {
+class VirtualMachineFlagInfo extends phpDynamicProperties {
 	public $disableAcceleration; //boolean
 	public $enableLogging; //boolean
 	public $useToe; //boolean
@@ -20649,10 +20662,10 @@ class VirtualMachineFlagInfo {
 	}
 }
 
-class VirtualMachineFloppyInfo {
+class VirtualMachineFloppyInfo extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualMachineFloppyInfo {
+class ArrayOfVirtualMachineFloppyInfo extends phpDynamicProperties {
 	public $VirtualMachineFloppyInfo; //VirtualMachineFloppyInfo
 
 	function __construct($VirtualMachineFloppyInfo = null) {
@@ -20660,7 +20673,7 @@ class ArrayOfVirtualMachineFloppyInfo {
 	}
 }
 
-class GuestDiskInfo {
+class GuestDiskInfo extends phpDynamicProperties {
 	public $diskPath; //string
 	public $capacity; //long
 	public $freeSpace; //long
@@ -20672,7 +20685,7 @@ class GuestDiskInfo {
 	}
 }
 
-class ArrayOfGuestDiskInfo {
+class ArrayOfGuestDiskInfo extends phpDynamicProperties {
 	public $GuestDiskInfo; //GuestDiskInfo
 
 	function __construct($GuestDiskInfo = null) {
@@ -20680,7 +20693,7 @@ class ArrayOfGuestDiskInfo {
 	}
 }
 
-class GuestNicInfo {
+class GuestNicInfo extends phpDynamicProperties {
 	public $network; //string
 	public $ipAddress; //string
 	public $macAddress; //string
@@ -20702,7 +20715,7 @@ class GuestNicInfo {
 	}
 }
 
-class ArrayOfGuestNicInfo {
+class ArrayOfGuestNicInfo extends phpDynamicProperties {
 	public $GuestNicInfo; //GuestNicInfo
 
 	function __construct($GuestNicInfo = null) {
@@ -20710,7 +20723,7 @@ class ArrayOfGuestNicInfo {
 	}
 }
 
-class GuestStackInfo {
+class GuestStackInfo extends phpDynamicProperties {
 	public $dnsConfig; //NetDnsConfigInfo
 	public $ipRouteConfig; //NetIpRouteConfigInfo
 	public $ipStackConfig; //KeyValue
@@ -20724,7 +20737,7 @@ class GuestStackInfo {
 	}
 }
 
-class ArrayOfGuestStackInfo {
+class ArrayOfGuestStackInfo extends phpDynamicProperties {
 	public $GuestStackInfo; //GuestStackInfo
 
 	function __construct($GuestStackInfo = null) {
@@ -20732,7 +20745,7 @@ class ArrayOfGuestStackInfo {
 	}
 }
 
-class GuestScreenInfo {
+class GuestScreenInfo extends phpDynamicProperties {
 	public $width; //int
 	public $height; //int
 
@@ -20742,7 +20755,7 @@ class GuestScreenInfo {
 	}
 }
 
-class GuestInfo {
+class GuestInfo extends phpDynamicProperties {
 	public $toolsStatus; //VirtualMachineToolsStatus
 	public $toolsVersionStatus; //string
 	public $toolsVersionStatus2; //string
@@ -20784,7 +20797,7 @@ class GuestInfo {
 	}
 }
 
-class GuestOsDescriptor {
+class GuestOsDescriptor extends phpDynamicProperties {
 	public $id; //string
 	public $family; //string
 	public $fullName; //string
@@ -20862,7 +20875,7 @@ class GuestOsDescriptor {
 	}
 }
 
-class ArrayOfGuestOsDescriptor {
+class ArrayOfGuestOsDescriptor extends phpDynamicProperties {
 	public $GuestOsDescriptor; //GuestOsDescriptor
 
 	function __construct($GuestOsDescriptor = null) {
@@ -20870,7 +20883,7 @@ class ArrayOfGuestOsDescriptor {
 	}
 }
 
-class VirtualMachineIdeDiskDevicePartitionInfo {
+class VirtualMachineIdeDiskDevicePartitionInfo extends phpDynamicProperties {
 	public $id; //int
 	public $capacity; //int
 
@@ -20880,7 +20893,7 @@ class VirtualMachineIdeDiskDevicePartitionInfo {
 	}
 }
 
-class ArrayOfVirtualMachineIdeDiskDevicePartitionInfo {
+class ArrayOfVirtualMachineIdeDiskDevicePartitionInfo extends phpDynamicProperties {
 	public $VirtualMachineIdeDiskDevicePartitionInfo; //VirtualMachineIdeDiskDevicePartitionInfo
 
 	function __construct($VirtualMachineIdeDiskDevicePartitionInfo = null) {
@@ -20888,7 +20901,7 @@ class ArrayOfVirtualMachineIdeDiskDevicePartitionInfo {
 	}
 }
 
-class VirtualMachineIdeDiskDeviceInfo {
+class VirtualMachineIdeDiskDeviceInfo extends phpDynamicProperties {
 	public $partitionTable; //VirtualMachineIdeDiskDevicePartitionInfo
 
 	function __construct($partitionTable = null) {
@@ -20896,7 +20909,7 @@ class VirtualMachineIdeDiskDeviceInfo {
 	}
 }
 
-class ArrayOfVirtualMachineIdeDiskDeviceInfo {
+class ArrayOfVirtualMachineIdeDiskDeviceInfo extends phpDynamicProperties {
 	public $VirtualMachineIdeDiskDeviceInfo; //VirtualMachineIdeDiskDeviceInfo
 
 	function __construct($VirtualMachineIdeDiskDeviceInfo = null) {
@@ -20904,7 +20917,7 @@ class ArrayOfVirtualMachineIdeDiskDeviceInfo {
 	}
 }
 
-class VirtualMachineLegacyNetworkSwitchInfo {
+class VirtualMachineLegacyNetworkSwitchInfo extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -20912,7 +20925,7 @@ class VirtualMachineLegacyNetworkSwitchInfo {
 	}
 }
 
-class ArrayOfVirtualMachineLegacyNetworkSwitchInfo {
+class ArrayOfVirtualMachineLegacyNetworkSwitchInfo extends phpDynamicProperties {
 	public $VirtualMachineLegacyNetworkSwitchInfo; //VirtualMachineLegacyNetworkSwitchInfo
 
 	function __construct($VirtualMachineLegacyNetworkSwitchInfo = null) {
@@ -20920,7 +20933,7 @@ class ArrayOfVirtualMachineLegacyNetworkSwitchInfo {
 	}
 }
 
-class VirtualMachineMessage {
+class VirtualMachineMessage extends phpDynamicProperties {
 	public $id; //string
 	public $argument; //anyType
 	public $text; //string
@@ -20932,7 +20945,7 @@ class VirtualMachineMessage {
 	}
 }
 
-class ArrayOfVirtualMachineMessage {
+class ArrayOfVirtualMachineMessage extends phpDynamicProperties {
 	public $VirtualMachineMessage; //VirtualMachineMessage
 
 	function __construct($VirtualMachineMessage = null) {
@@ -20940,7 +20953,7 @@ class ArrayOfVirtualMachineMessage {
 	}
 }
 
-class VirtualMachineNetworkInfo {
+class VirtualMachineNetworkInfo extends phpDynamicProperties {
 	public $network; //NetworkSummary
 
 	function __construct($network = null) {
@@ -20948,7 +20961,7 @@ class VirtualMachineNetworkInfo {
 	}
 }
 
-class ArrayOfVirtualMachineNetworkInfo {
+class ArrayOfVirtualMachineNetworkInfo extends phpDynamicProperties {
 	public $VirtualMachineNetworkInfo; //VirtualMachineNetworkInfo
 
 	function __construct($VirtualMachineNetworkInfo = null) {
@@ -20956,7 +20969,7 @@ class ArrayOfVirtualMachineNetworkInfo {
 	}
 }
 
-class VirtualMachineNetworkShaperInfo {
+class VirtualMachineNetworkShaperInfo extends phpDynamicProperties {
 	public $enabled; //boolean
 	public $peakBps; //long
 	public $averageBps; //long
@@ -20970,10 +20983,10 @@ class VirtualMachineNetworkShaperInfo {
 	}
 }
 
-class VirtualMachineParallelInfo {
+class VirtualMachineParallelInfo extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualMachineParallelInfo {
+class ArrayOfVirtualMachineParallelInfo extends phpDynamicProperties {
 	public $VirtualMachineParallelInfo; //VirtualMachineParallelInfo
 
 	function __construct($VirtualMachineParallelInfo = null) {
@@ -20981,7 +20994,7 @@ class ArrayOfVirtualMachineParallelInfo {
 	}
 }
 
-class VirtualMachinePciPassthroughInfo {
+class VirtualMachinePciPassthroughInfo extends phpDynamicProperties {
 	public $pciDevice; //HostPciDevice
 	public $systemId; //string
 
@@ -20991,7 +21004,7 @@ class VirtualMachinePciPassthroughInfo {
 	}
 }
 
-class ArrayOfVirtualMachinePciPassthroughInfo {
+class ArrayOfVirtualMachinePciPassthroughInfo extends phpDynamicProperties {
 	public $VirtualMachinePciPassthroughInfo; //VirtualMachinePciPassthroughInfo
 
 	function __construct($VirtualMachinePciPassthroughInfo = null) {
@@ -20999,7 +21012,7 @@ class ArrayOfVirtualMachinePciPassthroughInfo {
 	}
 }
 
-class VirtualMachineQuestionInfo {
+class VirtualMachineQuestionInfo extends phpDynamicProperties {
 	public $id; //string
 	public $text; //string
 	public $choice; //ChoiceOption
@@ -21013,7 +21026,7 @@ class VirtualMachineQuestionInfo {
 	}
 }
 
-class VirtualMachineRelocateSpecDiskLocator {
+class VirtualMachineRelocateSpecDiskLocator extends phpDynamicProperties {
 	public $diskId; //int
 	public $datastore; //ManagedObjectReference
 	public $diskMoveType; //string
@@ -21027,7 +21040,7 @@ class VirtualMachineRelocateSpecDiskLocator {
 	}
 }
 
-class ArrayOfVirtualMachineRelocateSpecDiskLocator {
+class ArrayOfVirtualMachineRelocateSpecDiskLocator extends phpDynamicProperties {
 	public $VirtualMachineRelocateSpecDiskLocator; //VirtualMachineRelocateSpecDiskLocator
 
 	function __construct($VirtualMachineRelocateSpecDiskLocator = null) {
@@ -21035,7 +21048,7 @@ class ArrayOfVirtualMachineRelocateSpecDiskLocator {
 	}
 }
 
-class VirtualMachineRelocateSpec {
+class VirtualMachineRelocateSpec extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $diskMoveType; //string
 	public $pool; //ManagedObjectReference
@@ -21053,7 +21066,7 @@ class VirtualMachineRelocateSpec {
 	}
 }
 
-class ReplicationInfoDiskSettings {
+class ReplicationInfoDiskSettings extends phpDynamicProperties {
 	public $key; //int
 	public $diskReplicationId; //string
 
@@ -21063,7 +21076,7 @@ class ReplicationInfoDiskSettings {
 	}
 }
 
-class ArrayOfReplicationInfoDiskSettings {
+class ArrayOfReplicationInfoDiskSettings extends phpDynamicProperties {
 	public $ReplicationInfoDiskSettings; //ReplicationInfoDiskSettings
 
 	function __construct($ReplicationInfoDiskSettings = null) {
@@ -21071,7 +21084,7 @@ class ArrayOfReplicationInfoDiskSettings {
 	}
 }
 
-class VirtualMachineRuntimeInfoDasProtectionState {
+class VirtualMachineRuntimeInfoDasProtectionState extends phpDynamicProperties {
 	public $dasProtected; //boolean
 
 	function __construct($dasProtected = null) {
@@ -21079,7 +21092,7 @@ class VirtualMachineRuntimeInfoDasProtectionState {
 	}
 }
 
-class VirtualMachineRuntimeInfo {
+class VirtualMachineRuntimeInfo extends phpDynamicProperties {
 	public $device; //VirtualMachineDeviceRuntimeInfo
 	public $host; //ManagedObjectReference
 	public $connectionState; //VirtualMachineConnectionState
@@ -21125,7 +21138,7 @@ class VirtualMachineRuntimeInfo {
 	}
 }
 
-class VirtualMachineScsiDiskDeviceInfo {
+class VirtualMachineScsiDiskDeviceInfo extends phpDynamicProperties {
 	public $disk; //HostScsiDisk
 	public $transportHint; //string
 	public $lunNumber; //int
@@ -21137,7 +21150,7 @@ class VirtualMachineScsiDiskDeviceInfo {
 	}
 }
 
-class ArrayOfVirtualMachineScsiDiskDeviceInfo {
+class ArrayOfVirtualMachineScsiDiskDeviceInfo extends phpDynamicProperties {
 	public $VirtualMachineScsiDiskDeviceInfo; //VirtualMachineScsiDiskDeviceInfo
 
 	function __construct($VirtualMachineScsiDiskDeviceInfo = null) {
@@ -21145,7 +21158,7 @@ class ArrayOfVirtualMachineScsiDiskDeviceInfo {
 	}
 }
 
-class VirtualMachineScsiPassthroughInfo {
+class VirtualMachineScsiPassthroughInfo extends phpDynamicProperties {
 	public $scsiClass; //string
 	public $vendor; //string
 	public $physicalUnitNumber; //int
@@ -21157,7 +21170,7 @@ class VirtualMachineScsiPassthroughInfo {
 	}
 }
 
-class ArrayOfVirtualMachineScsiPassthroughInfo {
+class ArrayOfVirtualMachineScsiPassthroughInfo extends phpDynamicProperties {
 	public $VirtualMachineScsiPassthroughInfo; //VirtualMachineScsiPassthroughInfo
 
 	function __construct($VirtualMachineScsiPassthroughInfo = null) {
@@ -21165,10 +21178,10 @@ class ArrayOfVirtualMachineScsiPassthroughInfo {
 	}
 }
 
-class VirtualMachineSerialInfo {
+class VirtualMachineSerialInfo extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualMachineSerialInfo {
+class ArrayOfVirtualMachineSerialInfo extends phpDynamicProperties {
 	public $VirtualMachineSerialInfo; //VirtualMachineSerialInfo
 
 	function __construct($VirtualMachineSerialInfo = null) {
@@ -21176,7 +21189,7 @@ class ArrayOfVirtualMachineSerialInfo {
 	}
 }
 
-class VirtualMachineSnapshotInfo {
+class VirtualMachineSnapshotInfo extends phpDynamicProperties {
 	public $currentSnapshot; //ManagedObjectReference
 	public $rootSnapshotList; //VirtualMachineSnapshotTree
 
@@ -21186,7 +21199,7 @@ class VirtualMachineSnapshotInfo {
 	}
 }
 
-class VirtualMachineSnapshotTree {
+class VirtualMachineSnapshotTree extends phpDynamicProperties {
 	public $snapshot; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $name; //string
@@ -21214,7 +21227,7 @@ class VirtualMachineSnapshotTree {
 	}
 }
 
-class ArrayOfVirtualMachineSnapshotTree {
+class ArrayOfVirtualMachineSnapshotTree extends phpDynamicProperties {
 	public $VirtualMachineSnapshotTree; //VirtualMachineSnapshotTree
 
 	function __construct($VirtualMachineSnapshotTree = null) {
@@ -21222,10 +21235,10 @@ class ArrayOfVirtualMachineSnapshotTree {
 	}
 }
 
-class VirtualMachineSoundInfo {
+class VirtualMachineSoundInfo extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualMachineSoundInfo {
+class ArrayOfVirtualMachineSoundInfo extends phpDynamicProperties {
 	public $VirtualMachineSoundInfo; //VirtualMachineSoundInfo
 
 	function __construct($VirtualMachineSoundInfo = null) {
@@ -21233,7 +21246,7 @@ class ArrayOfVirtualMachineSoundInfo {
 	}
 }
 
-class VirtualMachineUsageOnDatastore {
+class VirtualMachineUsageOnDatastore extends phpDynamicProperties {
 	public $datastore; //ManagedObjectReference
 	public $committed; //long
 	public $uncommitted; //long
@@ -21247,7 +21260,7 @@ class VirtualMachineUsageOnDatastore {
 	}
 }
 
-class ArrayOfVirtualMachineUsageOnDatastore {
+class ArrayOfVirtualMachineUsageOnDatastore extends phpDynamicProperties {
 	public $VirtualMachineUsageOnDatastore; //VirtualMachineUsageOnDatastore
 
 	function __construct($VirtualMachineUsageOnDatastore = null) {
@@ -21255,7 +21268,7 @@ class ArrayOfVirtualMachineUsageOnDatastore {
 	}
 }
 
-class VirtualMachineStorageInfo {
+class VirtualMachineStorageInfo extends phpDynamicProperties {
 	public $perDatastoreUsage; //VirtualMachineUsageOnDatastore
 	public $timestamp; //dateTime
 
@@ -21265,7 +21278,7 @@ class VirtualMachineStorageInfo {
 	}
 }
 
-class VirtualMachineConfigSummary {
+class VirtualMachineConfigSummary extends phpDynamicProperties {
 	public $name; //string
 	public $template; //boolean
 	public $vmPathName; //string
@@ -21307,7 +21320,7 @@ class VirtualMachineConfigSummary {
 	}
 }
 
-class VirtualMachineQuickStats {
+class VirtualMachineQuickStats extends phpDynamicProperties {
 	public $overallCpuUsage; //int
 	public $overallCpuDemand; //int
 	public $guestMemoryUsage; //int
@@ -21353,7 +21366,7 @@ class VirtualMachineQuickStats {
 	}
 }
 
-class VirtualMachineGuestSummary {
+class VirtualMachineGuestSummary extends phpDynamicProperties {
 	public $guestId; //string
 	public $guestFullName; //string
 	public $toolsStatus; //VirtualMachineToolsStatus
@@ -21375,7 +21388,7 @@ class VirtualMachineGuestSummary {
 	}
 }
 
-class VirtualMachineStorageSummary {
+class VirtualMachineStorageSummary extends phpDynamicProperties {
 	public $committed; //long
 	public $uncommitted; //long
 	public $unshared; //long
@@ -21389,7 +21402,7 @@ class VirtualMachineStorageSummary {
 	}
 }
 
-class VirtualMachineSummary {
+class VirtualMachineSummary extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $runtime; //VirtualMachineRuntimeInfo
 	public $guest; //VirtualMachineGuestSummary
@@ -21411,7 +21424,7 @@ class VirtualMachineSummary {
 	}
 }
 
-class ArrayOfVirtualMachineSummary {
+class ArrayOfVirtualMachineSummary extends phpDynamicProperties {
 	public $VirtualMachineSummary; //VirtualMachineSummary
 
 	function __construct($VirtualMachineSummary = null) {
@@ -21419,7 +21432,7 @@ class ArrayOfVirtualMachineSummary {
 	}
 }
 
-class VirtualMachineTargetInfo {
+class VirtualMachineTargetInfo extends phpDynamicProperties {
 	public $name; //string
 	public $configurationTag; //string
 
@@ -21429,7 +21442,7 @@ class VirtualMachineTargetInfo {
 	}
 }
 
-class ToolsConfigInfoToolsLastInstallInfo {
+class ToolsConfigInfoToolsLastInstallInfo extends phpDynamicProperties {
 	public $counter; //int
 	public $fault; //LocalizedMethodFault
 
@@ -21439,7 +21452,7 @@ class ToolsConfigInfoToolsLastInstallInfo {
 	}
 }
 
-class ToolsConfigInfo {
+class ToolsConfigInfo extends phpDynamicProperties {
 	public $toolsVersion; //int
 	public $afterPowerOn; //boolean
 	public $afterResume; //boolean
@@ -21465,7 +21478,7 @@ class ToolsConfigInfo {
 	}
 }
 
-class VirtualMachineUsbInfo {
+class VirtualMachineUsbInfo extends phpDynamicProperties {
 	public $description; //string
 	public $vendor; //int
 	public $product; //int
@@ -21485,7 +21498,7 @@ class VirtualMachineUsbInfo {
 	}
 }
 
-class ArrayOfVirtualMachineUsbInfo {
+class ArrayOfVirtualMachineUsbInfo extends phpDynamicProperties {
 	public $VirtualMachineUsbInfo; //VirtualMachineUsbInfo
 
 	function __construct($VirtualMachineUsbInfo = null) {
@@ -21493,7 +21506,7 @@ class ArrayOfVirtualMachineUsbInfo {
 	}
 }
 
-class VirtualHardware {
+class VirtualHardware extends phpDynamicProperties {
 	public $numCPU; //int
 	public $numCoresPerSocket; //int
 	public $memoryMB; //int
@@ -21511,7 +21524,7 @@ class VirtualHardware {
 	}
 }
 
-class VirtualHardwareOption {
+class VirtualHardwareOption extends phpDynamicProperties {
 	public $hwVersion; //int
 	public $virtualDeviceOption; //VirtualDeviceOption
 	public $deviceListReadonly; //boolean
@@ -21551,7 +21564,7 @@ class VirtualHardwareOption {
 	}
 }
 
-class VirtualMachineImportSpec {
+class VirtualMachineImportSpec extends phpDynamicProperties {
 	public $configSpec; //VirtualMachineConfigSpec
 	public $resPoolEntity; //ManagedObjectReference
 
@@ -21561,7 +21574,7 @@ class VirtualMachineImportSpec {
 	}
 }
 
-class CheckResult {
+class CheckResult extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $warning; //LocalizedMethodFault
@@ -21575,7 +21588,7 @@ class CheckResult {
 	}
 }
 
-class ArrayOfCheckResult {
+class ArrayOfCheckResult extends phpDynamicProperties {
 	public $CheckResult; //CheckResult
 
 	function __construct($CheckResult = null) {
@@ -21583,7 +21596,7 @@ class ArrayOfCheckResult {
 	}
 }
 
-class CustomizationIPSettingsIpV6AddressSpec {
+class CustomizationIPSettingsIpV6AddressSpec extends phpDynamicProperties {
 	public $ip; //CustomizationIpV6Generator
 	public $gateway; //string
 
@@ -21593,7 +21606,7 @@ class CustomizationIPSettingsIpV6AddressSpec {
 	}
 }
 
-class CustomizationIPSettings {
+class CustomizationIPSettings extends phpDynamicProperties {
 	public $ip; //CustomizationIpGenerator
 	public $subnetMask; //string
 	public $gateway; //string
@@ -21617,7 +21630,7 @@ class CustomizationIPSettings {
 	}
 }
 
-class CustomizationSpec {
+class CustomizationSpec extends phpDynamicProperties {
 	public $options; //CustomizationOptions
 	public $identity; //CustomizationIdentitySettings
 	public $globalIPSettings; //CustomizationGlobalIPSettings
@@ -21633,10 +21646,10 @@ class CustomizationSpec {
 	}
 }
 
-class CustomizationName {
+class CustomizationName extends phpDynamicProperties {
 }
 
-class CustomizationFixedName {
+class CustomizationFixedName extends phpDynamicProperties {
 	public $name; //string
 
 	function __construct($name = null) {
@@ -21644,7 +21657,7 @@ class CustomizationFixedName {
 	}
 }
 
-class CustomizationPrefixName {
+class CustomizationPrefixName extends phpDynamicProperties {
 	public $base; //string
 
 	function __construct($base = null) {
@@ -21652,13 +21665,13 @@ class CustomizationPrefixName {
 	}
 }
 
-class CustomizationVirtualMachineName {
+class CustomizationVirtualMachineName extends phpDynamicProperties {
 }
 
-class CustomizationUnknownName {
+class CustomizationUnknownName extends phpDynamicProperties {
 }
 
-class CustomizationCustomName {
+class CustomizationCustomName extends phpDynamicProperties {
 	public $argument; //string
 
 	function __construct($argument = null) {
@@ -21666,7 +21679,7 @@ class CustomizationCustomName {
 	}
 }
 
-class CustomizationPassword {
+class CustomizationPassword extends phpDynamicProperties {
 	public $value; //string
 	public $plainText; //boolean
 
@@ -21676,10 +21689,10 @@ class CustomizationPassword {
 	}
 }
 
-class CustomizationOptions {
+class CustomizationOptions extends phpDynamicProperties {
 }
 
-class CustomizationWinOptions {
+class CustomizationWinOptions extends phpDynamicProperties {
 	public $changeSID; //boolean
 	public $deleteAccounts; //boolean
 	public $reboot; //CustomizationSysprepRebootOption
@@ -21691,10 +21704,10 @@ class CustomizationWinOptions {
 	}
 }
 
-class CustomizationLinuxOptions {
+class CustomizationLinuxOptions extends phpDynamicProperties {
 }
 
-class CustomizationGuiUnattended {
+class CustomizationGuiUnattended extends phpDynamicProperties {
 	public $password; //CustomizationPassword
 	public $timeZone; //int
 	public $autoLogon; //boolean
@@ -21708,7 +21721,7 @@ class CustomizationGuiUnattended {
 	}
 }
 
-class CustomizationUserData {
+class CustomizationUserData extends phpDynamicProperties {
 	public $fullName; //string
 	public $orgName; //string
 	public $computerName; //CustomizationName
@@ -21722,7 +21735,7 @@ class CustomizationUserData {
 	}
 }
 
-class CustomizationGuiRunOnce {
+class CustomizationGuiRunOnce extends phpDynamicProperties {
 	public $commandList; //string
 
 	function __construct($commandList = null) {
@@ -21730,7 +21743,7 @@ class CustomizationGuiRunOnce {
 	}
 }
 
-class CustomizationIdentification {
+class CustomizationIdentification extends phpDynamicProperties {
 	public $joinWorkgroup; //string
 	public $joinDomain; //string
 	public $domainAdmin; //string
@@ -21744,7 +21757,7 @@ class CustomizationIdentification {
 	}
 }
 
-class CustomizationLicenseFilePrintData {
+class CustomizationLicenseFilePrintData extends phpDynamicProperties {
 	public $autoMode; //CustomizationLicenseDataMode
 	public $autoUsers; //int
 
@@ -21754,10 +21767,10 @@ class CustomizationLicenseFilePrintData {
 	}
 }
 
-class CustomizationIdentitySettings {
+class CustomizationIdentitySettings extends phpDynamicProperties {
 }
 
-class CustomizationSysprepText {
+class CustomizationSysprepText extends phpDynamicProperties {
 	public $value; //string
 
 	function __construct($value = null) {
@@ -21765,7 +21778,7 @@ class CustomizationSysprepText {
 	}
 }
 
-class CustomizationSysprep {
+class CustomizationSysprep extends phpDynamicProperties {
 	public $guiUnattended; //CustomizationGuiUnattended
 	public $userData; //CustomizationUserData
 	public $guiRunOnce; //CustomizationGuiRunOnce
@@ -21781,7 +21794,7 @@ class CustomizationSysprep {
 	}
 }
 
-class CustomizationLinuxPrep {
+class CustomizationLinuxPrep extends phpDynamicProperties {
 	public $hostName; //CustomizationName
 	public $domain; //string
 	public $timeZone; //string
@@ -21795,7 +21808,7 @@ class CustomizationLinuxPrep {
 	}
 }
 
-class CustomizationGlobalIPSettings {
+class CustomizationGlobalIPSettings extends phpDynamicProperties {
 	public $dnsSuffixList; //string
 	public $dnsServerList; //string
 
@@ -21805,13 +21818,13 @@ class CustomizationGlobalIPSettings {
 	}
 }
 
-class CustomizationIpGenerator {
+class CustomizationIpGenerator extends phpDynamicProperties {
 }
 
-class CustomizationDhcpIpGenerator {
+class CustomizationDhcpIpGenerator extends phpDynamicProperties {
 }
 
-class CustomizationFixedIp {
+class CustomizationFixedIp extends phpDynamicProperties {
 	public $ipAddress; //string
 
 	function __construct($ipAddress = null) {
@@ -21819,10 +21832,10 @@ class CustomizationFixedIp {
 	}
 }
 
-class CustomizationUnknownIpGenerator {
+class CustomizationUnknownIpGenerator extends phpDynamicProperties {
 }
 
-class CustomizationCustomIpGenerator {
+class CustomizationCustomIpGenerator extends phpDynamicProperties {
 	public $argument; //string
 
 	function __construct($argument = null) {
@@ -21830,10 +21843,10 @@ class CustomizationCustomIpGenerator {
 	}
 }
 
-class CustomizationIpV6Generator {
+class CustomizationIpV6Generator extends phpDynamicProperties {
 }
 
-class ArrayOfCustomizationIpV6Generator {
+class ArrayOfCustomizationIpV6Generator extends phpDynamicProperties {
 	public $CustomizationIpV6Generator; //CustomizationIpV6Generator
 
 	function __construct($CustomizationIpV6Generator = null) {
@@ -21841,13 +21854,13 @@ class ArrayOfCustomizationIpV6Generator {
 	}
 }
 
-class CustomizationDhcpIpV6Generator {
+class CustomizationDhcpIpV6Generator extends phpDynamicProperties {
 }
 
-class CustomizationStatelessIpV6Generator {
+class CustomizationStatelessIpV6Generator extends phpDynamicProperties {
 }
 
-class CustomizationFixedIpV6 {
+class CustomizationFixedIpV6 extends phpDynamicProperties {
 	public $ipAddress; //string
 	public $subnetMask; //int
 
@@ -21857,13 +21870,13 @@ class CustomizationFixedIpV6 {
 	}
 }
 
-class CustomizationAutoIpV6Generator {
+class CustomizationAutoIpV6Generator extends phpDynamicProperties {
 }
 
-class CustomizationUnknownIpV6Generator {
+class CustomizationUnknownIpV6Generator extends phpDynamicProperties {
 }
 
-class CustomizationCustomIpV6Generator {
+class CustomizationCustomIpV6Generator extends phpDynamicProperties {
 	public $argument; //string
 
 	function __construct($argument = null) {
@@ -21871,7 +21884,7 @@ class CustomizationCustomIpV6Generator {
 	}
 }
 
-class CustomizationAdapterMapping {
+class CustomizationAdapterMapping extends phpDynamicProperties {
 	public $macAddress; //string
 	public $adapter; //CustomizationIPSettings
 
@@ -21881,7 +21894,7 @@ class CustomizationAdapterMapping {
 	}
 }
 
-class ArrayOfCustomizationAdapterMapping {
+class ArrayOfCustomizationAdapterMapping extends phpDynamicProperties {
 	public $CustomizationAdapterMapping; //CustomizationAdapterMapping
 
 	function __construct($CustomizationAdapterMapping = null) {
@@ -21889,7 +21902,7 @@ class ArrayOfCustomizationAdapterMapping {
 	}
 }
 
-class HostDiskMappingPartitionInfo {
+class HostDiskMappingPartitionInfo extends phpDynamicProperties {
 	public $name; //string
 	public $fileSystem; //string
 	public $capacityInKb; //long
@@ -21901,7 +21914,7 @@ class HostDiskMappingPartitionInfo {
 	}
 }
 
-class HostDiskMappingInfo {
+class HostDiskMappingInfo extends phpDynamicProperties {
 	public $physicalPartition; //HostDiskMappingPartitionInfo
 	public $name; //string
 	public $exclusive; //boolean
@@ -21913,7 +21926,7 @@ class HostDiskMappingInfo {
 	}
 }
 
-class HostDiskMappingPartitionOption {
+class HostDiskMappingPartitionOption extends phpDynamicProperties {
 	public $name; //string
 	public $fileSystem; //string
 	public $capacityInKb; //long
@@ -21925,7 +21938,7 @@ class HostDiskMappingPartitionOption {
 	}
 }
 
-class ArrayOfHostDiskMappingPartitionOption {
+class ArrayOfHostDiskMappingPartitionOption extends phpDynamicProperties {
 	public $HostDiskMappingPartitionOption; //HostDiskMappingPartitionOption
 
 	function __construct($HostDiskMappingPartitionOption = null) {
@@ -21933,7 +21946,7 @@ class ArrayOfHostDiskMappingPartitionOption {
 	}
 }
 
-class HostDiskMappingOption {
+class HostDiskMappingOption extends phpDynamicProperties {
 	public $physicalPartition; //HostDiskMappingPartitionOption
 	public $name; //string
 
@@ -21943,22 +21956,22 @@ class HostDiskMappingOption {
 	}
 }
 
-class ParaVirtualSCSIController {
+class ParaVirtualSCSIController extends phpDynamicProperties {
 }
 
-class ParaVirtualSCSIControllerOption {
+class ParaVirtualSCSIControllerOption extends phpDynamicProperties {
 }
 
-class VirtualBusLogicController {
+class VirtualBusLogicController extends phpDynamicProperties {
 }
 
-class VirtualBusLogicControllerOption {
+class VirtualBusLogicControllerOption extends phpDynamicProperties {
 }
 
-class VirtualCdromIsoBackingInfo {
+class VirtualCdromIsoBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualCdromPassthroughBackingInfo {
+class VirtualCdromPassthroughBackingInfo extends phpDynamicProperties {
 	public $exclusive; //boolean
 
 	function __construct($exclusive = null) {
@@ -21966,7 +21979,7 @@ class VirtualCdromPassthroughBackingInfo {
 	}
 }
 
-class VirtualCdromRemotePassthroughBackingInfo {
+class VirtualCdromRemotePassthroughBackingInfo extends phpDynamicProperties {
 	public $exclusive; //boolean
 
 	function __construct($exclusive = null) {
@@ -21974,19 +21987,19 @@ class VirtualCdromRemotePassthroughBackingInfo {
 	}
 }
 
-class VirtualCdromAtapiBackingInfo {
+class VirtualCdromAtapiBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualCdromRemoteAtapiBackingInfo {
+class VirtualCdromRemoteAtapiBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualCdrom {
+class VirtualCdrom extends phpDynamicProperties {
 }
 
-class VirtualCdromIsoBackingOption {
+class VirtualCdromIsoBackingOption extends phpDynamicProperties {
 }
 
-class VirtualCdromPassthroughBackingOption {
+class VirtualCdromPassthroughBackingOption extends phpDynamicProperties {
 	public $exclusive; //BoolOption
 
 	function __construct($exclusive = null) {
@@ -21994,7 +22007,7 @@ class VirtualCdromPassthroughBackingOption {
 	}
 }
 
-class VirtualCdromRemotePassthroughBackingOption {
+class VirtualCdromRemotePassthroughBackingOption extends phpDynamicProperties {
 	public $exclusive; //BoolOption
 
 	function __construct($exclusive = null) {
@@ -22002,16 +22015,16 @@ class VirtualCdromRemotePassthroughBackingOption {
 	}
 }
 
-class VirtualCdromAtapiBackingOption {
+class VirtualCdromAtapiBackingOption extends phpDynamicProperties {
 }
 
-class VirtualCdromRemoteAtapiBackingOption {
+class VirtualCdromRemoteAtapiBackingOption extends phpDynamicProperties {
 }
 
-class VirtualCdromOption {
+class VirtualCdromOption extends phpDynamicProperties {
 }
 
-class VirtualController {
+class VirtualController extends phpDynamicProperties {
 	public $busNumber; //int
 	public $device; //int
 
@@ -22021,7 +22034,7 @@ class VirtualController {
 	}
 }
 
-class VirtualControllerOption {
+class VirtualControllerOption extends phpDynamicProperties {
 	public $devices; //IntOption
 	public $supportedDevice; //string
 
@@ -22031,10 +22044,10 @@ class VirtualControllerOption {
 	}
 }
 
-class VirtualDeviceBackingInfo {
+class VirtualDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualDeviceFileBackingInfo {
+class VirtualDeviceFileBackingInfo extends phpDynamicProperties {
 	public $fileName; //string
 	public $datastore; //ManagedObjectReference
 
@@ -22044,7 +22057,7 @@ class VirtualDeviceFileBackingInfo {
 	}
 }
 
-class VirtualDeviceDeviceBackingInfo {
+class VirtualDeviceDeviceBackingInfo extends phpDynamicProperties {
 	public $deviceName; //string
 	public $useAutoDetect; //boolean
 
@@ -22054,7 +22067,7 @@ class VirtualDeviceDeviceBackingInfo {
 	}
 }
 
-class VirtualDeviceRemoteDeviceBackingInfo {
+class VirtualDeviceRemoteDeviceBackingInfo extends phpDynamicProperties {
 	public $deviceName; //string
 	public $useAutoDetect; //boolean
 
@@ -22064,7 +22077,7 @@ class VirtualDeviceRemoteDeviceBackingInfo {
 	}
 }
 
-class VirtualDevicePipeBackingInfo {
+class VirtualDevicePipeBackingInfo extends phpDynamicProperties {
 	public $pipeName; //string
 
 	function __construct($pipeName = null) {
@@ -22072,7 +22085,7 @@ class VirtualDevicePipeBackingInfo {
 	}
 }
 
-class VirtualDeviceURIBackingInfo {
+class VirtualDeviceURIBackingInfo extends phpDynamicProperties {
 	public $serviceURI; //string
 	public $direction; //string
 	public $proxyURI; //string
@@ -22084,7 +22097,7 @@ class VirtualDeviceURIBackingInfo {
 	}
 }
 
-class VirtualDeviceConnectInfo {
+class VirtualDeviceConnectInfo extends phpDynamicProperties {
 	public $startConnected; //boolean
 	public $allowGuestControl; //boolean
 	public $connected; //boolean
@@ -22098,7 +22111,7 @@ class VirtualDeviceConnectInfo {
 	}
 }
 
-class VirtualDevice {
+class VirtualDevice extends phpDynamicProperties {
 	public $key; //int
 	public $deviceInfo; //Description
 	public $backing; //VirtualDeviceBackingInfo
@@ -22116,7 +22129,7 @@ class VirtualDevice {
 	}
 }
 
-class ArrayOfVirtualDevice {
+class ArrayOfVirtualDevice extends phpDynamicProperties {
 	public $VirtualDevice; //VirtualDevice
 
 	function __construct($VirtualDevice = null) {
@@ -22124,7 +22137,7 @@ class ArrayOfVirtualDevice {
 	}
 }
 
-class VirtualDeviceBackingOption {
+class VirtualDeviceBackingOption extends phpDynamicProperties {
 	public $type; //string
 
 	function __construct($type = null) {
@@ -22132,7 +22145,7 @@ class VirtualDeviceBackingOption {
 	}
 }
 
-class ArrayOfVirtualDeviceBackingOption {
+class ArrayOfVirtualDeviceBackingOption extends phpDynamicProperties {
 	public $VirtualDeviceBackingOption; //VirtualDeviceBackingOption
 
 	function __construct($VirtualDeviceBackingOption = null) {
@@ -22140,7 +22153,7 @@ class ArrayOfVirtualDeviceBackingOption {
 	}
 }
 
-class VirtualDeviceFileBackingOption {
+class VirtualDeviceFileBackingOption extends phpDynamicProperties {
 	public $fileNameExtensions; //ChoiceOption
 
 	function __construct($fileNameExtensions = null) {
@@ -22148,7 +22161,7 @@ class VirtualDeviceFileBackingOption {
 	}
 }
 
-class VirtualDeviceDeviceBackingOption {
+class VirtualDeviceDeviceBackingOption extends phpDynamicProperties {
 	public $autoDetectAvailable; //BoolOption
 
 	function __construct($autoDetectAvailable = null) {
@@ -22156,7 +22169,7 @@ class VirtualDeviceDeviceBackingOption {
 	}
 }
 
-class VirtualDeviceRemoteDeviceBackingOption {
+class VirtualDeviceRemoteDeviceBackingOption extends phpDynamicProperties {
 	public $autoDetectAvailable; //BoolOption
 
 	function __construct($autoDetectAvailable = null) {
@@ -22164,10 +22177,10 @@ class VirtualDeviceRemoteDeviceBackingOption {
 	}
 }
 
-class VirtualDevicePipeBackingOption {
+class VirtualDevicePipeBackingOption extends phpDynamicProperties {
 }
 
-class VirtualDeviceURIBackingOption {
+class VirtualDeviceURIBackingOption extends phpDynamicProperties {
 	public $directions; //ChoiceOption
 
 	function __construct($directions = null) {
@@ -22175,7 +22188,7 @@ class VirtualDeviceURIBackingOption {
 	}
 }
 
-class VirtualDeviceConnectOption {
+class VirtualDeviceConnectOption extends phpDynamicProperties {
 	public $startConnected; //BoolOption
 	public $allowGuestControl; //BoolOption
 
@@ -22185,7 +22198,7 @@ class VirtualDeviceConnectOption {
 	}
 }
 
-class VirtualDeviceOption {
+class VirtualDeviceOption extends phpDynamicProperties {
 	public $type; //string
 	public $connectOption; //VirtualDeviceConnectOption
 	public $controllerType; //string
@@ -22211,7 +22224,7 @@ class VirtualDeviceOption {
 	}
 }
 
-class ArrayOfVirtualDeviceOption {
+class ArrayOfVirtualDeviceOption extends phpDynamicProperties {
 	public $VirtualDeviceOption; //VirtualDeviceOption
 
 	function __construct($VirtualDeviceOption = null) {
@@ -22219,7 +22232,7 @@ class ArrayOfVirtualDeviceOption {
 	}
 }
 
-class VirtualDeviceConfigSpec {
+class VirtualDeviceConfigSpec extends phpDynamicProperties {
 	public $operation; //VirtualDeviceConfigSpecOperation
 	public $fileOperation; //VirtualDeviceConfigSpecFileOperation
 	public $device; //VirtualDevice
@@ -22231,7 +22244,7 @@ class VirtualDeviceConfigSpec {
 	}
 }
 
-class ArrayOfVirtualDeviceConfigSpec {
+class ArrayOfVirtualDeviceConfigSpec extends phpDynamicProperties {
 	public $VirtualDeviceConfigSpec; //VirtualDeviceConfigSpec
 
 	function __construct($VirtualDeviceConfigSpec = null) {
@@ -22239,7 +22252,7 @@ class ArrayOfVirtualDeviceConfigSpec {
 	}
 }
 
-class VirtualDiskSparseVer1BackingInfo {
+class VirtualDiskSparseVer1BackingInfo extends phpDynamicProperties {
 	public $diskMode; //string
 	public $split; //boolean
 	public $writeThrough; //boolean
@@ -22257,7 +22270,7 @@ class VirtualDiskSparseVer1BackingInfo {
 	}
 }
 
-class VirtualDiskSparseVer2BackingInfo {
+class VirtualDiskSparseVer2BackingInfo extends phpDynamicProperties {
 	public $diskMode; //string
 	public $split; //boolean
 	public $writeThrough; //boolean
@@ -22279,7 +22292,7 @@ class VirtualDiskSparseVer2BackingInfo {
 	}
 }
 
-class VirtualDiskFlatVer1BackingInfo {
+class VirtualDiskFlatVer1BackingInfo extends phpDynamicProperties {
 	public $diskMode; //string
 	public $split; //boolean
 	public $writeThrough; //boolean
@@ -22295,7 +22308,7 @@ class VirtualDiskFlatVer1BackingInfo {
 	}
 }
 
-class VirtualDiskFlatVer2BackingInfo {
+class VirtualDiskFlatVer2BackingInfo extends phpDynamicProperties {
 	public $diskMode; //string
 	public $split; //boolean
 	public $writeThrough; //boolean
@@ -22323,7 +22336,7 @@ class VirtualDiskFlatVer2BackingInfo {
 	}
 }
 
-class VirtualDiskRawDiskVer2BackingInfo {
+class VirtualDiskRawDiskVer2BackingInfo extends phpDynamicProperties {
 	public $descriptorFileName; //string
 	public $uuid; //string
 	public $changeId; //string
@@ -22335,7 +22348,7 @@ class VirtualDiskRawDiskVer2BackingInfo {
 	}
 }
 
-class VirtualDiskPartitionedRawDiskVer2BackingInfo {
+class VirtualDiskPartitionedRawDiskVer2BackingInfo extends phpDynamicProperties {
 	public $partition; //int
 
 	function __construct($partition = null) {
@@ -22343,7 +22356,7 @@ class VirtualDiskPartitionedRawDiskVer2BackingInfo {
 	}
 }
 
-class VirtualDiskRawDiskMappingVer1BackingInfo {
+class VirtualDiskRawDiskMappingVer1BackingInfo extends phpDynamicProperties {
 	public $lunUuid; //string
 	public $deviceName; //string
 	public $compatibilityMode; //string
@@ -22365,7 +22378,7 @@ class VirtualDiskRawDiskMappingVer1BackingInfo {
 	}
 }
 
-class VirtualDisk {
+class VirtualDisk extends phpDynamicProperties {
 	public $capacityInKB; //long
 	public $shares; //SharesInfo
 	public $storageIOAllocation; //StorageIOAllocationInfo
@@ -22377,7 +22390,7 @@ class VirtualDisk {
 	}
 }
 
-class ArrayOfVirtualDisk {
+class ArrayOfVirtualDisk extends phpDynamicProperties {
 	public $VirtualDisk; //VirtualDisk
 
 	function __construct($VirtualDisk = null) {
@@ -22385,7 +22398,7 @@ class ArrayOfVirtualDisk {
 	}
 }
 
-class VirtualDiskId {
+class VirtualDiskId extends phpDynamicProperties {
 	public $vm; //ManagedObjectReference
 	public $diskId; //int
 
@@ -22395,7 +22408,7 @@ class VirtualDiskId {
 	}
 }
 
-class VirtualDiskSparseVer1BackingOption {
+class VirtualDiskSparseVer1BackingOption extends phpDynamicProperties {
 	public $diskModes; //ChoiceOption
 	public $split; //BoolOption
 	public $writeThrough; //BoolOption
@@ -22409,7 +22422,7 @@ class VirtualDiskSparseVer1BackingOption {
 	}
 }
 
-class VirtualDiskSparseVer2BackingOption {
+class VirtualDiskSparseVer2BackingOption extends phpDynamicProperties {
 	public $diskMode; //ChoiceOption
 	public $split; //BoolOption
 	public $writeThrough; //BoolOption
@@ -22427,7 +22440,7 @@ class VirtualDiskSparseVer2BackingOption {
 	}
 }
 
-class VirtualDiskFlatVer1BackingOption {
+class VirtualDiskFlatVer1BackingOption extends phpDynamicProperties {
 	public $diskMode; //ChoiceOption
 	public $split; //BoolOption
 	public $writeThrough; //BoolOption
@@ -22441,7 +22454,7 @@ class VirtualDiskFlatVer1BackingOption {
 	}
 }
 
-class VirtualDiskFlatVer2BackingOption {
+class VirtualDiskFlatVer2BackingOption extends phpDynamicProperties {
 	public $diskMode; //ChoiceOption
 	public $split; //BoolOption
 	public $writeThrough; //BoolOption
@@ -22465,7 +22478,7 @@ class VirtualDiskFlatVer2BackingOption {
 	}
 }
 
-class VirtualDiskRawDiskVer2BackingOption {
+class VirtualDiskRawDiskVer2BackingOption extends phpDynamicProperties {
 	public $descriptorFileNameExtensions; //ChoiceOption
 	public $uuid; //boolean
 
@@ -22475,10 +22488,10 @@ class VirtualDiskRawDiskVer2BackingOption {
 	}
 }
 
-class VirtualDiskPartitionedRawDiskVer2BackingOption {
+class VirtualDiskPartitionedRawDiskVer2BackingOption extends phpDynamicProperties {
 }
 
-class VirtualDiskRawDiskMappingVer1BackingOption {
+class VirtualDiskRawDiskMappingVer1BackingOption extends phpDynamicProperties {
 	public $descriptorFileNameExtensions; //ChoiceOption
 	public $compatibilityMode; //ChoiceOption
 	public $diskMode; //ChoiceOption
@@ -22492,7 +22505,7 @@ class VirtualDiskRawDiskMappingVer1BackingOption {
 	}
 }
 
-class VirtualDiskOption {
+class VirtualDiskOption extends phpDynamicProperties {
 	public $capacityInKB; //LongOption
 	public $ioAllocationOption; //StorageIOAllocationOption
 
@@ -22502,25 +22515,25 @@ class VirtualDiskOption {
 	}
 }
 
-class VirtualE1000 {
+class VirtualE1000 extends phpDynamicProperties {
 }
 
-class VirtualE1000Option {
+class VirtualE1000Option extends phpDynamicProperties {
 }
 
-class VirtualE1000e {
+class VirtualE1000e extends phpDynamicProperties {
 }
 
-class VirtualE1000eOption {
+class VirtualE1000eOption extends phpDynamicProperties {
 }
 
-class VirtualEnsoniq1371 {
+class VirtualEnsoniq1371 extends phpDynamicProperties {
 }
 
-class VirtualEnsoniq1371Option {
+class VirtualEnsoniq1371Option extends phpDynamicProperties {
 }
 
-class VirtualEthernetCardNetworkBackingInfo {
+class VirtualEthernetCardNetworkBackingInfo extends phpDynamicProperties {
 	public $network; //ManagedObjectReference
 	public $inPassthroughMode; //boolean
 
@@ -22530,10 +22543,10 @@ class VirtualEthernetCardNetworkBackingInfo {
 	}
 }
 
-class VirtualEthernetCardLegacyNetworkBackingInfo {
+class VirtualEthernetCardLegacyNetworkBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualEthernetCardDistributedVirtualPortBackingInfo {
+class VirtualEthernetCardDistributedVirtualPortBackingInfo extends phpDynamicProperties {
 	public $port; //DistributedVirtualSwitchPortConnection
 
 	function __construct($port = null) {
@@ -22541,7 +22554,7 @@ class VirtualEthernetCardDistributedVirtualPortBackingInfo {
 	}
 }
 
-class VirtualEthernetCard {
+class VirtualEthernetCard extends phpDynamicProperties {
 	public $addressType; //string
 	public $macAddress; //string
 	public $wakeOnLanEnabled; //boolean
@@ -22553,16 +22566,16 @@ class VirtualEthernetCard {
 	}
 }
 
-class VirtualEthernetCardNetworkBackingOption {
+class VirtualEthernetCardNetworkBackingOption extends phpDynamicProperties {
 }
 
-class VirtualEthernetCardLegacyNetworkBackingOption {
+class VirtualEthernetCardLegacyNetworkBackingOption extends phpDynamicProperties {
 }
 
-class VirtualEthernetCardDVPortBackingOption {
+class VirtualEthernetCardDVPortBackingOption extends phpDynamicProperties {
 }
 
-class VirtualEthernetCardOption {
+class VirtualEthernetCardOption extends phpDynamicProperties {
 	public $supportedOUI; //ChoiceOption
 	public $macType; //ChoiceOption
 	public $wakeOnLanEnabled; //BoolOption
@@ -22576,40 +22589,40 @@ class VirtualEthernetCardOption {
 	}
 }
 
-class VirtualFloppyImageBackingInfo {
+class VirtualFloppyImageBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualFloppyDeviceBackingInfo {
+class VirtualFloppyDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualFloppyRemoteDeviceBackingInfo {
+class VirtualFloppyRemoteDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualFloppy {
+class VirtualFloppy extends phpDynamicProperties {
 }
 
-class VirtualFloppyImageBackingOption {
+class VirtualFloppyImageBackingOption extends phpDynamicProperties {
 }
 
-class VirtualFloppyDeviceBackingOption {
+class VirtualFloppyDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualFloppyRemoteDeviceBackingOption {
+class VirtualFloppyRemoteDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualFloppyOption {
+class VirtualFloppyOption extends phpDynamicProperties {
 }
 
-class VirtualHdAudioCard {
+class VirtualHdAudioCard extends phpDynamicProperties {
 }
 
-class VirtualHdAudioCardOption {
+class VirtualHdAudioCardOption extends phpDynamicProperties {
 }
 
-class VirtualIDEController {
+class VirtualIDEController extends phpDynamicProperties {
 }
 
-class VirtualIDEControllerOption {
+class VirtualIDEControllerOption extends phpDynamicProperties {
 	public $numIDEDisks; //IntOption
 	public $numIDECdroms; //IntOption
 
@@ -22619,28 +22632,28 @@ class VirtualIDEControllerOption {
 	}
 }
 
-class VirtualKeyboard {
+class VirtualKeyboard extends phpDynamicProperties {
 }
 
-class VirtualKeyboardOption {
+class VirtualKeyboardOption extends phpDynamicProperties {
 }
 
-class VirtualLsiLogicController {
+class VirtualLsiLogicController extends phpDynamicProperties {
 }
 
-class VirtualLsiLogicControllerOption {
+class VirtualLsiLogicControllerOption extends phpDynamicProperties {
 }
 
-class VirtualLsiLogicSASController {
+class VirtualLsiLogicSASController extends phpDynamicProperties {
 }
 
-class VirtualLsiLogicSASControllerOption {
+class VirtualLsiLogicSASControllerOption extends phpDynamicProperties {
 }
 
-class VirtualPCIController {
+class VirtualPCIController extends phpDynamicProperties {
 }
 
-class VirtualPCIControllerOption {
+class VirtualPCIControllerOption extends phpDynamicProperties {
 	public $numSCSIControllers; //IntOption
 	public $numEthernetCards; //IntOption
 	public $numVideoCards; //IntOption
@@ -22666,7 +22679,7 @@ class VirtualPCIControllerOption {
 	}
 }
 
-class VirtualPCIPassthroughDeviceBackingInfo {
+class VirtualPCIPassthroughDeviceBackingInfo extends phpDynamicProperties {
 	public $id; //string
 	public $deviceId; //string
 	public $systemId; //string
@@ -22680,19 +22693,19 @@ class VirtualPCIPassthroughDeviceBackingInfo {
 	}
 }
 
-class VirtualPCIPassthrough {
+class VirtualPCIPassthrough extends phpDynamicProperties {
 }
 
-class VirtualPCIPassthroughDeviceBackingOption {
+class VirtualPCIPassthroughDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualPCIPassthroughOption {
+class VirtualPCIPassthroughOption extends phpDynamicProperties {
 }
 
-class VirtualPCNet32 {
+class VirtualPCNet32 extends phpDynamicProperties {
 }
 
-class VirtualPCNet32Option {
+class VirtualPCNet32Option extends phpDynamicProperties {
 	public $supportsMorphing; //boolean
 
 	function __construct($supportsMorphing = null) {
@@ -22700,10 +22713,10 @@ class VirtualPCNet32Option {
 	}
 }
 
-class VirtualPS2Controller {
+class VirtualPS2Controller extends phpDynamicProperties {
 }
 
-class VirtualPS2ControllerOption {
+class VirtualPS2ControllerOption extends phpDynamicProperties {
 	public $numKeyboards; //IntOption
 	public $numPointingDevices; //IntOption
 
@@ -22713,25 +22726,25 @@ class VirtualPS2ControllerOption {
 	}
 }
 
-class VirtualParallelPortFileBackingInfo {
+class VirtualParallelPortFileBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualParallelPortDeviceBackingInfo {
+class VirtualParallelPortDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualParallelPort {
+class VirtualParallelPort extends phpDynamicProperties {
 }
 
-class VirtualParallelPortFileBackingOption {
+class VirtualParallelPortFileBackingOption extends phpDynamicProperties {
 }
 
-class VirtualParallelPortDeviceBackingOption {
+class VirtualParallelPortDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualParallelPortOption {
+class VirtualParallelPortOption extends phpDynamicProperties {
 }
 
-class VirtualPointingDeviceDeviceBackingInfo {
+class VirtualPointingDeviceDeviceBackingInfo extends phpDynamicProperties {
 	public $hostPointingDevice; //string
 
 	function __construct($hostPointingDevice = null) {
@@ -22739,10 +22752,10 @@ class VirtualPointingDeviceDeviceBackingInfo {
 	}
 }
 
-class VirtualPointingDevice {
+class VirtualPointingDevice extends phpDynamicProperties {
 }
 
-class VirtualPointingDeviceBackingOption {
+class VirtualPointingDeviceBackingOption extends phpDynamicProperties {
 	public $hostPointingDevice; //ChoiceOption
 
 	function __construct($hostPointingDevice = null) {
@@ -22750,10 +22763,10 @@ class VirtualPointingDeviceBackingOption {
 	}
 }
 
-class VirtualPointingDeviceOption {
+class VirtualPointingDeviceOption extends phpDynamicProperties {
 }
 
-class ArrayOfVirtualSCSISharing {
+class ArrayOfVirtualSCSISharing extends phpDynamicProperties {
 	public $VirtualSCSISharing; //VirtualSCSISharing
 
 	function __construct($VirtualSCSISharing = null) {
@@ -22761,7 +22774,7 @@ class ArrayOfVirtualSCSISharing {
 	}
 }
 
-class VirtualSCSIController {
+class VirtualSCSIController extends phpDynamicProperties {
 	public $hotAddRemove; //boolean
 	public $sharedBus; //VirtualSCSISharing
 	public $scsiCtlrUnitNumber; //int
@@ -22773,7 +22786,7 @@ class VirtualSCSIController {
 	}
 }
 
-class VirtualSCSIControllerOption {
+class VirtualSCSIControllerOption extends phpDynamicProperties {
 	public $numSCSIDisks; //IntOption
 	public $numSCSICdroms; //IntOption
 	public $numSCSIPassthrough; //IntOption
@@ -22793,22 +22806,22 @@ class VirtualSCSIControllerOption {
 	}
 }
 
-class VirtualSCSIPassthroughDeviceBackingInfo {
+class VirtualSCSIPassthroughDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualSCSIPassthrough {
+class VirtualSCSIPassthrough extends phpDynamicProperties {
 }
 
-class VirtualSCSIPassthroughDeviceBackingOption {
+class VirtualSCSIPassthroughDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualSCSIPassthroughOption {
+class VirtualSCSIPassthroughOption extends phpDynamicProperties {
 }
 
-class VirtualSIOController {
+class VirtualSIOController extends phpDynamicProperties {
 }
 
-class VirtualSIOControllerOption {
+class VirtualSIOControllerOption extends phpDynamicProperties {
 	public $numFloppyDrives; //IntOption
 	public $numSerialPorts; //IntOption
 	public $numParallelPorts; //IntOption
@@ -22820,13 +22833,13 @@ class VirtualSIOControllerOption {
 	}
 }
 
-class VirtualSerialPortFileBackingInfo {
+class VirtualSerialPortFileBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualSerialPortDeviceBackingInfo {
+class VirtualSerialPortDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualSerialPortPipeBackingInfo {
+class VirtualSerialPortPipeBackingInfo extends phpDynamicProperties {
 	public $endpoint; //string
 	public $noRxLoss; //boolean
 
@@ -22836,10 +22849,10 @@ class VirtualSerialPortPipeBackingInfo {
 	}
 }
 
-class VirtualSerialPortURIBackingInfo {
+class VirtualSerialPortURIBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualSerialPort {
+class VirtualSerialPort extends phpDynamicProperties {
 	public $yieldOnPoll; //boolean
 
 	function __construct($yieldOnPoll = null) {
@@ -22847,13 +22860,13 @@ class VirtualSerialPort {
 	}
 }
 
-class VirtualSerialPortFileBackingOption {
+class VirtualSerialPortFileBackingOption extends phpDynamicProperties {
 }
 
-class VirtualSerialPortDeviceBackingOption {
+class VirtualSerialPortDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualSerialPortPipeBackingOption {
+class VirtualSerialPortPipeBackingOption extends phpDynamicProperties {
 	public $endpoint; //ChoiceOption
 	public $noRxLoss; //BoolOption
 
@@ -22863,10 +22876,10 @@ class VirtualSerialPortPipeBackingOption {
 	}
 }
 
-class VirtualSerialPortURIBackingOption {
+class VirtualSerialPortURIBackingOption extends phpDynamicProperties {
 }
 
-class VirtualSerialPortOption {
+class VirtualSerialPortOption extends phpDynamicProperties {
 	public $yieldOnPoll; //BoolOption
 
 	function __construct($yieldOnPoll = null) {
@@ -22874,28 +22887,28 @@ class VirtualSerialPortOption {
 	}
 }
 
-class VirtualSoundBlaster16 {
+class VirtualSoundBlaster16 extends phpDynamicProperties {
 }
 
-class VirtualSoundBlaster16Option {
+class VirtualSoundBlaster16Option extends phpDynamicProperties {
 }
 
-class VirtualSoundCardDeviceBackingInfo {
+class VirtualSoundCardDeviceBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualSoundCard {
+class VirtualSoundCard extends phpDynamicProperties {
 }
 
-class VirtualSoundCardDeviceBackingOption {
+class VirtualSoundCardDeviceBackingOption extends phpDynamicProperties {
 }
 
-class VirtualSoundCardOption {
+class VirtualSoundCardOption extends phpDynamicProperties {
 }
 
-class VirtualUSBUSBBackingInfo {
+class VirtualUSBUSBBackingInfo extends phpDynamicProperties {
 }
 
-class VirtualUSBRemoteHostBackingInfo {
+class VirtualUSBRemoteHostBackingInfo extends phpDynamicProperties {
 	public $hostname; //string
 
 	function __construct($hostname = null) {
@@ -22903,7 +22916,7 @@ class VirtualUSBRemoteHostBackingInfo {
 	}
 }
 
-class VirtualUSBRemoteClientBackingInfo {
+class VirtualUSBRemoteClientBackingInfo extends phpDynamicProperties {
 	public $hostname; //string
 
 	function __construct($hostname = null) {
@@ -22911,7 +22924,7 @@ class VirtualUSBRemoteClientBackingInfo {
 	}
 }
 
-class VirtualUSB {
+class VirtualUSB extends phpDynamicProperties {
 	public $connected; //boolean
 	public $vendor; //int
 	public $product; //int
@@ -22927,7 +22940,7 @@ class VirtualUSB {
 	}
 }
 
-class VirtualUSBController {
+class VirtualUSBController extends phpDynamicProperties {
 	public $autoConnectDevices; //boolean
 	public $ehciEnabled; //boolean
 
@@ -22937,7 +22950,7 @@ class VirtualUSBController {
 	}
 }
 
-class VirtualUSBControllerOption {
+class VirtualUSBControllerOption extends phpDynamicProperties {
 	public $autoConnectDevices; //BoolOption
 	public $ehciSupported; //BoolOption
 	public $supportedSpeeds; //string
@@ -22949,19 +22962,19 @@ class VirtualUSBControllerOption {
 	}
 }
 
-class VirtualUSBUSBBackingOption {
+class VirtualUSBUSBBackingOption extends phpDynamicProperties {
 }
 
-class VirtualUSBRemoteHostBackingOption {
+class VirtualUSBRemoteHostBackingOption extends phpDynamicProperties {
 }
 
-class VirtualUSBRemoteClientBackingOption {
+class VirtualUSBRemoteClientBackingOption extends phpDynamicProperties {
 }
 
-class VirtualUSBOption {
+class VirtualUSBOption extends phpDynamicProperties {
 }
 
-class VirtualUSBXHCIController {
+class VirtualUSBXHCIController extends phpDynamicProperties {
 	public $autoConnectDevices; //boolean
 
 	function __construct($autoConnectDevices = null) {
@@ -22969,7 +22982,7 @@ class VirtualUSBXHCIController {
 	}
 }
 
-class VirtualUSBXHCIControllerOption {
+class VirtualUSBXHCIControllerOption extends phpDynamicProperties {
 	public $autoConnectDevices; //BoolOption
 	public $supportedSpeeds; //string
 
@@ -22979,7 +22992,7 @@ class VirtualUSBXHCIControllerOption {
 	}
 }
 
-class VirtualMachineVMCIDevice {
+class VirtualMachineVMCIDevice extends phpDynamicProperties {
 	public $id; //long
 	public $allowUnrestrictedCommunication; //boolean
 
@@ -22989,7 +23002,7 @@ class VirtualMachineVMCIDevice {
 	}
 }
 
-class VirtualMachineVMCIDeviceOption {
+class VirtualMachineVMCIDeviceOption extends phpDynamicProperties {
 	public $allowUnrestrictedCommunication; //BoolOption
 
 	function __construct($allowUnrestrictedCommunication = null) {
@@ -22997,13 +23010,13 @@ class VirtualMachineVMCIDeviceOption {
 	}
 }
 
-class VirtualMachineVMIROM {
+class VirtualMachineVMIROM extends phpDynamicProperties {
 }
 
-class VirtualVMIROMOption {
+class VirtualVMIROMOption extends phpDynamicProperties {
 }
 
-class VirtualMachineVideoCard {
+class VirtualMachineVideoCard extends phpDynamicProperties {
 	public $videoRamSizeInKB; //long
 	public $numDisplays; //int
 	public $useAutoDetect; //boolean
@@ -23017,7 +23030,7 @@ class VirtualMachineVideoCard {
 	}
 }
 
-class VirtualVideoCardOption {
+class VirtualVideoCardOption extends phpDynamicProperties {
 	public $videoRamSizeInKB; //LongOption
 	public $numDisplays; //IntOption
 	public $useAutoDetect; //BoolOption
@@ -23031,25 +23044,25 @@ class VirtualVideoCardOption {
 	}
 }
 
-class VirtualVmxnet {
+class VirtualVmxnet extends phpDynamicProperties {
 }
 
-class VirtualVmxnet2 {
+class VirtualVmxnet2 extends phpDynamicProperties {
 }
 
-class VirtualVmxnet2Option {
+class VirtualVmxnet2Option extends phpDynamicProperties {
 }
 
-class VirtualVmxnet3 {
+class VirtualVmxnet3 extends phpDynamicProperties {
 }
 
-class VirtualVmxnet3Option {
+class VirtualVmxnet3Option extends phpDynamicProperties {
 }
 
-class VirtualVmxnetOption {
+class VirtualVmxnetOption extends phpDynamicProperties {
 }
 
-class GuestFileAttributes {
+class GuestFileAttributes extends phpDynamicProperties {
 	public $modificationTime; //dateTime
 	public $accessTime; //dateTime
 	public $symlinkTarget; //string
@@ -23061,7 +23074,7 @@ class GuestFileAttributes {
 	}
 }
 
-class GuestPosixFileAttributes {
+class GuestPosixFileAttributes extends phpDynamicProperties {
 	public $ownerId; //int
 	public $groupId; //int
 	public $permissions; //long
@@ -23073,7 +23086,7 @@ class GuestPosixFileAttributes {
 	}
 }
 
-class GuestWindowsFileAttributes {
+class GuestWindowsFileAttributes extends phpDynamicProperties {
 	public $hidden; //boolean
 	public $readOnly; //boolean
 	public $createTime; //dateTime
@@ -23085,7 +23098,7 @@ class GuestWindowsFileAttributes {
 	}
 }
 
-class GuestFileInfo {
+class GuestFileInfo extends phpDynamicProperties {
 	public $path; //string
 	public $type; //string
 	public $size; //long
@@ -23099,7 +23112,7 @@ class GuestFileInfo {
 	}
 }
 
-class ArrayOfGuestFileInfo {
+class ArrayOfGuestFileInfo extends phpDynamicProperties {
 	public $GuestFileInfo; //GuestFileInfo
 
 	function __construct($GuestFileInfo = null) {
@@ -23107,7 +23120,7 @@ class ArrayOfGuestFileInfo {
 	}
 }
 
-class GuestListFileInfo {
+class GuestListFileInfo extends phpDynamicProperties {
 	public $files; //GuestFileInfo
 	public $remaining; //int
 
@@ -23117,7 +23130,7 @@ class GuestListFileInfo {
 	}
 }
 
-class FileTransferInformation {
+class FileTransferInformation extends phpDynamicProperties {
 	public $attributes; //GuestFileAttributes
 	public $size; //long
 	public $url; //string
@@ -23129,7 +23142,7 @@ class FileTransferInformation {
 	}
 }
 
-class GuestAuthentication {
+class GuestAuthentication extends phpDynamicProperties {
 	public $interactiveSession; //boolean
 
 	function __construct($interactiveSession = null) {
@@ -23137,7 +23150,7 @@ class GuestAuthentication {
 	}
 }
 
-class NamePasswordAuthentication {
+class NamePasswordAuthentication extends phpDynamicProperties {
 	public $username; //string
 	public $password; //string
 
@@ -23147,7 +23160,7 @@ class NamePasswordAuthentication {
 	}
 }
 
-class GuestProgramSpec {
+class GuestProgramSpec extends phpDynamicProperties {
 	public $programPath; //string
 	public $arguments; //string
 	public $workingDirectory; //string
@@ -23161,7 +23174,7 @@ class GuestProgramSpec {
 	}
 }
 
-class GuestWindowsProgramSpec {
+class GuestWindowsProgramSpec extends phpDynamicProperties {
 	public $startMinimized; //boolean
 
 	function __construct($startMinimized = null) {
@@ -23169,7 +23182,7 @@ class GuestWindowsProgramSpec {
 	}
 }
 
-class GuestProcessInfo {
+class GuestProcessInfo extends phpDynamicProperties {
 	public $name; //string
 	public $pid; //long
 	public $owner; //string
@@ -23189,7 +23202,7 @@ class GuestProcessInfo {
 	}
 }
 
-class ArrayOfGuestProcessInfo {
+class ArrayOfGuestProcessInfo extends phpDynamicProperties {
 	public $GuestProcessInfo; //GuestProcessInfo
 
 	function __construct($GuestProcessInfo = null) {
@@ -23197,7 +23210,7 @@ class ArrayOfGuestProcessInfo {
 	}
 }
 
-class SSPIAuthentication {
+class SSPIAuthentication extends phpDynamicProperties {
 	public $sspiToken; //string
 
 	function __construct($sspiToken = null) {
@@ -23205,7 +23218,7 @@ class SSPIAuthentication {
 	}
 }
 
-class TicketedSessionAuthentication {
+class TicketedSessionAuthentication extends phpDynamicProperties {
 	public $ticket; //string
 
 	function __construct($ticket = null) {
@@ -23213,7 +23226,7 @@ class TicketedSessionAuthentication {
 	}
 }
 
-class AddAuthorizationRoleRequestType {
+class AddAuthorizationRoleRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $privIds; //string
@@ -23225,7 +23238,7 @@ class AddAuthorizationRoleRequestType {
 	}
 }
 
-class RemoveAuthorizationRoleRequestType {
+class RemoveAuthorizationRoleRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $roleId; //int
 	public $failIfUsed; //boolean
@@ -23237,7 +23250,7 @@ class RemoveAuthorizationRoleRequestType {
 	}
 }
 
-class UpdateAuthorizationRoleRequestType {
+class UpdateAuthorizationRoleRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $roleId; //int
 	public $newName; //string
@@ -23251,7 +23264,7 @@ class UpdateAuthorizationRoleRequestType {
 	}
 }
 
-class MergePermissionsRequestType {
+class MergePermissionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $srcRoleId; //int
 	public $dstRoleId; //int
@@ -23263,7 +23276,7 @@ class MergePermissionsRequestType {
 	}
 }
 
-class RetrieveRolePermissionsRequestType {
+class RetrieveRolePermissionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $roleId; //int
 
@@ -23273,7 +23286,7 @@ class RetrieveRolePermissionsRequestType {
 	}
 }
 
-class RetrieveEntityPermissionsRequestType {
+class RetrieveEntityPermissionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $inherited; //boolean
@@ -23285,7 +23298,7 @@ class RetrieveEntityPermissionsRequestType {
 	}
 }
 
-class RetrieveAllPermissionsRequestType {
+class RetrieveAllPermissionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23293,7 +23306,7 @@ class RetrieveAllPermissionsRequestType {
 	}
 }
 
-class SetEntityPermissionsRequestType {
+class SetEntityPermissionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $permission; //Permission
@@ -23305,7 +23318,7 @@ class SetEntityPermissionsRequestType {
 	}
 }
 
-class ResetEntityPermissionsRequestType {
+class ResetEntityPermissionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $permission; //Permission
@@ -23317,7 +23330,7 @@ class ResetEntityPermissionsRequestType {
 	}
 }
 
-class RemoveEntityPermissionRequestType {
+class RemoveEntityPermissionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $user; //string
@@ -23331,7 +23344,7 @@ class RemoveEntityPermissionRequestType {
 	}
 }
 
-class HasPrivilegeOnEntityRequestType {
+class HasPrivilegeOnEntityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $sessionId; //string
@@ -23345,7 +23358,7 @@ class HasPrivilegeOnEntityRequestType {
 	}
 }
 
-class ReconfigureClusterRequestType {
+class ReconfigureClusterRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //ClusterConfigSpec
 	public $modify; //boolean
@@ -23357,7 +23370,7 @@ class ReconfigureClusterRequestType {
 	}
 }
 
-class ApplyRecommendationRequestType {
+class ApplyRecommendationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 
@@ -23367,7 +23380,7 @@ class ApplyRecommendationRequestType {
 	}
 }
 
-class CancelRecommendationRequestType {
+class CancelRecommendationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 
@@ -23377,7 +23390,7 @@ class CancelRecommendationRequestType {
 	}
 }
 
-class RecommendHostsForVmRequestType {
+class RecommendHostsForVmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $pool; //ManagedObjectReference
@@ -23389,7 +23402,7 @@ class RecommendHostsForVmRequestType {
 	}
 }
 
-class AddHostRequestType {
+class AddHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostConnectSpec
 	public $asConnected; //boolean
@@ -23405,7 +23418,7 @@ class AddHostRequestType {
 	}
 }
 
-class MoveIntoRequestType {
+class MoveIntoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -23415,7 +23428,7 @@ class MoveIntoRequestType {
 	}
 }
 
-class MoveHostIntoRequestType {
+class MoveHostIntoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $resourcePool; //ManagedObjectReference
@@ -23427,7 +23440,7 @@ class MoveHostIntoRequestType {
 	}
 }
 
-class RefreshRecommendationRequestType {
+class RefreshRecommendationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23435,7 +23448,7 @@ class RefreshRecommendationRequestType {
 	}
 }
 
-class RetrieveDasAdvancedRuntimeInfoRequestType {
+class RetrieveDasAdvancedRuntimeInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23443,7 +23456,7 @@ class RetrieveDasAdvancedRuntimeInfoRequestType {
 	}
 }
 
-class ClusterEnterMaintenanceModeRequestType {
+class ClusterEnterMaintenanceModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $option; //OptionValue
@@ -23455,7 +23468,7 @@ class ClusterEnterMaintenanceModeRequestType {
 	}
 }
 
-class ReconfigureComputeResourceRequestType {
+class ReconfigureComputeResourceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //ComputeResourceConfigSpec
 	public $modify; //boolean
@@ -23467,7 +23480,7 @@ class ReconfigureComputeResourceRequestType {
 	}
 }
 
-class AddCustomFieldDefRequestType {
+class AddCustomFieldDefRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $moType; //string
@@ -23483,7 +23496,7 @@ class AddCustomFieldDefRequestType {
 	}
 }
 
-class RemoveCustomFieldDefRequestType {
+class RemoveCustomFieldDefRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //int
 
@@ -23493,7 +23506,7 @@ class RemoveCustomFieldDefRequestType {
 	}
 }
 
-class RenameCustomFieldDefRequestType {
+class RenameCustomFieldDefRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //int
 	public $name; //string
@@ -23505,7 +23518,7 @@ class RenameCustomFieldDefRequestType {
 	}
 }
 
-class SetFieldRequestType {
+class SetFieldRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $key; //int
@@ -23519,7 +23532,7 @@ class SetFieldRequestType {
 	}
 }
 
-class DoesCustomizationSpecExistRequestType {
+class DoesCustomizationSpecExistRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -23529,7 +23542,7 @@ class DoesCustomizationSpecExistRequestType {
 	}
 }
 
-class GetCustomizationSpecRequestType {
+class GetCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -23539,7 +23552,7 @@ class GetCustomizationSpecRequestType {
 	}
 }
 
-class CreateCustomizationSpecRequestType {
+class CreateCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $item; //CustomizationSpecItem
 
@@ -23549,7 +23562,7 @@ class CreateCustomizationSpecRequestType {
 	}
 }
 
-class OverwriteCustomizationSpecRequestType {
+class OverwriteCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $item; //CustomizationSpecItem
 
@@ -23559,7 +23572,7 @@ class OverwriteCustomizationSpecRequestType {
 	}
 }
 
-class DeleteCustomizationSpecRequestType {
+class DeleteCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -23569,7 +23582,7 @@ class DeleteCustomizationSpecRequestType {
 	}
 }
 
-class DuplicateCustomizationSpecRequestType {
+class DuplicateCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $newName; //string
@@ -23581,7 +23594,7 @@ class DuplicateCustomizationSpecRequestType {
 	}
 }
 
-class RenameCustomizationSpecRequestType {
+class RenameCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $newName; //string
@@ -23593,7 +23606,7 @@ class RenameCustomizationSpecRequestType {
 	}
 }
 
-class CustomizationSpecItemToXmlRequestType {
+class CustomizationSpecItemToXmlRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $item; //CustomizationSpecItem
 
@@ -23603,7 +23616,7 @@ class CustomizationSpecItemToXmlRequestType {
 	}
 }
 
-class XmlToCustomizationSpecItemRequestType {
+class XmlToCustomizationSpecItemRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $specItemXml; //string
 
@@ -23613,7 +23626,7 @@ class XmlToCustomizationSpecItemRequestType {
 	}
 }
 
-class CheckCustomizationResourcesRequestType {
+class CheckCustomizationResourcesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $guestOs; //string
 
@@ -23623,7 +23636,7 @@ class CheckCustomizationResourcesRequestType {
 	}
 }
 
-class QueryConnectionInfoRequestType {
+class QueryConnectionInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $hostname; //string
 	public $port; //int
@@ -23641,7 +23654,7 @@ class QueryConnectionInfoRequestType {
 	}
 }
 
-class PowerOnMultiVMRequestType {
+class PowerOnMultiVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $option; //OptionValue
@@ -23653,7 +23666,7 @@ class PowerOnMultiVMRequestType {
 	}
 }
 
-class RefreshDatastoreRequestType {
+class RefreshDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23661,7 +23674,7 @@ class RefreshDatastoreRequestType {
 	}
 }
 
-class RefreshDatastoreStorageInfoRequestType {
+class RefreshDatastoreStorageInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23669,7 +23682,7 @@ class RefreshDatastoreStorageInfoRequestType {
 	}
 }
 
-class UpdateVirtualMachineFilesRequestType {
+class UpdateVirtualMachineFilesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $mountPathDatastoreMapping; //DatastoreMountPathDatastorePair
 
@@ -23679,7 +23692,7 @@ class UpdateVirtualMachineFilesRequestType {
 	}
 }
 
-class RenameDatastoreRequestType {
+class RenameDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $newName; //string
 
@@ -23689,7 +23702,7 @@ class RenameDatastoreRequestType {
 	}
 }
 
-class DestroyDatastoreRequestType {
+class DestroyDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23697,7 +23710,7 @@ class DestroyDatastoreRequestType {
 	}
 }
 
-class DatastoreEnterMaintenanceModeRequestType {
+class DatastoreEnterMaintenanceModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23705,7 +23718,7 @@ class DatastoreEnterMaintenanceModeRequestType {
 	}
 }
 
-class DatastoreExitMaintenanceModeRequestType {
+class DatastoreExitMaintenanceModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23713,7 +23726,7 @@ class DatastoreExitMaintenanceModeRequestType {
 	}
 }
 
-class QueryDescriptionsRequestType {
+class QueryDescriptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -23723,7 +23736,7 @@ class QueryDescriptionsRequestType {
 	}
 }
 
-class BrowseDiagnosticLogRequestType {
+class BrowseDiagnosticLogRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $key; //string
@@ -23739,7 +23752,7 @@ class BrowseDiagnosticLogRequestType {
 	}
 }
 
-class GenerateLogBundlesRequestType {
+class GenerateLogBundlesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $includeDefault; //boolean
 	public $host; //ManagedObjectReference
@@ -23751,7 +23764,7 @@ class GenerateLogBundlesRequestType {
 	}
 }
 
-class FetchDVPortKeysRequestType {
+class FetchDVPortKeysRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $criteria; //DistributedVirtualSwitchPortCriteria
 
@@ -23761,7 +23774,7 @@ class FetchDVPortKeysRequestType {
 	}
 }
 
-class FetchDVPortsRequestType {
+class FetchDVPortsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $criteria; //DistributedVirtualSwitchPortCriteria
 
@@ -23771,7 +23784,7 @@ class FetchDVPortsRequestType {
 	}
 }
 
-class QueryUsedVlanIdInDvsRequestType {
+class QueryUsedVlanIdInDvsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23779,7 +23792,7 @@ class QueryUsedVlanIdInDvsRequestType {
 	}
 }
 
-class ReconfigureDvsRequestType {
+class ReconfigureDvsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //DVSConfigSpec
 
@@ -23789,7 +23802,7 @@ class ReconfigureDvsRequestType {
 	}
 }
 
-class PerformDvsProductSpecOperationRequestType {
+class PerformDvsProductSpecOperationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $operation; //string
 	public $productSpec; //DistributedVirtualSwitchProductSpec
@@ -23801,7 +23814,7 @@ class PerformDvsProductSpecOperationRequestType {
 	}
 }
 
-class MergeDvsRequestType {
+class MergeDvsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dvs; //ManagedObjectReference
 
@@ -23811,7 +23824,7 @@ class MergeDvsRequestType {
 	}
 }
 
-class AddDVPortgroupRequestType {
+class AddDVPortgroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //DVPortgroupConfigSpec
 
@@ -23821,7 +23834,7 @@ class AddDVPortgroupRequestType {
 	}
 }
 
-class MoveDVPortRequestType {
+class MoveDVPortRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $portKey; //string
 	public $destinationPortgroupKey; //string
@@ -23833,7 +23846,7 @@ class MoveDVPortRequestType {
 	}
 }
 
-class UpdateDvsCapabilityRequestType {
+class UpdateDvsCapabilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $capability; //DVSCapability
 
@@ -23843,7 +23856,7 @@ class UpdateDvsCapabilityRequestType {
 	}
 }
 
-class ReconfigureDVPortRequestType {
+class ReconfigureDVPortRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $port; //DVPortConfigSpec
 
@@ -23853,7 +23866,7 @@ class ReconfigureDVPortRequestType {
 	}
 }
 
-class RefreshDVPortStateRequestType {
+class RefreshDVPortStateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $portKeys; //string
 
@@ -23863,7 +23876,7 @@ class RefreshDVPortStateRequestType {
 	}
 }
 
-class RectifyDvsHostRequestType {
+class RectifyDvsHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $hosts; //ManagedObjectReference
 
@@ -23873,7 +23886,7 @@ class RectifyDvsHostRequestType {
 	}
 }
 
-class UpdateNetworkResourcePoolRequestType {
+class UpdateNetworkResourcePoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $configSpec; //DVSNetworkResourcePoolConfigSpec
 
@@ -23883,7 +23896,7 @@ class UpdateNetworkResourcePoolRequestType {
 	}
 }
 
-class AddNetworkResourcePoolRequestType {
+class AddNetworkResourcePoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $configSpec; //DVSNetworkResourcePoolConfigSpec
 
@@ -23893,7 +23906,7 @@ class AddNetworkResourcePoolRequestType {
 	}
 }
 
-class RemoveNetworkResourcePoolRequestType {
+class RemoveNetworkResourcePoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 
@@ -23903,7 +23916,7 @@ class RemoveNetworkResourcePoolRequestType {
 	}
 }
 
-class EnableNetworkResourceManagementRequestType {
+class EnableNetworkResourceManagementRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $enable; //boolean
 
@@ -23913,7 +23926,7 @@ class EnableNetworkResourceManagementRequestType {
 	}
 }
 
-class QueryConfigOptionDescriptorRequestType {
+class QueryConfigOptionDescriptorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -23921,7 +23934,7 @@ class QueryConfigOptionDescriptorRequestType {
 	}
 }
 
-class QueryConfigOptionRequestType {
+class QueryConfigOptionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 	public $host; //ManagedObjectReference
@@ -23933,7 +23946,7 @@ class QueryConfigOptionRequestType {
 	}
 }
 
-class QueryConfigTargetRequestType {
+class QueryConfigTargetRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -23943,7 +23956,7 @@ class QueryConfigTargetRequestType {
 	}
 }
 
-class QueryTargetCapabilitiesRequestType {
+class QueryTargetCapabilitiesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -23953,7 +23966,7 @@ class QueryTargetCapabilitiesRequestType {
 	}
 }
 
-class setCustomValueRequestType {
+class setCustomValueRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 	public $value; //string
@@ -23965,7 +23978,7 @@ class setCustomValueRequestType {
 	}
 }
 
-class UnregisterExtensionRequestType {
+class UnregisterExtensionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 
@@ -23975,7 +23988,7 @@ class UnregisterExtensionRequestType {
 	}
 }
 
-class FindExtensionRequestType {
+class FindExtensionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 
@@ -23985,7 +23998,7 @@ class FindExtensionRequestType {
 	}
 }
 
-class RegisterExtensionRequestType {
+class RegisterExtensionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extension; //Extension
 
@@ -23995,7 +24008,7 @@ class RegisterExtensionRequestType {
 	}
 }
 
-class UpdateExtensionRequestType {
+class UpdateExtensionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extension; //Extension
 
@@ -24005,7 +24018,7 @@ class UpdateExtensionRequestType {
 	}
 }
 
-class GetPublicKeyRequestType {
+class GetPublicKeyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24013,7 +24026,7 @@ class GetPublicKeyRequestType {
 	}
 }
 
-class SetPublicKeyRequestType {
+class SetPublicKeyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 	public $publicKey; //string
@@ -24025,7 +24038,7 @@ class SetPublicKeyRequestType {
 	}
 }
 
-class SetExtensionCertificateRequestType {
+class SetExtensionCertificateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 	public $certificatePem; //string
@@ -24037,7 +24050,7 @@ class SetExtensionCertificateRequestType {
 	}
 }
 
-class QueryManagedByRequestType {
+class QueryManagedByRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 
@@ -24047,7 +24060,7 @@ class QueryManagedByRequestType {
 	}
 }
 
-class MoveDatastoreFileRequestType {
+class MoveDatastoreFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $sourceName; //string
 	public $sourceDatacenter; //ManagedObjectReference
@@ -24065,7 +24078,7 @@ class MoveDatastoreFileRequestType {
 	}
 }
 
-class CopyDatastoreFileRequestType {
+class CopyDatastoreFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $sourceName; //string
 	public $sourceDatacenter; //ManagedObjectReference
@@ -24083,7 +24096,7 @@ class CopyDatastoreFileRequestType {
 	}
 }
 
-class DeleteDatastoreFileRequestType {
+class DeleteDatastoreFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -24095,7 +24108,7 @@ class DeleteDatastoreFileRequestType {
 	}
 }
 
-class MakeDirectoryRequestType {
+class MakeDirectoryRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -24109,7 +24122,7 @@ class MakeDirectoryRequestType {
 	}
 }
 
-class ChangeOwnerRequestType {
+class ChangeOwnerRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -24123,7 +24136,7 @@ class ChangeOwnerRequestType {
 	}
 }
 
-class CreateFolderRequestType {
+class CreateFolderRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -24133,7 +24146,7 @@ class CreateFolderRequestType {
 	}
 }
 
-class MoveIntoFolderRequestType {
+class MoveIntoFolderRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $list; //ManagedObjectReference
 
@@ -24143,7 +24156,7 @@ class MoveIntoFolderRequestType {
 	}
 }
 
-class CreateVMRequestType {
+class CreateVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //VirtualMachineConfigSpec
 	public $pool; //ManagedObjectReference
@@ -24157,7 +24170,7 @@ class CreateVMRequestType {
 	}
 }
 
-class RegisterVMRequestType {
+class RegisterVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $path; //string
 	public $name; //string
@@ -24175,7 +24188,7 @@ class RegisterVMRequestType {
 	}
 }
 
-class CreateClusterRequestType {
+class CreateClusterRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $spec; //ClusterConfigSpec
@@ -24187,7 +24200,7 @@ class CreateClusterRequestType {
 	}
 }
 
-class CreateClusterExRequestType {
+class CreateClusterExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $spec; //ClusterConfigSpecEx
@@ -24199,7 +24212,7 @@ class CreateClusterExRequestType {
 	}
 }
 
-class AddStandaloneHostRequestType {
+class AddStandaloneHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostConnectSpec
 	public $compResSpec; //ComputeResourceConfigSpec
@@ -24215,7 +24228,7 @@ class AddStandaloneHostRequestType {
 	}
 }
 
-class CreateDatacenterRequestType {
+class CreateDatacenterRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -24225,7 +24238,7 @@ class CreateDatacenterRequestType {
 	}
 }
 
-class UnregisterAndDestroyRequestType {
+class UnregisterAndDestroyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24233,7 +24246,7 @@ class UnregisterAndDestroyRequestType {
 	}
 }
 
-class CreateDVSRequestType {
+class CreateDVSRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //DVSCreateSpec
 
@@ -24243,7 +24256,7 @@ class CreateDVSRequestType {
 	}
 }
 
-class CreateStoragePodRequestType {
+class CreateStoragePodRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -24253,7 +24266,7 @@ class CreateStoragePodRequestType {
 	}
 }
 
-class SetCollectorPageSizeRequestType {
+class SetCollectorPageSizeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $maxCount; //int
 
@@ -24263,7 +24276,7 @@ class SetCollectorPageSizeRequestType {
 	}
 }
 
-class RewindCollectorRequestType {
+class RewindCollectorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24271,7 +24284,7 @@ class RewindCollectorRequestType {
 	}
 }
 
-class ResetCollectorRequestType {
+class ResetCollectorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24279,7 +24292,7 @@ class ResetCollectorRequestType {
 	}
 }
 
-class DestroyCollectorRequestType {
+class DestroyCollectorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24287,7 +24300,7 @@ class DestroyCollectorRequestType {
 	}
 }
 
-class QueryHostConnectionInfoRequestType {
+class QueryHostConnectionInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24295,7 +24308,7 @@ class QueryHostConnectionInfoRequestType {
 	}
 }
 
-class UpdateSystemResourcesRequestType {
+class UpdateSystemResourcesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $resourceInfo; //HostSystemResourceInfo
 
@@ -24305,7 +24318,7 @@ class UpdateSystemResourcesRequestType {
 	}
 }
 
-class ReconnectHostRequestType {
+class ReconnectHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $cnxSpec; //HostConnectSpec
 	public $reconnectSpec; //HostSystemReconnectSpec
@@ -24317,7 +24330,7 @@ class ReconnectHostRequestType {
 	}
 }
 
-class DisconnectHostRequestType {
+class DisconnectHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24325,7 +24338,7 @@ class DisconnectHostRequestType {
 	}
 }
 
-class EnterMaintenanceModeRequestType {
+class EnterMaintenanceModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $timeout; //int
 	public $evacuatePoweredOffVms; //boolean
@@ -24337,7 +24350,7 @@ class EnterMaintenanceModeRequestType {
 	}
 }
 
-class ExitMaintenanceModeRequestType {
+class ExitMaintenanceModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $timeout; //int
 
@@ -24347,7 +24360,7 @@ class ExitMaintenanceModeRequestType {
 	}
 }
 
-class RebootHostRequestType {
+class RebootHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $force; //boolean
 
@@ -24357,7 +24370,7 @@ class RebootHostRequestType {
 	}
 }
 
-class ShutdownHostRequestType {
+class ShutdownHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $force; //boolean
 
@@ -24367,7 +24380,7 @@ class ShutdownHostRequestType {
 	}
 }
 
-class PowerDownHostToStandByRequestType {
+class PowerDownHostToStandByRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $timeoutSec; //int
 	public $evacuatePoweredOffVms; //boolean
@@ -24379,7 +24392,7 @@ class PowerDownHostToStandByRequestType {
 	}
 }
 
-class PowerUpHostFromStandByRequestType {
+class PowerUpHostFromStandByRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $timeoutSec; //int
 
@@ -24389,7 +24402,7 @@ class PowerUpHostFromStandByRequestType {
 	}
 }
 
-class QueryMemoryOverheadRequestType {
+class QueryMemoryOverheadRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $memorySize; //long
 	public $videoRamSize; //int
@@ -24403,7 +24416,7 @@ class QueryMemoryOverheadRequestType {
 	}
 }
 
-class QueryMemoryOverheadExRequestType {
+class QueryMemoryOverheadExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmConfigInfo; //VirtualMachineConfigInfo
 
@@ -24413,7 +24426,7 @@ class QueryMemoryOverheadExRequestType {
 	}
 }
 
-class ReconfigureHostForDASRequestType {
+class ReconfigureHostForDASRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24421,7 +24434,7 @@ class ReconfigureHostForDASRequestType {
 	}
 }
 
-class UpdateFlagsRequestType {
+class UpdateFlagsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $flagInfo; //HostFlagInfo
 
@@ -24431,7 +24444,7 @@ class UpdateFlagsRequestType {
 	}
 }
 
-class EnterLockdownModeRequestType {
+class EnterLockdownModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24439,7 +24452,7 @@ class EnterLockdownModeRequestType {
 	}
 }
 
-class ExitLockdownModeRequestType {
+class ExitLockdownModeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24447,7 +24460,7 @@ class ExitLockdownModeRequestType {
 	}
 }
 
-class AcquireCimServicesTicketRequestType {
+class AcquireCimServicesTicketRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24455,7 +24468,7 @@ class AcquireCimServicesTicketRequestType {
 	}
 }
 
-class UpdateIpmiRequestType {
+class UpdateIpmiRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $ipmiInfo; //HostIpmiInfo
 
@@ -24465,7 +24478,7 @@ class UpdateIpmiRequestType {
 	}
 }
 
-class RetrieveHardwareUptimeRequestType {
+class RetrieveHardwareUptimeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24473,7 +24486,7 @@ class RetrieveHardwareUptimeRequestType {
 	}
 }
 
-class HttpNfcLeaseGetManifestRequestType {
+class HttpNfcLeaseGetManifestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24481,7 +24494,7 @@ class HttpNfcLeaseGetManifestRequestType {
 	}
 }
 
-class HttpNfcLeaseCompleteRequestType {
+class HttpNfcLeaseCompleteRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24489,7 +24502,7 @@ class HttpNfcLeaseCompleteRequestType {
 	}
 }
 
-class HttpNfcLeaseAbortRequestType {
+class HttpNfcLeaseAbortRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $fault; //LocalizedMethodFault
 
@@ -24499,7 +24512,7 @@ class HttpNfcLeaseAbortRequestType {
 	}
 }
 
-class HttpNfcLeaseProgressRequestType {
+class HttpNfcLeaseProgressRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $percent; //int
 
@@ -24509,7 +24522,7 @@ class HttpNfcLeaseProgressRequestType {
 	}
 }
 
-class QueryIpPoolsRequestType {
+class QueryIpPoolsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dc; //ManagedObjectReference
 
@@ -24519,7 +24532,7 @@ class QueryIpPoolsRequestType {
 	}
 }
 
-class CreateIpPoolRequestType {
+class CreateIpPoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dc; //ManagedObjectReference
 	public $pool; //IpPool
@@ -24531,7 +24544,7 @@ class CreateIpPoolRequestType {
 	}
 }
 
-class UpdateIpPoolRequestType {
+class UpdateIpPoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dc; //ManagedObjectReference
 	public $pool; //IpPool
@@ -24543,7 +24556,7 @@ class UpdateIpPoolRequestType {
 	}
 }
 
-class DestroyIpPoolRequestType {
+class DestroyIpPoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dc; //ManagedObjectReference
 	public $id; //int
@@ -24557,7 +24570,7 @@ class DestroyIpPoolRequestType {
 	}
 }
 
-class UpdateAssignedLicenseRequestType {
+class UpdateAssignedLicenseRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //string
 	public $licenseKey; //string
@@ -24571,7 +24584,7 @@ class UpdateAssignedLicenseRequestType {
 	}
 }
 
-class RemoveAssignedLicenseRequestType {
+class RemoveAssignedLicenseRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entityId; //string
 
@@ -24581,7 +24594,7 @@ class RemoveAssignedLicenseRequestType {
 	}
 }
 
-class QueryAssignedLicensesRequestType {
+class QueryAssignedLicensesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entityId; //string
 
@@ -24591,7 +24604,7 @@ class QueryAssignedLicensesRequestType {
 	}
 }
 
-class QuerySupportedFeaturesRequestType {
+class QuerySupportedFeaturesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -24601,7 +24614,7 @@ class QuerySupportedFeaturesRequestType {
 	}
 }
 
-class QueryLicenseSourceAvailabilityRequestType {
+class QueryLicenseSourceAvailabilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -24611,7 +24624,7 @@ class QueryLicenseSourceAvailabilityRequestType {
 	}
 }
 
-class QueryLicenseUsageRequestType {
+class QueryLicenseUsageRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -24621,7 +24634,7 @@ class QueryLicenseUsageRequestType {
 	}
 }
 
-class SetLicenseEditionRequestType {
+class SetLicenseEditionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $featureKey; //string
@@ -24633,7 +24646,7 @@ class SetLicenseEditionRequestType {
 	}
 }
 
-class CheckLicenseFeatureRequestType {
+class CheckLicenseFeatureRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $featureKey; //string
@@ -24645,7 +24658,7 @@ class CheckLicenseFeatureRequestType {
 	}
 }
 
-class EnableFeatureRequestType {
+class EnableFeatureRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $featureKey; //string
@@ -24657,7 +24670,7 @@ class EnableFeatureRequestType {
 	}
 }
 
-class DisableFeatureRequestType {
+class DisableFeatureRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $featureKey; //string
@@ -24669,7 +24682,7 @@ class DisableFeatureRequestType {
 	}
 }
 
-class ConfigureLicenseSourceRequestType {
+class ConfigureLicenseSourceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $licenseSource; //LicenseSource
@@ -24681,7 +24694,7 @@ class ConfigureLicenseSourceRequestType {
 	}
 }
 
-class UpdateLicenseRequestType {
+class UpdateLicenseRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $licenseKey; //string
 	public $labels; //KeyValue
@@ -24693,7 +24706,7 @@ class UpdateLicenseRequestType {
 	}
 }
 
-class AddLicenseRequestType {
+class AddLicenseRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $licenseKey; //string
 	public $labels; //KeyValue
@@ -24705,7 +24718,7 @@ class AddLicenseRequestType {
 	}
 }
 
-class RemoveLicenseRequestType {
+class RemoveLicenseRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $licenseKey; //string
 
@@ -24715,7 +24728,7 @@ class RemoveLicenseRequestType {
 	}
 }
 
-class DecodeLicenseRequestType {
+class DecodeLicenseRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $licenseKey; //string
 
@@ -24725,7 +24738,7 @@ class DecodeLicenseRequestType {
 	}
 }
 
-class UpdateLicenseLabelRequestType {
+class UpdateLicenseLabelRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $licenseKey; //string
 	public $labelKey; //string
@@ -24739,7 +24752,7 @@ class UpdateLicenseLabelRequestType {
 	}
 }
 
-class RemoveLicenseLabelRequestType {
+class RemoveLicenseLabelRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $licenseKey; //string
 	public $labelKey; //string
@@ -24751,7 +24764,7 @@ class RemoveLicenseLabelRequestType {
 	}
 }
 
-class ReloadRequestType {
+class ReloadRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24759,7 +24772,7 @@ class ReloadRequestType {
 	}
 }
 
-class RenameRequestType {
+class RenameRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $newName; //string
 
@@ -24769,7 +24782,7 @@ class RenameRequestType {
 	}
 }
 
-class DestroyRequestType {
+class DestroyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24777,7 +24790,7 @@ class DestroyRequestType {
 	}
 }
 
-class DestroyNetworkRequestType {
+class DestroyNetworkRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -24785,7 +24798,7 @@ class DestroyNetworkRequestType {
 	}
 }
 
-class ValidateHostRequestType {
+class ValidateHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $ovfDescriptor; //string
 	public $host; //ManagedObjectReference
@@ -24799,7 +24812,7 @@ class ValidateHostRequestType {
 	}
 }
 
-class ParseDescriptorRequestType {
+class ParseDescriptorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $ovfDescriptor; //string
 	public $pdp; //OvfParseDescriptorParams
@@ -24811,7 +24824,7 @@ class ParseDescriptorRequestType {
 	}
 }
 
-class CreateImportSpecRequestType {
+class CreateImportSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $ovfDescriptor; //string
 	public $resourcePool; //ManagedObjectReference
@@ -24827,7 +24840,7 @@ class CreateImportSpecRequestType {
 	}
 }
 
-class CreateDescriptorRequestType {
+class CreateDescriptorRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $obj; //ManagedObjectReference
 	public $cdp; //OvfCreateDescriptorParams
@@ -24839,7 +24852,7 @@ class CreateDescriptorRequestType {
 	}
 }
 
-class QueryPerfProviderSummaryRequestType {
+class QueryPerfProviderSummaryRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -24849,7 +24862,7 @@ class QueryPerfProviderSummaryRequestType {
 	}
 }
 
-class QueryAvailablePerfMetricRequestType {
+class QueryAvailablePerfMetricRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $beginTime; //dateTime
@@ -24865,7 +24878,7 @@ class QueryAvailablePerfMetricRequestType {
 	}
 }
 
-class QueryPerfCounterRequestType {
+class QueryPerfCounterRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $counterId; //int
 
@@ -24875,7 +24888,7 @@ class QueryPerfCounterRequestType {
 	}
 }
 
-class QueryPerfCounterByLevelRequestType {
+class QueryPerfCounterByLevelRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $level; //int
 
@@ -24885,7 +24898,7 @@ class QueryPerfCounterByLevelRequestType {
 	}
 }
 
-class QueryPerfRequestType {
+class QueryPerfRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $querySpec; //PerfQuerySpec
 
@@ -24895,7 +24908,7 @@ class QueryPerfRequestType {
 	}
 }
 
-class QueryPerfCompositeRequestType {
+class QueryPerfCompositeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $querySpec; //PerfQuerySpec
 
@@ -24905,7 +24918,7 @@ class QueryPerfCompositeRequestType {
 	}
 }
 
-class CreatePerfIntervalRequestType {
+class CreatePerfIntervalRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $intervalId; //PerfInterval
 
@@ -24915,7 +24928,7 @@ class CreatePerfIntervalRequestType {
 	}
 }
 
-class RemovePerfIntervalRequestType {
+class RemovePerfIntervalRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $samplePeriod; //int
 
@@ -24925,7 +24938,7 @@ class RemovePerfIntervalRequestType {
 	}
 }
 
-class UpdatePerfIntervalRequestType {
+class UpdatePerfIntervalRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $interval; //PerfInterval
 
@@ -24935,7 +24948,7 @@ class UpdatePerfIntervalRequestType {
 	}
 }
 
-class UpdateCounterLevelMappingRequestType {
+class UpdateCounterLevelMappingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $counterLevelMap; //PerformanceManagerCounterLevelMapping
 
@@ -24945,7 +24958,7 @@ class UpdateCounterLevelMappingRequestType {
 	}
 }
 
-class ResetCounterLevelMappingRequestType {
+class ResetCounterLevelMappingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $counters; //int
 
@@ -24955,7 +24968,7 @@ class ResetCounterLevelMappingRequestType {
 	}
 }
 
-class EstimateDatabaseSizeRequestType {
+class EstimateDatabaseSizeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dbSizeParam; //DatabaseSizeParam
 
@@ -24965,7 +24978,7 @@ class EstimateDatabaseSizeRequestType {
 	}
 }
 
-class UpdateConfigRequestType {
+class UpdateConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $config; //ResourceConfigSpec
@@ -24977,7 +24990,7 @@ class UpdateConfigRequestType {
 	}
 }
 
-class MoveIntoResourcePoolRequestType {
+class MoveIntoResourcePoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $list; //ManagedObjectReference
 
@@ -24987,7 +25000,7 @@ class MoveIntoResourcePoolRequestType {
 	}
 }
 
-class UpdateChildResourceConfigurationRequestType {
+class UpdateChildResourceConfigurationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //ResourceConfigSpec
 
@@ -24997,7 +25010,7 @@ class UpdateChildResourceConfigurationRequestType {
 	}
 }
 
-class CreateResourcePoolRequestType {
+class CreateResourcePoolRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $spec; //ResourceConfigSpec
@@ -25009,7 +25022,7 @@ class CreateResourcePoolRequestType {
 	}
 }
 
-class DestroyChildrenRequestType {
+class DestroyChildrenRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25017,7 +25030,7 @@ class DestroyChildrenRequestType {
 	}
 }
 
-class CreateVAppRequestType {
+class CreateVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $resSpec; //ResourceConfigSpec
@@ -25033,7 +25046,7 @@ class CreateVAppRequestType {
 	}
 }
 
-class CreateChildVMRequestType {
+class CreateChildVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //VirtualMachineConfigSpec
 	public $host; //ManagedObjectReference
@@ -25045,7 +25058,7 @@ class CreateChildVMRequestType {
 	}
 }
 
-class RegisterChildVMRequestType {
+class RegisterChildVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $path; //string
 	public $name; //string
@@ -25059,7 +25072,7 @@ class RegisterChildVMRequestType {
 	}
 }
 
-class ImportVAppRequestType {
+class ImportVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //ImportSpec
 	public $folder; //ManagedObjectReference
@@ -25073,7 +25086,7 @@ class ImportVAppRequestType {
 	}
 }
 
-class QueryResourceConfigOptionRequestType {
+class QueryResourceConfigOptionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25081,7 +25094,7 @@ class QueryResourceConfigOptionRequestType {
 	}
 }
 
-class RefreshRuntimeRequestType {
+class RefreshRuntimeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25089,7 +25102,7 @@ class RefreshRuntimeRequestType {
 	}
 }
 
-class FindByUuidRequestType {
+class FindByUuidRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $uuid; //string
@@ -25105,7 +25118,7 @@ class FindByUuidRequestType {
 	}
 }
 
-class FindByDatastorePathRequestType {
+class FindByDatastorePathRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $path; //string
@@ -25117,7 +25130,7 @@ class FindByDatastorePathRequestType {
 	}
 }
 
-class FindByDnsNameRequestType {
+class FindByDnsNameRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $dnsName; //string
@@ -25131,7 +25144,7 @@ class FindByDnsNameRequestType {
 	}
 }
 
-class FindByIpRequestType {
+class FindByIpRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $ip; //string
@@ -25145,7 +25158,7 @@ class FindByIpRequestType {
 	}
 }
 
-class FindByInventoryPathRequestType {
+class FindByInventoryPathRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $inventoryPath; //string
 
@@ -25155,7 +25168,7 @@ class FindByInventoryPathRequestType {
 	}
 }
 
-class FindChildRequestType {
+class FindChildRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $name; //string
@@ -25167,7 +25180,7 @@ class FindChildRequestType {
 	}
 }
 
-class FindAllByUuidRequestType {
+class FindAllByUuidRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $uuid; //string
@@ -25183,7 +25196,7 @@ class FindAllByUuidRequestType {
 	}
 }
 
-class FindAllByDnsNameRequestType {
+class FindAllByDnsNameRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $dnsName; //string
@@ -25197,7 +25210,7 @@ class FindAllByDnsNameRequestType {
 	}
 }
 
-class FindAllByIpRequestType {
+class FindAllByIpRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datacenter; //ManagedObjectReference
 	public $ip; //string
@@ -25211,7 +25224,7 @@ class FindAllByIpRequestType {
 	}
 }
 
-class CurrentTimeRequestType {
+class CurrentTimeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25219,7 +25232,7 @@ class CurrentTimeRequestType {
 	}
 }
 
-class RetrieveServiceContentRequestType {
+class RetrieveServiceContentRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25227,7 +25240,7 @@ class RetrieveServiceContentRequestType {
 	}
 }
 
-class ValidateMigrationRequestType {
+class ValidateMigrationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $state; //VirtualMachinePowerState
@@ -25245,7 +25258,7 @@ class ValidateMigrationRequestType {
 	}
 }
 
-class QueryVMotionCompatibilityRequestType {
+class QueryVMotionCompatibilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -25259,7 +25272,7 @@ class QueryVMotionCompatibilityRequestType {
 	}
 }
 
-class RetrieveProductComponentsRequestType {
+class RetrieveProductComponentsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25267,7 +25280,7 @@ class RetrieveProductComponentsRequestType {
 	}
 }
 
-class UpdateServiceMessageRequestType {
+class UpdateServiceMessageRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $message; //string
 
@@ -25277,7 +25290,7 @@ class UpdateServiceMessageRequestType {
 	}
 }
 
-class LoginRequestType {
+class LoginRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $userName; //string
 	public $password; //string
@@ -25291,7 +25304,7 @@ class LoginRequestType {
 	}
 }
 
-class LoginBySSPIRequestType {
+class LoginBySSPIRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $base64Token; //string
 	public $locale; //string
@@ -25303,7 +25316,7 @@ class LoginBySSPIRequestType {
 	}
 }
 
-class LogoutRequestType {
+class LogoutRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25311,7 +25324,7 @@ class LogoutRequestType {
 	}
 }
 
-class AcquireLocalTicketRequestType {
+class AcquireLocalTicketRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $userName; //string
 
@@ -25321,7 +25334,7 @@ class AcquireLocalTicketRequestType {
 	}
 }
 
-class AcquireGenericServiceTicketRequestType {
+class AcquireGenericServiceTicketRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //SessionManagerServiceRequestSpec
 
@@ -25331,7 +25344,7 @@ class AcquireGenericServiceTicketRequestType {
 	}
 }
 
-class TerminateSessionRequestType {
+class TerminateSessionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $sessionId; //string
 
@@ -25341,7 +25354,7 @@ class TerminateSessionRequestType {
 	}
 }
 
-class SetLocaleRequestType {
+class SetLocaleRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $locale; //string
 
@@ -25351,7 +25364,7 @@ class SetLocaleRequestType {
 	}
 }
 
-class LoginExtensionBySubjectNameRequestType {
+class LoginExtensionBySubjectNameRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 	public $locale; //string
@@ -25363,7 +25376,7 @@ class LoginExtensionBySubjectNameRequestType {
 	}
 }
 
-class LoginExtensionByCertificateRequestType {
+class LoginExtensionByCertificateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $extensionKey; //string
 	public $locale; //string
@@ -25375,7 +25388,7 @@ class LoginExtensionByCertificateRequestType {
 	}
 }
 
-class ImpersonateUserRequestType {
+class ImpersonateUserRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $userName; //string
 	public $locale; //string
@@ -25387,7 +25400,7 @@ class ImpersonateUserRequestType {
 	}
 }
 
-class SessionIsActiveRequestType {
+class SessionIsActiveRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $sessionID; //string
 	public $userName; //string
@@ -25399,7 +25412,7 @@ class SessionIsActiveRequestType {
 	}
 }
 
-class AcquireCloneTicketRequestType {
+class AcquireCloneTicketRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25407,7 +25420,7 @@ class AcquireCloneTicketRequestType {
 	}
 }
 
-class CloneSessionRequestType {
+class CloneSessionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $cloneTicket; //string
 
@@ -25417,7 +25430,7 @@ class CloneSessionRequestType {
 	}
 }
 
-class ConfigureDatastoreIORMRequestType {
+class ConfigureDatastoreIORMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 	public $spec; //StorageIORMConfigSpec
@@ -25429,7 +25442,7 @@ class ConfigureDatastoreIORMRequestType {
 	}
 }
 
-class QueryIORMConfigOptionRequestType {
+class QueryIORMConfigOptionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -25439,7 +25452,7 @@ class QueryIORMConfigOptionRequestType {
 	}
 }
 
-class ApplyStorageDrsRecommendationToPodRequestType {
+class ApplyStorageDrsRecommendationToPodRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pod; //ManagedObjectReference
 	public $key; //string
@@ -25451,7 +25464,7 @@ class ApplyStorageDrsRecommendationToPodRequestType {
 	}
 }
 
-class ApplyStorageDrsRecommendationRequestType {
+class ApplyStorageDrsRecommendationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 
@@ -25461,7 +25474,7 @@ class ApplyStorageDrsRecommendationRequestType {
 	}
 }
 
-class CancelStorageDrsRecommendationRequestType {
+class CancelStorageDrsRecommendationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 
@@ -25471,7 +25484,7 @@ class CancelStorageDrsRecommendationRequestType {
 	}
 }
 
-class RefreshStorageDrsRecommendationRequestType {
+class RefreshStorageDrsRecommendationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pod; //ManagedObjectReference
 
@@ -25481,7 +25494,7 @@ class RefreshStorageDrsRecommendationRequestType {
 	}
 }
 
-class ConfigureStorageDrsForPodRequestType {
+class ConfigureStorageDrsForPodRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pod; //ManagedObjectReference
 	public $spec; //StorageDrsConfigSpec
@@ -25495,7 +25508,7 @@ class ConfigureStorageDrsForPodRequestType {
 	}
 }
 
-class RecommendDatastoresRequestType {
+class RecommendDatastoresRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $storageSpec; //StoragePlacementSpec
 
@@ -25505,7 +25518,7 @@ class RecommendDatastoresRequestType {
 	}
 }
 
-class CancelTaskRequestType {
+class CancelTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25513,7 +25526,7 @@ class CancelTaskRequestType {
 	}
 }
 
-class UpdateProgressRequestType {
+class UpdateProgressRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $percentDone; //int
 
@@ -25523,7 +25536,7 @@ class UpdateProgressRequestType {
 	}
 }
 
-class SetTaskStateRequestType {
+class SetTaskStateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $state; //TaskInfoState
 	public $result; //anyType
@@ -25537,7 +25550,7 @@ class SetTaskStateRequestType {
 	}
 }
 
-class SetTaskDescriptionRequestType {
+class SetTaskDescriptionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $description; //LocalizableMessage
 
@@ -25547,7 +25560,7 @@ class SetTaskDescriptionRequestType {
 	}
 }
 
-class ReadNextTasksRequestType {
+class ReadNextTasksRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $maxCount; //int
 
@@ -25557,7 +25570,7 @@ class ReadNextTasksRequestType {
 	}
 }
 
-class ReadPreviousTasksRequestType {
+class ReadPreviousTasksRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $maxCount; //int
 
@@ -25567,7 +25580,7 @@ class ReadPreviousTasksRequestType {
 	}
 }
 
-class CreateCollectorForTasksRequestType {
+class CreateCollectorForTasksRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $filter; //TaskFilterSpec
 
@@ -25577,7 +25590,7 @@ class CreateCollectorForTasksRequestType {
 	}
 }
 
-class CreateTaskRequestType {
+class CreateTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $obj; //ManagedObjectReference
 	public $taskTypeId; //string
@@ -25595,7 +25608,7 @@ class CreateTaskRequestType {
 	}
 }
 
-class RetrieveUserGroupsRequestType {
+class RetrieveUserGroupsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $domain; //string
 	public $searchStr; //string
@@ -25617,7 +25630,7 @@ class RetrieveUserGroupsRequestType {
 	}
 }
 
-class UpdateVAppConfigRequestType {
+class UpdateVAppConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //VAppConfigSpec
 
@@ -25627,7 +25640,7 @@ class UpdateVAppConfigRequestType {
 	}
 }
 
-class UpdateLinkedChildrenRequestType {
+class UpdateLinkedChildrenRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $addChangeSet; //VirtualAppLinkInfo
 	public $removeSet; //ManagedObjectReference
@@ -25639,7 +25652,7 @@ class UpdateLinkedChildrenRequestType {
 	}
 }
 
-class CloneVAppRequestType {
+class CloneVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $target; //ManagedObjectReference
@@ -25653,7 +25666,7 @@ class CloneVAppRequestType {
 	}
 }
 
-class ExportVAppRequestType {
+class ExportVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25661,7 +25674,7 @@ class ExportVAppRequestType {
 	}
 }
 
-class PowerOnVAppRequestType {
+class PowerOnVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25669,7 +25682,7 @@ class PowerOnVAppRequestType {
 	}
 }
 
-class PowerOffVAppRequestType {
+class PowerOffVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $force; //boolean
 
@@ -25679,7 +25692,7 @@ class PowerOffVAppRequestType {
 	}
 }
 
-class SuspendVAppRequestType {
+class SuspendVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25687,7 +25700,7 @@ class SuspendVAppRequestType {
 	}
 }
 
-class unregisterVAppRequestType {
+class unregisterVAppRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25695,7 +25708,7 @@ class unregisterVAppRequestType {
 	}
 }
 
-class CreateVirtualDiskRequestType {
+class CreateVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25709,7 +25722,7 @@ class CreateVirtualDiskRequestType {
 	}
 }
 
-class DeleteVirtualDiskRequestType {
+class DeleteVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25721,7 +25734,7 @@ class DeleteVirtualDiskRequestType {
 	}
 }
 
-class MoveVirtualDiskRequestType {
+class MoveVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $sourceName; //string
 	public $sourceDatacenter; //ManagedObjectReference
@@ -25739,7 +25752,7 @@ class MoveVirtualDiskRequestType {
 	}
 }
 
-class CopyVirtualDiskRequestType {
+class CopyVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $sourceName; //string
 	public $sourceDatacenter; //ManagedObjectReference
@@ -25759,7 +25772,7 @@ class CopyVirtualDiskRequestType {
 	}
 }
 
-class ExtendVirtualDiskRequestType {
+class ExtendVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25775,7 +25788,7 @@ class ExtendVirtualDiskRequestType {
 	}
 }
 
-class QueryVirtualDiskFragmentationRequestType {
+class QueryVirtualDiskFragmentationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25787,7 +25800,7 @@ class QueryVirtualDiskFragmentationRequestType {
 	}
 }
 
-class DefragmentVirtualDiskRequestType {
+class DefragmentVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25799,7 +25812,7 @@ class DefragmentVirtualDiskRequestType {
 	}
 }
 
-class ShrinkVirtualDiskRequestType {
+class ShrinkVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25813,7 +25826,7 @@ class ShrinkVirtualDiskRequestType {
 	}
 }
 
-class InflateVirtualDiskRequestType {
+class InflateVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25825,7 +25838,7 @@ class InflateVirtualDiskRequestType {
 	}
 }
 
-class EagerZeroVirtualDiskRequestType {
+class EagerZeroVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25837,7 +25850,7 @@ class EagerZeroVirtualDiskRequestType {
 	}
 }
 
-class ZeroFillVirtualDiskRequestType {
+class ZeroFillVirtualDiskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25849,7 +25862,7 @@ class ZeroFillVirtualDiskRequestType {
 	}
 }
 
-class SetVirtualDiskUuidRequestType {
+class SetVirtualDiskUuidRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25863,7 +25876,7 @@ class SetVirtualDiskUuidRequestType {
 	}
 }
 
-class QueryVirtualDiskUuidRequestType {
+class QueryVirtualDiskUuidRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25875,7 +25888,7 @@ class QueryVirtualDiskUuidRequestType {
 	}
 }
 
-class QueryVirtualDiskGeometryRequestType {
+class QueryVirtualDiskGeometryRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $datacenter; //ManagedObjectReference
@@ -25887,7 +25900,7 @@ class QueryVirtualDiskGeometryRequestType {
 	}
 }
 
-class RefreshStorageInfoRequestType {
+class RefreshStorageInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25895,7 +25908,7 @@ class RefreshStorageInfoRequestType {
 	}
 }
 
-class CreateSnapshotRequestType {
+class CreateSnapshotRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $description; //string
@@ -25911,7 +25924,7 @@ class CreateSnapshotRequestType {
 	}
 }
 
-class RevertToCurrentSnapshotRequestType {
+class RevertToCurrentSnapshotRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $suppressPowerOn; //boolean
@@ -25923,7 +25936,7 @@ class RevertToCurrentSnapshotRequestType {
 	}
 }
 
-class RemoveAllSnapshotsRequestType {
+class RemoveAllSnapshotsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $consolidate; //boolean
 
@@ -25933,7 +25946,7 @@ class RemoveAllSnapshotsRequestType {
 	}
 }
 
-class ConsolidateVMDisksRequestType {
+class ConsolidateVMDisksRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25941,7 +25954,7 @@ class ConsolidateVMDisksRequestType {
 	}
 }
 
-class EstimateStorageForConsolidateSnapshotsRequestType {
+class EstimateStorageForConsolidateSnapshotsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25949,7 +25962,7 @@ class EstimateStorageForConsolidateSnapshotsRequestType {
 	}
 }
 
-class ReconfigVMRequestType {
+class ReconfigVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //VirtualMachineConfigSpec
 
@@ -25959,7 +25972,7 @@ class ReconfigVMRequestType {
 	}
 }
 
-class UpgradeVMRequestType {
+class UpgradeVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $version; //string
 
@@ -25969,7 +25982,7 @@ class UpgradeVMRequestType {
 	}
 }
 
-class ExtractOvfEnvironmentRequestType {
+class ExtractOvfEnvironmentRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25977,7 +25990,7 @@ class ExtractOvfEnvironmentRequestType {
 	}
 }
 
-class PowerOnVMRequestType {
+class PowerOnVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -25987,7 +26000,7 @@ class PowerOnVMRequestType {
 	}
 }
 
-class PowerOffVMRequestType {
+class PowerOffVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -25995,7 +26008,7 @@ class PowerOffVMRequestType {
 	}
 }
 
-class SuspendVMRequestType {
+class SuspendVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26003,7 +26016,7 @@ class SuspendVMRequestType {
 	}
 }
 
-class ResetVMRequestType {
+class ResetVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26011,7 +26024,7 @@ class ResetVMRequestType {
 	}
 }
 
-class ShutdownGuestRequestType {
+class ShutdownGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26019,7 +26032,7 @@ class ShutdownGuestRequestType {
 	}
 }
 
-class RebootGuestRequestType {
+class RebootGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26027,7 +26040,7 @@ class RebootGuestRequestType {
 	}
 }
 
-class StandbyGuestRequestType {
+class StandbyGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26035,7 +26048,7 @@ class StandbyGuestRequestType {
 	}
 }
 
-class AnswerVMRequestType {
+class AnswerVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $questionId; //string
 	public $answerChoice; //string
@@ -26047,7 +26060,7 @@ class AnswerVMRequestType {
 	}
 }
 
-class CustomizeVMRequestType {
+class CustomizeVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //CustomizationSpec
 
@@ -26057,7 +26070,7 @@ class CustomizeVMRequestType {
 	}
 }
 
-class CheckCustomizationSpecRequestType {
+class CheckCustomizationSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //CustomizationSpec
 
@@ -26067,7 +26080,7 @@ class CheckCustomizationSpecRequestType {
 	}
 }
 
-class MigrateVMRequestType {
+class MigrateVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pool; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -26083,7 +26096,7 @@ class MigrateVMRequestType {
 	}
 }
 
-class RelocateVMRequestType {
+class RelocateVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //VirtualMachineRelocateSpec
 	public $priority; //VirtualMachineMovePriority
@@ -26095,7 +26108,7 @@ class RelocateVMRequestType {
 	}
 }
 
-class CloneVMRequestType {
+class CloneVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $folder; //ManagedObjectReference
 	public $name; //string
@@ -26109,7 +26122,7 @@ class CloneVMRequestType {
 	}
 }
 
-class ExportVmRequestType {
+class ExportVmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26117,7 +26130,7 @@ class ExportVmRequestType {
 	}
 }
 
-class MarkAsTemplateRequestType {
+class MarkAsTemplateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26125,7 +26138,7 @@ class MarkAsTemplateRequestType {
 	}
 }
 
-class MarkAsVirtualMachineRequestType {
+class MarkAsVirtualMachineRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pool; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -26137,7 +26150,7 @@ class MarkAsVirtualMachineRequestType {
 	}
 }
 
-class UnregisterVMRequestType {
+class UnregisterVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26145,7 +26158,7 @@ class UnregisterVMRequestType {
 	}
 }
 
-class ResetGuestInformationRequestType {
+class ResetGuestInformationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26153,7 +26166,7 @@ class ResetGuestInformationRequestType {
 	}
 }
 
-class MountToolsInstallerRequestType {
+class MountToolsInstallerRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26161,7 +26174,7 @@ class MountToolsInstallerRequestType {
 	}
 }
 
-class UnmountToolsInstallerRequestType {
+class UnmountToolsInstallerRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26169,7 +26182,7 @@ class UnmountToolsInstallerRequestType {
 	}
 }
 
-class UpgradeToolsRequestType {
+class UpgradeToolsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $installerOptions; //string
 
@@ -26179,7 +26192,7 @@ class UpgradeToolsRequestType {
 	}
 }
 
-class AcquireMksTicketRequestType {
+class AcquireMksTicketRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26187,7 +26200,7 @@ class AcquireMksTicketRequestType {
 	}
 }
 
-class AcquireTicketRequestType {
+class AcquireTicketRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $ticketType; //string
 
@@ -26197,7 +26210,7 @@ class AcquireTicketRequestType {
 	}
 }
 
-class SetScreenResolutionRequestType {
+class SetScreenResolutionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $width; //int
 	public $height; //int
@@ -26209,7 +26222,7 @@ class SetScreenResolutionRequestType {
 	}
 }
 
-class DefragmentAllDisksRequestType {
+class DefragmentAllDisksRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26217,7 +26230,7 @@ class DefragmentAllDisksRequestType {
 	}
 }
 
-class CreateSecondaryVMRequestType {
+class CreateSecondaryVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -26227,7 +26240,7 @@ class CreateSecondaryVMRequestType {
 	}
 }
 
-class TurnOffFaultToleranceForVMRequestType {
+class TurnOffFaultToleranceForVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26235,7 +26248,7 @@ class TurnOffFaultToleranceForVMRequestType {
 	}
 }
 
-class MakePrimaryVMRequestType {
+class MakePrimaryVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 
@@ -26245,7 +26258,7 @@ class MakePrimaryVMRequestType {
 	}
 }
 
-class TerminateFaultTolerantVMRequestType {
+class TerminateFaultTolerantVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 
@@ -26255,7 +26268,7 @@ class TerminateFaultTolerantVMRequestType {
 	}
 }
 
-class DisableSecondaryVMRequestType {
+class DisableSecondaryVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 
@@ -26265,7 +26278,7 @@ class DisableSecondaryVMRequestType {
 	}
 }
 
-class EnableSecondaryVMRequestType {
+class EnableSecondaryVMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -26277,7 +26290,7 @@ class EnableSecondaryVMRequestType {
 	}
 }
 
-class SetDisplayTopologyRequestType {
+class SetDisplayTopologyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $displays; //VirtualMachineDisplayTopology
 
@@ -26287,7 +26300,7 @@ class SetDisplayTopologyRequestType {
 	}
 }
 
-class StartRecordingRequestType {
+class StartRecordingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $description; //string
@@ -26299,7 +26312,7 @@ class StartRecordingRequestType {
 	}
 }
 
-class StopRecordingRequestType {
+class StopRecordingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26307,7 +26320,7 @@ class StopRecordingRequestType {
 	}
 }
 
-class StartReplayingRequestType {
+class StartReplayingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $replaySnapshot; //ManagedObjectReference
 
@@ -26317,7 +26330,7 @@ class StartReplayingRequestType {
 	}
 }
 
-class StopReplayingRequestType {
+class StopReplayingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26325,7 +26338,7 @@ class StopReplayingRequestType {
 	}
 }
 
-class PromoteDisksRequestType {
+class PromoteDisksRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $unlink; //boolean
 	public $disks; //VirtualDisk
@@ -26337,7 +26350,7 @@ class PromoteDisksRequestType {
 	}
 }
 
-class CreateScreenshotRequestType {
+class CreateScreenshotRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26345,7 +26358,7 @@ class CreateScreenshotRequestType {
 	}
 }
 
-class QueryChangedDiskAreasRequestType {
+class QueryChangedDiskAreasRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $snapshot; //ManagedObjectReference
 	public $deviceKey; //int
@@ -26361,7 +26374,7 @@ class QueryChangedDiskAreasRequestType {
 	}
 }
 
-class QueryUnownedFilesRequestType {
+class QueryUnownedFilesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26369,7 +26382,7 @@ class QueryUnownedFilesRequestType {
 	}
 }
 
-class reloadVirtualMachineFromPathRequestType {
+class reloadVirtualMachineFromPathRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $configurationPath; //string
 
@@ -26379,7 +26392,7 @@ class reloadVirtualMachineFromPathRequestType {
 	}
 }
 
-class QueryFaultToleranceCompatibilityRequestType {
+class QueryFaultToleranceCompatibilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26387,7 +26400,7 @@ class QueryFaultToleranceCompatibilityRequestType {
 	}
 }
 
-class RemoveAlarmRequestType {
+class RemoveAlarmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26395,7 +26408,7 @@ class RemoveAlarmRequestType {
 	}
 }
 
-class ReconfigureAlarmRequestType {
+class ReconfigureAlarmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //AlarmSpec
 
@@ -26405,7 +26418,7 @@ class ReconfigureAlarmRequestType {
 	}
 }
 
-class CreateAlarmRequestType {
+class CreateAlarmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $spec; //AlarmSpec
@@ -26417,7 +26430,7 @@ class CreateAlarmRequestType {
 	}
 }
 
-class GetAlarmRequestType {
+class GetAlarmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -26427,7 +26440,7 @@ class GetAlarmRequestType {
 	}
 }
 
-class AreAlarmActionsEnabledRequestType {
+class AreAlarmActionsEnabledRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -26437,7 +26450,7 @@ class AreAlarmActionsEnabledRequestType {
 	}
 }
 
-class EnableAlarmActionsRequestType {
+class EnableAlarmActionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $enabled; //boolean
@@ -26449,7 +26462,7 @@ class EnableAlarmActionsRequestType {
 	}
 }
 
-class GetAlarmStateRequestType {
+class GetAlarmStateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -26459,7 +26472,7 @@ class GetAlarmStateRequestType {
 	}
 }
 
-class AcknowledgeAlarmRequestType {
+class AcknowledgeAlarmRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $alarm; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
@@ -26471,7 +26484,7 @@ class AcknowledgeAlarmRequestType {
 	}
 }
 
-class ReconfigureDVPortgroupRequestType {
+class ReconfigureDVPortgroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //DVPortgroupConfigSpec
 
@@ -26481,7 +26494,7 @@ class ReconfigureDVPortgroupRequestType {
 	}
 }
 
-class QueryAvailableDvsSpecRequestType {
+class QueryAvailableDvsSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26489,7 +26502,7 @@ class QueryAvailableDvsSpecRequestType {
 	}
 }
 
-class QueryCompatibleHostForNewDvsRequestType {
+class QueryCompatibleHostForNewDvsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $container; //ManagedObjectReference
 	public $recursive; //boolean
@@ -26503,7 +26516,7 @@ class QueryCompatibleHostForNewDvsRequestType {
 	}
 }
 
-class QueryCompatibleHostForExistingDvsRequestType {
+class QueryCompatibleHostForExistingDvsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $container; //ManagedObjectReference
 	public $recursive; //boolean
@@ -26517,7 +26530,7 @@ class QueryCompatibleHostForExistingDvsRequestType {
 	}
 }
 
-class QueryDvsCompatibleHostSpecRequestType {
+class QueryDvsCompatibleHostSpecRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $switchProductSpec; //DistributedVirtualSwitchProductSpec
 
@@ -26527,7 +26540,7 @@ class QueryDvsCompatibleHostSpecRequestType {
 	}
 }
 
-class QueryDvsFeatureCapabilityRequestType {
+class QueryDvsFeatureCapabilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $switchProductSpec; //DistributedVirtualSwitchProductSpec
 
@@ -26537,7 +26550,7 @@ class QueryDvsFeatureCapabilityRequestType {
 	}
 }
 
-class QueryDvsByUuidRequestType {
+class QueryDvsByUuidRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $uuid; //string
 
@@ -26547,7 +26560,7 @@ class QueryDvsByUuidRequestType {
 	}
 }
 
-class QueryDvsConfigTargetRequestType {
+class QueryDvsConfigTargetRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $dvs; //ManagedObjectReference
@@ -26559,7 +26572,7 @@ class QueryDvsConfigTargetRequestType {
 	}
 }
 
-class QueryDvsCheckCompatibilityRequestType {
+class QueryDvsCheckCompatibilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $hostContainer; //DistributedVirtualSwitchManagerHostContainer
 	public $dvsProductSpec; //DistributedVirtualSwitchManagerDvsProductSpec
@@ -26573,7 +26586,7 @@ class QueryDvsCheckCompatibilityRequestType {
 	}
 }
 
-class RectifyDvsOnHostRequestType {
+class RectifyDvsOnHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $hosts; //ManagedObjectReference
 
@@ -26583,7 +26596,7 @@ class RectifyDvsOnHostRequestType {
 	}
 }
 
-class ReadNextEventsRequestType {
+class ReadNextEventsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $maxCount; //int
 
@@ -26593,7 +26606,7 @@ class ReadNextEventsRequestType {
 	}
 }
 
-class ReadPreviousEventsRequestType {
+class ReadPreviousEventsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $maxCount; //int
 
@@ -26603,7 +26616,7 @@ class ReadPreviousEventsRequestType {
 	}
 }
 
-class RetrieveArgumentDescriptionRequestType {
+class RetrieveArgumentDescriptionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $eventTypeId; //string
 
@@ -26613,7 +26626,7 @@ class RetrieveArgumentDescriptionRequestType {
 	}
 }
 
-class CreateCollectorForEventsRequestType {
+class CreateCollectorForEventsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $filter; //EventFilterSpec
 
@@ -26623,7 +26636,7 @@ class CreateCollectorForEventsRequestType {
 	}
 }
 
-class LogUserEventRequestType {
+class LogUserEventRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $msg; //string
@@ -26635,7 +26648,7 @@ class LogUserEventRequestType {
 	}
 }
 
-class QueryEventsRequestType {
+class QueryEventsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $filter; //EventFilterSpec
 
@@ -26645,7 +26658,7 @@ class QueryEventsRequestType {
 	}
 }
 
-class PostEventRequestType {
+class PostEventRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $eventToPost; //Event
 	public $taskInfo; //TaskInfo
@@ -26657,7 +26670,7 @@ class PostEventRequestType {
 	}
 }
 
-class JoinDomainRequestType {
+class JoinDomainRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $domainName; //string
 	public $userName; //string
@@ -26671,7 +26684,7 @@ class JoinDomainRequestType {
 	}
 }
 
-class JoinDomainWithCAMRequestType {
+class JoinDomainWithCAMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $domainName; //string
 	public $camServer; //string
@@ -26683,7 +26696,7 @@ class JoinDomainWithCAMRequestType {
 	}
 }
 
-class ImportCertificateForCAMRequestType {
+class ImportCertificateForCAMRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $certPath; //string
 	public $camServer; //string
@@ -26695,7 +26708,7 @@ class ImportCertificateForCAMRequestType {
 	}
 }
 
-class LeaveCurrentDomainRequestType {
+class LeaveCurrentDomainRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $force; //boolean
 
@@ -26705,7 +26718,7 @@ class LeaveCurrentDomainRequestType {
 	}
 }
 
-class ReconfigureAutostartRequestType {
+class ReconfigureAutostartRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostAutoStartManagerConfig
 
@@ -26715,7 +26728,7 @@ class ReconfigureAutostartRequestType {
 	}
 }
 
-class AutoStartPowerOnRequestType {
+class AutoStartPowerOnRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26723,7 +26736,7 @@ class AutoStartPowerOnRequestType {
 	}
 }
 
-class AutoStartPowerOffRequestType {
+class AutoStartPowerOffRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26731,7 +26744,7 @@ class AutoStartPowerOffRequestType {
 	}
 }
 
-class QueryBootDevicesRequestType {
+class QueryBootDevicesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26739,7 +26752,7 @@ class QueryBootDevicesRequestType {
 	}
 }
 
-class UpdateBootDeviceRequestType {
+class UpdateBootDeviceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //string
 
@@ -26749,7 +26762,7 @@ class UpdateBootDeviceRequestType {
 	}
 }
 
-class ConfigureHostCacheRequestType {
+class ConfigureHostCacheRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostCacheConfigurationSpec
 
@@ -26759,7 +26772,7 @@ class ConfigureHostCacheRequestType {
 	}
 }
 
-class EnableHyperThreadingRequestType {
+class EnableHyperThreadingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26767,7 +26780,7 @@ class EnableHyperThreadingRequestType {
 	}
 }
 
-class DisableHyperThreadingRequestType {
+class DisableHyperThreadingRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26775,7 +26788,7 @@ class DisableHyperThreadingRequestType {
 	}
 }
 
-class SearchDatastoreRequestType {
+class SearchDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastorePath; //string
 	public $searchSpec; //HostDatastoreBrowserSearchSpec
@@ -26787,7 +26800,7 @@ class SearchDatastoreRequestType {
 	}
 }
 
-class SearchDatastoreSubFoldersRequestType {
+class SearchDatastoreSubFoldersRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastorePath; //string
 	public $searchSpec; //HostDatastoreBrowserSearchSpec
@@ -26799,7 +26812,7 @@ class SearchDatastoreSubFoldersRequestType {
 	}
 }
 
-class DeleteFileRequestType {
+class DeleteFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastorePath; //string
 
@@ -26809,7 +26822,7 @@ class DeleteFileRequestType {
 	}
 }
 
-class UpdateLocalSwapDatastoreRequestType {
+class UpdateLocalSwapDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 
@@ -26819,7 +26832,7 @@ class UpdateLocalSwapDatastoreRequestType {
 	}
 }
 
-class QueryAvailableDisksForVmfsRequestType {
+class QueryAvailableDisksForVmfsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 
@@ -26829,7 +26842,7 @@ class QueryAvailableDisksForVmfsRequestType {
 	}
 }
 
-class QueryVmfsDatastoreCreateOptionsRequestType {
+class QueryVmfsDatastoreCreateOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $devicePath; //string
 	public $vmfsMajorVersion; //int
@@ -26841,7 +26854,7 @@ class QueryVmfsDatastoreCreateOptionsRequestType {
 	}
 }
 
-class CreateVmfsDatastoreRequestType {
+class CreateVmfsDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //VmfsDatastoreCreateSpec
 
@@ -26851,7 +26864,7 @@ class CreateVmfsDatastoreRequestType {
 	}
 }
 
-class QueryVmfsDatastoreExtendOptionsRequestType {
+class QueryVmfsDatastoreExtendOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 	public $devicePath; //string
@@ -26865,7 +26878,7 @@ class QueryVmfsDatastoreExtendOptionsRequestType {
 	}
 }
 
-class QueryVmfsDatastoreExpandOptionsRequestType {
+class QueryVmfsDatastoreExpandOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 
@@ -26875,7 +26888,7 @@ class QueryVmfsDatastoreExpandOptionsRequestType {
 	}
 }
 
-class ExtendVmfsDatastoreRequestType {
+class ExtendVmfsDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 	public $spec; //VmfsDatastoreExtendSpec
@@ -26887,7 +26900,7 @@ class ExtendVmfsDatastoreRequestType {
 	}
 }
 
-class ExpandVmfsDatastoreRequestType {
+class ExpandVmfsDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 	public $spec; //VmfsDatastoreExpandSpec
@@ -26899,7 +26912,7 @@ class ExpandVmfsDatastoreRequestType {
 	}
 }
 
-class CreateNasDatastoreRequestType {
+class CreateNasDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostNasVolumeSpec
 
@@ -26909,7 +26922,7 @@ class CreateNasDatastoreRequestType {
 	}
 }
 
-class CreateLocalDatastoreRequestType {
+class CreateLocalDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $path; //string
@@ -26921,7 +26934,7 @@ class CreateLocalDatastoreRequestType {
 	}
 }
 
-class RemoveDatastoreRequestType {
+class RemoveDatastoreRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $datastore; //ManagedObjectReference
 
@@ -26931,7 +26944,7 @@ class RemoveDatastoreRequestType {
 	}
 }
 
-class ConfigureDatastorePrincipalRequestType {
+class ConfigureDatastorePrincipalRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $userName; //string
 	public $password; //string
@@ -26943,7 +26956,7 @@ class ConfigureDatastorePrincipalRequestType {
 	}
 }
 
-class QueryUnresolvedVmfsVolumesRequestType {
+class QueryUnresolvedVmfsVolumesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26951,7 +26964,7 @@ class QueryUnresolvedVmfsVolumesRequestType {
 	}
 }
 
-class ResignatureUnresolvedVmfsVolumeRequestType {
+class ResignatureUnresolvedVmfsVolumeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $resolutionSpec; //HostUnresolvedVmfsResignatureSpec
 
@@ -26961,7 +26974,7 @@ class ResignatureUnresolvedVmfsVolumeRequestType {
 	}
 }
 
-class UpdateDateTimeConfigRequestType {
+class UpdateDateTimeConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostDateTimeConfig
 
@@ -26971,7 +26984,7 @@ class UpdateDateTimeConfigRequestType {
 	}
 }
 
-class QueryAvailableTimeZonesRequestType {
+class QueryAvailableTimeZonesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26979,7 +26992,7 @@ class QueryAvailableTimeZonesRequestType {
 	}
 }
 
-class QueryDateTimeRequestType {
+class QueryDateTimeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -26987,7 +27000,7 @@ class QueryDateTimeRequestType {
 	}
 }
 
-class UpdateDateTimeRequestType {
+class UpdateDateTimeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $dateTime; //dateTime
 
@@ -26997,7 +27010,7 @@ class UpdateDateTimeRequestType {
 	}
 }
 
-class RefreshDateTimeSystemRequestType {
+class RefreshDateTimeSystemRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27005,7 +27018,7 @@ class RefreshDateTimeSystemRequestType {
 	}
 }
 
-class QueryAvailablePartitionRequestType {
+class QueryAvailablePartitionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27013,7 +27026,7 @@ class QueryAvailablePartitionRequestType {
 	}
 }
 
-class SelectActivePartitionRequestType {
+class SelectActivePartitionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $partition; //HostScsiDiskPartition
 
@@ -27023,7 +27036,7 @@ class SelectActivePartitionRequestType {
 	}
 }
 
-class QueryPartitionCreateOptionsRequestType {
+class QueryPartitionCreateOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $storageType; //string
 	public $diagnosticType; //string
@@ -27035,7 +27048,7 @@ class QueryPartitionCreateOptionsRequestType {
 	}
 }
 
-class QueryPartitionCreateDescRequestType {
+class QueryPartitionCreateDescRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $diskUuid; //string
 	public $diagnosticType; //string
@@ -27047,7 +27060,7 @@ class QueryPartitionCreateDescRequestType {
 	}
 }
 
-class CreateDiagnosticPartitionRequestType {
+class CreateDiagnosticPartitionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostDiagnosticPartitionCreateSpec
 
@@ -27057,7 +27070,7 @@ class CreateDiagnosticPartitionRequestType {
 	}
 }
 
-class EsxAgentHostManagerUpdateConfigRequestType {
+class EsxAgentHostManagerUpdateConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $configInfo; //HostEsxAgentHostManagerConfigInfo
 
@@ -27067,7 +27080,7 @@ class EsxAgentHostManagerUpdateConfigRequestType {
 	}
 }
 
-class UpdateDefaultPolicyRequestType {
+class UpdateDefaultPolicyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $defaultPolicy; //HostFirewallDefaultPolicy
 
@@ -27077,7 +27090,7 @@ class UpdateDefaultPolicyRequestType {
 	}
 }
 
-class EnableRulesetRequestType {
+class EnableRulesetRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 
@@ -27087,7 +27100,7 @@ class EnableRulesetRequestType {
 	}
 }
 
-class DisableRulesetRequestType {
+class DisableRulesetRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 
@@ -27097,7 +27110,7 @@ class DisableRulesetRequestType {
 	}
 }
 
-class UpdateRulesetRequestType {
+class UpdateRulesetRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 	public $spec; //HostFirewallRulesetRulesetSpec
@@ -27109,7 +27122,7 @@ class UpdateRulesetRequestType {
 	}
 }
 
-class RefreshFirewallRequestType {
+class RefreshFirewallRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27117,7 +27130,7 @@ class RefreshFirewallRequestType {
 	}
 }
 
-class ResetFirmwareToFactoryDefaultsRequestType {
+class ResetFirmwareToFactoryDefaultsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27125,7 +27138,7 @@ class ResetFirmwareToFactoryDefaultsRequestType {
 	}
 }
 
-class BackupFirmwareConfigurationRequestType {
+class BackupFirmwareConfigurationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27133,7 +27146,7 @@ class BackupFirmwareConfigurationRequestType {
 	}
 }
 
-class QueryFirmwareConfigUploadURLRequestType {
+class QueryFirmwareConfigUploadURLRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27141,7 +27154,7 @@ class QueryFirmwareConfigUploadURLRequestType {
 	}
 }
 
-class RestoreFirmwareConfigurationRequestType {
+class RestoreFirmwareConfigurationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $force; //boolean
 
@@ -27151,7 +27164,7 @@ class RestoreFirmwareConfigurationRequestType {
 	}
 }
 
-class RefreshHealthStatusSystemRequestType {
+class RefreshHealthStatusSystemRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27159,7 +27172,7 @@ class RefreshHealthStatusSystemRequestType {
 	}
 }
 
-class ResetSystemHealthInfoRequestType {
+class ResetSystemHealthInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27167,7 +27180,7 @@ class ResetSystemHealthInfoRequestType {
 	}
 }
 
-class HostImageConfigGetAcceptanceRequestType {
+class HostImageConfigGetAcceptanceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27175,7 +27188,7 @@ class HostImageConfigGetAcceptanceRequestType {
 	}
 }
 
-class HostImageConfigGetProfileRequestType {
+class HostImageConfigGetProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27183,7 +27196,7 @@ class HostImageConfigGetProfileRequestType {
 	}
 }
 
-class UpdateHostImageAcceptanceLevelRequestType {
+class UpdateHostImageAcceptanceLevelRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $newAcceptanceLevel; //string
 
@@ -27193,7 +27206,7 @@ class UpdateHostImageAcceptanceLevelRequestType {
 	}
 }
 
-class QueryVnicStatusRequestType {
+class QueryVnicStatusRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vnicDevice; //string
 
@@ -27203,7 +27216,7 @@ class QueryVnicStatusRequestType {
 	}
 }
 
-class QueryPnicStatusRequestType {
+class QueryPnicStatusRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pnicDevice; //string
 
@@ -27213,7 +27226,7 @@ class QueryPnicStatusRequestType {
 	}
 }
 
-class QueryBoundVnicsRequestType {
+class QueryBoundVnicsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaName; //string
 
@@ -27223,7 +27236,7 @@ class QueryBoundVnicsRequestType {
 	}
 }
 
-class QueryCandidateNicsRequestType {
+class QueryCandidateNicsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaName; //string
 
@@ -27233,7 +27246,7 @@ class QueryCandidateNicsRequestType {
 	}
 }
 
-class BindVnicRequestType {
+class BindVnicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaName; //string
 	public $vnicDevice; //string
@@ -27245,7 +27258,7 @@ class BindVnicRequestType {
 	}
 }
 
-class UnbindVnicRequestType {
+class UnbindVnicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaName; //string
 	public $vnicDevice; //string
@@ -27259,7 +27272,7 @@ class UnbindVnicRequestType {
 	}
 }
 
-class QueryMigrationDependenciesRequestType {
+class QueryMigrationDependenciesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pnicDevice; //string
 
@@ -27269,7 +27282,7 @@ class QueryMigrationDependenciesRequestType {
 	}
 }
 
-class QueryModulesRequestType {
+class QueryModulesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27277,7 +27290,7 @@ class QueryModulesRequestType {
 	}
 }
 
-class UpdateModuleOptionStringRequestType {
+class UpdateModuleOptionStringRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $options; //string
@@ -27289,7 +27302,7 @@ class UpdateModuleOptionStringRequestType {
 	}
 }
 
-class QueryConfiguredModuleOptionStringRequestType {
+class QueryConfiguredModuleOptionStringRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -27299,7 +27312,7 @@ class QueryConfiguredModuleOptionStringRequestType {
 	}
 }
 
-class CreateUserRequestType {
+class CreateUserRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $user; //HostAccountSpec
 
@@ -27309,7 +27322,7 @@ class CreateUserRequestType {
 	}
 }
 
-class UpdateUserRequestType {
+class UpdateUserRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $user; //HostAccountSpec
 
@@ -27319,7 +27332,7 @@ class UpdateUserRequestType {
 	}
 }
 
-class CreateGroupRequestType {
+class CreateGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $group; //HostAccountSpec
 
@@ -27329,7 +27342,7 @@ class CreateGroupRequestType {
 	}
 }
 
-class RemoveUserRequestType {
+class RemoveUserRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $userName; //string
 
@@ -27339,7 +27352,7 @@ class RemoveUserRequestType {
 	}
 }
 
-class RemoveGroupRequestType {
+class RemoveGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $groupName; //string
 
@@ -27349,7 +27362,7 @@ class RemoveGroupRequestType {
 	}
 }
 
-class AssignUserToGroupRequestType {
+class AssignUserToGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $user; //string
 	public $group; //string
@@ -27361,7 +27374,7 @@ class AssignUserToGroupRequestType {
 	}
 }
 
-class UnassignUserFromGroupRequestType {
+class UnassignUserFromGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $user; //string
 	public $group; //string
@@ -27373,7 +27386,7 @@ class UnassignUserFromGroupRequestType {
 	}
 }
 
-class ReconfigureServiceConsoleReservationRequestType {
+class ReconfigureServiceConsoleReservationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $cfgBytes; //long
 
@@ -27383,7 +27396,7 @@ class ReconfigureServiceConsoleReservationRequestType {
 	}
 }
 
-class ReconfigureVirtualMachineReservationRequestType {
+class ReconfigureVirtualMachineReservationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //VirtualMachineMemoryReservationSpec
 
@@ -27393,7 +27406,7 @@ class ReconfigureVirtualMachineReservationRequestType {
 	}
 }
 
-class UpdateNetworkConfigRequestType {
+class UpdateNetworkConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostNetworkConfig
 	public $changeMode; //string
@@ -27405,7 +27418,7 @@ class UpdateNetworkConfigRequestType {
 	}
 }
 
-class UpdateDnsConfigRequestType {
+class UpdateDnsConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostDnsConfig
 
@@ -27415,7 +27428,7 @@ class UpdateDnsConfigRequestType {
 	}
 }
 
-class UpdateIpRouteConfigRequestType {
+class UpdateIpRouteConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostIpRouteConfig
 
@@ -27425,7 +27438,7 @@ class UpdateIpRouteConfigRequestType {
 	}
 }
 
-class UpdateConsoleIpRouteConfigRequestType {
+class UpdateConsoleIpRouteConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostIpRouteConfig
 
@@ -27435,7 +27448,7 @@ class UpdateConsoleIpRouteConfigRequestType {
 	}
 }
 
-class UpdateIpRouteTableConfigRequestType {
+class UpdateIpRouteTableConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostIpRouteTableConfig
 
@@ -27445,7 +27458,7 @@ class UpdateIpRouteTableConfigRequestType {
 	}
 }
 
-class AddVirtualSwitchRequestType {
+class AddVirtualSwitchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vswitchName; //string
 	public $spec; //HostVirtualSwitchSpec
@@ -27457,7 +27470,7 @@ class AddVirtualSwitchRequestType {
 	}
 }
 
-class RemoveVirtualSwitchRequestType {
+class RemoveVirtualSwitchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vswitchName; //string
 
@@ -27467,7 +27480,7 @@ class RemoveVirtualSwitchRequestType {
 	}
 }
 
-class UpdateVirtualSwitchRequestType {
+class UpdateVirtualSwitchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vswitchName; //string
 	public $spec; //HostVirtualSwitchSpec
@@ -27479,7 +27492,7 @@ class UpdateVirtualSwitchRequestType {
 	}
 }
 
-class AddPortGroupRequestType {
+class AddPortGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $portgrp; //HostPortGroupSpec
 
@@ -27489,7 +27502,7 @@ class AddPortGroupRequestType {
 	}
 }
 
-class RemovePortGroupRequestType {
+class RemovePortGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pgName; //string
 
@@ -27499,7 +27512,7 @@ class RemovePortGroupRequestType {
 	}
 }
 
-class UpdatePortGroupRequestType {
+class UpdatePortGroupRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pgName; //string
 	public $portgrp; //HostPortGroupSpec
@@ -27511,7 +27524,7 @@ class UpdatePortGroupRequestType {
 	}
 }
 
-class UpdatePhysicalNicLinkSpeedRequestType {
+class UpdatePhysicalNicLinkSpeedRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 	public $linkSpeed; //PhysicalNicLinkInfo
@@ -27523,7 +27536,7 @@ class UpdatePhysicalNicLinkSpeedRequestType {
 	}
 }
 
-class QueryNetworkHintRequestType {
+class QueryNetworkHintRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 
@@ -27533,7 +27546,7 @@ class QueryNetworkHintRequestType {
 	}
 }
 
-class AddVirtualNicRequestType {
+class AddVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $portgroup; //string
 	public $nic; //HostVirtualNicSpec
@@ -27545,7 +27558,7 @@ class AddVirtualNicRequestType {
 	}
 }
 
-class RemoveVirtualNicRequestType {
+class RemoveVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 
@@ -27555,7 +27568,7 @@ class RemoveVirtualNicRequestType {
 	}
 }
 
-class UpdateVirtualNicRequestType {
+class UpdateVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 	public $nic; //HostVirtualNicSpec
@@ -27567,7 +27580,7 @@ class UpdateVirtualNicRequestType {
 	}
 }
 
-class AddServiceConsoleVirtualNicRequestType {
+class AddServiceConsoleVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $portgroup; //string
 	public $nic; //HostVirtualNicSpec
@@ -27579,7 +27592,7 @@ class AddServiceConsoleVirtualNicRequestType {
 	}
 }
 
-class RemoveServiceConsoleVirtualNicRequestType {
+class RemoveServiceConsoleVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 
@@ -27589,7 +27602,7 @@ class RemoveServiceConsoleVirtualNicRequestType {
 	}
 }
 
-class UpdateServiceConsoleVirtualNicRequestType {
+class UpdateServiceConsoleVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 	public $nic; //HostVirtualNicSpec
@@ -27601,7 +27614,7 @@ class UpdateServiceConsoleVirtualNicRequestType {
 	}
 }
 
-class RestartServiceConsoleVirtualNicRequestType {
+class RestartServiceConsoleVirtualNicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 
@@ -27611,7 +27624,7 @@ class RestartServiceConsoleVirtualNicRequestType {
 	}
 }
 
-class RefreshNetworkSystemRequestType {
+class RefreshNetworkSystemRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27619,7 +27632,7 @@ class RefreshNetworkSystemRequestType {
 	}
 }
 
-class CheckHostPatchRequestType {
+class CheckHostPatchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $metaUrls; //string
 	public $bundleUrls; //string
@@ -27633,7 +27646,7 @@ class CheckHostPatchRequestType {
 	}
 }
 
-class ScanHostPatchRequestType {
+class ScanHostPatchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $repository; //HostPatchManagerLocator
 	public $updateID; //string
@@ -27645,7 +27658,7 @@ class ScanHostPatchRequestType {
 	}
 }
 
-class ScanHostPatchV2RequestType {
+class ScanHostPatchV2RequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $metaUrls; //string
 	public $bundleUrls; //string
@@ -27659,7 +27672,7 @@ class ScanHostPatchV2RequestType {
 	}
 }
 
-class StageHostPatchRequestType {
+class StageHostPatchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $metaUrls; //string
 	public $bundleUrls; //string
@@ -27675,7 +27688,7 @@ class StageHostPatchRequestType {
 	}
 }
 
-class InstallHostPatchRequestType {
+class InstallHostPatchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $repository; //HostPatchManagerLocator
 	public $updateID; //string
@@ -27689,7 +27702,7 @@ class InstallHostPatchRequestType {
 	}
 }
 
-class InstallHostPatchV2RequestType {
+class InstallHostPatchV2RequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $metaUrls; //string
 	public $bundleUrls; //string
@@ -27705,7 +27718,7 @@ class InstallHostPatchV2RequestType {
 	}
 }
 
-class UninstallHostPatchRequestType {
+class UninstallHostPatchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $bulletinIds; //string
 	public $spec; //HostPatchManagerPatchManagerOperationSpec
@@ -27717,7 +27730,7 @@ class UninstallHostPatchRequestType {
 	}
 }
 
-class QueryHostPatchRequestType {
+class QueryHostPatchRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostPatchManagerPatchManagerOperationSpec
 
@@ -27727,7 +27740,7 @@ class QueryHostPatchRequestType {
 	}
 }
 
-class RefreshRequestType {
+class RefreshRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27735,7 +27748,7 @@ class RefreshRequestType {
 	}
 }
 
-class UpdatePassthruConfigRequestType {
+class UpdatePassthruConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostPciPassthruConfig
 
@@ -27745,7 +27758,7 @@ class UpdatePassthruConfigRequestType {
 	}
 }
 
-class ConfigurePowerPolicyRequestType {
+class ConfigurePowerPolicyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $key; //int
 
@@ -27755,7 +27768,7 @@ class ConfigurePowerPolicyRequestType {
 	}
 }
 
-class UpdateServicePolicyRequestType {
+class UpdateServicePolicyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 	public $policy; //string
@@ -27767,7 +27780,7 @@ class UpdateServicePolicyRequestType {
 	}
 }
 
-class StartServiceRequestType {
+class StartServiceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 
@@ -27777,7 +27790,7 @@ class StartServiceRequestType {
 	}
 }
 
-class StopServiceRequestType {
+class StopServiceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 
@@ -27787,7 +27800,7 @@ class StopServiceRequestType {
 	}
 }
 
-class RestartServiceRequestType {
+class RestartServiceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 
@@ -27797,7 +27810,7 @@ class RestartServiceRequestType {
 	}
 }
 
-class UninstallServiceRequestType {
+class UninstallServiceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $id; //string
 
@@ -27807,7 +27820,7 @@ class UninstallServiceRequestType {
 	}
 }
 
-class RefreshServicesRequestType {
+class RefreshServicesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27815,7 +27828,7 @@ class RefreshServicesRequestType {
 	}
 }
 
-class ReconfigureSnmpAgentRequestType {
+class ReconfigureSnmpAgentRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //HostSnmpConfigSpec
 
@@ -27825,7 +27838,7 @@ class ReconfigureSnmpAgentRequestType {
 	}
 }
 
-class SendTestNotificationRequestType {
+class SendTestNotificationRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27833,7 +27846,7 @@ class SendTestNotificationRequestType {
 	}
 }
 
-class RetrieveDiskPartitionInfoRequestType {
+class RetrieveDiskPartitionInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $devicePath; //string
 
@@ -27843,7 +27856,7 @@ class RetrieveDiskPartitionInfoRequestType {
 	}
 }
 
-class ComputeDiskPartitionInfoRequestType {
+class ComputeDiskPartitionInfoRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $devicePath; //string
 	public $layout; //HostDiskPartitionLayout
@@ -27857,7 +27870,7 @@ class ComputeDiskPartitionInfoRequestType {
 	}
 }
 
-class ComputeDiskPartitionInfoForResizeRequestType {
+class ComputeDiskPartitionInfoForResizeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $partition; //HostScsiDiskPartition
 	public $blockRange; //HostDiskPartitionBlockRange
@@ -27871,7 +27884,7 @@ class ComputeDiskPartitionInfoForResizeRequestType {
 	}
 }
 
-class UpdateDiskPartitionsRequestType {
+class UpdateDiskPartitionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $devicePath; //string
 	public $spec; //HostDiskPartitionSpec
@@ -27883,7 +27896,7 @@ class UpdateDiskPartitionsRequestType {
 	}
 }
 
-class FormatVmfsRequestType {
+class FormatVmfsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $createSpec; //HostVmfsSpec
 
@@ -27893,7 +27906,7 @@ class FormatVmfsRequestType {
 	}
 }
 
-class MountVmfsVolumeRequestType {
+class MountVmfsVolumeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmfsUuid; //string
 
@@ -27903,7 +27916,7 @@ class MountVmfsVolumeRequestType {
 	}
 }
 
-class UnmountVmfsVolumeRequestType {
+class UnmountVmfsVolumeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmfsUuid; //string
 
@@ -27913,7 +27926,7 @@ class UnmountVmfsVolumeRequestType {
 	}
 }
 
-class RescanVmfsRequestType {
+class RescanVmfsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27921,7 +27934,7 @@ class RescanVmfsRequestType {
 	}
 }
 
-class AttachVmfsExtentRequestType {
+class AttachVmfsExtentRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmfsPath; //string
 	public $extent; //HostScsiDiskPartition
@@ -27933,7 +27946,7 @@ class AttachVmfsExtentRequestType {
 	}
 }
 
-class ExpandVmfsExtentRequestType {
+class ExpandVmfsExtentRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmfsPath; //string
 	public $extent; //HostScsiDiskPartition
@@ -27945,7 +27958,7 @@ class ExpandVmfsExtentRequestType {
 	}
 }
 
-class UpgradeVmfsRequestType {
+class UpgradeVmfsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmfsPath; //string
 
@@ -27955,7 +27968,7 @@ class UpgradeVmfsRequestType {
 	}
 }
 
-class UpgradeVmLayoutRequestType {
+class UpgradeVmLayoutRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27963,7 +27976,7 @@ class UpgradeVmLayoutRequestType {
 	}
 }
 
-class QueryUnresolvedVmfsVolumeRequestType {
+class QueryUnresolvedVmfsVolumeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -27971,7 +27984,7 @@ class QueryUnresolvedVmfsVolumeRequestType {
 	}
 }
 
-class ResolveMultipleUnresolvedVmfsVolumesRequestType {
+class ResolveMultipleUnresolvedVmfsVolumesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $resolutionSpec; //HostUnresolvedVmfsResolutionSpec
 
@@ -27981,7 +27994,7 @@ class ResolveMultipleUnresolvedVmfsVolumesRequestType {
 	}
 }
 
-class UnmountForceMountedVmfsVolumeRequestType {
+class UnmountForceMountedVmfsVolumeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vmfsUuid; //string
 
@@ -27991,7 +28004,7 @@ class UnmountForceMountedVmfsVolumeRequestType {
 	}
 }
 
-class RescanHbaRequestType {
+class RescanHbaRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $hbaDevice; //string
 
@@ -28001,7 +28014,7 @@ class RescanHbaRequestType {
 	}
 }
 
-class RescanAllHbaRequestType {
+class RescanAllHbaRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28009,7 +28022,7 @@ class RescanAllHbaRequestType {
 	}
 }
 
-class UpdateSoftwareInternetScsiEnabledRequestType {
+class UpdateSoftwareInternetScsiEnabledRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $enabled; //boolean
 
@@ -28019,7 +28032,7 @@ class UpdateSoftwareInternetScsiEnabledRequestType {
 	}
 }
 
-class UpdateInternetScsiDiscoveryPropertiesRequestType {
+class UpdateInternetScsiDiscoveryPropertiesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $discoveryProperties; //HostInternetScsiHbaDiscoveryProperties
@@ -28031,7 +28044,7 @@ class UpdateInternetScsiDiscoveryPropertiesRequestType {
 	}
 }
 
-class UpdateInternetScsiAuthenticationPropertiesRequestType {
+class UpdateInternetScsiAuthenticationPropertiesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $authenticationProperties; //HostInternetScsiHbaAuthenticationProperties
@@ -28045,7 +28058,7 @@ class UpdateInternetScsiAuthenticationPropertiesRequestType {
 	}
 }
 
-class UpdateInternetScsiDigestPropertiesRequestType {
+class UpdateInternetScsiDigestPropertiesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $targetSet; //HostInternetScsiHbaTargetSet
@@ -28059,7 +28072,7 @@ class UpdateInternetScsiDigestPropertiesRequestType {
 	}
 }
 
-class UpdateInternetScsiAdvancedOptionsRequestType {
+class UpdateInternetScsiAdvancedOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $targetSet; //HostInternetScsiHbaTargetSet
@@ -28073,7 +28086,7 @@ class UpdateInternetScsiAdvancedOptionsRequestType {
 	}
 }
 
-class UpdateInternetScsiIPPropertiesRequestType {
+class UpdateInternetScsiIPPropertiesRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $ipProperties; //HostInternetScsiHbaIPProperties
@@ -28085,7 +28098,7 @@ class UpdateInternetScsiIPPropertiesRequestType {
 	}
 }
 
-class UpdateInternetScsiNameRequestType {
+class UpdateInternetScsiNameRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $iScsiName; //string
@@ -28097,7 +28110,7 @@ class UpdateInternetScsiNameRequestType {
 	}
 }
 
-class UpdateInternetScsiAliasRequestType {
+class UpdateInternetScsiAliasRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $iScsiAlias; //string
@@ -28109,7 +28122,7 @@ class UpdateInternetScsiAliasRequestType {
 	}
 }
 
-class AddInternetScsiSendTargetsRequestType {
+class AddInternetScsiSendTargetsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $targets; //HostInternetScsiHbaSendTarget
@@ -28121,7 +28134,7 @@ class AddInternetScsiSendTargetsRequestType {
 	}
 }
 
-class RemoveInternetScsiSendTargetsRequestType {
+class RemoveInternetScsiSendTargetsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $targets; //HostInternetScsiHbaSendTarget
@@ -28133,7 +28146,7 @@ class RemoveInternetScsiSendTargetsRequestType {
 	}
 }
 
-class AddInternetScsiStaticTargetsRequestType {
+class AddInternetScsiStaticTargetsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $targets; //HostInternetScsiHbaStaticTarget
@@ -28145,7 +28158,7 @@ class AddInternetScsiStaticTargetsRequestType {
 	}
 }
 
-class RemoveInternetScsiStaticTargetsRequestType {
+class RemoveInternetScsiStaticTargetsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $iScsiHbaDevice; //string
 	public $targets; //HostInternetScsiHbaStaticTarget
@@ -28157,7 +28170,7 @@ class RemoveInternetScsiStaticTargetsRequestType {
 	}
 }
 
-class EnableMultipathPathRequestType {
+class EnableMultipathPathRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pathName; //string
 
@@ -28167,7 +28180,7 @@ class EnableMultipathPathRequestType {
 	}
 }
 
-class DisableMultipathPathRequestType {
+class DisableMultipathPathRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $pathName; //string
 
@@ -28177,7 +28190,7 @@ class DisableMultipathPathRequestType {
 	}
 }
 
-class SetMultipathLunPolicyRequestType {
+class SetMultipathLunPolicyRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $lunId; //string
 	public $policy; //HostMultipathInfoLogicalUnitPolicy
@@ -28189,7 +28202,7 @@ class SetMultipathLunPolicyRequestType {
 	}
 }
 
-class QueryPathSelectionPolicyOptionsRequestType {
+class QueryPathSelectionPolicyOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28197,7 +28210,7 @@ class QueryPathSelectionPolicyOptionsRequestType {
 	}
 }
 
-class QueryStorageArrayTypePolicyOptionsRequestType {
+class QueryStorageArrayTypePolicyOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28205,7 +28218,7 @@ class QueryStorageArrayTypePolicyOptionsRequestType {
 	}
 }
 
-class UpdateScsiLunDisplayNameRequestType {
+class UpdateScsiLunDisplayNameRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $lunUuid; //string
 	public $displayName; //string
@@ -28217,7 +28230,7 @@ class UpdateScsiLunDisplayNameRequestType {
 	}
 }
 
-class DetachScsiLunRequestType {
+class DetachScsiLunRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $lunUuid; //string
 
@@ -28227,7 +28240,7 @@ class DetachScsiLunRequestType {
 	}
 }
 
-class AttachScsiLunRequestType {
+class AttachScsiLunRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $lunUuid; //string
 
@@ -28237,7 +28250,7 @@ class AttachScsiLunRequestType {
 	}
 }
 
-class RefreshStorageSystemRequestType {
+class RefreshStorageSystemRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28245,7 +28258,7 @@ class RefreshStorageSystemRequestType {
 	}
 }
 
-class DiscoverFcoeHbasRequestType {
+class DiscoverFcoeHbasRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $fcoeSpec; //FcoeConfigFcoeSpecification
 
@@ -28255,7 +28268,7 @@ class DiscoverFcoeHbasRequestType {
 	}
 }
 
-class MarkForRemovalRequestType {
+class MarkForRemovalRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $hbaName; //string
 	public $remove; //boolean
@@ -28267,7 +28280,7 @@ class MarkForRemovalRequestType {
 	}
 }
 
-class UpdateIpConfigRequestType {
+class UpdateIpConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $ipConfig; //HostIpConfig
 
@@ -28277,7 +28290,7 @@ class UpdateIpConfigRequestType {
 	}
 }
 
-class SelectVnicRequestType {
+class SelectVnicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $device; //string
 
@@ -28287,7 +28300,7 @@ class SelectVnicRequestType {
 	}
 }
 
-class DeselectVnicRequestType {
+class DeselectVnicRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28295,7 +28308,7 @@ class DeselectVnicRequestType {
 	}
 }
 
-class QueryNetConfigRequestType {
+class QueryNetConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $nicType; //string
 
@@ -28305,7 +28318,7 @@ class QueryNetConfigRequestType {
 	}
 }
 
-class SelectVnicForNicTypeRequestType {
+class SelectVnicForNicTypeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $nicType; //string
 	public $device; //string
@@ -28317,7 +28330,7 @@ class SelectVnicForNicTypeRequestType {
 	}
 }
 
-class DeselectVnicForNicTypeRequestType {
+class DeselectVnicForNicTypeRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $nicType; //string
 	public $device; //string
@@ -28329,7 +28342,7 @@ class DeselectVnicForNicTypeRequestType {
 	}
 }
 
-class QueryOptionsRequestType {
+class QueryOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 
@@ -28339,7 +28352,7 @@ class QueryOptionsRequestType {
 	}
 }
 
-class UpdateOptionsRequestType {
+class UpdateOptionsRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $changedValue; //OptionValue
 
@@ -28349,7 +28362,7 @@ class UpdateOptionsRequestType {
 	}
 }
 
-class CheckComplianceRequestType {
+class CheckComplianceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $profile; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
@@ -28361,7 +28374,7 @@ class CheckComplianceRequestType {
 	}
 }
 
-class QueryComplianceStatusRequestType {
+class QueryComplianceStatusRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $profile; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
@@ -28373,7 +28386,7 @@ class QueryComplianceStatusRequestType {
 	}
 }
 
-class ClearComplianceStatusRequestType {
+class ClearComplianceStatusRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $profile; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
@@ -28385,7 +28398,7 @@ class ClearComplianceStatusRequestType {
 	}
 }
 
-class QueryExpressionMetadataRequestType {
+class QueryExpressionMetadataRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $expressionName; //string
 	public $profile; //ManagedObjectReference
@@ -28397,7 +28410,7 @@ class QueryExpressionMetadataRequestType {
 	}
 }
 
-class RetrieveDescriptionRequestType {
+class RetrieveDescriptionRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28405,7 +28418,7 @@ class RetrieveDescriptionRequestType {
 	}
 }
 
-class DestroyProfileRequestType {
+class DestroyProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28413,7 +28426,7 @@ class DestroyProfileRequestType {
 	}
 }
 
-class AssociateProfileRequestType {
+class AssociateProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28423,7 +28436,7 @@ class AssociateProfileRequestType {
 	}
 }
 
-class DissociateProfileRequestType {
+class DissociateProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28433,7 +28446,7 @@ class DissociateProfileRequestType {
 	}
 }
 
-class CheckProfileComplianceRequestType {
+class CheckProfileComplianceRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28443,7 +28456,7 @@ class CheckProfileComplianceRequestType {
 	}
 }
 
-class ExportProfileRequestType {
+class ExportProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28451,7 +28464,7 @@ class ExportProfileRequestType {
 	}
 }
 
-class CreateProfileRequestType {
+class CreateProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $createSpec; //ProfileCreateSpec
 
@@ -28461,7 +28474,7 @@ class CreateProfileRequestType {
 	}
 }
 
-class QueryPolicyMetadataRequestType {
+class QueryPolicyMetadataRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $policyName; //string
 	public $profile; //ManagedObjectReference
@@ -28473,7 +28486,7 @@ class QueryPolicyMetadataRequestType {
 	}
 }
 
-class FindAssociatedProfileRequestType {
+class FindAssociatedProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28483,7 +28496,7 @@ class FindAssociatedProfileRequestType {
 	}
 }
 
-class UpdateClusterProfileRequestType {
+class UpdateClusterProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //ClusterProfileConfigSpec
 
@@ -28493,7 +28506,7 @@ class UpdateClusterProfileRequestType {
 	}
 }
 
-class UpdateReferenceHostRequestType {
+class UpdateReferenceHostRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -28503,7 +28516,7 @@ class UpdateReferenceHostRequestType {
 	}
 }
 
-class UpdateHostProfileRequestType {
+class UpdateHostProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $config; //HostProfileConfigSpec
 
@@ -28513,7 +28526,7 @@ class UpdateHostProfileRequestType {
 	}
 }
 
-class ExecuteHostProfileRequestType {
+class ExecuteHostProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $deferredParam; //ProfileDeferredPolicyOptionParameter
@@ -28525,7 +28538,7 @@ class ExecuteHostProfileRequestType {
 	}
 }
 
-class ApplyHostConfigRequestType {
+class ApplyHostConfigRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $configSpec; //HostConfigSpec
@@ -28539,7 +28552,7 @@ class ApplyHostConfigRequestType {
 	}
 }
 
-class GenerateConfigTaskListRequestType {
+class GenerateConfigTaskListRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $configSpec; //HostConfigSpec
 	public $host; //ManagedObjectReference
@@ -28551,7 +28564,7 @@ class GenerateConfigTaskListRequestType {
 	}
 }
 
-class QueryHostProfileMetadataRequestType {
+class QueryHostProfileMetadataRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $profileName; //string
 	public $profile; //ManagedObjectReference
@@ -28563,7 +28576,7 @@ class QueryHostProfileMetadataRequestType {
 	}
 }
 
-class QueryProfileStructureRequestType {
+class QueryProfileStructureRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $profile; //ManagedObjectReference
 
@@ -28573,7 +28586,7 @@ class QueryProfileStructureRequestType {
 	}
 }
 
-class CreateDefaultProfileRequestType {
+class CreateDefaultProfileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $profileType; //string
 	public $profileTypeName; //string
@@ -28587,7 +28600,7 @@ class CreateDefaultProfileRequestType {
 	}
 }
 
-class UpdateAnswerFileRequestType {
+class UpdateAnswerFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $configSpec; //AnswerFileCreateSpec
@@ -28599,7 +28612,7 @@ class UpdateAnswerFileRequestType {
 	}
 }
 
-class RetrieveAnswerFileRequestType {
+class RetrieveAnswerFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -28609,7 +28622,7 @@ class RetrieveAnswerFileRequestType {
 	}
 }
 
-class ExportAnswerFileRequestType {
+class ExportAnswerFileRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -28619,7 +28632,7 @@ class ExportAnswerFileRequestType {
 	}
 }
 
-class CheckAnswerFileStatusRequestType {
+class CheckAnswerFileStatusRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -28629,7 +28642,7 @@ class CheckAnswerFileStatusRequestType {
 	}
 }
 
-class QueryAnswerFileStatusRequestType {
+class QueryAnswerFileStatusRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 
@@ -28639,7 +28652,7 @@ class QueryAnswerFileStatusRequestType {
 	}
 }
 
-class RemoveScheduledTaskRequestType {
+class RemoveScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28647,7 +28660,7 @@ class RemoveScheduledTaskRequestType {
 	}
 }
 
-class ReconfigureScheduledTaskRequestType {
+class ReconfigureScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $spec; //ScheduledTaskSpec
 
@@ -28657,7 +28670,7 @@ class ReconfigureScheduledTaskRequestType {
 	}
 }
 
-class RunScheduledTaskRequestType {
+class RunScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28665,7 +28678,7 @@ class RunScheduledTaskRequestType {
 	}
 }
 
-class CreateScheduledTaskRequestType {
+class CreateScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 	public $spec; //ScheduledTaskSpec
@@ -28677,7 +28690,7 @@ class CreateScheduledTaskRequestType {
 	}
 }
 
-class RetrieveEntityScheduledTaskRequestType {
+class RetrieveEntityScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28687,7 +28700,7 @@ class RetrieveEntityScheduledTaskRequestType {
 	}
 }
 
-class CreateObjectScheduledTaskRequestType {
+class CreateObjectScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $obj; //ManagedObjectReference
 	public $spec; //ScheduledTaskSpec
@@ -28699,7 +28712,7 @@ class CreateObjectScheduledTaskRequestType {
 	}
 }
 
-class RetrieveObjectScheduledTaskRequestType {
+class RetrieveObjectScheduledTaskRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $obj; //ManagedObjectReference
 
@@ -28709,7 +28722,7 @@ class RetrieveObjectScheduledTaskRequestType {
 	}
 }
 
-class OpenInventoryViewFolderRequestType {
+class OpenInventoryViewFolderRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28719,7 +28732,7 @@ class OpenInventoryViewFolderRequestType {
 	}
 }
 
-class CloseInventoryViewFolderRequestType {
+class CloseInventoryViewFolderRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $entity; //ManagedObjectReference
 
@@ -28729,7 +28742,7 @@ class CloseInventoryViewFolderRequestType {
 	}
 }
 
-class ModifyListViewRequestType {
+class ModifyListViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $add; //ManagedObjectReference
 	public $remove; //ManagedObjectReference
@@ -28741,7 +28754,7 @@ class ModifyListViewRequestType {
 	}
 }
 
-class ResetListViewRequestType {
+class ResetListViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $obj; //ManagedObjectReference
 
@@ -28751,7 +28764,7 @@ class ResetListViewRequestType {
 	}
 }
 
-class ResetListViewFromViewRequestType {
+class ResetListViewFromViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $view; //ManagedObjectReference
 
@@ -28761,7 +28774,7 @@ class ResetListViewFromViewRequestType {
 	}
 }
 
-class DestroyViewRequestType {
+class DestroyViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28769,7 +28782,7 @@ class DestroyViewRequestType {
 	}
 }
 
-class CreateInventoryViewRequestType {
+class CreateInventoryViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 
 	function __construct($_this = null) {
@@ -28777,7 +28790,7 @@ class CreateInventoryViewRequestType {
 	}
 }
 
-class CreateContainerViewRequestType {
+class CreateContainerViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $container; //ManagedObjectReference
 	public $type; //string
@@ -28791,7 +28804,7 @@ class CreateContainerViewRequestType {
 	}
 }
 
-class CreateListViewRequestType {
+class CreateListViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $obj; //ManagedObjectReference
 
@@ -28801,7 +28814,7 @@ class CreateListViewRequestType {
 	}
 }
 
-class CreateListViewFromViewRequestType {
+class CreateListViewFromViewRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $view; //ManagedObjectReference
 
@@ -28811,7 +28824,7 @@ class CreateListViewFromViewRequestType {
 	}
 }
 
-class RevertToSnapshotRequestType {
+class RevertToSnapshotRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $host; //ManagedObjectReference
 	public $suppressPowerOn; //boolean
@@ -28823,7 +28836,7 @@ class RevertToSnapshotRequestType {
 	}
 }
 
-class RemoveSnapshotRequestType {
+class RemoveSnapshotRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $removeChildren; //boolean
 	public $consolidate; //boolean
@@ -28835,7 +28848,7 @@ class RemoveSnapshotRequestType {
 	}
 }
 
-class RenameSnapshotRequestType {
+class RenameSnapshotRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $name; //string
 	public $description; //string
@@ -28847,7 +28860,7 @@ class RenameSnapshotRequestType {
 	}
 }
 
-class CheckCompatibilityRequestType {
+class CheckCompatibilityRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -28863,7 +28876,7 @@ class CheckCompatibilityRequestType {
 	}
 }
 
-class QueryVMotionCompatibilityExRequestType {
+class QueryVMotionCompatibilityExRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -28875,7 +28888,7 @@ class QueryVMotionCompatibilityExRequestType {
 	}
 }
 
-class CheckMigrateRequestType {
+class CheckMigrateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $host; //ManagedObjectReference
@@ -28893,7 +28906,7 @@ class CheckMigrateRequestType {
 	}
 }
 
-class CheckRelocateRequestType {
+class CheckRelocateRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $spec; //VirtualMachineRelocateSpec
@@ -28907,7 +28920,7 @@ class CheckRelocateRequestType {
 	}
 }
 
-class ValidateCredentialsInGuestRequestType {
+class ValidateCredentialsInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -28919,7 +28932,7 @@ class ValidateCredentialsInGuestRequestType {
 	}
 }
 
-class AcquireCredentialsInGuestRequestType {
+class AcquireCredentialsInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $requestedAuth; //GuestAuthentication
@@ -28933,7 +28946,7 @@ class AcquireCredentialsInGuestRequestType {
 	}
 }
 
-class ReleaseCredentialsInGuestRequestType {
+class ReleaseCredentialsInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -28945,7 +28958,7 @@ class ReleaseCredentialsInGuestRequestType {
 	}
 }
 
-class MakeDirectoryInGuestRequestType {
+class MakeDirectoryInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -28961,7 +28974,7 @@ class MakeDirectoryInGuestRequestType {
 	}
 }
 
-class DeleteFileInGuestRequestType {
+class DeleteFileInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -28975,7 +28988,7 @@ class DeleteFileInGuestRequestType {
 	}
 }
 
-class DeleteDirectoryInGuestRequestType {
+class DeleteDirectoryInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -28991,7 +29004,7 @@ class DeleteDirectoryInGuestRequestType {
 	}
 }
 
-class MoveDirectoryInGuestRequestType {
+class MoveDirectoryInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29007,7 +29020,7 @@ class MoveDirectoryInGuestRequestType {
 	}
 }
 
-class MoveFileInGuestRequestType {
+class MoveFileInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29025,7 +29038,7 @@ class MoveFileInGuestRequestType {
 	}
 }
 
-class CreateTemporaryFileInGuestRequestType {
+class CreateTemporaryFileInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29043,7 +29056,7 @@ class CreateTemporaryFileInGuestRequestType {
 	}
 }
 
-class CreateTemporaryDirectoryInGuestRequestType {
+class CreateTemporaryDirectoryInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29061,7 +29074,7 @@ class CreateTemporaryDirectoryInGuestRequestType {
 	}
 }
 
-class ListFilesInGuestRequestType {
+class ListFilesInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29081,7 +29094,7 @@ class ListFilesInGuestRequestType {
 	}
 }
 
-class ChangeFileAttributesInGuestRequestType {
+class ChangeFileAttributesInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29097,7 +29110,7 @@ class ChangeFileAttributesInGuestRequestType {
 	}
 }
 
-class InitiateFileTransferFromGuestRequestType {
+class InitiateFileTransferFromGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29111,7 +29124,7 @@ class InitiateFileTransferFromGuestRequestType {
 	}
 }
 
-class InitiateFileTransferToGuestRequestType {
+class InitiateFileTransferToGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29131,7 +29144,7 @@ class InitiateFileTransferToGuestRequestType {
 	}
 }
 
-class StartProgramInGuestRequestType {
+class StartProgramInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29145,7 +29158,7 @@ class StartProgramInGuestRequestType {
 	}
 }
 
-class ListProcessesInGuestRequestType {
+class ListProcessesInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29159,7 +29172,7 @@ class ListProcessesInGuestRequestType {
 	}
 }
 
-class TerminateProcessInGuestRequestType {
+class TerminateProcessInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29173,7 +29186,7 @@ class TerminateProcessInGuestRequestType {
 	}
 }
 
-class ReadEnvironmentVariableInGuestRequestType {
+class ReadEnvironmentVariableInGuestRequestType extends phpDynamicProperties {
 	public $_this; //ManagedObjectReference
 	public $vm; //ManagedObjectReference
 	public $auth; //GuestAuthentication
@@ -29187,7 +29200,7 @@ class ReadEnvironmentVariableInGuestRequestType {
 	}
 }
 
-class AddAuthorizationRoleResponse {
+class AddAuthorizationRoleResponse extends phpDynamicProperties {
 	public $returnval; //int
 
 	function __construct($returnval = null) {
@@ -29195,16 +29208,16 @@ class AddAuthorizationRoleResponse {
 	}
 }
 
-class RemoveAuthorizationRoleResponse {
+class RemoveAuthorizationRoleResponse extends phpDynamicProperties {
 }
 
-class UpdateAuthorizationRoleResponse {
+class UpdateAuthorizationRoleResponse extends phpDynamicProperties {
 }
 
-class MergePermissionsResponse {
+class MergePermissionsResponse extends phpDynamicProperties {
 }
 
-class RetrieveRolePermissionsResponse {
+class RetrieveRolePermissionsResponse extends phpDynamicProperties {
 	public $returnval; //Permission
 
 	function __construct($returnval = null) {
@@ -29212,7 +29225,7 @@ class RetrieveRolePermissionsResponse {
 	}
 }
 
-class RetrieveEntityPermissionsResponse {
+class RetrieveEntityPermissionsResponse extends phpDynamicProperties {
 	public $returnval; //Permission
 
 	function __construct($returnval = null) {
@@ -29220,7 +29233,7 @@ class RetrieveEntityPermissionsResponse {
 	}
 }
 
-class RetrieveAllPermissionsResponse {
+class RetrieveAllPermissionsResponse extends phpDynamicProperties {
 	public $returnval; //Permission
 
 	function __construct($returnval = null) {
@@ -29228,16 +29241,16 @@ class RetrieveAllPermissionsResponse {
 	}
 }
 
-class SetEntityPermissionsResponse {
+class SetEntityPermissionsResponse extends phpDynamicProperties {
 }
 
-class ResetEntityPermissionsResponse {
+class ResetEntityPermissionsResponse extends phpDynamicProperties {
 }
 
-class RemoveEntityPermissionResponse {
+class RemoveEntityPermissionResponse extends phpDynamicProperties {
 }
 
-class HasPrivilegeOnEntityResponse {
+class HasPrivilegeOnEntityResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -29245,7 +29258,7 @@ class HasPrivilegeOnEntityResponse {
 	}
 }
 
-class ReconfigureCluster_TaskResponse {
+class ReconfigureCluster_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29253,13 +29266,13 @@ class ReconfigureCluster_TaskResponse {
 	}
 }
 
-class ApplyRecommendationResponse {
+class ApplyRecommendationResponse extends phpDynamicProperties {
 }
 
-class CancelRecommendationResponse {
+class CancelRecommendationResponse extends phpDynamicProperties {
 }
 
-class RecommendHostsForVmResponse {
+class RecommendHostsForVmResponse extends phpDynamicProperties {
 	public $returnval; //ClusterHostRecommendation
 
 	function __construct($returnval = null) {
@@ -29267,7 +29280,7 @@ class RecommendHostsForVmResponse {
 	}
 }
 
-class AddHost_TaskResponse {
+class AddHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29275,7 +29288,7 @@ class AddHost_TaskResponse {
 	}
 }
 
-class MoveInto_TaskResponse {
+class MoveInto_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29283,7 +29296,7 @@ class MoveInto_TaskResponse {
 	}
 }
 
-class MoveHostInto_TaskResponse {
+class MoveHostInto_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29291,10 +29304,10 @@ class MoveHostInto_TaskResponse {
 	}
 }
 
-class RefreshRecommendationResponse {
+class RefreshRecommendationResponse extends phpDynamicProperties {
 }
 
-class RetrieveDasAdvancedRuntimeInfoResponse {
+class RetrieveDasAdvancedRuntimeInfoResponse extends phpDynamicProperties {
 	public $returnval; //ClusterDasAdvancedRuntimeInfo
 
 	function __construct($returnval = null) {
@@ -29302,7 +29315,7 @@ class RetrieveDasAdvancedRuntimeInfoResponse {
 	}
 }
 
-class ClusterEnterMaintenanceModeResponse {
+class ClusterEnterMaintenanceModeResponse extends phpDynamicProperties {
 	public $returnval; //ClusterEnterMaintenanceResult
 
 	function __construct($returnval = null) {
@@ -29310,7 +29323,7 @@ class ClusterEnterMaintenanceModeResponse {
 	}
 }
 
-class ReconfigureComputeResource_TaskResponse {
+class ReconfigureComputeResource_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29318,7 +29331,7 @@ class ReconfigureComputeResource_TaskResponse {
 	}
 }
 
-class AddCustomFieldDefResponse {
+class AddCustomFieldDefResponse extends phpDynamicProperties {
 	public $returnval; //CustomFieldDef
 
 	function __construct($returnval = null) {
@@ -29326,16 +29339,16 @@ class AddCustomFieldDefResponse {
 	}
 }
 
-class RemoveCustomFieldDefResponse {
+class RemoveCustomFieldDefResponse extends phpDynamicProperties {
 }
 
-class RenameCustomFieldDefResponse {
+class RenameCustomFieldDefResponse extends phpDynamicProperties {
 }
 
-class SetFieldResponse {
+class SetFieldResponse extends phpDynamicProperties {
 }
 
-class DoesCustomizationSpecExistResponse {
+class DoesCustomizationSpecExistResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -29343,7 +29356,7 @@ class DoesCustomizationSpecExistResponse {
 	}
 }
 
-class GetCustomizationSpecResponse {
+class GetCustomizationSpecResponse extends phpDynamicProperties {
 	public $returnval; //CustomizationSpecItem
 
 	function __construct($returnval = null) {
@@ -29351,22 +29364,22 @@ class GetCustomizationSpecResponse {
 	}
 }
 
-class CreateCustomizationSpecResponse {
+class CreateCustomizationSpecResponse extends phpDynamicProperties {
 }
 
-class OverwriteCustomizationSpecResponse {
+class OverwriteCustomizationSpecResponse extends phpDynamicProperties {
 }
 
-class DeleteCustomizationSpecResponse {
+class DeleteCustomizationSpecResponse extends phpDynamicProperties {
 }
 
-class DuplicateCustomizationSpecResponse {
+class DuplicateCustomizationSpecResponse extends phpDynamicProperties {
 }
 
-class RenameCustomizationSpecResponse {
+class RenameCustomizationSpecResponse extends phpDynamicProperties {
 }
 
-class CustomizationSpecItemToXmlResponse {
+class CustomizationSpecItemToXmlResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -29374,7 +29387,7 @@ class CustomizationSpecItemToXmlResponse {
 	}
 }
 
-class XmlToCustomizationSpecItemResponse {
+class XmlToCustomizationSpecItemResponse extends phpDynamicProperties {
 	public $returnval; //CustomizationSpecItem
 
 	function __construct($returnval = null) {
@@ -29382,10 +29395,10 @@ class XmlToCustomizationSpecItemResponse {
 	}
 }
 
-class CheckCustomizationResourcesResponse {
+class CheckCustomizationResourcesResponse extends phpDynamicProperties {
 }
 
-class QueryConnectionInfoResponse {
+class QueryConnectionInfoResponse extends phpDynamicProperties {
 	public $returnval; //HostConnectInfo
 
 	function __construct($returnval = null) {
@@ -29393,7 +29406,7 @@ class QueryConnectionInfoResponse {
 	}
 }
 
-class PowerOnMultiVM_TaskResponse {
+class PowerOnMultiVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29401,13 +29414,13 @@ class PowerOnMultiVM_TaskResponse {
 	}
 }
 
-class RefreshDatastoreResponse {
+class RefreshDatastoreResponse extends phpDynamicProperties {
 }
 
-class RefreshDatastoreStorageInfoResponse {
+class RefreshDatastoreStorageInfoResponse extends phpDynamicProperties {
 }
 
-class UpdateVirtualMachineFiles_TaskResponse {
+class UpdateVirtualMachineFiles_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29415,13 +29428,13 @@ class UpdateVirtualMachineFiles_TaskResponse {
 	}
 }
 
-class RenameDatastoreResponse {
+class RenameDatastoreResponse extends phpDynamicProperties {
 }
 
-class DestroyDatastoreResponse {
+class DestroyDatastoreResponse extends phpDynamicProperties {
 }
 
-class DatastoreEnterMaintenanceModeResponse {
+class DatastoreEnterMaintenanceModeResponse extends phpDynamicProperties {
 	public $returnval; //StoragePlacementResult
 
 	function __construct($returnval = null) {
@@ -29429,7 +29442,7 @@ class DatastoreEnterMaintenanceModeResponse {
 	}
 }
 
-class DatastoreExitMaintenanceMode_TaskResponse {
+class DatastoreExitMaintenanceMode_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29437,7 +29450,7 @@ class DatastoreExitMaintenanceMode_TaskResponse {
 	}
 }
 
-class QueryDescriptionsResponse {
+class QueryDescriptionsResponse extends phpDynamicProperties {
 	public $returnval; //DiagnosticManagerLogDescriptor
 
 	function __construct($returnval = null) {
@@ -29445,7 +29458,7 @@ class QueryDescriptionsResponse {
 	}
 }
 
-class BrowseDiagnosticLogResponse {
+class BrowseDiagnosticLogResponse extends phpDynamicProperties {
 	public $returnval; //DiagnosticManagerLogHeader
 
 	function __construct($returnval = null) {
@@ -29453,7 +29466,7 @@ class BrowseDiagnosticLogResponse {
 	}
 }
 
-class GenerateLogBundles_TaskResponse {
+class GenerateLogBundles_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29461,7 +29474,7 @@ class GenerateLogBundles_TaskResponse {
 	}
 }
 
-class FetchDVPortKeysResponse {
+class FetchDVPortKeysResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -29469,7 +29482,7 @@ class FetchDVPortKeysResponse {
 	}
 }
 
-class FetchDVPortsResponse {
+class FetchDVPortsResponse extends phpDynamicProperties {
 	public $returnval; //DistributedVirtualPort
 
 	function __construct($returnval = null) {
@@ -29477,7 +29490,7 @@ class FetchDVPortsResponse {
 	}
 }
 
-class QueryUsedVlanIdInDvsResponse {
+class QueryUsedVlanIdInDvsResponse extends phpDynamicProperties {
 	public $returnval; //int
 
 	function __construct($returnval = null) {
@@ -29485,7 +29498,7 @@ class QueryUsedVlanIdInDvsResponse {
 	}
 }
 
-class ReconfigureDvs_TaskResponse {
+class ReconfigureDvs_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29493,7 +29506,7 @@ class ReconfigureDvs_TaskResponse {
 	}
 }
 
-class PerformDvsProductSpecOperation_TaskResponse {
+class PerformDvsProductSpecOperation_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29501,7 +29514,7 @@ class PerformDvsProductSpecOperation_TaskResponse {
 	}
 }
 
-class MergeDvs_TaskResponse {
+class MergeDvs_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29509,7 +29522,7 @@ class MergeDvs_TaskResponse {
 	}
 }
 
-class AddDVPortgroup_TaskResponse {
+class AddDVPortgroup_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29517,7 +29530,7 @@ class AddDVPortgroup_TaskResponse {
 	}
 }
 
-class MoveDVPort_TaskResponse {
+class MoveDVPort_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29525,10 +29538,10 @@ class MoveDVPort_TaskResponse {
 	}
 }
 
-class UpdateDvsCapabilityResponse {
+class UpdateDvsCapabilityResponse extends phpDynamicProperties {
 }
 
-class ReconfigureDVPort_TaskResponse {
+class ReconfigureDVPort_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29536,10 +29549,10 @@ class ReconfigureDVPort_TaskResponse {
 	}
 }
 
-class RefreshDVPortStateResponse {
+class RefreshDVPortStateResponse extends phpDynamicProperties {
 }
 
-class RectifyDvsHost_TaskResponse {
+class RectifyDvsHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29547,19 +29560,19 @@ class RectifyDvsHost_TaskResponse {
 	}
 }
 
-class UpdateNetworkResourcePoolResponse {
+class UpdateNetworkResourcePoolResponse extends phpDynamicProperties {
 }
 
-class AddNetworkResourcePoolResponse {
+class AddNetworkResourcePoolResponse extends phpDynamicProperties {
 }
 
-class RemoveNetworkResourcePoolResponse {
+class RemoveNetworkResourcePoolResponse extends phpDynamicProperties {
 }
 
-class EnableNetworkResourceManagementResponse {
+class EnableNetworkResourceManagementResponse extends phpDynamicProperties {
 }
 
-class QueryConfigOptionDescriptorResponse {
+class QueryConfigOptionDescriptorResponse extends phpDynamicProperties {
 	public $returnval; //VirtualMachineConfigOptionDescriptor
 
 	function __construct($returnval = null) {
@@ -29567,7 +29580,7 @@ class QueryConfigOptionDescriptorResponse {
 	}
 }
 
-class QueryConfigOptionResponse {
+class QueryConfigOptionResponse extends phpDynamicProperties {
 	public $returnval; //VirtualMachineConfigOption
 
 	function __construct($returnval = null) {
@@ -29575,7 +29588,7 @@ class QueryConfigOptionResponse {
 	}
 }
 
-class QueryConfigTargetResponse {
+class QueryConfigTargetResponse extends phpDynamicProperties {
 	public $returnval; //ConfigTarget
 
 	function __construct($returnval = null) {
@@ -29583,7 +29596,7 @@ class QueryConfigTargetResponse {
 	}
 }
 
-class QueryTargetCapabilitiesResponse {
+class QueryTargetCapabilitiesResponse extends phpDynamicProperties {
 	public $returnval; //HostCapability
 
 	function __construct($returnval = null) {
@@ -29591,13 +29604,13 @@ class QueryTargetCapabilitiesResponse {
 	}
 }
 
-class setCustomValueResponse {
+class setCustomValueResponse extends phpDynamicProperties {
 }
 
-class UnregisterExtensionResponse {
+class UnregisterExtensionResponse extends phpDynamicProperties {
 }
 
-class FindExtensionResponse {
+class FindExtensionResponse extends phpDynamicProperties {
 	public $returnval; //Extension
 
 	function __construct($returnval = null) {
@@ -29605,13 +29618,13 @@ class FindExtensionResponse {
 	}
 }
 
-class RegisterExtensionResponse {
+class RegisterExtensionResponse extends phpDynamicProperties {
 }
 
-class UpdateExtensionResponse {
+class UpdateExtensionResponse extends phpDynamicProperties {
 }
 
-class GetPublicKeyResponse {
+class GetPublicKeyResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -29619,13 +29632,13 @@ class GetPublicKeyResponse {
 	}
 }
 
-class SetPublicKeyResponse {
+class SetPublicKeyResponse extends phpDynamicProperties {
 }
 
-class SetExtensionCertificateResponse {
+class SetExtensionCertificateResponse extends phpDynamicProperties {
 }
 
-class QueryManagedByResponse {
+class QueryManagedByResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29633,7 +29646,7 @@ class QueryManagedByResponse {
 	}
 }
 
-class MoveDatastoreFile_TaskResponse {
+class MoveDatastoreFile_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29641,7 +29654,7 @@ class MoveDatastoreFile_TaskResponse {
 	}
 }
 
-class CopyDatastoreFile_TaskResponse {
+class CopyDatastoreFile_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29649,7 +29662,7 @@ class CopyDatastoreFile_TaskResponse {
 	}
 }
 
-class DeleteDatastoreFile_TaskResponse {
+class DeleteDatastoreFile_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29657,13 +29670,13 @@ class DeleteDatastoreFile_TaskResponse {
 	}
 }
 
-class MakeDirectoryResponse {
+class MakeDirectoryResponse extends phpDynamicProperties {
 }
 
-class ChangeOwnerResponse {
+class ChangeOwnerResponse extends phpDynamicProperties {
 }
 
-class CreateFolderResponse {
+class CreateFolderResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29671,7 +29684,7 @@ class CreateFolderResponse {
 	}
 }
 
-class MoveIntoFolder_TaskResponse {
+class MoveIntoFolder_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29679,7 +29692,7 @@ class MoveIntoFolder_TaskResponse {
 	}
 }
 
-class CreateVM_TaskResponse {
+class CreateVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29687,7 +29700,7 @@ class CreateVM_TaskResponse {
 	}
 }
 
-class RegisterVM_TaskResponse {
+class RegisterVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29695,7 +29708,7 @@ class RegisterVM_TaskResponse {
 	}
 }
 
-class CreateClusterResponse {
+class CreateClusterResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29703,7 +29716,7 @@ class CreateClusterResponse {
 	}
 }
 
-class CreateClusterExResponse {
+class CreateClusterExResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29711,7 +29724,7 @@ class CreateClusterExResponse {
 	}
 }
 
-class AddStandaloneHost_TaskResponse {
+class AddStandaloneHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29719,7 +29732,7 @@ class AddStandaloneHost_TaskResponse {
 	}
 }
 
-class CreateDatacenterResponse {
+class CreateDatacenterResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29727,7 +29740,7 @@ class CreateDatacenterResponse {
 	}
 }
 
-class UnregisterAndDestroy_TaskResponse {
+class UnregisterAndDestroy_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29735,7 +29748,7 @@ class UnregisterAndDestroy_TaskResponse {
 	}
 }
 
-class CreateDVS_TaskResponse {
+class CreateDVS_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29743,7 +29756,7 @@ class CreateDVS_TaskResponse {
 	}
 }
 
-class CreateStoragePodResponse {
+class CreateStoragePodResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29751,19 +29764,19 @@ class CreateStoragePodResponse {
 	}
 }
 
-class SetCollectorPageSizeResponse {
+class SetCollectorPageSizeResponse extends phpDynamicProperties {
 }
 
-class RewindCollectorResponse {
+class RewindCollectorResponse extends phpDynamicProperties {
 }
 
-class ResetCollectorResponse {
+class ResetCollectorResponse extends phpDynamicProperties {
 }
 
-class DestroyCollectorResponse {
+class DestroyCollectorResponse extends phpDynamicProperties {
 }
 
-class QueryHostConnectionInfoResponse {
+class QueryHostConnectionInfoResponse extends phpDynamicProperties {
 	public $returnval; //HostConnectInfo
 
 	function __construct($returnval = null) {
@@ -29771,10 +29784,10 @@ class QueryHostConnectionInfoResponse {
 	}
 }
 
-class UpdateSystemResourcesResponse {
+class UpdateSystemResourcesResponse extends phpDynamicProperties {
 }
 
-class ReconnectHost_TaskResponse {
+class ReconnectHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29782,7 +29795,7 @@ class ReconnectHost_TaskResponse {
 	}
 }
 
-class DisconnectHost_TaskResponse {
+class DisconnectHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29790,7 +29803,7 @@ class DisconnectHost_TaskResponse {
 	}
 }
 
-class EnterMaintenanceMode_TaskResponse {
+class EnterMaintenanceMode_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29798,7 +29811,7 @@ class EnterMaintenanceMode_TaskResponse {
 	}
 }
 
-class ExitMaintenanceMode_TaskResponse {
+class ExitMaintenanceMode_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29806,7 +29819,7 @@ class ExitMaintenanceMode_TaskResponse {
 	}
 }
 
-class RebootHost_TaskResponse {
+class RebootHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29814,7 +29827,7 @@ class RebootHost_TaskResponse {
 	}
 }
 
-class ShutdownHost_TaskResponse {
+class ShutdownHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29822,7 +29835,7 @@ class ShutdownHost_TaskResponse {
 	}
 }
 
-class PowerDownHostToStandBy_TaskResponse {
+class PowerDownHostToStandBy_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29830,7 +29843,7 @@ class PowerDownHostToStandBy_TaskResponse {
 	}
 }
 
-class PowerUpHostFromStandBy_TaskResponse {
+class PowerUpHostFromStandBy_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29838,7 +29851,7 @@ class PowerUpHostFromStandBy_TaskResponse {
 	}
 }
 
-class QueryMemoryOverheadResponse {
+class QueryMemoryOverheadResponse extends phpDynamicProperties {
 	public $returnval; //long
 
 	function __construct($returnval = null) {
@@ -29846,7 +29859,7 @@ class QueryMemoryOverheadResponse {
 	}
 }
 
-class QueryMemoryOverheadExResponse {
+class QueryMemoryOverheadExResponse extends phpDynamicProperties {
 	public $returnval; //long
 
 	function __construct($returnval = null) {
@@ -29854,7 +29867,7 @@ class QueryMemoryOverheadExResponse {
 	}
 }
 
-class ReconfigureHostForDAS_TaskResponse {
+class ReconfigureHostForDAS_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -29862,16 +29875,16 @@ class ReconfigureHostForDAS_TaskResponse {
 	}
 }
 
-class UpdateFlagsResponse {
+class UpdateFlagsResponse extends phpDynamicProperties {
 }
 
-class EnterLockdownModeResponse {
+class EnterLockdownModeResponse extends phpDynamicProperties {
 }
 
-class ExitLockdownModeResponse {
+class ExitLockdownModeResponse extends phpDynamicProperties {
 }
 
-class AcquireCimServicesTicketResponse {
+class AcquireCimServicesTicketResponse extends phpDynamicProperties {
 	public $returnval; //HostServiceTicket
 
 	function __construct($returnval = null) {
@@ -29879,10 +29892,10 @@ class AcquireCimServicesTicketResponse {
 	}
 }
 
-class UpdateIpmiResponse {
+class UpdateIpmiResponse extends phpDynamicProperties {
 }
 
-class RetrieveHardwareUptimeResponse {
+class RetrieveHardwareUptimeResponse extends phpDynamicProperties {
 	public $returnval; //long
 
 	function __construct($returnval = null) {
@@ -29890,7 +29903,7 @@ class RetrieveHardwareUptimeResponse {
 	}
 }
 
-class HttpNfcLeaseGetManifestResponse {
+class HttpNfcLeaseGetManifestResponse extends phpDynamicProperties {
 	public $returnval; //HttpNfcLeaseManifestEntry
 
 	function __construct($returnval = null) {
@@ -29898,16 +29911,16 @@ class HttpNfcLeaseGetManifestResponse {
 	}
 }
 
-class HttpNfcLeaseCompleteResponse {
+class HttpNfcLeaseCompleteResponse extends phpDynamicProperties {
 }
 
-class HttpNfcLeaseAbortResponse {
+class HttpNfcLeaseAbortResponse extends phpDynamicProperties {
 }
 
-class HttpNfcLeaseProgressResponse {
+class HttpNfcLeaseProgressResponse extends phpDynamicProperties {
 }
 
-class QueryIpPoolsResponse {
+class QueryIpPoolsResponse extends phpDynamicProperties {
 	public $returnval; //IpPool
 
 	function __construct($returnval = null) {
@@ -29915,7 +29928,7 @@ class QueryIpPoolsResponse {
 	}
 }
 
-class CreateIpPoolResponse {
+class CreateIpPoolResponse extends phpDynamicProperties {
 	public $returnval; //int
 
 	function __construct($returnval = null) {
@@ -29923,13 +29936,13 @@ class CreateIpPoolResponse {
 	}
 }
 
-class UpdateIpPoolResponse {
+class UpdateIpPoolResponse extends phpDynamicProperties {
 }
 
-class DestroyIpPoolResponse {
+class DestroyIpPoolResponse extends phpDynamicProperties {
 }
 
-class UpdateAssignedLicenseResponse {
+class UpdateAssignedLicenseResponse extends phpDynamicProperties {
 	public $returnval; //LicenseManagerLicenseInfo
 
 	function __construct($returnval = null) {
@@ -29937,10 +29950,10 @@ class UpdateAssignedLicenseResponse {
 	}
 }
 
-class RemoveAssignedLicenseResponse {
+class RemoveAssignedLicenseResponse extends phpDynamicProperties {
 }
 
-class QueryAssignedLicensesResponse {
+class QueryAssignedLicensesResponse extends phpDynamicProperties {
 	public $returnval; //LicenseAssignmentManagerLicenseAssignment
 
 	function __construct($returnval = null) {
@@ -29948,7 +29961,7 @@ class QueryAssignedLicensesResponse {
 	}
 }
 
-class QuerySupportedFeaturesResponse {
+class QuerySupportedFeaturesResponse extends phpDynamicProperties {
 	public $returnval; //LicenseFeatureInfo
 
 	function __construct($returnval = null) {
@@ -29956,7 +29969,7 @@ class QuerySupportedFeaturesResponse {
 	}
 }
 
-class QueryLicenseSourceAvailabilityResponse {
+class QueryLicenseSourceAvailabilityResponse extends phpDynamicProperties {
 	public $returnval; //LicenseAvailabilityInfo
 
 	function __construct($returnval = null) {
@@ -29964,7 +29977,7 @@ class QueryLicenseSourceAvailabilityResponse {
 	}
 }
 
-class QueryLicenseUsageResponse {
+class QueryLicenseUsageResponse extends phpDynamicProperties {
 	public $returnval; //LicenseUsageInfo
 
 	function __construct($returnval = null) {
@@ -29972,10 +29985,10 @@ class QueryLicenseUsageResponse {
 	}
 }
 
-class SetLicenseEditionResponse {
+class SetLicenseEditionResponse extends phpDynamicProperties {
 }
 
-class CheckLicenseFeatureResponse {
+class CheckLicenseFeatureResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -29983,7 +29996,7 @@ class CheckLicenseFeatureResponse {
 	}
 }
 
-class EnableFeatureResponse {
+class EnableFeatureResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -29991,7 +30004,7 @@ class EnableFeatureResponse {
 	}
 }
 
-class DisableFeatureResponse {
+class DisableFeatureResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -29999,10 +30012,10 @@ class DisableFeatureResponse {
 	}
 }
 
-class ConfigureLicenseSourceResponse {
+class ConfigureLicenseSourceResponse extends phpDynamicProperties {
 }
 
-class UpdateLicenseResponse {
+class UpdateLicenseResponse extends phpDynamicProperties {
 	public $returnval; //LicenseManagerLicenseInfo
 
 	function __construct($returnval = null) {
@@ -30010,7 +30023,7 @@ class UpdateLicenseResponse {
 	}
 }
 
-class AddLicenseResponse {
+class AddLicenseResponse extends phpDynamicProperties {
 	public $returnval; //LicenseManagerLicenseInfo
 
 	function __construct($returnval = null) {
@@ -30018,10 +30031,10 @@ class AddLicenseResponse {
 	}
 }
 
-class RemoveLicenseResponse {
+class RemoveLicenseResponse extends phpDynamicProperties {
 }
 
-class DecodeLicenseResponse {
+class DecodeLicenseResponse extends phpDynamicProperties {
 	public $returnval; //LicenseManagerLicenseInfo
 
 	function __construct($returnval = null) {
@@ -30029,16 +30042,16 @@ class DecodeLicenseResponse {
 	}
 }
 
-class UpdateLicenseLabelResponse {
+class UpdateLicenseLabelResponse extends phpDynamicProperties {
 }
 
-class RemoveLicenseLabelResponse {
+class RemoveLicenseLabelResponse extends phpDynamicProperties {
 }
 
-class ReloadResponse {
+class ReloadResponse extends phpDynamicProperties {
 }
 
-class Rename_TaskResponse {
+class Rename_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30046,7 +30059,7 @@ class Rename_TaskResponse {
 	}
 }
 
-class Destroy_TaskResponse {
+class Destroy_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30054,10 +30067,10 @@ class Destroy_TaskResponse {
 	}
 }
 
-class DestroyNetworkResponse {
+class DestroyNetworkResponse extends phpDynamicProperties {
 }
 
-class ValidateHostResponse {
+class ValidateHostResponse extends phpDynamicProperties {
 	public $returnval; //OvfValidateHostResult
 
 	function __construct($returnval = null) {
@@ -30065,7 +30078,7 @@ class ValidateHostResponse {
 	}
 }
 
-class ParseDescriptorResponse {
+class ParseDescriptorResponse extends phpDynamicProperties {
 	public $returnval; //OvfParseDescriptorResult
 
 	function __construct($returnval = null) {
@@ -30073,7 +30086,7 @@ class ParseDescriptorResponse {
 	}
 }
 
-class CreateImportSpecResponse {
+class CreateImportSpecResponse extends phpDynamicProperties {
 	public $returnval; //OvfCreateImportSpecResult
 
 	function __construct($returnval = null) {
@@ -30081,7 +30094,7 @@ class CreateImportSpecResponse {
 	}
 }
 
-class CreateDescriptorResponse {
+class CreateDescriptorResponse extends phpDynamicProperties {
 	public $returnval; //OvfCreateDescriptorResult
 
 	function __construct($returnval = null) {
@@ -30089,7 +30102,7 @@ class CreateDescriptorResponse {
 	}
 }
 
-class QueryPerfProviderSummaryResponse {
+class QueryPerfProviderSummaryResponse extends phpDynamicProperties {
 	public $returnval; //PerfProviderSummary
 
 	function __construct($returnval = null) {
@@ -30097,7 +30110,7 @@ class QueryPerfProviderSummaryResponse {
 	}
 }
 
-class QueryAvailablePerfMetricResponse {
+class QueryAvailablePerfMetricResponse extends phpDynamicProperties {
 	public $returnval; //PerfMetricId
 
 	function __construct($returnval = null) {
@@ -30105,7 +30118,7 @@ class QueryAvailablePerfMetricResponse {
 	}
 }
 
-class QueryPerfCounterResponse {
+class QueryPerfCounterResponse extends phpDynamicProperties {
 	public $returnval; //PerfCounterInfo
 
 	function __construct($returnval = null) {
@@ -30113,7 +30126,7 @@ class QueryPerfCounterResponse {
 	}
 }
 
-class QueryPerfCounterByLevelResponse {
+class QueryPerfCounterByLevelResponse extends phpDynamicProperties {
 	public $returnval; //PerfCounterInfo
 
 	function __construct($returnval = null) {
@@ -30121,7 +30134,7 @@ class QueryPerfCounterByLevelResponse {
 	}
 }
 
-class QueryPerfResponse {
+class QueryPerfResponse extends phpDynamicProperties {
 	public $returnval; //PerfEntityMetricBase
 
 	function __construct($returnval = null) {
@@ -30129,7 +30142,7 @@ class QueryPerfResponse {
 	}
 }
 
-class QueryPerfCompositeResponse {
+class QueryPerfCompositeResponse extends phpDynamicProperties {
 	public $returnval; //PerfCompositeMetric
 
 	function __construct($returnval = null) {
@@ -30137,22 +30150,22 @@ class QueryPerfCompositeResponse {
 	}
 }
 
-class CreatePerfIntervalResponse {
+class CreatePerfIntervalResponse extends phpDynamicProperties {
 }
 
-class RemovePerfIntervalResponse {
+class RemovePerfIntervalResponse extends phpDynamicProperties {
 }
 
-class UpdatePerfIntervalResponse {
+class UpdatePerfIntervalResponse extends phpDynamicProperties {
 }
 
-class UpdateCounterLevelMappingResponse {
+class UpdateCounterLevelMappingResponse extends phpDynamicProperties {
 }
 
-class ResetCounterLevelMappingResponse {
+class ResetCounterLevelMappingResponse extends phpDynamicProperties {
 }
 
-class EstimateDatabaseSizeResponse {
+class EstimateDatabaseSizeResponse extends phpDynamicProperties {
 	public $returnval; //DatabaseSizeEstimate
 
 	function __construct($returnval = null) {
@@ -30160,16 +30173,16 @@ class EstimateDatabaseSizeResponse {
 	}
 }
 
-class UpdateConfigResponse {
+class UpdateConfigResponse extends phpDynamicProperties {
 }
 
-class MoveIntoResourcePoolResponse {
+class MoveIntoResourcePoolResponse extends phpDynamicProperties {
 }
 
-class UpdateChildResourceConfigurationResponse {
+class UpdateChildResourceConfigurationResponse extends phpDynamicProperties {
 }
 
-class CreateResourcePoolResponse {
+class CreateResourcePoolResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30177,10 +30190,10 @@ class CreateResourcePoolResponse {
 	}
 }
 
-class DestroyChildrenResponse {
+class DestroyChildrenResponse extends phpDynamicProperties {
 }
 
-class CreateVAppResponse {
+class CreateVAppResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30188,7 +30201,7 @@ class CreateVAppResponse {
 	}
 }
 
-class CreateChildVM_TaskResponse {
+class CreateChildVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30196,7 +30209,7 @@ class CreateChildVM_TaskResponse {
 	}
 }
 
-class RegisterChildVM_TaskResponse {
+class RegisterChildVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30204,7 +30217,7 @@ class RegisterChildVM_TaskResponse {
 	}
 }
 
-class ImportVAppResponse {
+class ImportVAppResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30212,7 +30225,7 @@ class ImportVAppResponse {
 	}
 }
 
-class QueryResourceConfigOptionResponse {
+class QueryResourceConfigOptionResponse extends phpDynamicProperties {
 	public $returnval; //ResourceConfigOption
 
 	function __construct($returnval = null) {
@@ -30220,10 +30233,10 @@ class QueryResourceConfigOptionResponse {
 	}
 }
 
-class RefreshRuntimeResponse {
+class RefreshRuntimeResponse extends phpDynamicProperties {
 }
 
-class FindByUuidResponse {
+class FindByUuidResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30231,7 +30244,7 @@ class FindByUuidResponse {
 	}
 }
 
-class FindByDatastorePathResponse {
+class FindByDatastorePathResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30239,7 +30252,7 @@ class FindByDatastorePathResponse {
 	}
 }
 
-class FindByDnsNameResponse {
+class FindByDnsNameResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30247,7 +30260,7 @@ class FindByDnsNameResponse {
 	}
 }
 
-class FindByIpResponse {
+class FindByIpResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30255,7 +30268,7 @@ class FindByIpResponse {
 	}
 }
 
-class FindByInventoryPathResponse {
+class FindByInventoryPathResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30263,7 +30276,7 @@ class FindByInventoryPathResponse {
 	}
 }
 
-class FindChildResponse {
+class FindChildResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30271,7 +30284,7 @@ class FindChildResponse {
 	}
 }
 
-class FindAllByUuidResponse {
+class FindAllByUuidResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30279,7 +30292,7 @@ class FindAllByUuidResponse {
 	}
 }
 
-class FindAllByDnsNameResponse {
+class FindAllByDnsNameResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30287,7 +30300,7 @@ class FindAllByDnsNameResponse {
 	}
 }
 
-class FindAllByIpResponse {
+class FindAllByIpResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30295,7 +30308,7 @@ class FindAllByIpResponse {
 	}
 }
 
-class CurrentTimeResponse {
+class CurrentTimeResponse extends phpDynamicProperties {
 	public $returnval; //dateTime
 
 	function __construct($returnval = null) {
@@ -30303,7 +30316,7 @@ class CurrentTimeResponse {
 	}
 }
 
-class RetrieveServiceContentResponse {
+class RetrieveServiceContentResponse extends phpDynamicProperties {
 	public $returnval; //ServiceContent
 
 	function __construct($returnval = null) {
@@ -30311,7 +30324,7 @@ class RetrieveServiceContentResponse {
 	}
 }
 
-class ValidateMigrationResponse {
+class ValidateMigrationResponse extends phpDynamicProperties {
 	public $returnval; //Event
 
 	function __construct($returnval = null) {
@@ -30319,7 +30332,7 @@ class ValidateMigrationResponse {
 	}
 }
 
-class QueryVMotionCompatibilityResponse {
+class QueryVMotionCompatibilityResponse extends phpDynamicProperties {
 	public $returnval; //HostVMotionCompatibility
 
 	function __construct($returnval = null) {
@@ -30327,7 +30340,7 @@ class QueryVMotionCompatibilityResponse {
 	}
 }
 
-class RetrieveProductComponentsResponse {
+class RetrieveProductComponentsResponse extends phpDynamicProperties {
 	public $returnval; //ProductComponentInfo
 
 	function __construct($returnval = null) {
@@ -30335,10 +30348,10 @@ class RetrieveProductComponentsResponse {
 	}
 }
 
-class UpdateServiceMessageResponse {
+class UpdateServiceMessageResponse extends phpDynamicProperties {
 }
 
-class LoginResponse {
+class LoginResponse extends phpDynamicProperties {
 	public $returnval; //UserSession
 
 	function __construct($returnval = null) {
@@ -30346,7 +30359,7 @@ class LoginResponse {
 	}
 }
 
-class LoginBySSPIResponse {
+class LoginBySSPIResponse extends phpDynamicProperties {
 	public $returnval; //UserSession
 
 	function __construct($returnval = null) {
@@ -30354,10 +30367,10 @@ class LoginBySSPIResponse {
 	}
 }
 
-class LogoutResponse {
+class LogoutResponse extends phpDynamicProperties {
 }
 
-class AcquireLocalTicketResponse {
+class AcquireLocalTicketResponse extends phpDynamicProperties {
 	public $returnval; //SessionManagerLocalTicket
 
 	function __construct($returnval = null) {
@@ -30365,7 +30378,7 @@ class AcquireLocalTicketResponse {
 	}
 }
 
-class AcquireGenericServiceTicketResponse {
+class AcquireGenericServiceTicketResponse extends phpDynamicProperties {
 	public $returnval; //SessionManagerGenericServiceTicket
 
 	function __construct($returnval = null) {
@@ -30373,13 +30386,13 @@ class AcquireGenericServiceTicketResponse {
 	}
 }
 
-class TerminateSessionResponse {
+class TerminateSessionResponse extends phpDynamicProperties {
 }
 
-class SetLocaleResponse {
+class SetLocaleResponse extends phpDynamicProperties {
 }
 
-class LoginExtensionBySubjectNameResponse {
+class LoginExtensionBySubjectNameResponse extends phpDynamicProperties {
 	public $returnval; //UserSession
 
 	function __construct($returnval = null) {
@@ -30387,7 +30400,7 @@ class LoginExtensionBySubjectNameResponse {
 	}
 }
 
-class LoginExtensionByCertificateResponse {
+class LoginExtensionByCertificateResponse extends phpDynamicProperties {
 	public $returnval; //UserSession
 
 	function __construct($returnval = null) {
@@ -30395,7 +30408,7 @@ class LoginExtensionByCertificateResponse {
 	}
 }
 
-class ImpersonateUserResponse {
+class ImpersonateUserResponse extends phpDynamicProperties {
 	public $returnval; //UserSession
 
 	function __construct($returnval = null) {
@@ -30403,7 +30416,7 @@ class ImpersonateUserResponse {
 	}
 }
 
-class SessionIsActiveResponse {
+class SessionIsActiveResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -30411,7 +30424,7 @@ class SessionIsActiveResponse {
 	}
 }
 
-class AcquireCloneTicketResponse {
+class AcquireCloneTicketResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -30419,7 +30432,7 @@ class AcquireCloneTicketResponse {
 	}
 }
 
-class CloneSessionResponse {
+class CloneSessionResponse extends phpDynamicProperties {
 	public $returnval; //UserSession
 
 	function __construct($returnval = null) {
@@ -30427,7 +30440,7 @@ class CloneSessionResponse {
 	}
 }
 
-class ConfigureDatastoreIORM_TaskResponse {
+class ConfigureDatastoreIORM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30435,7 +30448,7 @@ class ConfigureDatastoreIORM_TaskResponse {
 	}
 }
 
-class QueryIORMConfigOptionResponse {
+class QueryIORMConfigOptionResponse extends phpDynamicProperties {
 	public $returnval; //StorageIORMConfigOption
 
 	function __construct($returnval = null) {
@@ -30443,7 +30456,7 @@ class QueryIORMConfigOptionResponse {
 	}
 }
 
-class ApplyStorageDrsRecommendationToPod_TaskResponse {
+class ApplyStorageDrsRecommendationToPod_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30451,7 +30464,7 @@ class ApplyStorageDrsRecommendationToPod_TaskResponse {
 	}
 }
 
-class ApplyStorageDrsRecommendation_TaskResponse {
+class ApplyStorageDrsRecommendation_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30459,13 +30472,13 @@ class ApplyStorageDrsRecommendation_TaskResponse {
 	}
 }
 
-class CancelStorageDrsRecommendationResponse {
+class CancelStorageDrsRecommendationResponse extends phpDynamicProperties {
 }
 
-class RefreshStorageDrsRecommendationResponse {
+class RefreshStorageDrsRecommendationResponse extends phpDynamicProperties {
 }
 
-class ConfigureStorageDrsForPod_TaskResponse {
+class ConfigureStorageDrsForPod_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30473,7 +30486,7 @@ class ConfigureStorageDrsForPod_TaskResponse {
 	}
 }
 
-class RecommendDatastoresResponse {
+class RecommendDatastoresResponse extends phpDynamicProperties {
 	public $returnval; //StoragePlacementResult
 
 	function __construct($returnval = null) {
@@ -30481,19 +30494,19 @@ class RecommendDatastoresResponse {
 	}
 }
 
-class CancelTaskResponse {
+class CancelTaskResponse extends phpDynamicProperties {
 }
 
-class UpdateProgressResponse {
+class UpdateProgressResponse extends phpDynamicProperties {
 }
 
-class SetTaskStateResponse {
+class SetTaskStateResponse extends phpDynamicProperties {
 }
 
-class SetTaskDescriptionResponse {
+class SetTaskDescriptionResponse extends phpDynamicProperties {
 }
 
-class ReadNextTasksResponse {
+class ReadNextTasksResponse extends phpDynamicProperties {
 	public $returnval; //TaskInfo
 
 	function __construct($returnval = null) {
@@ -30501,7 +30514,7 @@ class ReadNextTasksResponse {
 	}
 }
 
-class ReadPreviousTasksResponse {
+class ReadPreviousTasksResponse extends phpDynamicProperties {
 	public $returnval; //TaskInfo
 
 	function __construct($returnval = null) {
@@ -30509,7 +30522,7 @@ class ReadPreviousTasksResponse {
 	}
 }
 
-class CreateCollectorForTasksResponse {
+class CreateCollectorForTasksResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30517,7 +30530,7 @@ class CreateCollectorForTasksResponse {
 	}
 }
 
-class CreateTaskResponse {
+class CreateTaskResponse extends phpDynamicProperties {
 	public $returnval; //TaskInfo
 
 	function __construct($returnval = null) {
@@ -30525,7 +30538,7 @@ class CreateTaskResponse {
 	}
 }
 
-class RetrieveUserGroupsResponse {
+class RetrieveUserGroupsResponse extends phpDynamicProperties {
 	public $returnval; //UserSearchResult
 
 	function __construct($returnval = null) {
@@ -30533,13 +30546,13 @@ class RetrieveUserGroupsResponse {
 	}
 }
 
-class UpdateVAppConfigResponse {
+class UpdateVAppConfigResponse extends phpDynamicProperties {
 }
 
-class UpdateLinkedChildrenResponse {
+class UpdateLinkedChildrenResponse extends phpDynamicProperties {
 }
 
-class CloneVApp_TaskResponse {
+class CloneVApp_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30547,7 +30560,7 @@ class CloneVApp_TaskResponse {
 	}
 }
 
-class ExportVAppResponse {
+class ExportVAppResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30555,7 +30568,7 @@ class ExportVAppResponse {
 	}
 }
 
-class PowerOnVApp_TaskResponse {
+class PowerOnVApp_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30563,7 +30576,7 @@ class PowerOnVApp_TaskResponse {
 	}
 }
 
-class PowerOffVApp_TaskResponse {
+class PowerOffVApp_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30571,7 +30584,7 @@ class PowerOffVApp_TaskResponse {
 	}
 }
 
-class SuspendVApp_TaskResponse {
+class SuspendVApp_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30579,7 +30592,7 @@ class SuspendVApp_TaskResponse {
 	}
 }
 
-class unregisterVApp_TaskResponse {
+class unregisterVApp_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30587,7 +30600,7 @@ class unregisterVApp_TaskResponse {
 	}
 }
 
-class CreateVirtualDisk_TaskResponse {
+class CreateVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30595,7 +30608,7 @@ class CreateVirtualDisk_TaskResponse {
 	}
 }
 
-class DeleteVirtualDisk_TaskResponse {
+class DeleteVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30603,7 +30616,7 @@ class DeleteVirtualDisk_TaskResponse {
 	}
 }
 
-class MoveVirtualDisk_TaskResponse {
+class MoveVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30611,7 +30624,7 @@ class MoveVirtualDisk_TaskResponse {
 	}
 }
 
-class CopyVirtualDisk_TaskResponse {
+class CopyVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30619,7 +30632,7 @@ class CopyVirtualDisk_TaskResponse {
 	}
 }
 
-class ExtendVirtualDisk_TaskResponse {
+class ExtendVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30627,7 +30640,7 @@ class ExtendVirtualDisk_TaskResponse {
 	}
 }
 
-class QueryVirtualDiskFragmentationResponse {
+class QueryVirtualDiskFragmentationResponse extends phpDynamicProperties {
 	public $returnval; //int
 
 	function __construct($returnval = null) {
@@ -30635,7 +30648,7 @@ class QueryVirtualDiskFragmentationResponse {
 	}
 }
 
-class DefragmentVirtualDisk_TaskResponse {
+class DefragmentVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30643,7 +30656,7 @@ class DefragmentVirtualDisk_TaskResponse {
 	}
 }
 
-class ShrinkVirtualDisk_TaskResponse {
+class ShrinkVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30651,7 +30664,7 @@ class ShrinkVirtualDisk_TaskResponse {
 	}
 }
 
-class InflateVirtualDisk_TaskResponse {
+class InflateVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30659,7 +30672,7 @@ class InflateVirtualDisk_TaskResponse {
 	}
 }
 
-class EagerZeroVirtualDisk_TaskResponse {
+class EagerZeroVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30667,7 +30680,7 @@ class EagerZeroVirtualDisk_TaskResponse {
 	}
 }
 
-class ZeroFillVirtualDisk_TaskResponse {
+class ZeroFillVirtualDisk_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30675,10 +30688,10 @@ class ZeroFillVirtualDisk_TaskResponse {
 	}
 }
 
-class SetVirtualDiskUuidResponse {
+class SetVirtualDiskUuidResponse extends phpDynamicProperties {
 }
 
-class QueryVirtualDiskUuidResponse {
+class QueryVirtualDiskUuidResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -30686,7 +30699,7 @@ class QueryVirtualDiskUuidResponse {
 	}
 }
 
-class QueryVirtualDiskGeometryResponse {
+class QueryVirtualDiskGeometryResponse extends phpDynamicProperties {
 	public $returnval; //HostDiskDimensionsChs
 
 	function __construct($returnval = null) {
@@ -30694,10 +30707,10 @@ class QueryVirtualDiskGeometryResponse {
 	}
 }
 
-class RefreshStorageInfoResponse {
+class RefreshStorageInfoResponse extends phpDynamicProperties {
 }
 
-class CreateSnapshot_TaskResponse {
+class CreateSnapshot_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30705,7 +30718,7 @@ class CreateSnapshot_TaskResponse {
 	}
 }
 
-class RevertToCurrentSnapshot_TaskResponse {
+class RevertToCurrentSnapshot_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30713,7 +30726,7 @@ class RevertToCurrentSnapshot_TaskResponse {
 	}
 }
 
-class RemoveAllSnapshots_TaskResponse {
+class RemoveAllSnapshots_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30721,7 +30734,7 @@ class RemoveAllSnapshots_TaskResponse {
 	}
 }
 
-class ConsolidateVMDisks_TaskResponse {
+class ConsolidateVMDisks_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30729,7 +30742,7 @@ class ConsolidateVMDisks_TaskResponse {
 	}
 }
 
-class EstimateStorageForConsolidateSnapshots_TaskResponse {
+class EstimateStorageForConsolidateSnapshots_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30737,7 +30750,7 @@ class EstimateStorageForConsolidateSnapshots_TaskResponse {
 	}
 }
 
-class ReconfigVM_TaskResponse {
+class ReconfigVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30745,7 +30758,7 @@ class ReconfigVM_TaskResponse {
 	}
 }
 
-class UpgradeVM_TaskResponse {
+class UpgradeVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30753,7 +30766,7 @@ class UpgradeVM_TaskResponse {
 	}
 }
 
-class ExtractOvfEnvironmentResponse {
+class ExtractOvfEnvironmentResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -30761,7 +30774,7 @@ class ExtractOvfEnvironmentResponse {
 	}
 }
 
-class PowerOnVM_TaskResponse {
+class PowerOnVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30769,7 +30782,7 @@ class PowerOnVM_TaskResponse {
 	}
 }
 
-class PowerOffVM_TaskResponse {
+class PowerOffVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30777,7 +30790,7 @@ class PowerOffVM_TaskResponse {
 	}
 }
 
-class SuspendVM_TaskResponse {
+class SuspendVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30785,7 +30798,7 @@ class SuspendVM_TaskResponse {
 	}
 }
 
-class ResetVM_TaskResponse {
+class ResetVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30793,19 +30806,19 @@ class ResetVM_TaskResponse {
 	}
 }
 
-class ShutdownGuestResponse {
+class ShutdownGuestResponse extends phpDynamicProperties {
 }
 
-class RebootGuestResponse {
+class RebootGuestResponse extends phpDynamicProperties {
 }
 
-class StandbyGuestResponse {
+class StandbyGuestResponse extends phpDynamicProperties {
 }
 
-class AnswerVMResponse {
+class AnswerVMResponse extends phpDynamicProperties {
 }
 
-class CustomizeVM_TaskResponse {
+class CustomizeVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30813,10 +30826,10 @@ class CustomizeVM_TaskResponse {
 	}
 }
 
-class CheckCustomizationSpecResponse {
+class CheckCustomizationSpecResponse extends phpDynamicProperties {
 }
 
-class MigrateVM_TaskResponse {
+class MigrateVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30824,7 +30837,7 @@ class MigrateVM_TaskResponse {
 	}
 }
 
-class RelocateVM_TaskResponse {
+class RelocateVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30832,7 +30845,7 @@ class RelocateVM_TaskResponse {
 	}
 }
 
-class CloneVM_TaskResponse {
+class CloneVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30840,7 +30853,7 @@ class CloneVM_TaskResponse {
 	}
 }
 
-class ExportVmResponse {
+class ExportVmResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30848,25 +30861,25 @@ class ExportVmResponse {
 	}
 }
 
-class MarkAsTemplateResponse {
+class MarkAsTemplateResponse extends phpDynamicProperties {
 }
 
-class MarkAsVirtualMachineResponse {
+class MarkAsVirtualMachineResponse extends phpDynamicProperties {
 }
 
-class UnregisterVMResponse {
+class UnregisterVMResponse extends phpDynamicProperties {
 }
 
-class ResetGuestInformationResponse {
+class ResetGuestInformationResponse extends phpDynamicProperties {
 }
 
-class MountToolsInstallerResponse {
+class MountToolsInstallerResponse extends phpDynamicProperties {
 }
 
-class UnmountToolsInstallerResponse {
+class UnmountToolsInstallerResponse extends phpDynamicProperties {
 }
 
-class UpgradeTools_TaskResponse {
+class UpgradeTools_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30874,7 +30887,7 @@ class UpgradeTools_TaskResponse {
 	}
 }
 
-class AcquireMksTicketResponse {
+class AcquireMksTicketResponse extends phpDynamicProperties {
 	public $returnval; //VirtualMachineMksTicket
 
 	function __construct($returnval = null) {
@@ -30882,7 +30895,7 @@ class AcquireMksTicketResponse {
 	}
 }
 
-class AcquireTicketResponse {
+class AcquireTicketResponse extends phpDynamicProperties {
 	public $returnval; //VirtualMachineTicket
 
 	function __construct($returnval = null) {
@@ -30890,13 +30903,13 @@ class AcquireTicketResponse {
 	}
 }
 
-class SetScreenResolutionResponse {
+class SetScreenResolutionResponse extends phpDynamicProperties {
 }
 
-class DefragmentAllDisksResponse {
+class DefragmentAllDisksResponse extends phpDynamicProperties {
 }
 
-class CreateSecondaryVM_TaskResponse {
+class CreateSecondaryVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30904,7 +30917,7 @@ class CreateSecondaryVM_TaskResponse {
 	}
 }
 
-class TurnOffFaultToleranceForVM_TaskResponse {
+class TurnOffFaultToleranceForVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30912,7 +30925,7 @@ class TurnOffFaultToleranceForVM_TaskResponse {
 	}
 }
 
-class MakePrimaryVM_TaskResponse {
+class MakePrimaryVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30920,7 +30933,7 @@ class MakePrimaryVM_TaskResponse {
 	}
 }
 
-class TerminateFaultTolerantVM_TaskResponse {
+class TerminateFaultTolerantVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30928,7 +30941,7 @@ class TerminateFaultTolerantVM_TaskResponse {
 	}
 }
 
-class DisableSecondaryVM_TaskResponse {
+class DisableSecondaryVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30936,7 +30949,7 @@ class DisableSecondaryVM_TaskResponse {
 	}
 }
 
-class EnableSecondaryVM_TaskResponse {
+class EnableSecondaryVM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30944,10 +30957,10 @@ class EnableSecondaryVM_TaskResponse {
 	}
 }
 
-class SetDisplayTopologyResponse {
+class SetDisplayTopologyResponse extends phpDynamicProperties {
 }
 
-class StartRecording_TaskResponse {
+class StartRecording_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30955,7 +30968,7 @@ class StartRecording_TaskResponse {
 	}
 }
 
-class StopRecording_TaskResponse {
+class StopRecording_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30963,7 +30976,7 @@ class StopRecording_TaskResponse {
 	}
 }
 
-class StartReplaying_TaskResponse {
+class StartReplaying_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30971,7 +30984,7 @@ class StartReplaying_TaskResponse {
 	}
 }
 
-class StopReplaying_TaskResponse {
+class StopReplaying_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30979,7 +30992,7 @@ class StopReplaying_TaskResponse {
 	}
 }
 
-class PromoteDisks_TaskResponse {
+class PromoteDisks_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30987,7 +31000,7 @@ class PromoteDisks_TaskResponse {
 	}
 }
 
-class CreateScreenshot_TaskResponse {
+class CreateScreenshot_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -30995,7 +31008,7 @@ class CreateScreenshot_TaskResponse {
 	}
 }
 
-class QueryChangedDiskAreasResponse {
+class QueryChangedDiskAreasResponse extends phpDynamicProperties {
 	public $returnval; //DiskChangeInfo
 
 	function __construct($returnval = null) {
@@ -31003,7 +31016,7 @@ class QueryChangedDiskAreasResponse {
 	}
 }
 
-class QueryUnownedFilesResponse {
+class QueryUnownedFilesResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31011,7 +31024,7 @@ class QueryUnownedFilesResponse {
 	}
 }
 
-class reloadVirtualMachineFromPath_TaskResponse {
+class reloadVirtualMachineFromPath_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31019,7 +31032,7 @@ class reloadVirtualMachineFromPath_TaskResponse {
 	}
 }
 
-class QueryFaultToleranceCompatibilityResponse {
+class QueryFaultToleranceCompatibilityResponse extends phpDynamicProperties {
 	public $returnval; //LocalizedMethodFault
 
 	function __construct($returnval = null) {
@@ -31027,13 +31040,13 @@ class QueryFaultToleranceCompatibilityResponse {
 	}
 }
 
-class RemoveAlarmResponse {
+class RemoveAlarmResponse extends phpDynamicProperties {
 }
 
-class ReconfigureAlarmResponse {
+class ReconfigureAlarmResponse extends phpDynamicProperties {
 }
 
-class CreateAlarmResponse {
+class CreateAlarmResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31041,7 +31054,7 @@ class CreateAlarmResponse {
 	}
 }
 
-class GetAlarmResponse {
+class GetAlarmResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31049,7 +31062,7 @@ class GetAlarmResponse {
 	}
 }
 
-class AreAlarmActionsEnabledResponse {
+class AreAlarmActionsEnabledResponse extends phpDynamicProperties {
 	public $returnval; //boolean
 
 	function __construct($returnval = null) {
@@ -31057,10 +31070,10 @@ class AreAlarmActionsEnabledResponse {
 	}
 }
 
-class EnableAlarmActionsResponse {
+class EnableAlarmActionsResponse extends phpDynamicProperties {
 }
 
-class GetAlarmStateResponse {
+class GetAlarmStateResponse extends phpDynamicProperties {
 	public $returnval; //AlarmState
 
 	function __construct($returnval = null) {
@@ -31068,10 +31081,10 @@ class GetAlarmStateResponse {
 	}
 }
 
-class AcknowledgeAlarmResponse {
+class AcknowledgeAlarmResponse extends phpDynamicProperties {
 }
 
-class ReconfigureDVPortgroup_TaskResponse {
+class ReconfigureDVPortgroup_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31079,7 +31092,7 @@ class ReconfigureDVPortgroup_TaskResponse {
 	}
 }
 
-class QueryAvailableDvsSpecResponse {
+class QueryAvailableDvsSpecResponse extends phpDynamicProperties {
 	public $returnval; //DistributedVirtualSwitchProductSpec
 
 	function __construct($returnval = null) {
@@ -31087,7 +31100,7 @@ class QueryAvailableDvsSpecResponse {
 	}
 }
 
-class QueryCompatibleHostForNewDvsResponse {
+class QueryCompatibleHostForNewDvsResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31095,7 +31108,7 @@ class QueryCompatibleHostForNewDvsResponse {
 	}
 }
 
-class QueryCompatibleHostForExistingDvsResponse {
+class QueryCompatibleHostForExistingDvsResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31103,7 +31116,7 @@ class QueryCompatibleHostForExistingDvsResponse {
 	}
 }
 
-class QueryDvsCompatibleHostSpecResponse {
+class QueryDvsCompatibleHostSpecResponse extends phpDynamicProperties {
 	public $returnval; //DistributedVirtualSwitchHostProductSpec
 
 	function __construct($returnval = null) {
@@ -31111,7 +31124,7 @@ class QueryDvsCompatibleHostSpecResponse {
 	}
 }
 
-class QueryDvsFeatureCapabilityResponse {
+class QueryDvsFeatureCapabilityResponse extends phpDynamicProperties {
 	public $returnval; //DVSFeatureCapability
 
 	function __construct($returnval = null) {
@@ -31119,7 +31132,7 @@ class QueryDvsFeatureCapabilityResponse {
 	}
 }
 
-class QueryDvsByUuidResponse {
+class QueryDvsByUuidResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31127,7 +31140,7 @@ class QueryDvsByUuidResponse {
 	}
 }
 
-class QueryDvsConfigTargetResponse {
+class QueryDvsConfigTargetResponse extends phpDynamicProperties {
 	public $returnval; //DVSManagerDvsConfigTarget
 
 	function __construct($returnval = null) {
@@ -31135,7 +31148,7 @@ class QueryDvsConfigTargetResponse {
 	}
 }
 
-class QueryDvsCheckCompatibilityResponse {
+class QueryDvsCheckCompatibilityResponse extends phpDynamicProperties {
 	public $returnval; //DistributedVirtualSwitchManagerCompatibilityResult
 
 	function __construct($returnval = null) {
@@ -31143,7 +31156,7 @@ class QueryDvsCheckCompatibilityResponse {
 	}
 }
 
-class RectifyDvsOnHost_TaskResponse {
+class RectifyDvsOnHost_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31151,7 +31164,7 @@ class RectifyDvsOnHost_TaskResponse {
 	}
 }
 
-class ReadNextEventsResponse {
+class ReadNextEventsResponse extends phpDynamicProperties {
 	public $returnval; //Event
 
 	function __construct($returnval = null) {
@@ -31159,7 +31172,7 @@ class ReadNextEventsResponse {
 	}
 }
 
-class ReadPreviousEventsResponse {
+class ReadPreviousEventsResponse extends phpDynamicProperties {
 	public $returnval; //Event
 
 	function __construct($returnval = null) {
@@ -31167,7 +31180,7 @@ class ReadPreviousEventsResponse {
 	}
 }
 
-class RetrieveArgumentDescriptionResponse {
+class RetrieveArgumentDescriptionResponse extends phpDynamicProperties {
 	public $returnval; //EventArgDesc
 
 	function __construct($returnval = null) {
@@ -31175,7 +31188,7 @@ class RetrieveArgumentDescriptionResponse {
 	}
 }
 
-class CreateCollectorForEventsResponse {
+class CreateCollectorForEventsResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31183,10 +31196,10 @@ class CreateCollectorForEventsResponse {
 	}
 }
 
-class LogUserEventResponse {
+class LogUserEventResponse extends phpDynamicProperties {
 }
 
-class QueryEventsResponse {
+class QueryEventsResponse extends phpDynamicProperties {
 	public $returnval; //Event
 
 	function __construct($returnval = null) {
@@ -31194,10 +31207,10 @@ class QueryEventsResponse {
 	}
 }
 
-class PostEventResponse {
+class PostEventResponse extends phpDynamicProperties {
 }
 
-class JoinDomain_TaskResponse {
+class JoinDomain_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31205,7 +31218,7 @@ class JoinDomain_TaskResponse {
 	}
 }
 
-class JoinDomainWithCAM_TaskResponse {
+class JoinDomainWithCAM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31213,7 +31226,7 @@ class JoinDomainWithCAM_TaskResponse {
 	}
 }
 
-class ImportCertificateForCAM_TaskResponse {
+class ImportCertificateForCAM_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31221,7 +31234,7 @@ class ImportCertificateForCAM_TaskResponse {
 	}
 }
 
-class LeaveCurrentDomain_TaskResponse {
+class LeaveCurrentDomain_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31229,16 +31242,16 @@ class LeaveCurrentDomain_TaskResponse {
 	}
 }
 
-class ReconfigureAutostartResponse {
+class ReconfigureAutostartResponse extends phpDynamicProperties {
 }
 
-class AutoStartPowerOnResponse {
+class AutoStartPowerOnResponse extends phpDynamicProperties {
 }
 
-class AutoStartPowerOffResponse {
+class AutoStartPowerOffResponse extends phpDynamicProperties {
 }
 
-class QueryBootDevicesResponse {
+class QueryBootDevicesResponse extends phpDynamicProperties {
 	public $returnval; //HostBootDeviceInfo
 
 	function __construct($returnval = null) {
@@ -31246,10 +31259,10 @@ class QueryBootDevicesResponse {
 	}
 }
 
-class UpdateBootDeviceResponse {
+class UpdateBootDeviceResponse extends phpDynamicProperties {
 }
 
-class ConfigureHostCache_TaskResponse {
+class ConfigureHostCache_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31257,13 +31270,13 @@ class ConfigureHostCache_TaskResponse {
 	}
 }
 
-class EnableHyperThreadingResponse {
+class EnableHyperThreadingResponse extends phpDynamicProperties {
 }
 
-class DisableHyperThreadingResponse {
+class DisableHyperThreadingResponse extends phpDynamicProperties {
 }
 
-class SearchDatastore_TaskResponse {
+class SearchDatastore_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31271,7 +31284,7 @@ class SearchDatastore_TaskResponse {
 	}
 }
 
-class SearchDatastoreSubFolders_TaskResponse {
+class SearchDatastoreSubFolders_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31279,13 +31292,13 @@ class SearchDatastoreSubFolders_TaskResponse {
 	}
 }
 
-class DeleteFileResponse {
+class DeleteFileResponse extends phpDynamicProperties {
 }
 
-class UpdateLocalSwapDatastoreResponse {
+class UpdateLocalSwapDatastoreResponse extends phpDynamicProperties {
 }
 
-class QueryAvailableDisksForVmfsResponse {
+class QueryAvailableDisksForVmfsResponse extends phpDynamicProperties {
 	public $returnval; //HostScsiDisk
 
 	function __construct($returnval = null) {
@@ -31293,7 +31306,7 @@ class QueryAvailableDisksForVmfsResponse {
 	}
 }
 
-class QueryVmfsDatastoreCreateOptionsResponse {
+class QueryVmfsDatastoreCreateOptionsResponse extends phpDynamicProperties {
 	public $returnval; //VmfsDatastoreOption
 
 	function __construct($returnval = null) {
@@ -31301,7 +31314,7 @@ class QueryVmfsDatastoreCreateOptionsResponse {
 	}
 }
 
-class CreateVmfsDatastoreResponse {
+class CreateVmfsDatastoreResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31309,7 +31322,7 @@ class CreateVmfsDatastoreResponse {
 	}
 }
 
-class QueryVmfsDatastoreExtendOptionsResponse {
+class QueryVmfsDatastoreExtendOptionsResponse extends phpDynamicProperties {
 	public $returnval; //VmfsDatastoreOption
 
 	function __construct($returnval = null) {
@@ -31317,7 +31330,7 @@ class QueryVmfsDatastoreExtendOptionsResponse {
 	}
 }
 
-class QueryVmfsDatastoreExpandOptionsResponse {
+class QueryVmfsDatastoreExpandOptionsResponse extends phpDynamicProperties {
 	public $returnval; //VmfsDatastoreOption
 
 	function __construct($returnval = null) {
@@ -31325,7 +31338,7 @@ class QueryVmfsDatastoreExpandOptionsResponse {
 	}
 }
 
-class ExtendVmfsDatastoreResponse {
+class ExtendVmfsDatastoreResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31333,7 +31346,7 @@ class ExtendVmfsDatastoreResponse {
 	}
 }
 
-class ExpandVmfsDatastoreResponse {
+class ExpandVmfsDatastoreResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31341,7 +31354,7 @@ class ExpandVmfsDatastoreResponse {
 	}
 }
 
-class CreateNasDatastoreResponse {
+class CreateNasDatastoreResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31349,7 +31362,7 @@ class CreateNasDatastoreResponse {
 	}
 }
 
-class CreateLocalDatastoreResponse {
+class CreateLocalDatastoreResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31357,13 +31370,13 @@ class CreateLocalDatastoreResponse {
 	}
 }
 
-class RemoveDatastoreResponse {
+class RemoveDatastoreResponse extends phpDynamicProperties {
 }
 
-class ConfigureDatastorePrincipalResponse {
+class ConfigureDatastorePrincipalResponse extends phpDynamicProperties {
 }
 
-class QueryUnresolvedVmfsVolumesResponse {
+class QueryUnresolvedVmfsVolumesResponse extends phpDynamicProperties {
 	public $returnval; //HostUnresolvedVmfsVolume
 
 	function __construct($returnval = null) {
@@ -31371,7 +31384,7 @@ class QueryUnresolvedVmfsVolumesResponse {
 	}
 }
 
-class ResignatureUnresolvedVmfsVolume_TaskResponse {
+class ResignatureUnresolvedVmfsVolume_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31379,10 +31392,10 @@ class ResignatureUnresolvedVmfsVolume_TaskResponse {
 	}
 }
 
-class UpdateDateTimeConfigResponse {
+class UpdateDateTimeConfigResponse extends phpDynamicProperties {
 }
 
-class QueryAvailableTimeZonesResponse {
+class QueryAvailableTimeZonesResponse extends phpDynamicProperties {
 	public $returnval; //HostDateTimeSystemTimeZone
 
 	function __construct($returnval = null) {
@@ -31390,7 +31403,7 @@ class QueryAvailableTimeZonesResponse {
 	}
 }
 
-class QueryDateTimeResponse {
+class QueryDateTimeResponse extends phpDynamicProperties {
 	public $returnval; //dateTime
 
 	function __construct($returnval = null) {
@@ -31398,13 +31411,13 @@ class QueryDateTimeResponse {
 	}
 }
 
-class UpdateDateTimeResponse {
+class UpdateDateTimeResponse extends phpDynamicProperties {
 }
 
-class RefreshDateTimeSystemResponse {
+class RefreshDateTimeSystemResponse extends phpDynamicProperties {
 }
 
-class QueryAvailablePartitionResponse {
+class QueryAvailablePartitionResponse extends phpDynamicProperties {
 	public $returnval; //HostDiagnosticPartition
 
 	function __construct($returnval = null) {
@@ -31412,10 +31425,10 @@ class QueryAvailablePartitionResponse {
 	}
 }
 
-class SelectActivePartitionResponse {
+class SelectActivePartitionResponse extends phpDynamicProperties {
 }
 
-class QueryPartitionCreateOptionsResponse {
+class QueryPartitionCreateOptionsResponse extends phpDynamicProperties {
 	public $returnval; //HostDiagnosticPartitionCreateOption
 
 	function __construct($returnval = null) {
@@ -31423,7 +31436,7 @@ class QueryPartitionCreateOptionsResponse {
 	}
 }
 
-class QueryPartitionCreateDescResponse {
+class QueryPartitionCreateDescResponse extends phpDynamicProperties {
 	public $returnval; //HostDiagnosticPartitionCreateDescription
 
 	function __construct($returnval = null) {
@@ -31431,31 +31444,31 @@ class QueryPartitionCreateDescResponse {
 	}
 }
 
-class CreateDiagnosticPartitionResponse {
+class CreateDiagnosticPartitionResponse extends phpDynamicProperties {
 }
 
-class EsxAgentHostManagerUpdateConfigResponse {
+class EsxAgentHostManagerUpdateConfigResponse extends phpDynamicProperties {
 }
 
-class UpdateDefaultPolicyResponse {
+class UpdateDefaultPolicyResponse extends phpDynamicProperties {
 }
 
-class EnableRulesetResponse {
+class EnableRulesetResponse extends phpDynamicProperties {
 }
 
-class DisableRulesetResponse {
+class DisableRulesetResponse extends phpDynamicProperties {
 }
 
-class UpdateRulesetResponse {
+class UpdateRulesetResponse extends phpDynamicProperties {
 }
 
-class RefreshFirewallResponse {
+class RefreshFirewallResponse extends phpDynamicProperties {
 }
 
-class ResetFirmwareToFactoryDefaultsResponse {
+class ResetFirmwareToFactoryDefaultsResponse extends phpDynamicProperties {
 }
 
-class BackupFirmwareConfigurationResponse {
+class BackupFirmwareConfigurationResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31463,7 +31476,7 @@ class BackupFirmwareConfigurationResponse {
 	}
 }
 
-class QueryFirmwareConfigUploadURLResponse {
+class QueryFirmwareConfigUploadURLResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31471,16 +31484,16 @@ class QueryFirmwareConfigUploadURLResponse {
 	}
 }
 
-class RestoreFirmwareConfigurationResponse {
+class RestoreFirmwareConfigurationResponse extends phpDynamicProperties {
 }
 
-class RefreshHealthStatusSystemResponse {
+class RefreshHealthStatusSystemResponse extends phpDynamicProperties {
 }
 
-class ResetSystemHealthInfoResponse {
+class ResetSystemHealthInfoResponse extends phpDynamicProperties {
 }
 
-class HostImageConfigGetAcceptanceResponse {
+class HostImageConfigGetAcceptanceResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31488,7 +31501,7 @@ class HostImageConfigGetAcceptanceResponse {
 	}
 }
 
-class HostImageConfigGetProfileResponse {
+class HostImageConfigGetProfileResponse extends phpDynamicProperties {
 	public $returnval; //HostImageProfileSummary
 
 	function __construct($returnval = null) {
@@ -31496,10 +31509,10 @@ class HostImageConfigGetProfileResponse {
 	}
 }
 
-class UpdateHostImageAcceptanceLevelResponse {
+class UpdateHostImageAcceptanceLevelResponse extends phpDynamicProperties {
 }
 
-class QueryVnicStatusResponse {
+class QueryVnicStatusResponse extends phpDynamicProperties {
 	public $returnval; //IscsiStatus
 
 	function __construct($returnval = null) {
@@ -31507,7 +31520,7 @@ class QueryVnicStatusResponse {
 	}
 }
 
-class QueryPnicStatusResponse {
+class QueryPnicStatusResponse extends phpDynamicProperties {
 	public $returnval; //IscsiStatus
 
 	function __construct($returnval = null) {
@@ -31515,7 +31528,7 @@ class QueryPnicStatusResponse {
 	}
 }
 
-class QueryBoundVnicsResponse {
+class QueryBoundVnicsResponse extends phpDynamicProperties {
 	public $returnval; //IscsiPortInfo
 
 	function __construct($returnval = null) {
@@ -31523,7 +31536,7 @@ class QueryBoundVnicsResponse {
 	}
 }
 
-class QueryCandidateNicsResponse {
+class QueryCandidateNicsResponse extends phpDynamicProperties {
 	public $returnval; //IscsiPortInfo
 
 	function __construct($returnval = null) {
@@ -31531,13 +31544,13 @@ class QueryCandidateNicsResponse {
 	}
 }
 
-class BindVnicResponse {
+class BindVnicResponse extends phpDynamicProperties {
 }
 
-class UnbindVnicResponse {
+class UnbindVnicResponse extends phpDynamicProperties {
 }
 
-class QueryMigrationDependenciesResponse {
+class QueryMigrationDependenciesResponse extends phpDynamicProperties {
 	public $returnval; //IscsiMigrationDependency
 
 	function __construct($returnval = null) {
@@ -31545,7 +31558,7 @@ class QueryMigrationDependenciesResponse {
 	}
 }
 
-class QueryModulesResponse {
+class QueryModulesResponse extends phpDynamicProperties {
 	public $returnval; //KernelModuleInfo
 
 	function __construct($returnval = null) {
@@ -31553,10 +31566,10 @@ class QueryModulesResponse {
 	}
 }
 
-class UpdateModuleOptionStringResponse {
+class UpdateModuleOptionStringResponse extends phpDynamicProperties {
 }
 
-class QueryConfiguredModuleOptionStringResponse {
+class QueryConfiguredModuleOptionStringResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31564,34 +31577,34 @@ class QueryConfiguredModuleOptionStringResponse {
 	}
 }
 
-class CreateUserResponse {
+class CreateUserResponse extends phpDynamicProperties {
 }
 
-class UpdateUserResponse {
+class UpdateUserResponse extends phpDynamicProperties {
 }
 
-class CreateGroupResponse {
+class CreateGroupResponse extends phpDynamicProperties {
 }
 
-class RemoveUserResponse {
+class RemoveUserResponse extends phpDynamicProperties {
 }
 
-class RemoveGroupResponse {
+class RemoveGroupResponse extends phpDynamicProperties {
 }
 
-class AssignUserToGroupResponse {
+class AssignUserToGroupResponse extends phpDynamicProperties {
 }
 
-class UnassignUserFromGroupResponse {
+class UnassignUserFromGroupResponse extends phpDynamicProperties {
 }
 
-class ReconfigureServiceConsoleReservationResponse {
+class ReconfigureServiceConsoleReservationResponse extends phpDynamicProperties {
 }
 
-class ReconfigureVirtualMachineReservationResponse {
+class ReconfigureVirtualMachineReservationResponse extends phpDynamicProperties {
 }
 
-class UpdateNetworkConfigResponse {
+class UpdateNetworkConfigResponse extends phpDynamicProperties {
 	public $returnval; //HostNetworkConfigResult
 
 	function __construct($returnval = null) {
@@ -31599,40 +31612,40 @@ class UpdateNetworkConfigResponse {
 	}
 }
 
-class UpdateDnsConfigResponse {
+class UpdateDnsConfigResponse extends phpDynamicProperties {
 }
 
-class UpdateIpRouteConfigResponse {
+class UpdateIpRouteConfigResponse extends phpDynamicProperties {
 }
 
-class UpdateConsoleIpRouteConfigResponse {
+class UpdateConsoleIpRouteConfigResponse extends phpDynamicProperties {
 }
 
-class UpdateIpRouteTableConfigResponse {
+class UpdateIpRouteTableConfigResponse extends phpDynamicProperties {
 }
 
-class AddVirtualSwitchResponse {
+class AddVirtualSwitchResponse extends phpDynamicProperties {
 }
 
-class RemoveVirtualSwitchResponse {
+class RemoveVirtualSwitchResponse extends phpDynamicProperties {
 }
 
-class UpdateVirtualSwitchResponse {
+class UpdateVirtualSwitchResponse extends phpDynamicProperties {
 }
 
-class AddPortGroupResponse {
+class AddPortGroupResponse extends phpDynamicProperties {
 }
 
-class RemovePortGroupResponse {
+class RemovePortGroupResponse extends phpDynamicProperties {
 }
 
-class UpdatePortGroupResponse {
+class UpdatePortGroupResponse extends phpDynamicProperties {
 }
 
-class UpdatePhysicalNicLinkSpeedResponse {
+class UpdatePhysicalNicLinkSpeedResponse extends phpDynamicProperties {
 }
 
-class QueryNetworkHintResponse {
+class QueryNetworkHintResponse extends phpDynamicProperties {
 	public $returnval; //PhysicalNicHintInfo
 
 	function __construct($returnval = null) {
@@ -31640,7 +31653,7 @@ class QueryNetworkHintResponse {
 	}
 }
 
-class AddVirtualNicResponse {
+class AddVirtualNicResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31648,13 +31661,13 @@ class AddVirtualNicResponse {
 	}
 }
 
-class RemoveVirtualNicResponse {
+class RemoveVirtualNicResponse extends phpDynamicProperties {
 }
 
-class UpdateVirtualNicResponse {
+class UpdateVirtualNicResponse extends phpDynamicProperties {
 }
 
-class AddServiceConsoleVirtualNicResponse {
+class AddServiceConsoleVirtualNicResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -31662,19 +31675,19 @@ class AddServiceConsoleVirtualNicResponse {
 	}
 }
 
-class RemoveServiceConsoleVirtualNicResponse {
+class RemoveServiceConsoleVirtualNicResponse extends phpDynamicProperties {
 }
 
-class UpdateServiceConsoleVirtualNicResponse {
+class UpdateServiceConsoleVirtualNicResponse extends phpDynamicProperties {
 }
 
-class RestartServiceConsoleVirtualNicResponse {
+class RestartServiceConsoleVirtualNicResponse extends phpDynamicProperties {
 }
 
-class RefreshNetworkSystemResponse {
+class RefreshNetworkSystemResponse extends phpDynamicProperties {
 }
 
-class CheckHostPatch_TaskResponse {
+class CheckHostPatch_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31682,7 +31695,7 @@ class CheckHostPatch_TaskResponse {
 	}
 }
 
-class ScanHostPatch_TaskResponse {
+class ScanHostPatch_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31690,7 +31703,7 @@ class ScanHostPatch_TaskResponse {
 	}
 }
 
-class ScanHostPatchV2_TaskResponse {
+class ScanHostPatchV2_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31698,7 +31711,7 @@ class ScanHostPatchV2_TaskResponse {
 	}
 }
 
-class StageHostPatch_TaskResponse {
+class StageHostPatch_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31706,7 +31719,7 @@ class StageHostPatch_TaskResponse {
 	}
 }
 
-class InstallHostPatch_TaskResponse {
+class InstallHostPatch_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31714,7 +31727,7 @@ class InstallHostPatch_TaskResponse {
 	}
 }
 
-class InstallHostPatchV2_TaskResponse {
+class InstallHostPatchV2_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31722,7 +31735,7 @@ class InstallHostPatchV2_TaskResponse {
 	}
 }
 
-class UninstallHostPatch_TaskResponse {
+class UninstallHostPatch_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31730,7 +31743,7 @@ class UninstallHostPatch_TaskResponse {
 	}
 }
 
-class QueryHostPatch_TaskResponse {
+class QueryHostPatch_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31738,40 +31751,40 @@ class QueryHostPatch_TaskResponse {
 	}
 }
 
-class RefreshResponse {
+class RefreshResponse extends phpDynamicProperties {
 }
 
-class UpdatePassthruConfigResponse {
+class UpdatePassthruConfigResponse extends phpDynamicProperties {
 }
 
-class ConfigurePowerPolicyResponse {
+class ConfigurePowerPolicyResponse extends phpDynamicProperties {
 }
 
-class UpdateServicePolicyResponse {
+class UpdateServicePolicyResponse extends phpDynamicProperties {
 }
 
-class StartServiceResponse {
+class StartServiceResponse extends phpDynamicProperties {
 }
 
-class StopServiceResponse {
+class StopServiceResponse extends phpDynamicProperties {
 }
 
-class RestartServiceResponse {
+class RestartServiceResponse extends phpDynamicProperties {
 }
 
-class UninstallServiceResponse {
+class UninstallServiceResponse extends phpDynamicProperties {
 }
 
-class RefreshServicesResponse {
+class RefreshServicesResponse extends phpDynamicProperties {
 }
 
-class ReconfigureSnmpAgentResponse {
+class ReconfigureSnmpAgentResponse extends phpDynamicProperties {
 }
 
-class SendTestNotificationResponse {
+class SendTestNotificationResponse extends phpDynamicProperties {
 }
 
-class RetrieveDiskPartitionInfoResponse {
+class RetrieveDiskPartitionInfoResponse extends phpDynamicProperties {
 	public $returnval; //HostDiskPartitionInfo
 
 	function __construct($returnval = null) {
@@ -31779,7 +31792,7 @@ class RetrieveDiskPartitionInfoResponse {
 	}
 }
 
-class ComputeDiskPartitionInfoResponse {
+class ComputeDiskPartitionInfoResponse extends phpDynamicProperties {
 	public $returnval; //HostDiskPartitionInfo
 
 	function __construct($returnval = null) {
@@ -31787,7 +31800,7 @@ class ComputeDiskPartitionInfoResponse {
 	}
 }
 
-class ComputeDiskPartitionInfoForResizeResponse {
+class ComputeDiskPartitionInfoForResizeResponse extends phpDynamicProperties {
 	public $returnval; //HostDiskPartitionInfo
 
 	function __construct($returnval = null) {
@@ -31795,10 +31808,10 @@ class ComputeDiskPartitionInfoForResizeResponse {
 	}
 }
 
-class UpdateDiskPartitionsResponse {
+class UpdateDiskPartitionsResponse extends phpDynamicProperties {
 }
 
-class FormatVmfsResponse {
+class FormatVmfsResponse extends phpDynamicProperties {
 	public $returnval; //HostVmfsVolume
 
 	function __construct($returnval = null) {
@@ -31806,28 +31819,28 @@ class FormatVmfsResponse {
 	}
 }
 
-class MountVmfsVolumeResponse {
+class MountVmfsVolumeResponse extends phpDynamicProperties {
 }
 
-class UnmountVmfsVolumeResponse {
+class UnmountVmfsVolumeResponse extends phpDynamicProperties {
 }
 
-class RescanVmfsResponse {
+class RescanVmfsResponse extends phpDynamicProperties {
 }
 
-class AttachVmfsExtentResponse {
+class AttachVmfsExtentResponse extends phpDynamicProperties {
 }
 
-class ExpandVmfsExtentResponse {
+class ExpandVmfsExtentResponse extends phpDynamicProperties {
 }
 
-class UpgradeVmfsResponse {
+class UpgradeVmfsResponse extends phpDynamicProperties {
 }
 
-class UpgradeVmLayoutResponse {
+class UpgradeVmLayoutResponse extends phpDynamicProperties {
 }
 
-class QueryUnresolvedVmfsVolumeResponse {
+class QueryUnresolvedVmfsVolumeResponse extends phpDynamicProperties {
 	public $returnval; //HostUnresolvedVmfsVolume
 
 	function __construct($returnval = null) {
@@ -31835,7 +31848,7 @@ class QueryUnresolvedVmfsVolumeResponse {
 	}
 }
 
-class ResolveMultipleUnresolvedVmfsVolumesResponse {
+class ResolveMultipleUnresolvedVmfsVolumesResponse extends phpDynamicProperties {
 	public $returnval; //HostUnresolvedVmfsResolutionResult
 
 	function __construct($returnval = null) {
@@ -31843,61 +31856,61 @@ class ResolveMultipleUnresolvedVmfsVolumesResponse {
 	}
 }
 
-class UnmountForceMountedVmfsVolumeResponse {
+class UnmountForceMountedVmfsVolumeResponse extends phpDynamicProperties {
 }
 
-class RescanHbaResponse {
+class RescanHbaResponse extends phpDynamicProperties {
 }
 
-class RescanAllHbaResponse {
+class RescanAllHbaResponse extends phpDynamicProperties {
 }
 
-class UpdateSoftwareInternetScsiEnabledResponse {
+class UpdateSoftwareInternetScsiEnabledResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiDiscoveryPropertiesResponse {
+class UpdateInternetScsiDiscoveryPropertiesResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiAuthenticationPropertiesResponse {
+class UpdateInternetScsiAuthenticationPropertiesResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiDigestPropertiesResponse {
+class UpdateInternetScsiDigestPropertiesResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiAdvancedOptionsResponse {
+class UpdateInternetScsiAdvancedOptionsResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiIPPropertiesResponse {
+class UpdateInternetScsiIPPropertiesResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiNameResponse {
+class UpdateInternetScsiNameResponse extends phpDynamicProperties {
 }
 
-class UpdateInternetScsiAliasResponse {
+class UpdateInternetScsiAliasResponse extends phpDynamicProperties {
 }
 
-class AddInternetScsiSendTargetsResponse {
+class AddInternetScsiSendTargetsResponse extends phpDynamicProperties {
 }
 
-class RemoveInternetScsiSendTargetsResponse {
+class RemoveInternetScsiSendTargetsResponse extends phpDynamicProperties {
 }
 
-class AddInternetScsiStaticTargetsResponse {
+class AddInternetScsiStaticTargetsResponse extends phpDynamicProperties {
 }
 
-class RemoveInternetScsiStaticTargetsResponse {
+class RemoveInternetScsiStaticTargetsResponse extends phpDynamicProperties {
 }
 
-class EnableMultipathPathResponse {
+class EnableMultipathPathResponse extends phpDynamicProperties {
 }
 
-class DisableMultipathPathResponse {
+class DisableMultipathPathResponse extends phpDynamicProperties {
 }
 
-class SetMultipathLunPolicyResponse {
+class SetMultipathLunPolicyResponse extends phpDynamicProperties {
 }
 
-class QueryPathSelectionPolicyOptionsResponse {
+class QueryPathSelectionPolicyOptionsResponse extends phpDynamicProperties {
 	public $returnval; //HostPathSelectionPolicyOption
 
 	function __construct($returnval = null) {
@@ -31905,7 +31918,7 @@ class QueryPathSelectionPolicyOptionsResponse {
 	}
 }
 
-class QueryStorageArrayTypePolicyOptionsResponse {
+class QueryStorageArrayTypePolicyOptionsResponse extends phpDynamicProperties {
 	public $returnval; //HostStorageArrayTypePolicyOption
 
 	function __construct($returnval = null) {
@@ -31913,34 +31926,34 @@ class QueryStorageArrayTypePolicyOptionsResponse {
 	}
 }
 
-class UpdateScsiLunDisplayNameResponse {
+class UpdateScsiLunDisplayNameResponse extends phpDynamicProperties {
 }
 
-class DetachScsiLunResponse {
+class DetachScsiLunResponse extends phpDynamicProperties {
 }
 
-class AttachScsiLunResponse {
+class AttachScsiLunResponse extends phpDynamicProperties {
 }
 
-class RefreshStorageSystemResponse {
+class RefreshStorageSystemResponse extends phpDynamicProperties {
 }
 
-class DiscoverFcoeHbasResponse {
+class DiscoverFcoeHbasResponse extends phpDynamicProperties {
 }
 
-class MarkForRemovalResponse {
+class MarkForRemovalResponse extends phpDynamicProperties {
 }
 
-class UpdateIpConfigResponse {
+class UpdateIpConfigResponse extends phpDynamicProperties {
 }
 
-class SelectVnicResponse {
+class SelectVnicResponse extends phpDynamicProperties {
 }
 
-class DeselectVnicResponse {
+class DeselectVnicResponse extends phpDynamicProperties {
 }
 
-class QueryNetConfigResponse {
+class QueryNetConfigResponse extends phpDynamicProperties {
 	public $returnval; //VirtualNicManagerNetConfig
 
 	function __construct($returnval = null) {
@@ -31948,13 +31961,13 @@ class QueryNetConfigResponse {
 	}
 }
 
-class SelectVnicForNicTypeResponse {
+class SelectVnicForNicTypeResponse extends phpDynamicProperties {
 }
 
-class DeselectVnicForNicTypeResponse {
+class DeselectVnicForNicTypeResponse extends phpDynamicProperties {
 }
 
-class QueryOptionsResponse {
+class QueryOptionsResponse extends phpDynamicProperties {
 	public $returnval; //OptionValue
 
 	function __construct($returnval = null) {
@@ -31962,10 +31975,10 @@ class QueryOptionsResponse {
 	}
 }
 
-class UpdateOptionsResponse {
+class UpdateOptionsResponse extends phpDynamicProperties {
 }
 
-class CheckCompliance_TaskResponse {
+class CheckCompliance_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -31973,7 +31986,7 @@ class CheckCompliance_TaskResponse {
 	}
 }
 
-class QueryComplianceStatusResponse {
+class QueryComplianceStatusResponse extends phpDynamicProperties {
 	public $returnval; //ComplianceResult
 
 	function __construct($returnval = null) {
@@ -31981,10 +31994,10 @@ class QueryComplianceStatusResponse {
 	}
 }
 
-class ClearComplianceStatusResponse {
+class ClearComplianceStatusResponse extends phpDynamicProperties {
 }
 
-class QueryExpressionMetadataResponse {
+class QueryExpressionMetadataResponse extends phpDynamicProperties {
 	public $returnval; //ProfileExpressionMetadata
 
 	function __construct($returnval = null) {
@@ -31992,7 +32005,7 @@ class QueryExpressionMetadataResponse {
 	}
 }
 
-class RetrieveDescriptionResponse {
+class RetrieveDescriptionResponse extends phpDynamicProperties {
 	public $returnval; //ProfileDescription
 
 	function __construct($returnval = null) {
@@ -32000,16 +32013,16 @@ class RetrieveDescriptionResponse {
 	}
 }
 
-class DestroyProfileResponse {
+class DestroyProfileResponse extends phpDynamicProperties {
 }
 
-class AssociateProfileResponse {
+class AssociateProfileResponse extends phpDynamicProperties {
 }
 
-class DissociateProfileResponse {
+class DissociateProfileResponse extends phpDynamicProperties {
 }
 
-class CheckProfileCompliance_TaskResponse {
+class CheckProfileCompliance_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32017,7 +32030,7 @@ class CheckProfileCompliance_TaskResponse {
 	}
 }
 
-class ExportProfileResponse {
+class ExportProfileResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -32025,7 +32038,7 @@ class ExportProfileResponse {
 	}
 }
 
-class CreateProfileResponse {
+class CreateProfileResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32033,7 +32046,7 @@ class CreateProfileResponse {
 	}
 }
 
-class QueryPolicyMetadataResponse {
+class QueryPolicyMetadataResponse extends phpDynamicProperties {
 	public $returnval; //ProfilePolicyMetadata
 
 	function __construct($returnval = null) {
@@ -32041,7 +32054,7 @@ class QueryPolicyMetadataResponse {
 	}
 }
 
-class FindAssociatedProfileResponse {
+class FindAssociatedProfileResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32049,16 +32062,16 @@ class FindAssociatedProfileResponse {
 	}
 }
 
-class UpdateClusterProfileResponse {
+class UpdateClusterProfileResponse extends phpDynamicProperties {
 }
 
-class UpdateReferenceHostResponse {
+class UpdateReferenceHostResponse extends phpDynamicProperties {
 }
 
-class UpdateHostProfileResponse {
+class UpdateHostProfileResponse extends phpDynamicProperties {
 }
 
-class ExecuteHostProfileResponse {
+class ExecuteHostProfileResponse extends phpDynamicProperties {
 	public $returnval; //ProfileExecuteResult
 
 	function __construct($returnval = null) {
@@ -32066,7 +32079,7 @@ class ExecuteHostProfileResponse {
 	}
 }
 
-class ApplyHostConfig_TaskResponse {
+class ApplyHostConfig_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32074,7 +32087,7 @@ class ApplyHostConfig_TaskResponse {
 	}
 }
 
-class GenerateConfigTaskListResponse {
+class GenerateConfigTaskListResponse extends phpDynamicProperties {
 	public $returnval; //HostProfileManagerConfigTaskList
 
 	function __construct($returnval = null) {
@@ -32082,7 +32095,7 @@ class GenerateConfigTaskListResponse {
 	}
 }
 
-class QueryHostProfileMetadataResponse {
+class QueryHostProfileMetadataResponse extends phpDynamicProperties {
 	public $returnval; //ProfileMetadata
 
 	function __construct($returnval = null) {
@@ -32090,7 +32103,7 @@ class QueryHostProfileMetadataResponse {
 	}
 }
 
-class QueryProfileStructureResponse {
+class QueryProfileStructureResponse extends phpDynamicProperties {
 	public $returnval; //ProfileProfileStructure
 
 	function __construct($returnval = null) {
@@ -32098,7 +32111,7 @@ class QueryProfileStructureResponse {
 	}
 }
 
-class CreateDefaultProfileResponse {
+class CreateDefaultProfileResponse extends phpDynamicProperties {
 	public $returnval; //ApplyProfile
 
 	function __construct($returnval = null) {
@@ -32106,7 +32119,7 @@ class CreateDefaultProfileResponse {
 	}
 }
 
-class UpdateAnswerFile_TaskResponse {
+class UpdateAnswerFile_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32114,7 +32127,7 @@ class UpdateAnswerFile_TaskResponse {
 	}
 }
 
-class RetrieveAnswerFileResponse {
+class RetrieveAnswerFileResponse extends phpDynamicProperties {
 	public $returnval; //AnswerFile
 
 	function __construct($returnval = null) {
@@ -32122,7 +32135,7 @@ class RetrieveAnswerFileResponse {
 	}
 }
 
-class ExportAnswerFile_TaskResponse {
+class ExportAnswerFile_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32130,7 +32143,7 @@ class ExportAnswerFile_TaskResponse {
 	}
 }
 
-class CheckAnswerFileStatus_TaskResponse {
+class CheckAnswerFileStatus_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32138,7 +32151,7 @@ class CheckAnswerFileStatus_TaskResponse {
 	}
 }
 
-class QueryAnswerFileStatusResponse {
+class QueryAnswerFileStatusResponse extends phpDynamicProperties {
 	public $returnval; //AnswerFileStatusResult
 
 	function __construct($returnval = null) {
@@ -32146,16 +32159,16 @@ class QueryAnswerFileStatusResponse {
 	}
 }
 
-class RemoveScheduledTaskResponse {
+class RemoveScheduledTaskResponse extends phpDynamicProperties {
 }
 
-class ReconfigureScheduledTaskResponse {
+class ReconfigureScheduledTaskResponse extends phpDynamicProperties {
 }
 
-class RunScheduledTaskResponse {
+class RunScheduledTaskResponse extends phpDynamicProperties {
 }
 
-class CreateScheduledTaskResponse {
+class CreateScheduledTaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32163,7 +32176,7 @@ class CreateScheduledTaskResponse {
 	}
 }
 
-class RetrieveEntityScheduledTaskResponse {
+class RetrieveEntityScheduledTaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32171,7 +32184,7 @@ class RetrieveEntityScheduledTaskResponse {
 	}
 }
 
-class CreateObjectScheduledTaskResponse {
+class CreateObjectScheduledTaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32179,7 +32192,7 @@ class CreateObjectScheduledTaskResponse {
 	}
 }
 
-class RetrieveObjectScheduledTaskResponse {
+class RetrieveObjectScheduledTaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32187,7 +32200,7 @@ class RetrieveObjectScheduledTaskResponse {
 	}
 }
 
-class OpenInventoryViewFolderResponse {
+class OpenInventoryViewFolderResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32195,7 +32208,7 @@ class OpenInventoryViewFolderResponse {
 	}
 }
 
-class CloseInventoryViewFolderResponse {
+class CloseInventoryViewFolderResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32203,7 +32216,7 @@ class CloseInventoryViewFolderResponse {
 	}
 }
 
-class ModifyListViewResponse {
+class ModifyListViewResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32211,7 +32224,7 @@ class ModifyListViewResponse {
 	}
 }
 
-class ResetListViewResponse {
+class ResetListViewResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32219,13 +32232,13 @@ class ResetListViewResponse {
 	}
 }
 
-class ResetListViewFromViewResponse {
+class ResetListViewFromViewResponse extends phpDynamicProperties {
 }
 
-class DestroyViewResponse {
+class DestroyViewResponse extends phpDynamicProperties {
 }
 
-class CreateInventoryViewResponse {
+class CreateInventoryViewResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32233,7 +32246,7 @@ class CreateInventoryViewResponse {
 	}
 }
 
-class CreateContainerViewResponse {
+class CreateContainerViewResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32241,7 +32254,7 @@ class CreateContainerViewResponse {
 	}
 }
 
-class CreateListViewResponse {
+class CreateListViewResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32249,7 +32262,7 @@ class CreateListViewResponse {
 	}
 }
 
-class CreateListViewFromViewResponse {
+class CreateListViewFromViewResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32257,7 +32270,7 @@ class CreateListViewFromViewResponse {
 	}
 }
 
-class RevertToSnapshot_TaskResponse {
+class RevertToSnapshot_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32265,7 +32278,7 @@ class RevertToSnapshot_TaskResponse {
 	}
 }
 
-class RemoveSnapshot_TaskResponse {
+class RemoveSnapshot_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32273,10 +32286,10 @@ class RemoveSnapshot_TaskResponse {
 	}
 }
 
-class RenameSnapshotResponse {
+class RenameSnapshotResponse extends phpDynamicProperties {
 }
 
-class CheckCompatibility_TaskResponse {
+class CheckCompatibility_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32284,7 +32297,7 @@ class CheckCompatibility_TaskResponse {
 	}
 }
 
-class QueryVMotionCompatibilityEx_TaskResponse {
+class QueryVMotionCompatibilityEx_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32292,7 +32305,7 @@ class QueryVMotionCompatibilityEx_TaskResponse {
 	}
 }
 
-class CheckMigrate_TaskResponse {
+class CheckMigrate_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32300,7 +32313,7 @@ class CheckMigrate_TaskResponse {
 	}
 }
 
-class CheckRelocate_TaskResponse {
+class CheckRelocate_TaskResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32308,10 +32321,10 @@ class CheckRelocate_TaskResponse {
 	}
 }
 
-class ValidateCredentialsInGuestResponse {
+class ValidateCredentialsInGuestResponse extends phpDynamicProperties {
 }
 
-class AcquireCredentialsInGuestResponse {
+class AcquireCredentialsInGuestResponse extends phpDynamicProperties {
 	public $returnval; //GuestAuthentication
 
 	function __construct($returnval = null) {
@@ -32319,25 +32332,25 @@ class AcquireCredentialsInGuestResponse {
 	}
 }
 
-class ReleaseCredentialsInGuestResponse {
+class ReleaseCredentialsInGuestResponse extends phpDynamicProperties {
 }
 
-class MakeDirectoryInGuestResponse {
+class MakeDirectoryInGuestResponse extends phpDynamicProperties {
 }
 
-class DeleteFileInGuestResponse {
+class DeleteFileInGuestResponse extends phpDynamicProperties {
 }
 
-class DeleteDirectoryInGuestResponse {
+class DeleteDirectoryInGuestResponse extends phpDynamicProperties {
 }
 
-class MoveDirectoryInGuestResponse {
+class MoveDirectoryInGuestResponse extends phpDynamicProperties {
 }
 
-class MoveFileInGuestResponse {
+class MoveFileInGuestResponse extends phpDynamicProperties {
 }
 
-class CreateTemporaryFileInGuestResponse {
+class CreateTemporaryFileInGuestResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -32345,7 +32358,7 @@ class CreateTemporaryFileInGuestResponse {
 	}
 }
 
-class CreateTemporaryDirectoryInGuestResponse {
+class CreateTemporaryDirectoryInGuestResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -32353,7 +32366,7 @@ class CreateTemporaryDirectoryInGuestResponse {
 	}
 }
 
-class ListFilesInGuestResponse {
+class ListFilesInGuestResponse extends phpDynamicProperties {
 	public $returnval; //GuestListFileInfo
 
 	function __construct($returnval = null) {
@@ -32361,10 +32374,10 @@ class ListFilesInGuestResponse {
 	}
 }
 
-class ChangeFileAttributesInGuestResponse {
+class ChangeFileAttributesInGuestResponse extends phpDynamicProperties {
 }
 
-class InitiateFileTransferFromGuestResponse {
+class InitiateFileTransferFromGuestResponse extends phpDynamicProperties {
 	public $returnval; //FileTransferInformation
 
 	function __construct($returnval = null) {
@@ -32372,7 +32385,7 @@ class InitiateFileTransferFromGuestResponse {
 	}
 }
 
-class InitiateFileTransferToGuestResponse {
+class InitiateFileTransferToGuestResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -32380,7 +32393,7 @@ class InitiateFileTransferToGuestResponse {
 	}
 }
 
-class StartProgramInGuestResponse {
+class StartProgramInGuestResponse extends phpDynamicProperties {
 	public $returnval; //long
 
 	function __construct($returnval = null) {
@@ -32388,7 +32401,7 @@ class StartProgramInGuestResponse {
 	}
 }
 
-class ListProcessesInGuestResponse {
+class ListProcessesInGuestResponse extends phpDynamicProperties {
 	public $returnval; //GuestProcessInfo
 
 	function __construct($returnval = null) {
@@ -32396,10 +32409,10 @@ class ListProcessesInGuestResponse {
 	}
 }
 
-class TerminateProcessInGuestResponse {
+class TerminateProcessInGuestResponse extends phpDynamicProperties {
 }
 
-class ReadEnvironmentVariableInGuestResponse {
+class ReadEnvironmentVariableInGuestResponse extends phpDynamicProperties {
 	public $returnval; //string
 
 	function __construct($returnval = null) {
@@ -32407,10 +32420,10 @@ class ReadEnvironmentVariableInGuestResponse {
 	}
 }
 
-class DestroyPropertyFilterResponse {
+class DestroyPropertyFilterResponse extends phpDynamicProperties {
 }
 
-class CreateFilterResponse {
+class CreateFilterResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32418,7 +32431,7 @@ class CreateFilterResponse {
 	}
 }
 
-class RetrievePropertiesResponse {
+class RetrievePropertiesResponse extends phpDynamicProperties {
 	public $returnval; //ObjectContent
 
 	function __construct($returnval = null) {
@@ -32426,7 +32439,7 @@ class RetrievePropertiesResponse {
 	}
 }
 
-class CheckForUpdatesResponse {
+class CheckForUpdatesResponse extends phpDynamicProperties {
 	public $returnval; //UpdateSet
 
 	function __construct($returnval = null) {
@@ -32434,7 +32447,7 @@ class CheckForUpdatesResponse {
 	}
 }
 
-class WaitForUpdatesResponse {
+class WaitForUpdatesResponse extends phpDynamicProperties {
 	public $returnval; //UpdateSet
 
 	function __construct($returnval = null) {
@@ -32442,10 +32455,10 @@ class WaitForUpdatesResponse {
 	}
 }
 
-class CancelWaitForUpdatesResponse {
+class CancelWaitForUpdatesResponse extends phpDynamicProperties {
 }
 
-class WaitForUpdatesExResponse {
+class WaitForUpdatesExResponse extends phpDynamicProperties {
 	public $returnval; //UpdateSet
 
 	function __construct($returnval = null) {
@@ -32453,7 +32466,7 @@ class WaitForUpdatesExResponse {
 	}
 }
 
-class RetrievePropertiesExResponse {
+class RetrievePropertiesExResponse extends phpDynamicProperties {
 	public $returnval; //RetrieveResult
 
 	function __construct($returnval = null) {
@@ -32461,7 +32474,7 @@ class RetrievePropertiesExResponse {
 	}
 }
 
-class ContinueRetrievePropertiesExResponse {
+class ContinueRetrievePropertiesExResponse extends phpDynamicProperties {
 	public $returnval; //RetrieveResult
 
 	function __construct($returnval = null) {
@@ -32469,10 +32482,10 @@ class ContinueRetrievePropertiesExResponse {
 	}
 }
 
-class CancelRetrievePropertiesExResponse {
+class CancelRetrievePropertiesExResponse extends phpDynamicProperties {
 }
 
-class CreatePropertyCollectorResponse {
+class CreatePropertyCollectorResponse extends phpDynamicProperties {
 	public $returnval; //ManagedObjectReference
 
 	function __construct($returnval = null) {
@@ -32480,5 +32493,5 @@ class CreatePropertyCollectorResponse {
 	}
 }
 
-class DestroyPropertyCollectorResponse {
+class DestroyPropertyCollectorResponse extends phpDynamicProperties {
 }
