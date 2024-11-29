@@ -10,19 +10,19 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	static protected $oOSFamilyMappings = null;
 	static protected $aVMInfos = null;
 	static protected $oOSVersionMappings = null;
+    static protected array $aLnkDatastoreToVM;
 
+    /**
+     * @inheritdoc
+     */
+    public function Init(): void
+    {
+        parent::Init();
 
-	/**
-	 * @inheritdoc
-	 */
-	public function Init(): void
-	{
-		parent::Init();
+        self::$aLnkDatastoreToVM = [];
+    }
 
-		$this->oCollectionPlan = vSphereCollectionPlan::GetPlan();
-	}
-
-	/**
+    /**
 	 * @inheritdoc
 	 */
 	public function AttributeIsOptional($sAttCode)
@@ -278,6 +278,16 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			utils::Log(LOG_DEBUG, "    UUID: $sUUID");
 
 			$aData['uuid'] = $sUUID;
+
+            utils::Log(LOG_DEBUG, "Reading datastores...");
+            $aPerDatastoreUsage = $oVirtualMachine->storage->perDatastoreUsage;
+            foreach ($aPerDatastoreUsage as $aDatastoreUsage) {
+                self::$aLnkDatastoreToVM[] = [
+                    'datastore_id' => $aDatastoreUsage->datastore->getReferenceId(),
+                    'virtualmachine_id' => $sUUID
+                    ];
+            }
+
 		}
 
 		if ($oCollectionPlan->IsTeemIpInstalled()) {
@@ -393,13 +403,27 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if (self::$oOSVersionMappings === null) {
 			self::$oOSVersionMappings = new MappingTable('os_version_mapping');
 		}
+        // Read the "real time" name. Take the one defined by config if it is not available.
 		$sRawValue = $oVirtualMachine->config->guestFullName;
 		$value = self::$oOSVersionMappings->MapValue($sRawValue, $sRawValue); // Keep the raw value by default
 
 		return $value;
 	}
 
-	public function Prepare()
+    /**
+     * Get the datastores attached to the VMs
+     *
+     * @return array
+     */
+    static public function GetDatastoreLnks()
+    {
+        return self::$aLnkDatastoreToVM;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function Prepare()
 	{
 		$bRet = parent::Prepare();
 		if (!$bRet) {

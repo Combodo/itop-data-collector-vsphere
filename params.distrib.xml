@@ -110,6 +110,12 @@
 		    <enable>yes</enable>
 			<rank>40</rank>
 		</collector>
+		<!-- Lnks Datastore to Virtual Machine -->
+		<collector>
+			<name>vSpherelnkDatastoreToVirtualMachineCollector</name>
+			<enable>yes</enable>
+			<rank>41</rank>
+		</collector>
 	</collectors_launch_sequence>
 
 	<!-- Synchronization parameters -->
