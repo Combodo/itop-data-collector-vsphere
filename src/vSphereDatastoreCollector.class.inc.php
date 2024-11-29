@@ -1,26 +1,26 @@
 <?php
-// Copyright (C) 2023 Combodo SARL
+// Copyright (C) 2024 Combodo SARL
 //
-//   This application is free software; you can redistribute it and/or modify	
-//   it under the terms of the GNU Affero General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or
-//   (at your option) any later version.
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; version 3 of the License.
 //
-//   This application is distributed in the hope that it will be useful,
+//   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU Affero General Public License for more details.
+//   GNU General Public License for more details.
 //
-//   You should have received a copy of the GNU Affero General Public License
-//   along with this application. If not, see <http://www.gnu.org/licenses/>
+//   You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
 class vSphereDatastoreCollector extends vSphereCollector
 {
-	protected $idx;
-	protected $aDatastoreFields;
-	protected $aDatastores;
+	protected int $idx;
+	protected array $aDatastoreFields;
+	protected array $aDatastores;
 
 	public function __construct()
 	{
@@ -36,6 +36,7 @@ class vSphereDatastoreCollector extends vSphereCollector
 	public function CheckToLaunch(array $aOrchestratedCollectors): bool
 	{
 		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
+            // Extension vSphere Datamodel must be installed
 			if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
 				return true;
 			} else {
@@ -46,11 +47,16 @@ class vSphereDatastoreCollector extends vSphereCollector
 		return false;
 	}
 
-	private function GetDatastores()
+    /**
+     * Get the datastores from Vmware
+     * @return void
+     * @throws Exception
+     */
+    private function GetDatastores(): void
 	{
-		$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri', '');
-		$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
-		$sPassword = Utils::GetConfigurationValue('vsphere_password', '');
+		$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri');
+		$sLogin = Utils::GetConfigurationValue('vsphere_login');
+		$sPassword = Utils::GetConfigurationValue('vsphere_password');
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 
 		self::InitVmwarephp();
@@ -62,7 +68,7 @@ class vSphereDatastoreCollector extends vSphereCollector
 
 		$aDatastores = $vhost->findAllManagedObjects('Datastore', array('summary', 'vm'));
 		foreach ($aDatastores as $oDatastore) {
-			Utils::Log(LOG_DEBUG, "Datastore {$oDatastore->name}");
+			Utils::Log(LOG_DEBUG, "Datastore $oDatastore->name");
 
 			$aDatastoreData = array(
 				'id' => $oDatastore->getReferenceId(),
@@ -80,7 +86,10 @@ class vSphereDatastoreCollector extends vSphereCollector
 		}
 	}
 
-	public function Prepare()
+    /**
+     * @inheritdoc
+     */
+	public function Prepare(): bool
 	{
 		$bRet = parent::Prepare();
 		if (!$bRet) {
@@ -93,7 +102,10 @@ class vSphereDatastoreCollector extends vSphereCollector
 		return true;
 	}
 
-	public function Fetch()
+    /**
+     * @inheritdoc
+     */
+	public function Fetch(): bool|array
 	{
 		if ($this->idx < count($this->aDatastores)) {
 			$aDS = $this->aDatastores[$this->idx++];
