@@ -1,6 +1,6 @@
 {
 	"name": "$prefix$:lnkIPInterfaceToIPAddress",
-	"description": "$prefix$ Data Collector (v. $version$): Link IP interface/ IP Address",
+	"description": "$prefix$ Data Collector (v. $version$): Link IP interface / IP Address",
 	"status": "$synchro_status$",
 	"user_id": "$synchro_user$",
 	"notify_contact_id": "$contact_to_notify$",
