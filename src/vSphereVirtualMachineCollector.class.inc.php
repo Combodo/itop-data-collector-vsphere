@@ -384,7 +384,11 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if (self::$oOSFamilyMappings === null) {
 			self::$oOSFamilyMappings = new MappingTable('os_family_mapping');
 		}
-		$sRawValue = $oVirtualMachine->config->guestFullName;
+        // Read the "real time" name. Take the one defined by config if it is not available.
+        $sRawValue = $oVirtualMachine->guest->guestFullName;
+        if (is_null($sRawValue)) {
+            $sRawValue = $oVirtualMachine->config->guestFullName;
+        }
 		$value = self::$oOSFamilyMappings->MapValue($sRawValue, '');
 
 		return $value;
