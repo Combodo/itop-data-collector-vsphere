@@ -69,7 +69,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 			foreach ($aVMs as $oVM) {
 				$sIP = $oVM['managementip_id'] ?? '';
 				if ($sIP != '') {
-					if (strpos($sIP, ':') !== false) {
+					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 						Utils::Log(LOG_DEBUG, 'IPv6 Address: '.$sIP);
 						if (in_array('short_name', $oVM)) {
 							$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
@@ -94,8 +94,8 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 			foreach ($aServers as $oServer) {
 				$sIP = $oServer['managementip_id'] ?? '';
 				if ($sIP != '') {
-					if (strpos($sIP, ':') !== false) {
-						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
+					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+						Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
 						$this->aIPv6Addresses[] = array(
 							'id' => $sIP,
 							'ip' => $sIP,
@@ -114,7 +114,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
 				$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
 				if ($sIP != '') {
-					if (strpos($sIP, ':') !== false) {
+					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 						// Check if address is already listed as it may be that vSphere reported it as management IP too
 						// Don't register duplicates otherwise
 						$sKey = false;

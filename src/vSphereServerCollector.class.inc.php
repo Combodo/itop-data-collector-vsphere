@@ -110,9 +110,7 @@ class vSphereServerCollector extends vSphereCollector
 			$sIP = '';
 			if ($bCollectIps == 'yes') {
 				// Check if name has IPv4 or "IPv6" format
-				$sNum = '(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])';
-				$sPattern = "($sNum\.$sNum\.$sNum\.$sNum)";
-				if (preg_match($sPattern, $sName) || (($bCollectIPv6Addresses == 'yes') && (strpos($sName, ":") !== false))) {
+				if (filter_var($sName, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || (($bCollectIPv6Addresses == 'yes') && filter_var($sName, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
 					$sIP = $sName;
 				}
 			}
