@@ -4,7 +4,8 @@ require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 class vSphereFarmCollector extends vSphereCollector
 {
 	protected $idx;
-	static protected $aFarms = null;
+    static protected bool $bFarmsCollected = false;
+	static protected array $aFarms = [];
 	
 	public function AttributeIsOptional($sAttCode)
 	{
@@ -21,8 +22,9 @@ class vSphereFarmCollector extends vSphereCollector
 	
 	static public function GetFarms()
 	{
-		if (self::$aFarms === null)
+		if (!self::$bFarmsCollected)
 		{
+            self::$bFarmsCollected = true;
 			$sVSphereServer = Utils::GetConfigurationValue('vsphere_uri', '');
 			$sLogin = Utils::GetConfigurationValue('vsphere_login', '');
 			$sPassword = Utils::GetConfigurationValue('vsphere_password', '');

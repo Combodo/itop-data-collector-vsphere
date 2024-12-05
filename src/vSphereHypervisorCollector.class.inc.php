@@ -3,9 +3,10 @@ require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 
 class vSphereHypervisorCollector extends vSphereCollector
 {
-	protected $idx;
-	protected $aHypervisorFields;
-	static protected $aHypervisors = null;
+	protected int $idx;
+	protected array $aHypervisorFields;
+    static protected bool $bHypervisorsCollected = false;
+	static protected array $aHypervisors = [];
     static protected array $aLnkDatastoreToVHosts;
 
 	public function __construct()
@@ -17,6 +18,9 @@ class vSphereHypervisorCollector extends vSphereCollector
         self::$aLnkDatastoreToVHosts = [];
 	}
 
+    /**
+     * @inheritdoc
+     */
 	public function AttributeIsOptional($sAttCode)
 	{
 		if ($sAttCode == 'services_list') return true;
@@ -34,7 +38,8 @@ class vSphereHypervisorCollector extends vSphereCollector
 
 	public static function GetHypervisors()
 	{
-		if (self::$aHypervisors === null) {
+		if (!self::$bHypervisorsCollected) {
+            self::$bHypervisorsCollected = true;
 			$oBrandMappings = new MappingTable('brand_mapping');
 			$oModelMappings = new MappingTable('model_mapping');
 			$oOSFamilyMappings = new MappingTable('os_family_mapping');
@@ -186,7 +191,9 @@ class vSphereHypervisorCollector extends vSphereCollector
 
 		return true;
 	}
-
+    /**
+     * @inheritdoc
+     */
 	public function Fetch()
 	{
 		if ($this->idx < count(self::$aHypervisors)) {

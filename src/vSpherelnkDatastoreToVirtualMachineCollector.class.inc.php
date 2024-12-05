@@ -85,12 +85,12 @@ class vSpherelnkDatastoreToVirtualMachineCollector extends vSphereCollector
     public function Fetch(): bool|array
     {
         if ($this->idx < count(self::$aLnks)) {
-            $aLnks = self::$aLnks[$this->idx++];
+            $aLnk = self::$aLnks[$this->idx++];
 
             return array(
-                'primary_key' => $aLnks['datastore_id'].'-'.$aLnks['virtualmachine_id'],
-                'datastore_id' => $aLnks['datastore_id'],
-                'virtualmachine_id' => $aLnks['virtualmachine_id'],
+                'primary_key' => $aLnk['datastore_id'].'-'.$aLnk['virtualmachine_id'],
+                'datastore_id' => $aLnk['datastore_id'],
+                'virtualmachine_id' => $aLnk['virtualmachine_id'],
             );
         }
 

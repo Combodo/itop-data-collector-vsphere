@@ -30,7 +30,7 @@ class vSphereCollector extends ConfigurableCollector
 		return false;
 	}
 
-	protected static function myprint_r($var)
+	protected static function myprint_r($var): string
 	{
 		$s = '';
 		foreach ($var as $key => $val) {
@@ -52,7 +52,7 @@ class vSphereCollector extends ConfigurableCollector
 	 *
 	 * @return boolean
 	 */
-	protected static function CheckSSLConnection($sHost)
+	protected static function CheckSSLConnection($sHost): bool
 	{
 		$errno = 0;
 		$errstr = 'No error';
@@ -90,7 +90,7 @@ class vSphereCollector extends ConfigurableCollector
 		return true; // Ok this works
 	}
 
-	protected static function InitVmwarephp()
+	protected static function InitVmwarephp(): void
 	{
 		require_once APPROOT.'collectors/library/Vmwarephp/Autoloader.php';
 		$autoloader = new \Vmwarephp\Autoloader();
@@ -101,10 +101,10 @@ class vSphereCollector extends ConfigurableCollector
 
 		Utils::Log(LOG_DEBUG, "vSphere connection options: ".print_r($aStreamContextOptions, true));
 
-		$default = stream_context_set_default($aStreamContextOptions);
+		stream_context_set_default($aStreamContextOptions);
 	}
 
-	public static function GetCustomFields($sClass)
+	public static function GetCustomFields($sClass): array
 	{
 		$aCustomFields = array();
 		$aCustomSynchro = Utils::GetConfigurationValue('custom_synchro', array());

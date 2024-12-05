@@ -4,11 +4,11 @@ require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 class vSphereVirtualMachineCollector extends vSphereCollector
 {
 	protected $idx;
-	protected $oCollectionPlan;
 	protected $oOSVersionLookup;
 	protected $oIPAddressLookup;
 	static protected $oOSFamilyMappings = null;
-	static protected $aVMInfos = null;
+    static protected bool $bVMInfosCollected = false;
+	static protected array $aVMInfos = [];
 	static protected $oOSVersionMappings = null;
     static protected array $aLnkDatastoreToVM;
 
@@ -48,7 +48,8 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 
 	public static function GetVMs()
 	{
-		if (static::$aVMInfos === null) {
+		if (!static::$bVMInfosCollected) {
+            static::$bVMInfosCollected = true;
 			static::CollectVMInfos();
 		}
 
@@ -455,9 +456,6 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		return false;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	protected function DoFetch($aVM)
 	{
 		$aData = array(

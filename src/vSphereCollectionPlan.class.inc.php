@@ -61,7 +61,7 @@ class vSphereCollectionPlan extends CollectionPlan
 				$this->bCbdVMwareDMIsInstalled = true;
 				Utils::Log(LOG_INFO, 'Data model for vSphere is installed');
 			} else {
-				Utils::Log(LOG_INFO, $sMessage = 'Data model for vSphere is NOT installed');
+				Utils::Log(LOG_INFO, 'Data model for vSphere is NOT installed');
 			}
 		} catch (Exception $e) {
 			$sMessage = 'Data model for vSphere is considered as NOT installed due to: '.$e->getMessage();
@@ -87,7 +87,7 @@ class vSphereCollectionPlan extends CollectionPlan
 					$this->bTeemIpIsInstalled = true;
 					Utils::Log(LOG_INFO, 'TeemIp is installed');
 				} else {
-					Utils::Log(LOG_INFO, $sMessage = 'TeemIp is NOT installed');
+					Utils::Log(LOG_INFO, 'TeemIp is NOT installed');
 				}
 			} catch (Exception $e) {
 				$sMessage = 'TeemIp is considered as NOT installed due to: '.$e->getMessage();

@@ -4,7 +4,6 @@ require_once(APPROOT.'collectors/src/vSphereCollector.class.inc.php');
 class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 {
 	protected $idx;
-	protected $sDefaultOrg;
 
 	/**
 	 * @var mixed[][] The collected lnks
@@ -18,10 +17,10 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 	{
 		if (parent::CheckToLaunch($aOrchestratedCollectors)) {
 			// vSphereLogicalInterfaceCollector collector must be registered
-			if (!array_key_exists('vSphereLogicalInterfaceCollector', $aOrchestratedCollectors) || ($aOrchestratedCollectors['vSphereLogicalInterfaceCollector'] == false)) {
-				Utils::Log(LOG_INFO, '> vSpherelnkIPInterfaceToIPAddressCollector will not be launched as vSphereLogicalInterfaceCollector is not launched');
-				return false;
-			}
+            if (!array_key_exists('vSphereLogicalInterfaceCollector', $aOrchestratedCollectors) || ($aOrchestratedCollectors['vSphereLogicalInterfaceCollector'] == false)) {
+                Utils::Log(LOG_INFO, '> vSpherelnkIPInterfaceToIPAddressCollector will not be launched as vSphereLogicalInterfaceCollector is not launched');
+                return false;
+            }
 			// TeemIp must be present with correct collection options
 			if ($this->oCollectionPlan->IsTeemIpInstalled() && $this->oCollectionPlan->GetTeemIpOption('collect_ips') && $this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces')) {
 				return true;
@@ -33,10 +32,12 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 		return false;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	static public function GetLnks()
+    /**
+     * Get the IP Interface / IP Address links reported by the vSphereLogicalInterfaceCollector collector
+     *
+     * @return array|mixed[][]|null
+     */
+    static public function GetLnks()
 	{
 		if (self::$aLnks === null) {
 			if (class_exists('vSphereLogicalInterfaceCollector')) {
@@ -59,8 +60,6 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 			return false;
 		}
 
-		$this->sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
-
 		$this->GetLnks();
 		$this->idx = 0;
 
@@ -73,12 +72,12 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 	public function Fetch()
 	{
 		if ($this->idx < count(self::$aLnks)) {
-			$aLnks = self::$aLnks[$this->idx++];
+			$aLnk = self::$aLnks[$this->idx++];
 
 			return array(
-				'primary_key' => $aLnks['ipinterface_id'].'-'.$aLnks['ipaddress_id'],
-				'ipinterface_id' => $aLnks['ipinterface_id'],
-				'ipaddress_id' => $aLnks['ipaddress_id'],
+				'primary_key' => $aLnk['ipinterface_id'].'-'.$aLnk['ipaddress_id'],
+				'ipinterface_id' => $aLnk['ipinterface_id'],
+				'ipaddress_id' => $aLnk['ipaddress_id'],
 			);
 		}
 
