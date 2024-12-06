@@ -68,23 +68,21 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			$aVMs = vSphereVirtualMachineCollector::GetVMs();
 			foreach ($aVMs as $oVM) {
 				$sIP = $oVM['managementip'] ?? '';
-				if ($sIP != '') {
-					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
-						if (in_array('short_name', $oVM)) {
-							$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
-						} else {
-							$sShortName = '';
-						}
-						$this->aIPv4Addresses[] = array(
-							'id' => $sIP,
-							'ip' => $sIP,
-							'org_id' => $sDefaultOrg,
-							'ipconfig_id' => $sDefaultOrg,
-							'short_name' => $sShortName,
-							'status' => $this->oCollectionPlan->GetTeemIpOption('default_ip_status'),
-						);
+				if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+					Utils::Log(LOG_DEBUG, 'IPv4 Address: ' . $sIP);
+					if (in_array('short_name', $oVM)) {
+						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
+					} else {
+						$sShortName = '';
 					}
+					$this->aIPv4Addresses[] = array(
+						'id' => $sIP,
+						'ip' => $sIP,
+						'org_id' => $sDefaultOrg,
+						'ipconfig_id' => $sDefaultOrg,
+						'short_name' => $sShortName,
+						'status' => $this->oCollectionPlan->GetTeemIpOption('default_ip_status'),
+					);
 				}
 			}
 		}
@@ -93,18 +91,16 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			$aServers = vSphereServerCollector::CollectServerInfos();
 			foreach ($aServers as $oServer) {
 				$sIP = $oServer['managementip_id'] ?? '';
-				if ($sIP != '') {
-					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
-						$this->aIPv4Addresses[] = array(
-							'id' => $sIP,
-							'ip' => $sIP,
-							'org_id' => $sDefaultOrg,
-							'ipconfig_id' => $sDefaultOrg,
-							'short_name' => '',
-							'status' => $sDefaulIpStatus,
-						);
-					}
+				if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+					Utils::Log(LOG_DEBUG, 'IPv4 Address: ' . $sIP);
+					$this->aIPv4Addresses[] = array(
+						'id' => $sIP,
+						'ip' => $sIP,
+						'org_id' => $sDefaultOrg,
+						'ipconfig_id' => $sDefaultOrg,
+						'short_name' => '',
+						'status' => $sDefaulIpStatus,
+					);
 				}
 			}
 		}
@@ -113,25 +109,23 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
 			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
 				$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
-				if ($sIP != '') {
-					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-						// Check if address is already listed as it may be that vSphere reported it as management IP too
-						// Don't register duplicates otherwise
-						$sKey = false;
-						if (!empty($this->aIPv4Addresses)) {
-							$sKey = array_search($sIP, array_column($this->aIPv4Addresses, 'ip'));
-						}
-						if ($sKey === false) {
-							Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
-							$this->aIPv4Addresses[] = array(
-								'id' => $sIP,
-								'ip' => $sIP,
-								'org_id' => $sDefaultOrg,
-								'ipconfig_id' => $sDefaultOrg,
-								'short_name' => '',
-								'status' => $sDefaulIpStatus,
-							);
-						}
+				if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+					// Check if address is already listed as it may be that vSphere reported it as management IP too
+					// Don't register duplicates otherwise
+					$sKey = false;
+					if (!empty($this->aIPv4Addresses)) {
+						$sKey = array_search($sIP, array_column($this->aIPv4Addresses, 'ip'));
+					}
+					if ($sKey === false) {
+						Utils::Log(LOG_DEBUG, 'IPv4 Address: ' . $sIP);
+						$this->aIPv4Addresses[] = array(
+							'id' => $sIP,
+							'ip' => $sIP,
+							'org_id' => $sDefaultOrg,
+							'ipconfig_id' => $sDefaultOrg,
+							'short_name' => '',
+							'status' => $sDefaulIpStatus,
+						);
 					}
 				}
 			}
