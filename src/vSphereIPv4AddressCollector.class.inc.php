@@ -94,7 +94,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			foreach ($aServers as $oServer) {
 				$sIP = $oServer['managementip_id'] ?? '';
 				if ($sIP != '') {
-					if (!filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
 						$this->aIPv4Addresses[] = array(
 							'id' => $sIP,
