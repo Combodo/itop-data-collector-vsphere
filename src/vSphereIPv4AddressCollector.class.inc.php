@@ -69,7 +69,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			foreach ($aVMs as $oVM) {
 				$sIP = $oVM['managementip'] ?? '';
 				if ($sIP != '') {
-					if (!filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
 						if (in_array('short_name', $oVM)) {
 							$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
