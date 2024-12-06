@@ -114,7 +114,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
 				$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
 				if ($sIP != '') {
-					if (!filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+					if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 						// Check if address is already listed as it may be that vSphere reported it as management IP too
 						// Don't register duplicates otherwise
 						$sKey = false;
