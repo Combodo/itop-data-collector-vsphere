@@ -47,7 +47,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	{
 		if (!self::$bLogicalInterfacesCollected) {
             self::$bLogicalInterfacesCollected = true;
-			$aVMs = vSphereVirtualMachineCollector::GetVMs();
+			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 
 			$aLogicalInterfaces = array();
 			foreach ($aVMs as $oVM) {

@@ -65,7 +65,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 
 		$sDefaulIpStatus = $this->oCollectionPlan->GetTeemIpOption('default_ip_status');
 		if (class_exists('vSphereVirtualMachineCollector')) {
-			$aVMs = vSphereVirtualMachineCollector::GetVMs();
+			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 			foreach ($aVMs as $oVM) {
 				$sIP = $oVM['managementip'] ?? '';
 				if ($sIP != '') {

@@ -46,23 +46,14 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		return parent::AttributeIsOptional($sAttCode);
 	}
 
-	public static function GetVMs()
-	{
-		if (!static::$bVMInfosCollected) {
-            static::$bVMInfosCollected = true;
-			static::CollectVMInfos();
-		}
-
-		return static::$aVMInfos;
-	}
-
 	/**
 	 * Helper method to perform the actual collection of VMs and their related information (OSFamily, OSVersion...)
 	 * and store the result in a static variable for further processing by the different collectors
 	 */
 	static public function CollectVMInfos()
 	{
-		if (self::$aVMInfos === null) {
+        if (!static::$bVMInfosCollected) {
+            static::$bVMInfosCollected = true;
 			require_once APPROOT.'collectors/library/Vmwarephp/Autoloader.php';
 			$autoloader = new \Vmwarephp\Autoloader;
 			$autoloader->register();
