@@ -137,8 +137,8 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
-		// Make sure user has access to network information - see bug N°6888
-		if (isset($oVirtualMachine->guest) && isset($oVirtualMachine->guest->net)) {
+		// Make sure user has access to network information
+        if (isset($oVirtualMachine->guest->net)) {
 			$aMACToNetwork = array();
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
 			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
