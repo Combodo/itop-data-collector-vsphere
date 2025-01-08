@@ -307,7 +307,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 				$sGuestIP = '';
 			} else {
 				if (!$bCollectIPv6Addresses) {
-					$sGuestIP = filter_var($sGuestIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
+					$sGuestIP = filter_var($sGuestIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
 				}
 			}
 
