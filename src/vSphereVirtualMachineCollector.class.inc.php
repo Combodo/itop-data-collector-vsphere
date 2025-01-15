@@ -400,7 +400,10 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			self::$oOSVersionMappings = new MappingTable('os_version_mapping');
 		}
         // Read the "real time" name. Take the one defined by config if it is not available.
-		$sRawValue = $oVirtualMachine->config->guestFullName;
+        $sRawValue = $oVirtualMachine->guest->guestFullName;
+        if (is_null($sRawValue)) {
+            $sRawValue = $oVirtualMachine->config->guestFullName;
+        }
 		$value = self::$oOSVersionMappings->MapValue($sRawValue, $sRawValue); // Keep the raw value by default
 
 		return $value;
