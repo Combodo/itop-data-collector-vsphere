@@ -90,8 +90,8 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 		if (class_exists('vSphereServerCollector')) {
 			$aServers = vSphereServerCollector::CollectServerInfos();
 			foreach ($aServers as $oServer) {
-				$sIP = $oServer['managementip_id'] ?? '';
-				if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+				$sIP = filter_var($oServer['managementip_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
+				if ($sIP != '') {
 					Utils::Log(LOG_DEBUG, 'IPv4 Address: ' . $sIP);
 					$this->aIPv4Addresses[] = array(
 						'id' => $sIP,
@@ -108,8 +108,8 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 		if ($this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces') && class_exists('vSpherelnkIPInterfaceToIPAddressCollector')) {
 			$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
 			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
-				$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
-				if (filter_var($sIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+				$sIP = filter_var($oLnkInterfaceIPAddresss['ipaddress_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
+				if ($sIP != '') {
 					// Check if address is already listed as it may be that vSphere reported it as management IP too
 					// Don't register duplicates otherwise
 					$sKey = false;
