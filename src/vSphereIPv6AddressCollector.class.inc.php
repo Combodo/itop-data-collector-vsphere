@@ -67,24 +67,22 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 		if (class_exists('vSphereVirtualMachineCollector')) {
 			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 			foreach ($aVMs as $oVM) {
-				$sIP = $oVM['managementip_id'] ?? '';
+				$sIP = filter_var($oVM['managementip'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
 				if ($sIP != '') {
-					if (strpos($sIP, ':') !== false) {
-						Utils::Log(LOG_DEBUG, 'IPv6 Address: '.$sIP);
-						if (in_array('short_name', $oVM)) {
-							$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
-						} else {
-							$sShortName = '';
-						}
-						$this->aIPv6Addresses[] = array(
-							'id' => $sIP,
-							'ip' => $sIP,
-							'org_id' => $sDefaultOrg,
-							'ipconfig_id' => $sDefaultOrg,
-							'short_name' => $sShortName,
-							'status' => $sDefaulIpStatus,
-						);
+					Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
+					if (in_array('short_name', $oVM)) {
+						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
+					} else {
+						$sShortName = '';
 					}
+					$this->aIPv6Addresses[] = array(
+						'id' => $sIP,
+						'ip' => $sIP,
+						'org_id' => $sDefaultOrg,
+						'ipconfig_id' => $sDefaultOrg,
+						'short_name' => $sShortName,
+						'status' => $sDefaulIpStatus,
+					);
 				}
 			}
 		}
@@ -92,10 +90,34 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 		if (class_exists('vSphereServerCollector')) {
 			$aServers = vSphereServerCollector::CollectServerInfos();
 			foreach ($aServers as $oServer) {
-				$sIP = $oServer['managementip_id'] ?? '';
+				$sIP = filter_var($oServer['managementip_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
 				if ($sIP != '') {
-					if (strpos($sIP, ':') !== false) {
-						Utils::Log(LOG_DEBUG, 'IPv4 Address: '.$sIP);
+					Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
+					$this->aIPv6Addresses[] = array(
+						'id' => $sIP,
+						'ip' => $sIP,
+						'org_id' => $sDefaultOrg,
+						'ipconfig_id' => $sDefaultOrg,
+						'short_name' => '',
+						'status' => $sDefaulIpStatus,
+					);
+				}
+			}
+		}
+
+		if ($this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces') && class_exists('vSpherelnkIPInterfaceToIPAddressCollector')) {
+			$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
+			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
+				$sIP = filter_var($oLnkInterfaceIPAddresss['ipaddress_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
+				if ($sIP != '') {
+					// Check if address is already listed as it may be that vSphere reported it as management IP too
+					// Don't register duplicates otherwise
+					$sKey = false;
+					if (!empty($this->aIPv6Addresses)) {
+						$sKey = array_search($sIP, array_column($this->aIPv6Addresses, 'ip'));
+					}
+					if ($sKey === false) {
+						Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
 						$this->aIPv6Addresses[] = array(
 							'id' => $sIP,
 							'ip' => $sIP,
@@ -104,34 +126,6 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 							'short_name' => '',
 							'status' => $sDefaulIpStatus,
 						);
-					}
-				}
-			}
-		}
-
-		if ($this->oCollectionPlan->GetTeemIpOption('manage_logical_interfaces') && class_exists('vSpherelnkIPInterfaceToIPAddressCollector')) {
-			$aLnkInterfaceIPAddressses = vSpherelnkIPInterfaceToIPAddressCollector::GetLnks();
-			foreach ($aLnkInterfaceIPAddressses as $oLnkInterfaceIPAddresss) {
-				$sIP = $oLnkInterfaceIPAddresss['ipaddress_id'] ?? '';
-				if ($sIP != '') {
-					if (strpos($sIP, ':') !== false) {
-						// Check if address is already listed as it may be that vSphere reported it as management IP too
-						// Don't register duplicates otherwise
-						$sKey = false;
-						if (!empty($this->aIPv6Addresses)) {
-							$sKey = array_search($sIP, array_column($this->aIPv6Addresses, 'ip'));
-						}
-						if ($sKey === false) {
-							Utils::Log(LOG_DEBUG, 'IPv6 Address: '.$sIP);
-							$this->aIPv6Addresses[] = array(
-								'id' => $sIP,
-								'ip' => $sIP,
-								'org_id' => $sDefaultOrg,
-								'ipconfig_id' => $sDefaultOrg,
-								'short_name' => '',
-								'status' => $sDefaulIpStatus,
-							);
-						}
 					}
 				}
 			}

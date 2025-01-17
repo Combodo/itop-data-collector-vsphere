@@ -298,7 +298,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 				$sGuestIP = '';
 			} else {
 				if (!$bCollectIPv6Addresses) {
-					$sGuestIP = (strpos($sGuestIP, ':') !== false) ? '' : $sGuestIP;
+					$sGuestIP = filter_var($sGuestIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
 				}
 			}
 
@@ -308,7 +308,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		} else {
 			// ManagementIP cannot be an IPV6 address, if no IPV4 was found above, let's clear the field
 			// Note: some OpenVM clients report IP addresses with a trailing space, so let's trim the field
-			$aData['managementip'] = (strpos($sGuestIP, ':') !== false) ? '' : trim($sGuestIP);
+			$aData['managementip'] = filter_var(trim($sGuestIP), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
 		}
 
 		return $aData;
@@ -326,7 +326,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			if ($oNICInfo->ipConfig && $oNICInfo->ipConfig->ipAddress) {
 				foreach ($oNICInfo->ipConfig->ipAddress as $oIPInfo) {
 					Utils::Log(LOG_DEBUG, "Reading VM's IP and MAC address");
-					if (strpos($oIPInfo->ipAddress ?? '', ':') !== false) {
+					if (filter_var($oIPInfo->ipAddress ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 						// It's an IPv6 address
 						if ($oCollectionPlan->IsTeemIpInstalled() && $bCollectIPv6Addresses) {
 							$aNWInterfaces[] = array(
@@ -340,7 +340,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 						}
 					} else {
 						// If we have a guest IP set to IPv6, replace it with the first IPv4 we find
-						if (strpos($oVirtualMachine->guest->ipAddress ?? '', ":") !== false) {
+						if (filter_var($oVirtualMachine->guest->ipAddress ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 							$oVirtualMachine->guest->ipAddress = $oIPInfo->ipAddress;
 						}
 
