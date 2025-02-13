@@ -67,7 +67,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 		if (class_exists('vSphereVirtualMachineCollector')) {
 			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 			foreach ($aVMs as $oVM) {
-				$sIP = filter_var($oVM['managementip'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
+				$sIP = filter_var($oVM['managementip_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
 				if ($sIP != '') {
 					Utils::Log(LOG_DEBUG, 'IPv4 Address: ' . $sIP);
 					if (in_array('short_name', $oVM)) {
