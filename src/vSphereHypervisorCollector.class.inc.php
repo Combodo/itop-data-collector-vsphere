@@ -93,6 +93,22 @@ class vSphereHypervisorCollector extends vSphereCollector
 				Utils::Log(LOG_DEBUG, "Server {$oHypervisor->name}: {$oHypervisor->hardware->systemInfo->vendor} {$oHypervisor->hardware->systemInfo->model}");
 				Utils::Log(LOG_DEBUG, "Server software: {$oHypervisor->config->product->fullName} - API Version: {$oHypervisor->config->product->apiVersion}");
 
+				// Hypervisor System Serial Number, as reported by VSphere (Only tested on HPE servers)
+				$sSerialNumber='unknown';
+				foreach ($oHypervisor->hardware->systemInfo->otherIdentifyingInfo as $oTstSN)
+				{
+					if ( $oTstSN->identifierType->key == 'ServiceTag' ) { $sSerialNumber = $oTstSN->identifierValue ; }
+				}
+				Utils::Log(LOG_DEBUG, "Server serial number: {$sSerialNumber}");
+
+				$sManagementIp='';
+				foreach ($oHypervisor->config->option as $oTstIP)
+				{
+					// First form is probably from an older version of vSphere
+					if ( $oTstIP->key == 'Vpx.Vpxa.config.vpxa.hostIp' || $oTstIP->key == 'Vpx.Vpxa.config.host_ip' ) { $sManagementIp= $oTstIP->value ; }
+				}
+				Utils::Log(LOG_DEBUG, "Server management IP: {$sManagementIp}");
+
 				$aHypervisorData = array(
 					'id' => $oHypervisor->getReferenceId(),
 					'primary_key' => $oHypervisor->getReferenceId(),
@@ -107,6 +123,8 @@ class vSphereHypervisorCollector extends vSphereCollector
 					'status' => 'production',
 					'farm_id' => $sFarmName,
 					'server_id' => $oHypervisor->name,
+					'serialnumber' => $sSerialNumber,
+					'managementip' => $sManagementIp,
 				);
 
 				$oCollectionPlan = vSphereCollectionPlan::GetPlan();
