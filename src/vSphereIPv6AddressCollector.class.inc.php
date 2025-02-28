@@ -68,9 +68,14 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 			foreach ($aVMs as $oVM) {
 				$sIP = filter_var($oVM['managementip'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
+				// If managementip is not set, try to get it from managementip_id (in case of TeemIP)
+				if ($sIP == '') {
+					$sIP = filter_var($oVM['managementip_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
+				}
 				if ($sIP != '') {
 					Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
-					if (in_array('short_name', $oVM)) {
+					// use of isset to check the presence of the key in the array
+					if (isset($oVM['short_name'])) {
 						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
 					} else {
 						$sShortName = '';
