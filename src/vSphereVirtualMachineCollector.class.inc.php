@@ -129,8 +129,38 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
 		// Make sure user has access to network information
-        if (isset($oVirtualMachine->guest->net)) {
+    if (isset($oVirtualMachine->guest->net)) {
 			$aMACToNetwork = array();
+			// Very very light new code to get the network interfaces (see below)
+			$iVirtualInterface = 0;
+			foreach($oVirtualMachine->guest->net as $oNICInfo) {
+				Utils::Log(LOG_DEBUG, "Searching interface $iVirtualInterface...");
+				// Utils::Log(LOG_DEBUG, "oNICInfo: ".print_r($oNICInfo, true));
+				// check if the network is set and not empty, set the networkName to '-Internal' if not set
+				$sNetworkName = (isset($oNICInfo->network) && $oNICInfo->network != '') ? $oNICInfo->network : '-Internal';
+				Utils::Log(LOG_DEBUG, "oNICInfo->deviceConfigId: ".$oNICInfo->deviceConfigId);
+				Utils::Log(LOG_DEBUG, "oNICInfo->macAddress: ".$oNICInfo->macAddress);
+				Utils::Log(LOG_DEBUG, "oNICInfo->network: ".$sNetworkName);
+				// If possible, deduct the interface number from the deviceConfigId :
+				// Interface number is deviceConfigId - 4000
+				// If deviceConfigId is not numeric, or less than 4000, we use iVirtualInterface
+				$iInterfaceNumber = (is_numeric($oNICInfo->deviceConfigId) && $oNICInfo->deviceConfigId >= 4000) ? $oNICInfo->deviceConfigId - 4000 : $iVirtualInterface;
+				// Personal Add (Schirrms): Sometimes, a VM can have more than one interfaces linked to the same network
+				// hence the addition of the VMware interface number after the network name
+				// This is probably a breaking change if used on older collections
+				$aMACToNetwork[$oNICInfo->macAddress] = $sNetworkName . '-[' . $iInterfaceNumber . ']';
+				$iVirtualInterface++;
+			}
+
+			/****************************************
+			 * Schirrms 2025-02-28
+			 * In my opinion, this whole block is not working anymore: 
+			 * If a do a direct call to the API, I still find the information about the backing device
+			 * but trough the Phpvmware library, this information is not available anymore.
+			 * I wasn't able to find a solution to this problem, so I'm going to skip this part of the code.
+			 * I put a really lighter code to get the interface, but in my environment, and with some
+			 * really specific network interfaces configuration, the report is not complete.
+			 * Feel free to try to fix this part of the code.
 			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
 			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
                 if ($oVirtualDevice === null) continue;
@@ -185,11 +215,15 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 					default:
 						// Other types of Virtual Devices, skip
 				}
+
 				utils::Log(LOG_DEBUG, "End of collect for VM ".get_class($oVirtualDevice).".");
 			}
+			* End of the big code removal Schirrms 2025-02-28 */
 
 			Utils::Log(LOG_DEBUG, "Collecting IP addresses for this VM...");
 			$aNWInterfaces = static::DoCollectVMIPs($aMACToNetwork, $oVirtualMachine);
+			utils::Log(LOG_DEBUG, "Collected ".count($aNWInterfaces)." network interfaces for this VM.");
+			// utils::Log(LOG_DEBUG, "Network interfaces: ".print_r($aNWInterfaces, true));
 		} else {
 			utils::Log(LOG_DEBUG, "User cannot access to network information of VM ".$oVirtualMachine->name.", skipping.");
 		}
@@ -334,6 +368,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 								'mac' => $oNICInfo->macAddress,
 								'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
 								'subnet_mask' => (int)$oIPInfo->prefixLength,
+								'id' => $oNICInfo->deviceConfigId,
 							);
 						} else {
 							Utils::Log(LOG_DEBUG, "Ignoring an IP v6 address");
@@ -354,9 +389,22 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 							'mac' => $oNICInfo->macAddress,
 							'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
 							'subnet_mask' => $sSubnetMask,
+							'id' => $oNICInfo->deviceConfigId,
 						);
 					}
 				}
+			}
+		
+			// Seems useful to set also the informations for interfaces without an IP address
+			else {
+				Utils::Log(LOG_DEBUG, "No IP address found for interface ".$oNICInfo->macAddress." on network ".(array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : ''));
+				$aNWInterfaces[] = array(
+					'ip' => '',
+					'mac' => $oNICInfo->macAddress,
+					'subnet_mask' => '',
+					'network' => array_key_exists($oNICInfo->macAddress, $aMACToNetwork) ? $aMACToNetwork[$oNICInfo->macAddress] : '',
+					'id' => $oNICInfo->deviceConfigId,
+				);
 			}
 		}
 
@@ -511,7 +559,12 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		// Process each line of the CSV
 		$this->oOSVersionLookup->Lookup($aLineData, array('osfamily_id', 'osversion_id'), 'osversion_id', $iLineIndex);
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
-			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex);
+			// Empty IP address should not produce a Warning nor an attempt to lookup
+			// To be fair, this should be a choice in the configuration file, but I'm too lazy to do it now (Schirrms 2025-03-04)
+			// Original line (send this kind of messages): [Warning] No mapping found with key: '{ORG_NAME}_', 'managementip_id' will be set to zero.
+			// $this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex);
+			$bSkipIfEmpty = true;
+			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex, $bSkipIfEmpty);
 		}
 	}
 }

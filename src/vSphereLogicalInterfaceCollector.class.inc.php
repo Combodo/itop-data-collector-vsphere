@@ -60,7 +60,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 						'name' => $oInterface['network'],
 						'virtualmachine_orgid' => $oVM['org_id'],
 						'virtualmachine_id' => $oVM['name'],
-						'ip' => $oInterface['ip'],
+						'ip' => $oInterface['ip'] ?? '',
 					);
 				}
 			}
@@ -77,6 +77,12 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 						'virtualmachine_orgid' => $aValue['virtualmachine_orgid'],
 						'virtualmachine_id' => $aValue['virtualmachine_id'],
 					);
+				}
+
+				// As we collect also interfaces without IP, we must check if the IP is not empty
+				// or if 'ip' is not defined
+				if (!isset($aValue['ip']) || empty($aValue['ip'])) {
+					continue;
 				}
 
 				$aLnkLogicalInterfaceToIPAddress[] = array(
