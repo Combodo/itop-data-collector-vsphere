@@ -130,6 +130,16 @@
 	<json_placeholders type="hash">
 		<prefix>vSphere</prefix>
 		<full_load_interval>604800</full_load_interval><!-- 7 days (in seconds): 7*24*60*60 -->
+		<!-- During VM removal, some troubles in sync because VM are removed beforelogical interfaces and IP Address
+		    So I added a 'demi_load_interval' for 4 sync:
+				vSphereIPv4AddressCollector, vSphereIPv6AddressCollector, vSpherelnkIPInterfaceToIPAddressCollector
+				and vSphereLogicalInterfaceCollector.
+				But it's still ugly (in fact, very dependant of the schedule of the sync). 
+				I think that a more convenient way to solve that would be
+				instead of suppressing in the other synchro at full interval, only to deactivate at full interval, 
+				then suppress after the same interval
+				Schirrms 2025-03-05 -->
+		<demi_load_interval>345600</demi_load_interval><!-- 4 days (in seconds): 4*24*60*60 -->
 		<synchro_status>production</synchro_status>
 	</json_placeholders>
 
