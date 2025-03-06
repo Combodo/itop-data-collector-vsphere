@@ -129,7 +129,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		utils::Log(LOG_DEBUG, "Collecting network info...");
 		$aNWInterfaces = array();
 		// Make sure user has access to network information
-    if (isset($oVirtualMachine->guest->net)) {
+        if (isset($oVirtualMachine->guest->net)) {
 			$aMACToNetwork = array();
 			// Very very light new code to get the network interfaces (see below)
 			$iVirtualInterface = 0;
