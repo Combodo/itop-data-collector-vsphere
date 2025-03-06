@@ -69,7 +69,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 			foreach ($aVMs as $oVM) {
 				$sIP = filter_var($oVM['managementip'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
 				// managementip_id is used by TeemIP to store the IP address
-        if ($sIP == '') {
+				if ($sIP == '') {
 					$sIP = filter_var($oVM['managementip_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '';
 				}
 				if ($sIP != '') {
