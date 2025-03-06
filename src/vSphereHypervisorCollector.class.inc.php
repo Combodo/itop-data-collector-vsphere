@@ -94,7 +94,7 @@ class vSphereHypervisorCollector extends vSphereCollector
 				Utils::Log(LOG_DEBUG, "Server software: {$oHypervisor->config->product->fullName} - API Version: {$oHypervisor->config->product->apiVersion}");
 
 				// Hypervisor System Serial Number, as reported by VSphere (Only tested on HPE servers)
-				$sSerialNumber='unknown';
+				$sSerialNumber = '';
 				foreach ($oHypervisor->hardware->systemInfo->otherIdentifyingInfo as $oTstSN)
 				{
 					if ( $oTstSN->identifierType->key == 'ServiceTag' ) { $sSerialNumber = $oTstSN->identifierValue ; }
