@@ -74,7 +74,6 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 				}
 				if ($sIP != '') {
 					Utils::Log(LOG_DEBUG, 'IPv4 Address: ' . $sIP);
-					// issett is used to check if the key exists in the array
 					if (isset($oVM['short_name'])) {
 						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
 						Utils::Log(LOG_DEBUG, ' `- Short Name: ' . $sShortName);
