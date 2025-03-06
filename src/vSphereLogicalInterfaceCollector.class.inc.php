@@ -81,7 +81,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 
 				// As we collect also interfaces without IP, we must check if the IP is not empty
 				// or if 'ip' is not defined
-				if (isset($aValue['ip']) && !empty($aValue['ip'])) {
+				if (!empty($aValue['ip'])) {
 					$aLnkLogicalInterfaceToIPAddress[] = array(
 						'ipinterface_id' => $aValue['macaddress'],
 						'ipaddress_id' => $aValue['ip'],
