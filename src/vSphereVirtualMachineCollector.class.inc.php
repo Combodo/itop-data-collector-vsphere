@@ -562,9 +562,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			// Empty IP address should not produce a Warning nor an attempt to lookup
 			// To be fair, this should be a choice in the configuration file, but I'm too lazy to do it now (Schirrms 2025-03-04)
 			// Original line (send this kind of messages): [Warning] No mapping found with key: '{ORG_NAME}_', 'managementip_id' will be set to zero.
-			// $this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex);
-			$bSkipIfEmpty = true;
-			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex, $bSkipIfEmpty);
+			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex, true);
 		}
 	}
 }
