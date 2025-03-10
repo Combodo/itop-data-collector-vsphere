@@ -67,11 +67,12 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 		if (class_exists('vSphereVirtualMachineCollector')) {
 			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 			foreach ($aVMs as $oVM) {
-				$sIP = filter_var($oVM['managementip'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
+				$sIP = filter_var($oVM['managementip_id'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ?: '';
 				if ($sIP != '') {
 					Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
-					if (in_array('short_name', $oVM)) {
+					if (isset($oVM['short_name'])) {
 						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
+						Utils::Log(LOG_DEBUG, ' `- Short Name: ' . $sShortName);
 					} else {
 						$sShortName = '';
 					}
