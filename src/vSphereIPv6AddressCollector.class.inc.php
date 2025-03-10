@@ -72,6 +72,7 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 					Utils::Log(LOG_DEBUG, 'IPv6 Address: ' . $sIP);
 					if (isset($oVM['short_name'])) {
 						$sShortName = explode('.', $oVM['short_name'])[0];  // Remove chars after '.', if any
+						Utils::Log(LOG_DEBUG, ' `- Short Name: ' . $sShortName);
 					} else {
 						$sShortName = '';
 					}
