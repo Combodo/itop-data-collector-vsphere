@@ -44,9 +44,11 @@ class Service {
 	}
 
 	function connect() {
-		if ($this->session) return $this->session;
+		if ($this->session) {
+			return $this->session;
+		}
 		$sessionManager = $this->getSessionManager();
-		$this->session = $sessionManager->Login(array('userName' => $this->vhost->username, 'password' => $this->vhost->password, 'locale' => null));
+		$this->session = $sessionManager->acquireSession($this->vhost->username, $this->vhost->password);
 		return $this->session;
 	}
 
@@ -65,7 +67,12 @@ class Service {
 
 	private function makeSoapCall($method, $soapMessage) {
 		$this->soapClient->_classmap = $this->clientFactory->getClientClassMap();
-		$result = $this->soapClient->$method($soapMessage);
+		try {
+			$result = $this->soapClient->$method($soapMessage);
+		} catch (\SoapFault $soapFault) {
+			$this->soapClient->_classmap = null;
+			throw new \Vmwarephp\Exception\Soap($soapFault);
+		}
 		$this->soapClient->_classmap = null;
 		return $this->convertResponse($result);
 	}
@@ -77,11 +84,12 @@ class Service {
 		$managedObject = $arguments[0];
 		$foundManagedObject = $this->findOneManagedObject($managedObject->getReferenceType(),
 			$managedObject->getReferenceId(), array($propertyToRetrieve));
+		if (!isset($foundManagedObject->$propertyToRetrieve)) return null;
 		return $foundManagedObject->$propertyToRetrieve;
 	}
 
 	private function isMethodAPropertyRetrieval($calledMethod) {
-		return preg_match('/^get/', strtolower($calledMethod));
+		return preg_match('/^get/', $calledMethod);
 	}
 
 	private function generateNameForThePropertyToRetrieve($calledMethod) {
