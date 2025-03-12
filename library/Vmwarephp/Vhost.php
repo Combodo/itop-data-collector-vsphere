@@ -6,10 +6,11 @@ use Vmwarephp\Exception as Ex;
 class Vhost {
 	private $service;
 
-	function __construct($host, $username, $password) {
+	function __construct($host, $username, $password, $options = []) {
 		$this->host = $host;
 		$this->username = $username;
 		$this->password = $password;
+        $this->options = $options;
 	}
 
 	function getPort() {
