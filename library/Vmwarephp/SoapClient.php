@@ -1,6 +1,17 @@
 <?php
 namespace Vmwarephp;
+
 class SoapClient extends \SoapClient {
+    private array $aProperties = [];
+
+    public function __set(string $name, mixed $value): void {
+        $this->aProperties[$name] = $value;
+    }
+
+    public function __get(string $name): mixed {
+        return (array_key_exists($name, $this->aProperties) ? $this->aProperties[$name]: null);
+    }
+
     function __doRequest($request, $location, $action, $version, $one_way = 0) {
         $request = $this->appendXsiTypeForExtendedDatastructures($request);
         $headers = parent::__getLastResponseHeaders();
