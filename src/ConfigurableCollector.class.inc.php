@@ -42,20 +42,25 @@ abstract class ConfigurableCollector extends Collector
 				foreach ($aSynchroDefinition['attribute_list'] as $idx => $aDef) {
 					$aAttCodeIndex[$aDef['attcode']] = $idx;
 				}
-				foreach ($aCustomSynchro[get_class($this)]['fields'] as $sAttCode => $aFieldsDef) {
-					// Check if the configuration contains an alteration of the JSON
-					if (array_key_exists('json', $aFieldsDef)) {
-						Utils::Log(LOG_INFO, get_class($this)." uses a custom definition for the field $sAttCode of the Synchro Data Source.");
-						// Override the definitions from the JSON by the ones given in the configuration
-						foreach ($aFieldsDef['json'] as $sKey => $sValue) {
-							$idx = $aAttCodeIndex[$sAttCode];
-							$aSynchroDefinition['attribute_list'][$idx][$sKey] = $sValue;
-						}
-					}
-					if (array_key_exists('source', $aFieldsDef)) {
-						Utils::Log(LOG_INFO, get_class($this)." uses a custom collection for the field $sAttCode ({$aFieldsDef['source']}).");
-					}
-				}
+                if (isset($aCustomSynchro[get_class($this)]['fields']) && is_array($aCustomSynchro[get_class($this)]['fields'])) {
+                    foreach ($aCustomSynchro[get_class($this)]['fields'] as $sAttCode => $aFieldsDef) {
+                        // Check if the configuration contains an alteration of the JSON
+                        if (array_key_exists('json', $aFieldsDef)) {
+                            Utils::Log(LOG_INFO, get_class($this) . " uses a custom definition for the field $sAttCode of the Synchro Data Source.");
+                            // Override the definitions from the JSON by the ones given in the configuration
+                            foreach ($aFieldsDef['json'] as $sKey => $sValue) {
+                                $idx = $aAttCodeIndex[$sAttCode];
+                                $aSynchroDefinition['attribute_list'][$idx][$sKey] = $sValue;
+                            }
+                        }
+                        if (array_key_exists('source', $aFieldsDef)) {
+                            Utils::Log(LOG_INFO, get_class($this) . " uses a custom collection for the field $sAttCode ({$aFieldsDef['source']}).");
+                        }
+                    }
+                } else  {
+                    Utils::Log(LOG_DEBUG, "No valid 'fields' array found for class ".get_class($this)." in the custom_synchro configuration.");
+                }
+
 				// Re-encode back to JSON since we are expected to return the JSON as a string
 				$sSynchroDataSourceDefinition = json_encode($aSynchroDefinition);
 				Utils::Log(LOG_DEBUG, "Custom definition for the Synchro Data Source:\n$sSynchroDataSourceDefinition");
