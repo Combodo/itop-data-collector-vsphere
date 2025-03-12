@@ -56,6 +56,18 @@
 		    <enable>yes</enable>
 			<rank>4</rank>
 		</collector>
+		<!-- IPv4 Addresses -->
+		<collector>
+			<name>vSphereIPv4AddressCollector</name>
+		    <enable>yes</enable>
+			<rank>7</rank>
+		</collector>
+		<!-- IPv6 Addresses -->
+		<collector>
+			<name>vSphereIPv6AddressCollector</name>
+		    <enable>yes</enable>
+			<rank>8</rank>
+		</collector>
 		<!-- Farms -->
 		<collector>
 			<name>vSphereFarmCollector</name>
@@ -85,18 +97,6 @@
 			<name>vSphereLogicalInterfaceCollector</name>
 		    <enable>yes</enable>
 			<rank>14</rank>
-		</collector>
-		<!-- IPv4 Addresses -->
-		<collector>
-			<name>vSphereIPv4AddressCollector</name>
-		    <enable>yes</enable>
-			<rank>20</rank>
-		</collector>
-		<!-- IPv6 Addresses -->
-		<collector>
-			<name>vSphereIPv6AddressCollector</name>
-		    <enable>yes</enable>
-			<rank>21</rank>
 		</collector>
 		<!-- Lnks IP Interface to IP Address -->
 		<collector>
