@@ -5,6 +5,9 @@ use Vmwarephp\Exception as Ex;
 
 class Vhost {
 	private $service;
+    private string $host;
+    private string $username;
+    private string $password;
     private array $aProperties = [];
 
 	function __construct($host, $username, $password, $options = []) {
@@ -19,15 +22,15 @@ class Vhost {
 		return $port ? : '443';
 	}
 
-	function __get($propertyName) {
+    function __get($propertyName) {
         if (!array_key_exists($propertyName, $this->aProperties)) throw new \InvalidArgumentException('Property ' . $propertyName . ' not set on this object!');
         return $this->aProperties[$propertyName];
-	}
+    }
 
-	function __set($propertyName, $value) {
-		$this->validateProperty($propertyName, $value);
+    function __set($propertyName, $value) {
+        $this->validateProperty($propertyName, $value);
         $this->aProperties[$propertyName] = $value;
-	}
+    }
 
 	function __call($method, $arguments) {
 		if (!$this->service) $this->initializeService();
