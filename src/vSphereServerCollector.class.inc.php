@@ -90,6 +90,8 @@ class vSphereServerCollector extends vSphereCollector
 			'osversion_id' => $aHyperV['osversion_id'],
 			'cpu' => $aHyperV['cpu'],
 			'ram' => $aHyperV['ram'],
+			'serialnumber' => $aHyperV['serialnumber'],
+			'managementip' => $aHyperV['managementip'],
 		);
 
 		// Add the custom fields (if any)
@@ -106,12 +108,12 @@ class vSphereServerCollector extends vSphereCollector
 			$bCollectIps = ($aTeemIpOptions['collect_ips'] == 'yes') ? true : false;
 			$bCollectIPv6Addresses = ($aTeemIpOptions['manage_ipv6'] == 'yes') ? true : false;
 
-			$sName = $aHyperV['name'] ?? '';
+			$sCollIP = $aHyperV['managementip'] ?? '';
 			$sIP = '';
 			if ($bCollectIps == 'yes') {
 				// Check if name has IPv4 or "IPv6" format
-				if (filter_var($sName, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || (($bCollectIPv6Addresses == 'yes') && filter_var($sName, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
-					$sIP = $sName;
+				if (filter_var($sCollIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || (($bCollectIPv6Addresses == 'yes') && filter_var($sCollIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+					$sIP = $sCollIP;
 				}
 			}
 
