@@ -5,9 +5,9 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 {
 	protected $idx;
 	protected $oVMLookup;
-    static protected bool $bLogicalInterfacesCollected = false;
+	static protected bool $bLogicalInterfacesCollected = false;
 	static protected array $aLogicalInterfaces = [];
-    static protected bool $bLnkLogicalInterfaceToIPAddressCollected = false;
+	static protected bool $bLnkLogicalInterfaceToIPAddressCollected = false;
 	static protected array $aLnkLogicalInterfaceToIPAddress = [];
 
 	/**
@@ -46,7 +46,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	static public function GetLogicalInterfaces()
 	{
 		if (!self::$bLogicalInterfacesCollected) {
-            self::$bLogicalInterfacesCollected = true;
+			self::$bLogicalInterfacesCollected = true;
 			$aVMs = vSphereVirtualMachineCollector::CollectVMInfos();
 
 			$aLogicalInterfaces = array();
@@ -60,7 +60,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 						'name' => $oInterface['network'],
 						'virtualmachine_orgid' => $oVM['org_id'],
 						'virtualmachine_id' => $oVM['name'],
-						'ip' => $oInterface['ip'],
+						'ip' => $oInterface['ip'] ?? '',
 					);
 				}
 			}
@@ -79,10 +79,14 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 					);
 				}
 
-				$aLnkLogicalInterfaceToIPAddress[] = array(
-					'ipinterface_id' => $aValue['macaddress'],
-					'ipaddress_id' => $aValue['ip'],
-				);
+				// As we collect also interfaces without IP, we must check if the IP is not empty
+				// or if 'ip' is not defined
+				if (!empty($aValue['ip'])) {
+					$aLnkLogicalInterfaceToIPAddress[] = array(
+						'ipinterface_id' => $aValue['macaddress'],
+						'ipaddress_id' => $aValue['ip'],
+					);
+				}
 			}
 
 			self::$aLogicalInterfaces = $aFinalLogicalInterfaces;
@@ -95,7 +99,7 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	static public function GetLnks()
 	{
 		if (!self::$bLnkLogicalInterfaceToIPAddressCollected) {
-            self::$bLnkLogicalInterfaceToIPAddressCollected = true;
+			self::$bLnkLogicalInterfaceToIPAddressCollected = true;
 			self::GetLogicalInterfaces();
 		}
 
