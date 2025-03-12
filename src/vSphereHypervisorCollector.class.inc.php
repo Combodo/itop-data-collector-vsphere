@@ -117,10 +117,12 @@ class vSphereHypervisorCollector extends vSphereCollector
                     utils::Log(LOG_DEBUG, "Reading datastores...");
                     $aDatastores = $oHypervisor->datastore;
                     foreach ($aDatastores as $aDatastore) {
-                        self::$aLnkDatastoreToVHosts[] = [
-                            'datastore_id' => $aDatastore->getReferenceId(),
-                            'virtualhost_id' => $aHypervisorData['name']
-                        ];
+                        if (!is_null($aDatastore)) {
+                            self::$aLnkDatastoreToVHosts[] = [
+                                'datastore_id' => $aDatastore->getReferenceId(),
+                                'virtualhost_id' => $aHypervisorData['name']
+                            ];
+                        }
                     }
 				}
 
