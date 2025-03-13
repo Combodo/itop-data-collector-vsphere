@@ -3,11 +3,11 @@
 class PhpDynamicProperties {
     private array $aProperties = [];
 
-    public function __set(string $name, mixed $value): void {
+    public function __set(string $name, $value): void {
         $this->aProperties[$name] = $value;
     }
 
-    public function __get(string $name): mixed {
+    public function __get(string $name) {
         return (array_key_exists($name, $this->aProperties) ? $this->aProperties[$name]: null);
     }
 }
