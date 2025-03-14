@@ -72,6 +72,9 @@ class vSpherelnkIPInterfaceToIPAddressCollector extends vSphereCollector
 	 */
 	public function Fetch()
 	{
+        if (is_null(self::$aLnks)) {
+            return false;
+        }
 		if ($this->idx < count(self::$aLnks)) {
 			$aLnks = self::$aLnks[$this->idx++];
 
