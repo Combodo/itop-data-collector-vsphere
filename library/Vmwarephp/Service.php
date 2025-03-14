@@ -69,9 +69,9 @@ class Service {
 	private function makeSoapCall($method, $soapMessage) {
 		$this->soapClient->_classmap = $this->clientFactory->getClientClassMap();
 		try {
-		$result = $this->soapClient->$method($soapMessage);
+		    $result = $this->soapClient->$method($soapMessage);
 		} catch (\SoapFault $soapFault) {
-		$this->soapClient->_classmap = null;
+		    $this->soapClient->_classmap = null;
 			throw new \Vmwarephp\Exception\Soap($soapFault);
         }
 		$this->soapClient->_classmap = null;
