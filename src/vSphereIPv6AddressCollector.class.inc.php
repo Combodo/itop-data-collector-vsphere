@@ -152,6 +152,9 @@ class vSphereIPv6AddressCollector extends vSphereCollector
 	 */
 	public function Fetch()
 	{
+        if (is_null($this->aIPv6Addresses)) {
+            return false;
+        }
 		if ($this->idx < count($this->aIPv6Addresses)) {
 			$aIPv6Addresses = $this->aIPv6Addresses[$this->idx++];
 
