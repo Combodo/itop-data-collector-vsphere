@@ -78,6 +78,9 @@ class vSphereFarmCollector extends vSphereCollector
 
 	public function Fetch()
 	{
+        if (is_null(self::$aFarms)) {
+            return false;
+        }
 		if ($this->idx < count(self::$aFarms))
 		{
 			$aFarm = self::$aFarms[$this->idx++];

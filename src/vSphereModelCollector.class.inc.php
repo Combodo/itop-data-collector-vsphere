@@ -31,6 +31,9 @@ class vSphereModelCollector extends vSphereCollector
 	
 	public function Fetch()
 	{
+        if (is_null($this->aModels)) {
+            return false;
+        }
 		if ($this->idx < count($this->aModels))
 		{
 			$aModel = $this->aModels[$this->idx++];
