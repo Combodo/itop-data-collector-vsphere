@@ -27,6 +27,9 @@ class vSphereBrandCollector extends vSphereCollector
 	
 	public function Fetch()
 	{
+        if (is_null($this->aBrands)) {
+            return false;
+        }
 		if ($this->idx < count($this->aBrands))
 		{
 			$sBrand = $this->aBrands[$this->idx++];

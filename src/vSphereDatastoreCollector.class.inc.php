@@ -107,6 +107,9 @@ class vSphereDatastoreCollector extends vSphereCollector
      */
 	public function Fetch(): bool|array
 	{
+        if (is_null($this->aDatastores)) {
+            return false;
+        }
 		if ($this->idx < count($this->aDatastores)) {
 			$aDS = $this->aDatastores[$this->idx++];
 			$aResult = array();

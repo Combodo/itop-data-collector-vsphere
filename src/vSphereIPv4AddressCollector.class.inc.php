@@ -154,6 +154,9 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 	 */
 	public function Fetch()
 	{
+        if (is_null($this->aIPv4Addresses)) {
+            return false;
+        }
 		if ($this->idx < count($this->aIPv4Addresses)) {
 			$aIPv4Addresses = $this->aIPv4Addresses[$this->idx++];
 

@@ -144,7 +144,10 @@ class vSphereServerCollector extends vSphereCollector
 	 */
 	public function Fetch()
 	{
-		if ($this->idx < count(static::$aServers)) {
+		if(static::$aServers === null) {
+            return false;
+        }
+        if ($this->idx < count(static::$aServers)) {
 			$aServer = static::$aServers[$this->idx++];
 
 			return $this->DoFetch($aServer);

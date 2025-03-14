@@ -64,6 +64,9 @@ class vSphereOSVersionCollector extends Collector
 	
 	public function Fetch()
 	{
+        if (is_null($this->aOSVersion)) {
+            return false;
+        }
 		if ($this->idx < count($this->aOSVersion))
 		{
 			$aOSVersion = $this->aOSVersion[$this->idx++];
