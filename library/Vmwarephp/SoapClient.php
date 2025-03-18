@@ -2,7 +2,7 @@
 namespace Vmwarephp;
 
 class SoapClient extends \SoapClient {
-
+    public $_classmap;
 	function __doRequest($request, $location, $action, $version, $one_way = 0) {
 		$request = $this->appendXsiTypeForExtendedDatastructures($request);
         $headers = parent::__getLastResponseHeaders();
