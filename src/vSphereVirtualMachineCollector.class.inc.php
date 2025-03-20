@@ -11,6 +11,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	static protected array $aVMInfos = [];
 	static protected $oOSVersionMappings = null;
     static protected array $aLnkDatastoreToVM;
+    static protected $oPowerStateMappings = null;
 
     /**
      * @inheritdoc
@@ -30,9 +31,11 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
 		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
-			if ($sAttCode == 'uuid') return false;
+            if ($sAttCode == 'uuid') return false;
+            if ($sAttCode == 'power_state') return false;
 		} else {
 			if ($sAttCode == 'uuid') return true;
+            if ($sAttCode == 'power_state') return true;
 		}
 
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
@@ -268,8 +271,9 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			utils::Log(LOG_DEBUG, "Reading uuid...");
 			$sUUID = $oVirtualMachine->config->uuid;
 			utils::Log(LOG_DEBUG, "    UUID: $sUUID");
-
 			$aData['uuid'] = $sUUID;
+
+            $aData['power_state'] = static::GetPowerState($oVirtualMachine);
 
             utils::Log(LOG_DEBUG, "Reading datastores...");
             $aPerDatastoreUsage = $oVirtualMachine->storage->perDatastoreUsage;
@@ -410,6 +414,27 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	}
 
     /**
+     * Helper method to extract the power state of the VirtualMachine object
+     * according to the 'vm_power_state_mapping' mapping taken from the configuration
+     *
+     * @param VirtualMachine $oVirtualMachine
+     *
+     * @return string The mapped power state
+     */
+    static public function GetPowerState($oVirtualMachine)
+    {
+        if (self::$oPowerStateMappings === null) {
+            self::$oPowerStateMappings = new MappingTable('vm_power_state_mapping');
+        }
+        utils::Log(LOG_DEBUG, "Reading power_state...");
+        $sRawValue = $oVirtualMachine->runtime->powerState;
+        $value = self::$oPowerStateMappings->MapValue($sRawValue); // Keep the raw value by default
+        utils::Log(LOG_DEBUG, "    Power state: $value");
+
+        return $value;
+    }
+
+    /**
      * Get the datastores attached to the VMs
      *
      * @return array
@@ -468,6 +493,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 
 		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
 			$aData['uuid'] = $aVM['uuid'];
+            $aData['power_state'] = $aVM['power_state'];
 		}
 
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {

@@ -171,4 +171,10 @@
 	<os_version_mapping type="array">
 		<pattern>/.*/%1$s</pattern>
 	</os_version_mapping>
+	<vm_power_state_mapping type="array">
+		<pattern>/poweredOn/On</pattern>
+		<pattern>/poweredOff/Off</pattern>
+		<pattern>/suspended/Suspended</pattern>
+		<pattern>/.*/On</pattern>
+	</vm_power_state_mapping>
 </parameters>

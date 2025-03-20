@@ -154,6 +154,13 @@
 			"finalclass": "SynchroAttLinkSet"
 		},
 		{
+			"attcode": "power_state",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_locked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
 			"attcode": "ram",
 			"update": "1",
 			"reconcile": "0",
