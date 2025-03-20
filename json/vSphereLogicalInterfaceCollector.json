@@ -32,6 +32,27 @@
 			"finalclass": "SynchroAttExtKey"
 		},
 		{
+			"attcode": "ipaddress",
+			"update": "1",
+			"reconcile": "0",
+			"update_policy": "master_unlocked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "ipgateway",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_unlocked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
+			"attcode": "ipmask",
+			"update": "0",
+			"reconcile": "0",
+			"update_policy": "master_unlocked",
+			"finalclass": "SynchroAttribute"
+		},
+		{
 			"attcode": "ip_list",
 			"update": "0",
 			"reconcile": "0",
