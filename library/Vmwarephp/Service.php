@@ -85,7 +85,6 @@ class Service {
 		$managedObject = $arguments[0];
 		$foundManagedObject = $this->findOneManagedObject($managedObject->getReferenceType(),
 			$managedObject->getReferenceId(), array($propertyToRetrieve));
-		if (!isset($foundManagedObject->$propertyToRetrieve)) return null;
 		return $foundManagedObject->$propertyToRetrieve;
 	}
 
