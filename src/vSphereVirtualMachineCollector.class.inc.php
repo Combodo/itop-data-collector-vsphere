@@ -7,23 +7,23 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	protected $oOSVersionLookup;
 	protected $oIPAddressLookup;
 	static protected $oOSFamilyMappings = null;
-    static protected bool $bVMInfosCollected = false;
+	static protected bool $bVMInfosCollected = false;
 	static protected array $aVMInfos = [];
 	static protected $oOSVersionMappings = null;
-    static protected array $aLnkDatastoreToVM;
-    static protected $oPowerStateMappings = null;
+	static protected array $aLnkDatastoreToVM;
+	static protected $oPowerStateMappings = null;
 
-    /**
-     * @inheritdoc
-     */
-    public function Init(): void
-    {
-        parent::Init();
+	/**
+	 * @inheritdoc
+	 */
+	public function Init(): void
+	{
+		parent::Init();
 
-        self::$aLnkDatastoreToVM = [];
-    }
+		self::$aLnkDatastoreToVM = [];
+	}
 
-    /**
+	/**
 	 * @inheritdoc
 	 */
 	public function AttributeIsOptional($sAttCode)
@@ -31,11 +31,11 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
 		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
-            if ($sAttCode == 'uuid') return false;
-            if ($sAttCode == 'power_state') return false;
+			if ($sAttCode == 'uuid') return false;
+			if ($sAttCode == 'power_state') return false;
 		} else {
 			if ($sAttCode == 'uuid') return true;
-            if ($sAttCode == 'power_state') return true;
+			if ($sAttCode == 'power_state') return true;
 		}
 
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
@@ -55,8 +55,8 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	 */
 	static public function CollectVMInfos()
 	{
-        if (!static::$bVMInfosCollected) {
-            static::$bVMInfosCollected = true;
+		if (!static::$bVMInfosCollected) {
+			static::$bVMInfosCollected = true;
 			require_once APPROOT.'collectors/library/Vmwarephp/Autoloader.php';
 			$autoloader = new \Vmwarephp\Autoloader;
 			$autoloader->register();
@@ -273,16 +273,16 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			utils::Log(LOG_DEBUG, "    UUID: $sUUID");
 			$aData['uuid'] = $sUUID;
 
-            $aData['power_state'] = static::GetPowerState($oVirtualMachine);
+			$aData['power_state'] = static::GetPowerState($oVirtualMachine);
 
-            utils::Log(LOG_DEBUG, "Reading datastores...");
-            $aPerDatastoreUsage = $oVirtualMachine->storage->perDatastoreUsage;
-            foreach ($aPerDatastoreUsage as $aDatastoreUsage) {
-                self::$aLnkDatastoreToVM[] = [
-                    'datastore_id' => $aDatastoreUsage->datastore->getReferenceId(),
-                    'virtualmachine_id' => $sUUID
-                    ];
-            }
+			utils::Log(LOG_DEBUG, "Reading datastores...");
+			$aPerDatastoreUsage = $oVirtualMachine->storage->perDatastoreUsage;
+			foreach ($aPerDatastoreUsage as $aDatastoreUsage) {
+				self::$aLnkDatastoreToVM[] = [
+					'datastore_id' => $aDatastoreUsage->datastore->getReferenceId(),
+					'virtualmachine_id' => $sUUID
+				];
+			}
 
 		}
 
@@ -380,11 +380,11 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if (self::$oOSFamilyMappings === null) {
 			self::$oOSFamilyMappings = new MappingTable('os_family_mapping');
 		}
-        // Read the "real time" name. Take the one defined by config if it is not available.
-        $sRawValue = $oVirtualMachine->guest->guestFullName;
-        if (is_null($sRawValue)) {
-            $sRawValue = $oVirtualMachine->config->guestFullName;
-        }
+		// Read the "real time" name. Take the one defined by config if it is not available.
+		$sRawValue = $oVirtualMachine->guest->guestFullName;
+		if (is_null($sRawValue)) {
+			$sRawValue = $oVirtualMachine->config->guestFullName;
+		}
 		$value = self::$oOSFamilyMappings->MapValue($sRawValue, '');
 
 		return $value;
@@ -403,51 +403,51 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if (self::$oOSVersionMappings === null) {
 			self::$oOSVersionMappings = new MappingTable('os_version_mapping');
 		}
-        // Read the "real time" name. Take the one defined by config if it is not available.
-        $sRawValue = $oVirtualMachine->guest->guestFullName;
-        if (is_null($sRawValue)) {
-            $sRawValue = $oVirtualMachine->config->guestFullName;
-        }
+		// Read the "real time" name. Take the one defined by config if it is not available.
+		$sRawValue = $oVirtualMachine->guest->guestFullName;
+		if (is_null($sRawValue)) {
+			$sRawValue = $oVirtualMachine->config->guestFullName;
+		}
 		$value = self::$oOSVersionMappings->MapValue($sRawValue, $sRawValue); // Keep the raw value by default
 
 		return $value;
 	}
 
-    /**
-     * Helper method to extract the power state of the VirtualMachine object
-     * according to the 'vm_power_state_mapping' mapping taken from the configuration
-     *
-     * @param VirtualMachine $oVirtualMachine
-     *
-     * @return string The mapped power state
-     */
-    static public function GetPowerState($oVirtualMachine)
-    {
-        if (self::$oPowerStateMappings === null) {
-            self::$oPowerStateMappings = new MappingTable('vm_power_state_mapping');
-        }
-        utils::Log(LOG_DEBUG, "Reading power_state...");
-        $sRawValue = $oVirtualMachine->runtime->powerState;
-        $value = self::$oPowerStateMappings->MapValue($sRawValue); // Keep the raw value by default
-        utils::Log(LOG_DEBUG, "    Power state: $value");
+	/**
+	 * Helper method to extract the power state of the VirtualMachine object
+	 * according to the 'vm_power_state_mapping' mapping taken from the configuration
+	 *
+	 * @param VirtualMachine $oVirtualMachine
+	 *
+	 * @return string The mapped power state
+	 */
+	static public function GetPowerState($oVirtualMachine)
+	{
+		if (self::$oPowerStateMappings === null) {
+			self::$oPowerStateMappings = new MappingTable('vm_power_state_mapping');
+		}
+		utils::Log(LOG_DEBUG, "Reading power_state...");
+		$sRawValue = $oVirtualMachine->runtime->powerState;
+		$value = self::$oPowerStateMappings->MapValue($sRawValue); // Keep the raw value by default
+		//utils::Log(LOG_DEBUG, "    Power state: $value");
 
-        return $value;
-    }
+		return $value;
+	}
 
-    /**
-     * Get the datastores attached to the VMs
-     *
-     * @return array
-     */
-    static public function GetDatastoreLnks()
-    {
-        return self::$aLnkDatastoreToVM;
-    }
+	/**
+	 * Get the datastores attached to the VMs
+	 *
+	 * @return array
+	 */
+	static public function GetDatastoreLnks()
+	{
+		return self::$aLnkDatastoreToVM;
+	}
 
-    /**
-     * @inheritdoc
-     */
-    public function Prepare()
+	/**
+	 * @inheritdoc
+	 */
+	public function Prepare()
 	{
 		$bRet = parent::Prepare();
 		if (!$bRet) {
