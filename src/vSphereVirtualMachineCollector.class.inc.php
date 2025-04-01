@@ -6,12 +6,12 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	protected $idx;
 	protected $oOSVersionLookup;
 	protected $oIPAddressLookup;
-	static protected $oOSFamilyMappings = null;
 	static protected bool $bVMInfosCollected = false;
 	static protected array $aVMInfos = [];
+	static protected $oOSFamilyMappings = null;
 	static protected $oOSVersionMappings = null;
-	static protected array $aLnkDatastoreToVM;
 	static protected $oPowerStateMappings = null;
+	static protected array $aLnkDatastoreToVM;
 
 	/**
 	 * @inheritdoc
@@ -120,12 +120,28 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			return null;
 		}
 
+		// Read default parameters
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 		$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
 		$sVirtualHostType = 'farm';
-		if (array_key_exists('virtual_host', $aVMParams) && $aVMParams['virtual_host'] != '') {
+		if (array_key_exists('virtual_host', $aVMParams) && ($aVMParams['virtual_host'] != '')) {
 			$sVirtualHostType = $aVMParams['virtual_host'];
 		}
+		if (array_key_exists('get_network_interfaces_from_hardware_info', $aVMParams)) {
+			$bGetNetworkInterfacesFromHardwareInfo = ($aVMParams['get_network_interfaces_from_hardware_info'] == 'yes');
+		}
+		if (array_key_exists('get_network_interfaces_from_network_info', $aVMParams)) {
+			$bGetNetworkInterfacesFromNetworkInfo = ($aVMParams['get_network_interfaces_from_network_info'] == 'yes');
+		}
+		if (array_key_exists('default_interface_network_name', $aVMParams) && ($aVMParams['default_interface_network_name'] != '')) {
+			$sDefaultInterfaceNetworkName = $aVMParams['default_interface_network_name'];
+		} else {
+			$sDefaultInterfaceNetworkName = 'i/f';
+		}
+		if (array_key_exists('record_interface_number', $aVMParams)) {
+			$bRecordInterfaceNumber = ($aVMParams['record_interface_number'] == 'yes');
+		}
+
 		$OSFamily = static::GetOSFamily($oVirtualMachine);
 		$OSVersion = static::GetOSVersion($oVirtualMachine);
 
@@ -134,65 +150,93 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		// Make sure user has access to network information
         if (isset($oVirtualMachine->guest->net)) {
 			$aMACToNetwork = array();
-			// The association MACAddress <=> Network is known at the HW level (correspondance between the VirtualINC and its "backing" device)
-			foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
-                if ($oVirtualDevice === null) continue;
 
-				utils::Log(LOG_DEBUG, "Start collect for VM ".get_class($oVirtualDevice)."...");
-				switch (get_class($oVirtualDevice)) {
-					case 'VirtualE1000':
-					case 'VirtualE1000e':
-					case 'VirtualPCNet32':
-					case 'VirtualVmxnet':
-					case 'VirtualVmxnet2':
-					case 'VirtualVmxnet3':
-						if (isset($oVirtualDevice->backing)) {
-							$oBacking = $oVirtualDevice->backing;
-							$sNetworkName = '';
-							if (isset($oBacking->network) && property_exists($oBacking, 'network') && isset($oBacking->network->name)) {
-								$sNetworkName = $oBacking->network->name;
-								utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->network->name: '$sNetworkName'");
-							} else {
-								if (isset($oBacking->opaqueNetworkId) && property_exists($oBacking, 'opaqueNetworkId')) {
-									$sNetworkName = $oBacking->opaqueNetworkId;
-									utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->opaqueNetworkId: '$sNetworkName'");
+			if ($bGetNetworkInterfacesFromHardwareInfo) {
+				// The association MACAddress <=> Network is known at the HW level (correspondence between the VirtualINC and its "backing" device)
+				foreach ($oVirtualMachine->config->hardware->device as $oVirtualDevice) {
+					if ($oVirtualDevice === null) continue;
+
+					utils::Log(LOG_DEBUG, "Start 'hardware' interfaces collect for VM " . get_class($oVirtualDevice) . "...");
+					switch (get_class($oVirtualDevice)) {
+						case 'VirtualE1000':
+						case 'VirtualE1000e':
+						case 'VirtualPCNet32':
+						case 'VirtualVmxnet':
+						case 'VirtualVmxnet2':
+						case 'VirtualVmxnet3':
+							if (isset($oVirtualDevice->backing)) {
+								$oBacking = $oVirtualDevice->backing;
+								$sNetworkName = '';
+								if (isset($oBacking->network) && property_exists($oBacking, 'network') && isset($oBacking->network->name)) {
+									$sNetworkName = $oBacking->network->name;
+									utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->network->name: '$sNetworkName'");
 								} else {
-									if (isset($oBacking->deviceName) && property_exists($oBacking, 'deviceName')) {
-										$sNetworkName = $oBacking->deviceName;
-										utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
+									if (isset($oBacking->opaqueNetworkId) && property_exists($oBacking, 'opaqueNetworkId')) {
+										$sNetworkName = $oBacking->opaqueNetworkId;
+										utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->opaqueNetworkId: '$sNetworkName'");
 									} else {
-										if (isset($oBacking->port) && property_exists($oBacking, 'port')) {
-											$oPort = $oBacking->port;
-											utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
-											if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
-												$sNetworkName = $aVLANs[$oPort->portgroupKey];
-											} else {
-												utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '".get_class($oBacking)."' with the following port (".get_class($oPort)."):\n".static::myprint_r($oPort));
-											}
+										if (isset($oBacking->deviceName) && property_exists($oBacking, 'deviceName')) {
+											$sNetworkName = $oBacking->deviceName;
+											utils::Log(LOG_DEBUG, "Virtual Network Device: Using ->deviceName: '$sNetworkName'");
 										} else {
-											utils::Log(LOG_DEBUG, "Virtual Network Device '".get_class($oBacking)."': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n".static::myprint_r($oBacking));
+											if (isset($oBacking->port) && property_exists($oBacking, 'port')) {
+												$oPort = $oBacking->port;
+												utils::Log(LOG_DEBUG, "Virtual Network Device '" . get_class($oBacking) . "': has the following port (" . get_class($oPort) . "):\n" . static::myprint_r($oPort));
+												if (array_key_exists($oPort->portgroupKey, $aVLANs)) {
+													$sNetworkName = $aVLANs[$oPort->portgroupKey];
+												} else {
+													utils::Log(LOG_WARNING, "No VirtualPortGroup(key) found for the Virtual Network Device '" . get_class($oBacking) . "' with the following port (" . get_class($oPort) . "):\n" . static::myprint_r($oPort));
+												}
+											} else {
+												utils::Log(LOG_DEBUG, "Virtual Network Device '" . get_class($oBacking) . "': has neither 'network', nor 'opaqueNetworkId', nor 'port'. Dumping the whole object:\n" . static::myprint_r($oBacking));
+											}
 										}
 									}
 								}
+							} else {
+								utils::Log(LOG_DEBUG, "Skip virtual device of class " . get_class($oVirtualDevice) . " as we don't have access to its \"backing\" informations.");
 							}
-						} else {
-							utils::Log(LOG_DEBUG, "Skip virtual device of class ".get_class($oVirtualDevice)." as we don't have access to its \"backing\" informations.");
-						}
 
-						if (isset($oVirtualDevice->macAddress)) {
-							Utils::Log(LOG_DEBUG, "MACAddress: {$oVirtualDevice->macAddress} is connected to the network: '$sNetworkName'");
-							$aMACToNetwork[$oVirtualDevice->macAddress] = $sNetworkName;
-						}
-						break;
+							if (isset($oVirtualDevice->macAddress)) {
+								Utils::Log(LOG_DEBUG, "MACAddress: {$oVirtualDevice->macAddress} is connected to the network: '$sNetworkName'");
+								$aMACToNetwork[$oVirtualDevice->macAddress] = $sNetworkName;
+							}
+							break;
 
-					default:
-						// Other types of Virtual Devices, skip
+						default:
+							// Other types of Virtual Devices, skip
+					}
+					utils::Log(LOG_DEBUG, "End of 'hardware' interfaces collect for VM " . get_class($oVirtualDevice) . ".");
 				}
-				utils::Log(LOG_DEBUG, "End of collect for VM ".get_class($oVirtualDevice).".");
+			}
+
+			if ($bGetNetworkInterfacesFromNetworkInfo) {
+				utils::Log(LOG_DEBUG, "Start 'network' interfaces collect for VM " . $oVirtualMachine->name . "...");
+				$iVirtualInterface = 0;
+				foreach ($oVirtualMachine->guest->net as $oNICInfo) {
+					Utils::Log(LOG_DEBUG, "Searching interface $iVirtualInterface...");
+					// Check if the network is set and not empty.
+					//   If yes, use it as the network name set the networkName. Use default string otherwise
+					$sNetworkName = (isset($oNICInfo->network) && $oNICInfo->network != '') ? $oNICInfo->network : $sDefaultInterfaceNetworkName;
+					Utils::Log(LOG_DEBUG, "oNICInfo->deviceConfigId: " . $oNICInfo->deviceConfigId);
+					Utils::Log(LOG_DEBUG, "oNICInfo->macAddress: " . $oNICInfo->macAddress);
+					Utils::Log(LOG_DEBUG, "oNICInfo->network: " . $sNetworkName);
+					if ($bRecordInterfaceNumber) {
+						// If possible, deduct the interface number from the deviceConfigId :
+						//   Interface number is deviceConfigId - 4000
+						// If deviceConfigId is not numeric, or less than 4000, we use iVirtualInterface
+						$iInterfaceNumber = (is_numeric($oNICInfo->deviceConfigId) && $oNICInfo->deviceConfigId >= 4000) ? $oNICInfo->deviceConfigId - 4000 : $iVirtualInterface;
+						$sNetworkName .= ' (' . $iInterfaceNumber . ')';
+					}
+					$aMACToNetwork[$oNICInfo->macAddress] = $sNetworkName;
+					$iVirtualInterface++;
+				}
+				utils::Log(LOG_DEBUG, "End of 'network' interfaces collect for VM " . $oVirtualMachine->name . ".");
 			}
 
 			Utils::Log(LOG_DEBUG, "Collecting IP addresses for this VM...");
 			$aNWInterfaces = static::DoCollectVMIPs($aMACToNetwork, $oVirtualMachine);
+			utils::Log(LOG_DEBUG, "Collected ".count($aNWInterfaces)." network interfaces for this VM.");
 		} else {
 			utils::Log(LOG_DEBUG, "User cannot access to network information of VM ".$oVirtualMachine->name.", skipping.");
 		}

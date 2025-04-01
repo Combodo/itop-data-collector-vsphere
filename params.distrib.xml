@@ -28,6 +28,10 @@
 			This option forces the VM's virtual host to point to the VM's hypervisor
 			Allowed values: hypervisor, farm (default) -->
 		<virtual_host>farm</virtual_host>
+		<get_network_interfaces_from_hardware_info>yes</get_network_interfaces_from_hardware_info>
+		<get_network_interfaces_from_network_info>yes</get_network_interfaces_from_network_info>
+		<default_interface_network_name>Internal</default_interface_network_name>
+		<record_interface_number>yes</record_interface_number>
 	</virtual_machine>
 
 	<!-- Class collection sequence -->
