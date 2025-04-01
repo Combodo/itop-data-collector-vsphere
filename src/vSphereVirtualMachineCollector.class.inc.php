@@ -537,7 +537,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		// Process each line of the CSV
 		$this->oOSVersionLookup->Lookup($aLineData, array('osfamily_id', 'osversion_id'), 'osversion_id', $iLineIndex);
 		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
-			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex);
+			$this->oIPAddressLookup->Lookup($aLineData, array('org_id', 'managementip_id'), 'managementip_id', $iLineIndex, true);
 		}
 	}
 }
