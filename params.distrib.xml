@@ -6,14 +6,14 @@
 	<vsphere_login>admin</vsphere_login>
 	<vsphere_password>admin</vsphere_password>
 	<vsphere_connection_options type="hash">
-	    <ssl type="hash">
-	        <!--  uncomment the lines below to disable SSL Certificates validation
-	              see http://php.net/manual/en/context.ssl.php for the possible options
-	        <verify_peer>0</verify_peer>
-	        <verify_peer_name>0</verify_peer_name>
-	        <allow_self_signed>1</allow_self_signed>
-	         -->
-	    </ssl>
+		<ssl type="hash">
+			<!--  uncomment the lines below to disable SSL Certificates validation
+				  see http://php.net/manual/en/context.ssl.php for the possible options
+			<verify_peer>0</verify_peer>
+			<verify_peer_name>0</verify_peer_name>
+			<allow_self_signed>1</allow_self_signed>
+			-->
+		</ssl>
 	</vsphere_connection_options>
 
 	<!-- Default values -->
@@ -148,14 +148,13 @@
 
 	<!-- Mapping tables -->
 	<brand_mapping type="array">
-    <!-- Syntax /pattern/replacement where:
-      any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
-      pattern is a RegExpr pattern
-      replacement is a sprintf string in which:
-          %1$s will be replaced by the whole matched text,
-          %2$s will be replaced by the first match group, if any group is defined in the RegExpr
-          %3$s will be replaced by the second matched group, etc...
-    -->
+		<!-- Syntax /pattern/replacement where:
+			  any delimiter can be used (not only /) but the delimiter cannot be present in the "replacement" string
+			  pattern is a RegExpr pattern
+				%1$s will be replaced by the whole matched text,
+				%2$s will be replaced by the first match group, if any group is defined in the RegExpr
+				%3$s will be replaced by the second matched group, etc...
+		-->
 		<pattern>/IBM/IBM</pattern>
 		<pattern>/Hewlett Packard/Hewlett-Packard</pattern>
 		<pattern>/Hewlett-Packard/Hewlett-Packard</pattern><pattern>/Dell/Dell</pattern>
