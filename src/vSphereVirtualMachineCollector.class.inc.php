@@ -32,7 +32,13 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if ($sAttCode == 'providercontracts_list') return true;
 		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
 			if ($sAttCode == 'uuid') return false;
-			if ($sAttCode == 'power_state') return false;
+			if ($sAttCode == 'power_state') {
+				if (!version_compare($this->oCollectionPlan->GetCbdVMwareDMVersion(), '1.0.0', '>' )) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 		} else {
 			if ($sAttCode == 'uuid') return true;
 			if ($sAttCode == 'power_state') return true;
