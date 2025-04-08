@@ -85,94 +85,93 @@ class vSphereCollectionPlan extends CollectionPlan
 		}
 		Utils::Log(LOG_INFO, $sCbdVMwareDMMessage);
 
-		// If TeemIp should be considered, check if it is installed or not
+		// Check if TeemIp is installed or not
 		Utils::Log(LOG_INFO, '---------- Check TeemIp installation ----------');
 		$this->bTeemIpIsInstalled = false;
+		try {
+			$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-ip-mgmt', 'installed' => $sLastInstallDate], 'version, installed', 1);
+			if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+				$this->bTeemIpIsInstalled = true;
+				$aObject = current($aResult['objects']);
+				$this->sTeemIpVersion = $aObject['fields']['version'];
+				$sTeemIpMessage = 'TeemIp version ' . $this->sTeemIpVersion . ' is installed';
+			} else {
+				$this->sTeemIpVersion = 'unknown';
+				$sTeemIpMessage = 'TeemIp is NOT installed';
+			}
+		} catch (Exception $e) {
+			$sMessage = 'TeemIp is considered as NOT installed due to: ' . $e->getMessage();
+			if (is_a($e, "IOException")) {
+				Utils::Log(LOG_ERR, $sMessage);
+				throw $e;
+			}
+		}
+		Utils::Log(LOG_INFO, $sTeemIpMessage);
+
+		// If TeemIp should be considered,
 		$this->bTeemIpIpDiscoveryIsInstalled = false;
 		$this->bTeemIpNMEIsInstalled = false;
 		$this->bTeemIpZoneMgmtIsInstalled = false;
 		$aTeemIpDiscovery = Utils::GetConfigurationValue('teemip_discovery', []);
-		if (!empty($aTeemIpDiscovery) && array_key_exists('enable', $aTeemIpDiscovery) && ($aTeemIpDiscovery['enable'] == 'yes')) {
+		if ($this->bTeemIpIsInstalled && !empty($aTeemIpDiscovery) && array_key_exists('enable', $aTeemIpDiscovery) && ($aTeemIpDiscovery['enable'] == 'yes')) {
 			Utils::Log(LOG_INFO, 'TeemIp should be considered.');
+			// Record discovery parameters
+			$this->bCollectIps = array_key_exists('collect_ips', $aTeemIpDiscovery) ? $aTeemIpDiscovery['collect_ips'] : 'no';
+			$this->sDefaultIpStatus = array_key_exists('default_ip_status', $aTeemIpDiscovery) ? $aTeemIpDiscovery['default_ip_status'] : 'allocated';
+			$this->bManageIpv6 = array_key_exists('manage_ipv6', $aTeemIpDiscovery) ? $aTeemIpDiscovery['manage_ipv6'] : 'no';
+			$this->bManageLogicalInterfaces = array_key_exists('manage_logical_interfaces', $aTeemIpDiscovery) ? $aTeemIpDiscovery['manage_logical_interfaces'] : 'no';
+
+			// Check if TeemIp IpDiscovery is installed or not
+			$oRestClient = new RestClient();
 			try {
-				$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-ip-mgmt', 'installed' => $sLastInstallDate], 'version, installed', 1);
+				$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-ip-discovery', 'installed' => $sLastInstallDate], 'version, installed', 1);
 				if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
-					$this->bTeemIpIsInstalled = true;
-					$aObject = current($aResult['objects']);
-					$this->sTeemIpVersion = $aObject['fields']['version'];
-					$sTeemIpMessage = 'TeemIp version '.$this->sTeemIpVersion.' is installed';
+					$this->bTeemIpIpDiscoveryIsInstalled = true;
+					Utils::Log(LOG_INFO, 'TeemIp IP Discovery is installed');
 				} else {
-					$this->sTeemIpVersion = 'unknown';
-					$sTeemIpMessage = 'TeemIp is NOT installed';
+					Utils::Log(LOG_INFO, 'TeemIp IP Discovery is NOT installed');
 				}
 			} catch (Exception $e) {
-				$sMessage = 'TeemIp is considered as NOT installed due to: '.$e->getMessage();
+				$sMessage = 'TeemIp IP Discovery is considered as NOT installed due to: ' . $e->getMessage();
 				if (is_a($e, "IOException")) {
 					Utils::Log(LOG_ERR, $sMessage);
 					throw $e;
 				}
 			}
-			Utils::Log(LOG_INFO, $sTeemIpMessage);
 
-			if ($this->bTeemIpIsInstalled) {
-				// Record discovery parameters
-				$this->bCollectIps = array_key_exists('collect_ips', $aTeemIpDiscovery) ? $aTeemIpDiscovery['collect_ips'] : 'no';
-				$this->sDefaultIpStatus = array_key_exists('default_ip_status', $aTeemIpDiscovery) ? $aTeemIpDiscovery['default_ip_status'] : 'allocated';
-				$this->bManageIpv6 = array_key_exists('manage_ipv6', $aTeemIpDiscovery) ? $aTeemIpDiscovery['manage_ipv6'] : 'no';
-				$this->bManageLogicalInterfaces = array_key_exists('manage_logical_interfaces', $aTeemIpDiscovery) ? $aTeemIpDiscovery['manage_logical_interfaces'] : 'no';
-
-				// Check if TeemIp IpDiscovery is installed or not
-				$oRestClient = new RestClient();
-				try {
-					$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-ip-discovery', 'installed' => $sLastInstallDate], 'version, installed', 1);
-					if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
-						$this->bTeemIpIpDiscoveryIsInstalled = true;
-						Utils::Log(LOG_INFO, 'TeemIp IP Discovery is installed');
-					} else {
-						Utils::Log(LOG_INFO, 'TeemIp IP Discovery is NOT installed');
-					}
-				} catch (Exception $e) {
-					$sMessage = 'TeemIp IP Discovery is considered as NOT installed due to: '.$e->getMessage();
-					if (is_a($e, "IOException")) {
-						Utils::Log(LOG_ERR, $sMessage);
-						throw $e;
-					}
+			// Check if TeemIp Network Management Extended is installed or not
+			$oRestClient = new RestClient();
+			try {
+				$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-network-mgmt-extended', 'installed' => $sLastInstallDate], 'version, installed', 1);
+				if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+					$this->bTeemIpNMEIsInstalled = true;
+					Utils::Log(LOG_INFO, 'TeemIp Network Management Extended is installed');
+				} else {
+					Utils::Log(LOG_INFO, 'TeemIp Network Management Extended is NOT installed');
 				}
-
-				// Check if TeemIp Network Management Extended is installed or not
-				$oRestClient = new RestClient();
-				try {
-					$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-network-mgmt-extended', 'installed' => $sLastInstallDate], 'version, installed', 1);
-					if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
-						$this->bTeemIpNMEIsInstalled = true;
-						Utils::Log(LOG_INFO, 'TeemIp Network Management Extended is installed');
-					} else {
-						Utils::Log(LOG_INFO, 'TeemIp Network Management Extended is NOT installed');
-					}
-				} catch (Exception $e) {
-					$sMessage = 'TeemIp Network Management Extended is considered as NOT installed due to: '.$e->getMessage();
-					if (is_a($e, "IOException")) {
-						Utils::Log(LOG_ERR, $sMessage);
-						throw $e;
-					}
+			} catch (Exception $e) {
+				$sMessage = 'TeemIp Network Management Extended is considered as NOT installed due to: ' . $e->getMessage();
+				if (is_a($e, "IOException")) {
+					Utils::Log(LOG_ERR, $sMessage);
+					throw $e;
 				}
+			}
 
-				// Check if TeemIp Zone Management is installed or not
-				$oRestClient = new RestClient();
-				try {
-					$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-zone-mgmt', 'installed' => $sLastInstallDate], 'version, installed', 1);
-					if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
-						$this->bTeemIpZoneMgmtIsInstalled = true;
-						Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is installed');
-					} else {
-						Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is NOT installed');
-					}
-				} catch (Exception $e) {
-					$sMessage = 'TeemIp Zone Management extension is considered as NOT installed due to: '.$e->getMessage();
-					if (is_a($e, "IOException")) {
-						Utils::Log(LOG_ERR, $sMessage);
-						throw $e;
-					}
+			// Check if TeemIp Zone Management is installed or not
+			$oRestClient = new RestClient();
+			try {
+				$aResult = $oRestClient->Get('ModuleInstallation', ['name' => 'teemip-zone-mgmt', 'installed' => $sLastInstallDate], 'version, installed', 1);
+				if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+					$this->bTeemIpZoneMgmtIsInstalled = true;
+					Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is installed');
+				} else {
+					Utils::Log(LOG_INFO, 'TeemIp Zone Management extension is NOT installed');
+				}
+			} catch (Exception $e) {
+				$sMessage = 'TeemIp Zone Management extension is considered as NOT installed due to: ' . $e->getMessage();
+				if (is_a($e, "IOException")) {
+					Utils::Log(LOG_ERR, $sMessage);
+					throw $e;
 				}
 			}
 		} else {
