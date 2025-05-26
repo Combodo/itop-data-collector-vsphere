@@ -46,7 +46,10 @@ class Service {
 	function connect() {
 		if ($this->session) return $this->session;
 		$sessionManager = $this->getSessionManager();
-		$this->session = $sessionManager->Login(array('userName' => $this->vhost->username, 'password' => $this->vhost->password, 'locale' => null));
+        /*  With the acquireSession function, I get the following message :ServerFaultCode: Current license or ESXi version prohibits execution of the requested operation.. RestrictedVersion: RestrictedVersion
+        *  The AcquireCloneTicket function is in use. The problem lies with this function, but I don't know how to fix it -> keep the old code.
+            $this->session = $sessionManager->acquireSession($this->vhost->username, $this->vhost->password);*/
+        $this->session = $sessionManager->Login(array('userName' => $this->vhost->username, 'password' => $this->vhost->password, 'locale' => null));
 		return $this->session;
 	}
 
@@ -65,7 +68,12 @@ class Service {
 
 	private function makeSoapCall($method, $soapMessage) {
 		$this->soapClient->_classmap = $this->clientFactory->getClientClassMap();
-		$result = $this->soapClient->$method($soapMessage);
+		try {
+		    $result = $this->soapClient->$method($soapMessage);
+		} catch (\SoapFault $soapFault) {
+		    $this->soapClient->_classmap = null;
+			throw new \Vmwarephp\Exception\Soap($soapFault);
+        }
 		$this->soapClient->_classmap = null;
 		return $this->convertResponse($result);
 	}
@@ -81,7 +89,7 @@ class Service {
 	}
 
 	private function isMethodAPropertyRetrieval($calledMethod) {
-		return preg_match('/^get/', strtolower($calledMethod));
+		return preg_match('/^get/', $calledMethod);
 	}
 
 	private function generateNameForThePropertyToRetrieve($calledMethod) {
