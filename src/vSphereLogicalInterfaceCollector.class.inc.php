@@ -125,6 +125,9 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 
 	public function Fetch()
 	{
+        if (is_null(self::$aLogicalInterfaces)) {
+            return false;
+        }
 		if ($this->idx < count(self::$aLogicalInterfaces)) {
 			$aLogicalInterfaces = self::$aLogicalInterfaces[$this->idx++];
 

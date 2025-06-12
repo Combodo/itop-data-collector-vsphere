@@ -4,13 +4,12 @@ namespace Vmwarephp;
 use Vmwarephp\Exception as Ex;
 
 class Vhost {
-	private $service;
-    private array $aProperties = [];
+    private  array $aProperties = [];
 
 	function __construct($host, $username, $password) {
-		$this->host = $host;
-		$this->username = $username;
-		$this->password = $password;
+		$this->aProperties['host'] = $host;
+		$this->aProperties['username'] = $username;
+		$this->aProperties['password'] = $password;
 	}
 
 	function getPort() {
@@ -19,7 +18,9 @@ class Vhost {
 	}
 
     function __get($propertyName) {
-        if (!array_key_exists($propertyName, $this->aProperties)) throw new \InvalidArgumentException('Property ' . $propertyName . ' not set on this object!');
+        if (!array_key_exists($propertyName, $this->aProperties)) {
+            throw new \InvalidArgumentException('Property ' . $propertyName . ' not set on this object!');
+        }
         return $this->aProperties[$propertyName];
     }
 
@@ -29,8 +30,10 @@ class Vhost {
     }
 
 	function __call($method, $arguments) {
-		if (!$this->service) $this->initializeService();
-		return call_user_func_array(array($this->service, $method), $arguments);
+		if (!array_key_exists('service', $this->aProperties)) {
+            $this->initializeService();
+        }
+		return call_user_func_array(array($this->aProperties['service'], $method), $arguments);
 	}
 
 	function getApiType() {
@@ -42,12 +45,13 @@ class Vhost {
 	}
 	
 	function changeService(\Vmwarephp\Service $service) {
-		$this->service = $service;
+		$this->aProperties['service'] = $service;
 	}
 
 	private function initializeService() {
-		if (!$this->service)
-			$this->service = \Vmwarephp\Factory\Service::makeConnected($this);
+        if (!array_key_exists('service', $this->aProperties)) {
+            $this->aProperties['service'] = \Vmwarephp\Factory\Service::makeConnected($this);
+        }
 	}
 
 	private function validateProperty($propertyName, $value) {

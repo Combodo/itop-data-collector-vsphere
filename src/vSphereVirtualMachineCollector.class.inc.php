@@ -516,6 +516,9 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	 */
 	public function Fetch()
 	{
+        if (is_null(static::$aVMInfos)) {
+            return false;
+        }
 		if ($this->idx < count(static::$aVMInfos)) {
 			$aVM = static::$aVMInfos[$this->idx++];
 

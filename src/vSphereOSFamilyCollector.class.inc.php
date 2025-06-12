@@ -34,6 +34,9 @@ class vSphereOSFamilyCollector extends vSphereCollector
 
 	public function Fetch()
 	{
+        if (is_null($this->aOSFamily)) {
+            return false;
+        }
 		if ($this->idx < count($this->aOSFamily)) {
 			$sOSFamily = $this->aOSFamily[$this->idx++];
 

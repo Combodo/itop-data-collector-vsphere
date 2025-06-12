@@ -72,6 +72,10 @@ class vSphereHypervisorCollector extends vSphereCollector
 			$aHypervisors = $vhost->findAllManagedObjects('HostSystem', array('datastore', 'hardware', 'summary'));
 
 			foreach ($aHypervisors as $oHypervisor) {
+                if (is_null($oHypervisor->runtime)) {
+                    Utils::Log(LOG_INFO, "Skipping Hypervisor {$oHypervisor->name} which is NOT connected (runtime is null)");
+                    continue;
+                }
 				if ($oHypervisor->runtime->connectionState !== 'connected') {
 					// The documentation says that 'config' ".. might not be available for a disconnected host"
 					// A customer reported that trying to access ->config->... causes a segfault !!
@@ -198,6 +202,9 @@ class vSphereHypervisorCollector extends vSphereCollector
      */
 	public function Fetch()
 	{
+        if (is_null(self::$aHypervisors)) {
+            return false;
+        }
 		if ($this->idx < count(self::$aHypervisors)) {
 			$aHV = self::$aHypervisors[$this->idx++];
 			$aResult = array();
