@@ -23,10 +23,10 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 
 		// TeemIP Network Management Extended
 		if ($sAttCode == 'interfacespeed_id') return !$this->oCollectionPlan->IsTeemIpNMEInstalled();
+		if ($sAttCode == 'layer2protocol_id') return !$this->oCollectionPlan->IsTeemIpNMEInstalled();
 
 		// TeemIP
 		if ($sAttCode == 'ip_list') return !$this->oCollectionPlan->IsTeemIpInstalled();
-		if ($sAttCode == 'layer2protocol_id') return !$this->oCollectionPlan->IsTeemIpNMEInstalled();
 		if ($sAttCode == 'status') return !$this->oCollectionPlan->IsTeemIpInstalled();
 		if ($sAttCode == 'vlans_list') return !$this->oCollectionPlan->IsTeemIpInstalled();
 		if ($sAttCode == 'vrfs_list') return !$this->oCollectionPlan->IsTeemIpInstalled();
