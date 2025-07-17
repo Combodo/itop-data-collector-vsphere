@@ -17,6 +17,10 @@ class vSphereFarmCollector extends vSphereCollector
 		// on Servers. Let's safely ignore it.
 		if ($sAttCode == 'providercontracts_list') return true;
 
+		// If the module Advanced Storage Management is not selected, there is no "logicalvolumes_list".
+		// Let's safely ignore it.
+		if ($sAttCode == 'logicalvolumes_list') return true;
+
 		return parent::AttributeIsOptional($sAttCode);
 	}
 	

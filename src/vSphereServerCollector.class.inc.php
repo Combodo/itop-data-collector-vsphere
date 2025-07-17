@@ -46,6 +46,12 @@ class vSphereServerCollector extends vSphereCollector
 		} else {
 			if ($sAttCode == 'hostid') return true;
 		}
+
+		// If the module Advanced Storage Management is not selected, these fields don't exist.
+		// Let's safely ignore them.
+		if ($sAttCode == 'logicalvolumes_list') return true;
+		if ($sAttCode == 'san_list') return true;
+
 		return parent::AttributeIsOptional($sAttCode);
 	}
 

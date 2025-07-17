@@ -52,6 +52,10 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 			if ($sAttCode == 'managementip_id') return true;
 		}
 
+		// If the module Advanced Storage Management is not selected, there is no "logicalvolumes_list".
+		// Let's safely ignore it.
+		if ($sAttCode == 'logicalvolumes_list') return true;
+
 		return parent::AttributeIsOptional($sAttCode);
 	}
 
