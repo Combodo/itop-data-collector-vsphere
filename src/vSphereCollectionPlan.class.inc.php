@@ -2,8 +2,8 @@
 
 class vSphereCollectionPlan extends CollectionPlan
 {
-	private $bVirtualizationMgtIsInstalled;
-	private $sVirtualizationMgtVersion;
+	private $bVirtualizationMgmtIsInstalled;
+	private $sVirtualizationMgmtVersion;
     private $bDatacenterMgmtIsInstalled;
     private $sDatacenterMgmtVersion;
     private $bAdvanceStorageMgmtIsInstalled;
@@ -45,16 +45,16 @@ class vSphereCollectionPlan extends CollectionPlan
 
 		// Check if Virtualization Management Module is installed
 		Utils::Log(LOG_INFO, '---------- Check Virtualization Management Module installation ----------');
-		$this->bVirtualizationMgtIsInstalled = false;
+		$this->bVirtualizationMgmtIsInstalled = false;
 		try {
             $aResult = $oRestClient->Get('ModuleInstallation', "SELECT ModuleInstallation WHERE name = 'iTop-virtualization-mgmt' AND installed >= '$sLastInstallDate'", 'version, installed', 1);
 			if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
-				$this->bVirtualizationMgtIsInstalled = true;
+				$this->bVirtualizationMgmtIsInstalled = true;
 				$aObject = current($aResult['objects']);
-				$this->sVirtualizationMgtVersion = $aObject['fields']['version'];
-				$sVirtualizationMgmtMessage = 'Virtualization Management Module version '.$this->sVirtualizationMgtVersion.' is installed';
+				$this->sVirtualizationMgmtVersion = $aObject['fields']['version'];
+				$sVirtualizationMgmtMessage = 'Virtualization Management Module version '.$this->sVirtualizationMgmtVersion.' is installed';
 			} else {
-				$this->sVirtualizationMgtVersion = 'unknown';
+				$this->sVirtualizationMgmtVersion = 'unknown';
 				$sVirtualizationMgmtMessage = 'Virtualization Management Module is not installed';
 			}
 		} catch (Exception $e) {
@@ -236,7 +236,7 @@ class vSphereCollectionPlan extends CollectionPlan
 	 */
 	public function IsVirtualizationMgmtInstalled(): bool
 	{
-		return $this->bVirtualizationMgtIsInstalled;
+		return $this->bVirtualizationMgmtIsInstalled;
 	}
 
     /**
