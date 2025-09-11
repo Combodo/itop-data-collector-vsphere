@@ -2,8 +2,12 @@
 
 class vSphereCollectionPlan extends CollectionPlan
 {
-	private $bVirtualizationMgtIsInstalled;
-	private $sVirtualizationMgtVersion;
+	private $bVirtualizationMgmtIsInstalled;
+	private $sVirtualizationMgmtVersion;
+    private $bDatacenterMgmtIsInstalled;
+    private $sDatacenterMgmtVersion;
+    private $bAdvanceStorageMgmtIsInstalled;
+    private $sAdvanceStorageMgmtVersion;
 	private $bCbdVMwareDMIsInstalled;
 	private $sCbdVMwareDMVersion;
 	private $bTeemIpIsInstalled;
@@ -27,10 +31,56 @@ class vSphereCollectionPlan extends CollectionPlan
 
 		// Check if Virtualization Management Module is installed
 		Utils::Log(LOG_INFO, '---------- Check Virtualization Management Module installation ----------');
-		$this->bVirtualizationMgtIsInstalled = Utils::CheckModuleInstallation('itop-virtualization-mgmt', false, $oRestClient);
-		$this->sVirtualizationMgtVersion = $this->bVirtualizationMgtIsInstalled ? Utils::GetModuleVersion('itop-virtualization-mgmt') : 'unknown';
+		$this->bVirtualizationMgmtIsInstalled = Utils::CheckModuleInstallation('itop-virtualization-mgmt', false, $oRestClient);
+		$this->sVirtualizationMgmtVersion = $this->bVirtualizationMgmtIsInstalled ? Utils::GetModuleVersion('itop-virtualization-mgmt') : 'unknown';
 
-		// Check if Data model for vSphere  is installed
+        // Check if Datacenter Management Module is installed
+        Utils::Log(LOG_INFO, '---------- Check Datacenter Management Module installation ----------');
+        $this->bDatacenterMgmtIsInstalled = false;
+        try {
+            $aResult = $oRestClient->Get('ModuleInstallation', "SELECT ModuleInstallation WHERE name = 'itop-datacenter-mgmt' AND installed >= '$sLastInstallDate'", 'version, installed', 1);
+            if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+                $this->bDatacenterMgmtIsInstalled = true;
+                $aObject = current($aResult['objects']);
+                $this->sDatacenterMgmtVersion = $aObject['fields']['version'];
+                $sDatacenterMgmtMessage = 'Datacenter Management Module version '.$this->sDatacenterMgmtVersion.' is installed';
+            } else {
+                $this->sDatacenterMgmtVersion = 'unknown';
+                $sDatacenterMgmtMessage = 'Datacenter Management Module is not installed';
+            }
+        } catch (Exception $e) {
+            $sMessage = 'Datacenter Management Module\'s installed version cannot be fetched: '.$e->getMessage();
+            if (is_a($e, "IOException")) {
+                Utils::Log(LOG_ERR, $sMessage);
+                throw $e;
+            }
+        }
+        Utils::Log(LOG_INFO, $sDatacenterMgmtMessage);
+
+        // Check if Advanced Storage Management Module is installed
+        Utils::Log(LOG_INFO, '---------- Check Advanced Storage Management Module installation ----------');
+        $this->bAdvanceStorageMgmtIsInstalled = false;
+        try {
+            $aResult = $oRestClient->Get('ModuleInstallation', "SELECT ModuleInstallation WHERE name = 'itop-storage-mgmt' AND installed >= '$sLastInstallDate'", 'version, installed', 1);
+            if (array_key_exists('objects', $aResult) && isset($aResult['objects'])) {
+                $this->bAdvanceStorageMgmtIsInstalled = true;
+                $aObject = current($aResult['objects']);
+                $this->sAdvanceStorageMgmtVersion = $aObject['fields']['version'];
+                $sAdvanceStorageMgmtMessage = 'Advanced Storage Management Module version '.$this->sAdvanceStorageMgmtVersion.' is installed';
+            } else {
+                $this->sAdvanceStorageMgmtVersion = 'unknown';
+                $sAdvanceStorageMgmtMessage = 'Advanced Storage Management Module is not installed';
+            }
+        } catch (Exception $e) {
+            $sMessage = 'Advanced Storage Management Module\'s installed version cannot be fetched: '.$e->getMessage();
+            if (is_a($e, "IOException")) {
+                Utils::Log(LOG_ERR, $sMessage);
+                throw $e;
+            }
+        }
+        Utils::Log(LOG_INFO, $sAdvanceStorageMgmtMessage);
+
+        // Check if Data model for vSphere  is installed
 		Utils::Log(LOG_INFO, '---------- Check Data model for vSphere installation ----------');
 		$this->bCbdVMwareDMIsInstalled = Utils::CheckModuleInstallation('combodo-vsphere-datamodel', false, $oRestClient);
 		$this->sCbdVMwareDMVersion = $this->bCbdVMwareDMIsInstalled ? Utils::GetModuleVersion('combodo-vsphere-datamodel') : 'unknown';
@@ -69,10 +119,30 @@ class vSphereCollectionPlan extends CollectionPlan
 	 */
 	public function IsVirtualizationMgmtInstalled(): bool
 	{
-		return $this->bVirtualizationMgtIsInstalled;
+		return $this->bVirtualizationMgmtIsInstalled;
 	}
 
-	/**
+    /**
+     * Check if Advanced Storage Management Module is installed
+     *
+     * @return bool
+     */
+    public function IsDatacenterMgmtInstalled(): bool
+    {
+        return $this->bDatacenterMgmtIsInstalled;
+    }
+
+    /**
+     * Check if Advanced Storage Management Module is installed
+     *
+     * @return bool
+     */
+    public function IsAdvanceStorageMgmtInstalled(): bool
+    {
+        return $this->bAdvanceStorageMgmtIsInstalled;
+    }
+
+    /**
 	 * Check if Combodo VMware Datamodel is installed
 	 *
 	 * @return bool

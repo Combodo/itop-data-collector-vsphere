@@ -25,6 +25,13 @@ class vSphereHypervisorCollector extends vSphereCollector
 	{
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
+
+        if ($this->oCollectionPlan->IsAdvanceStorageMgmtInstalled()) {
+            if ($sAttCode == 'logicalvolumes_list') return false;
+        } else {
+            if ($sAttCode == 'logicalvolumes_list') return true;
+        }
+
 		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
 			if ($sAttCode == 'uuid') return false;
 			if ($sAttCode == 'hostid') return false;

@@ -80,7 +80,7 @@
 		},
 		{
 			"attcode": "logicalvolumes_list",
-			"update": "1",
+			"update": "0",
 			"reconcile": "0",
 			"update_policy": "master_locked",
 			"row_separator": "|",

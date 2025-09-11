@@ -15,19 +15,21 @@ class vSphereLogicalInterfaceCollector extends vSphereCollector
 	 */
 	public function AttributeIsOptional($sAttCode)
 	{
-        if ($this->oCollectionPlan->IsTeemIpInstalled()) {
-            if ($sAttCode == 'ipaddress') return true;
-            if ($sAttCode == 'ipgateway') return true;
-            if ($sAttCode == 'ipmask') return true;
-            if ($sAttCode == 'speed') return true;
-        } else {
-            if ($sAttCode == 'interfacespeed_id') return true;
-            if ($sAttCode == 'ip_list') return true;
-            if ($sAttCode == 'layer2protocol_id') return true;
-            if ($sAttCode == 'status') return true;
-            if ($sAttCode == 'vlans_list') return true;
-            if ($sAttCode == 'vrfs_list') return true;
-        }
+		// Regular iTop
+		if ($sAttCode == 'ipaddress') return $this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'ipgateway') return $this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'ipmask') return $this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'speed') return $this->oCollectionPlan->IsTeemIpNMEInstalled();
+
+		// TeemIP Network Management Extended
+		if ($sAttCode == 'interfacespeed_id') return !$this->oCollectionPlan->IsTeemIpNMEInstalled();
+		if ($sAttCode == 'layer2protocol_id') return !$this->oCollectionPlan->IsTeemIpNMEInstalled();
+
+		// TeemIP
+		if ($sAttCode == 'ip_list') return !$this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'status') return !$this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'vlans_list') return !$this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'vrfs_list') return !$this->oCollectionPlan->IsTeemIpInstalled();
 
 		return parent::AttributeIsOptional($sAttCode);
 	}

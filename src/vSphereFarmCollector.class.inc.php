@@ -9,13 +9,14 @@ class vSphereFarmCollector extends vSphereCollector
 	
 	public function AttributeIsOptional($sAttCode)
 	{
-		// If the module Service Management for Service Providers is selected during the setup
-		// there is no "services_list" attribute on VirtualMachines. Let's safely ignore it.
 		if ($sAttCode == 'services_list') return true;
-
-		// If the collector is connected to TeemIp standalone, there is no "providercontracts_list"
-		// on Servers. Let's safely ignore it.
 		if ($sAttCode == 'providercontracts_list') return true;
+
+        if ($this->oCollectionPlan->IsAdvanceStorageMgmtInstalled()) {
+            if ($sAttCode == 'logicalvolumes_list') return false;
+        } else {
+            if ($sAttCode == 'logicalvolumes_list') return true;
+        }
 
 		return parent::AttributeIsOptional($sAttCode);
 	}

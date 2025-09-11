@@ -33,7 +33,27 @@ class vSphereServerCollector extends vSphereCollector
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
 
-		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
+        if ($this->oCollectionPlan->IsDatacenterMgmtInstalled()) {
+            if ($sAttCode == 'enclosure_id') return false;
+            if ($sAttCode == 'powerA_id') return false;
+            if ($sAttCode == 'powerB_id') return false;
+            if ($sAttCode == 'rack_id') return false;
+        } else {
+            if ($sAttCode == 'enclosure_id') return true;
+            if ($sAttCode == 'powerA_id') return true;
+            if ($sAttCode == 'powerB_id') return true;
+            if ($sAttCode == 'rack_id') return true;
+        }
+
+        if ($this->oCollectionPlan->IsAdvanceStorageMgmtInstalled()) {
+            if ($sAttCode == 'logicalvolumes_list') return false;
+            if ($sAttCode == 'san_list') return false;
+        } else {
+            if ($sAttCode == 'logicalvolumes_list') return true;
+            if ($sAttCode == 'san_list') return true;
+        }
+
+        if ($this->oCollectionPlan->IsTeemIpInstalled()) {
 			if ($sAttCode == 'managementip') return true;
 			if ($sAttCode == 'managementip_id') return false;
 		} else {
