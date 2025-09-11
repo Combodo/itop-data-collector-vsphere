@@ -30,34 +30,11 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	{
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
-
-        if ($this->oCollectionPlan->IsAdvanceStorageMgmtInstalled()) {
-            if ($sAttCode == 'logicalvolumes_list') return false;
-        } else {
-            if ($sAttCode == 'logicalvolumes_list') return true;
-        }
-
-		if ($this->oCollectionPlan->IsCbdVMwareDMInstalled()) {
-			if ($sAttCode == 'uuid') return false;
-			if ($sAttCode == 'power_state') {
-				if (!version_compare($this->oCollectionPlan->GetCbdVMwareDMVersion(), '1.0.0', '>' )) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		} else {
-			if ($sAttCode == 'uuid') return true;
-			if ($sAttCode == 'power_state') return true;
-		}
-
-		if ($this->oCollectionPlan->IsTeemIpInstalled()) {
-			if ($sAttCode == 'managementip') return true;
-			if ($sAttCode == 'managementip_id') return false;
-		} else {
-			if ($sAttCode == 'managementip') return false;
-			if ($sAttCode == 'managementip_id') return true;
-		}
+		if ($sAttCode == 'logicalvolumes_list') return $this->oCollectionPlan->IsAdvanceStorageMgmtInstalled();
+		if ($sAttCode == 'uuid') return !$this->oCollectionPlan->IsCbdVMwareDMInstalled();
+		if ($sAttCode == 'power_state') return !Utils::CheckModuleInstallation('combodo-vsphere-datamodel/1.1.0');
+		if ($sAttCode == 'managementip') return $this->oCollectionPlan->IsTeemIpInstalled();
+		if ($sAttCode == 'managementip_id') return !$this->oCollectionPlan->IsTeemIpInstalled();
 
 		return parent::AttributeIsOptional($sAttCode);
 	}

@@ -46,11 +46,7 @@ class vSphereIPv4AddressCollector extends vSphereCollector
 		if ($sAttCode == 'responds_to_scan') return true;
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'view_id') return true;
-		if ($sAttCode == 'ipconfig_id') {
-			if (strstr($this->oCollectionPlan->GetTeemIpVersion(), '.', true) < '3') {
-				return true;
-			}
-		}
+		if ($sAttCode == 'ipconfig_id') return !Utils::CheckModuleInstallation('teemip-ip-mgmt/3.0.0');
 
 		return parent::AttributeIsOptional($sAttCode);
 	}

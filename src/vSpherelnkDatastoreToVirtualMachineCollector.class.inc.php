@@ -36,9 +36,8 @@ class vSpherelnkDatastoreToVirtualMachineCollector extends vSphereCollector
             return false;
         }
 		// V 1.1.0 or greater of the extension must be installed
-		$sCbdVMwareDMVersion = $this->oCollectionPlan->GetCbdVMwareDMVersion();
-		if (!version_compare($sCbdVMwareDMVersion, '1.0.0', '>' )) {
-			Utils::Log(LOG_INFO, '> vSpherelnkDatastoreToVirtualMachineCollector will not be launched as version '.$sCbdVMwareDMVersion.' of Data model for vSphere is lower than 1.1.0');
+		if (!Utils::CheckModuleInstallation('combodo-vsphere-datamodel/1.1.0')) {
+			Utils::Log(LOG_INFO, '> vSpherelnkDatastoreToVirtualMachineCollector will not be launched as version of Data model for vSphere is lower than 1.1.0');
 			return false;
 		}
         // VM discovery should be made first
