@@ -136,6 +136,13 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		// Read default parameters
 		$sDefaultOrg = Utils::GetConfigurationValue('default_org_id');
 		$aVMParams = Utils::GetConfigurationValue('virtual_machine', []);
+        if (array_key_exists('exclude_templates', $aVMParams)) {
+            if (($aVMParams['exclude_templates'] == 'yes') && $oVirtualMachine->isTemplate()) {
+                utils::Log(LOG_DEBUG, "Skip virtual machine " . $oVirtualMachine->name . " which is a template.");
+
+                return null;
+            }
+        }
 		$sVirtualHostType = 'farm';
 		if (array_key_exists('virtual_host', $aVMParams) && ($aVMParams['virtual_host'] != '')) {
 			$sVirtualHostType = $aVMParams['virtual_host'];
