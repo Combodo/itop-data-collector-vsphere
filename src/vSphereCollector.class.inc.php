@@ -3,6 +3,8 @@ require_once(APPROOT.'collectors/src/ConfigurableCollector.class.inc.php');
 
 class vSphereCollector extends ConfigurableCollector
 {
+
+	/** @var vSphereCollectionPlan */
 	protected $oCollectionPlan;
 
 	/**
