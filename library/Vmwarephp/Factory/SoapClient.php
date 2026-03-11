@@ -6,7 +6,7 @@ class SoapClient {
 	private $wsdlClassMapper;
 	private $wsdlFilePath;
 
-	function __construct(\Vmwarephp\WsdlClassMapper $mapper = null, $wsdlFilePath = null) {
+	function __construct(?\Vmwarephp\WsdlClassMapper $mapper = null, $wsdlFilePath = null) {
 		$this->wsdlClassMapper = $mapper ? : new \Vmwarephp\WsdlClassMapper;
 		$this->wsdlFilePath = $wsdlFilePath ? : $this->getWsdlFilePath();
 	}

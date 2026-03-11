@@ -6,7 +6,7 @@ class PropertyCollector extends \Vmwarephp\ManagedObject {
 	private $propFilterSpecFactory;
 
 	function __construct(\Vmwarephp\Service $vmwareService, \ManagedObjectReference $managedObjectReference,
-						 \Vmwarephp\Factory\PropertyFilterSpec $factory = null) {
+						 ?\Vmwarephp\Factory\PropertyFilterSpec $factory = null) {
 		parent::__construct($vmwareService, $managedObjectReference);
 		$this->propFilterSpecFactory = $factory ? : new \Vmwarephp\Factory\PropertyFilterSpec();
 	}

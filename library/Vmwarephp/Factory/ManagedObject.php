@@ -4,7 +4,7 @@ namespace Vmwarephp\Factory;
 class ManagedObject {
 	private $wsdlClassMapper;
 
-	function __construct(\Vmwarephp\WsdlClassMapper $classMapper = null) {
+	function __construct(?\Vmwarephp\WsdlClassMapper $classMapper = null) {
 		$this->wsdlClassMapper = $classMapper ? : new \Vmwarephp\WsdlClassMapper;
 	}
 

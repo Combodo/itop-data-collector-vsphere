@@ -32,6 +32,7 @@
 		<get_network_interfaces_from_network_info>yes</get_network_interfaces_from_network_info>
 		<default_interface_network_name>Internal</default_interface_network_name>
 		<record_interface_number>yes</record_interface_number>
+        <exclude_templates>yes</exclude_templates>
 	</virtual_machine>
 
 	<!-- Class collection sequence -->

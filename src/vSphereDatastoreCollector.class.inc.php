@@ -26,7 +26,7 @@ class vSphereDatastoreCollector extends vSphereCollector
 	{
 		parent::__construct();
 
-		$this->aDatastoreFields = array('primary_key', 'capacity', 'hypervisor_id', 'location_id', 'mountingpoint', 'name', 'org_id', 'storagesystem_id', 'type', 'uuid');
+		$this->aDatastoreFields = array('primary_key', 'capacity', 'hypervisor_id', 'location_id', 'mountingpoint', 'name', 'org_id', 'status', 'storagesystem_id', 'type', 'uuid');
 		$this->aDatastores = array();
 	}
 
@@ -46,6 +46,20 @@ class vSphereDatastoreCollector extends vSphereCollector
 
 		return false;
 	}
+
+    /**
+     * @inheritdoc
+     */
+    public function AttributeIsOptional($sAttCode)
+    {
+        $sCbdVMwareDMVersion = $this->oCollectionPlan->GetCbdVMwareDMVersion() ;
+
+        if ($sAttCode == 'status') {
+            return !version_compare($sCbdVMwareDMVersion, '1.2.0','>=');
+        }
+
+        return parent::AttributeIsOptional($sAttCode);
+    }
 
     /**
      * Get the datastores from Vmware

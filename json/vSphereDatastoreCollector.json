@@ -69,6 +69,13 @@
             "finalclass": "SynchroAttExtKey"
         },
         {
+            "attcode": "status",
+            "update": "1",
+            "reconcile": "0",
+            "update_policy": "master_locked",
+            "finalclass": "SynchroAttribute"
+        },
+        {
             "attcode": "storagesystem_id",
             "update": "1",
             "reconcile": "1",

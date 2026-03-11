@@ -6,7 +6,7 @@ class TypeConverter {
 	private $vmwareService;
 	private $managedObjectFactory;
 
-	function __construct(Service $service, \Vmwarephp\Factory\ManagedObject $managedObjectFactory = null) {
+	function __construct(Service $service, ?\Vmwarephp\Factory\ManagedObject $managedObjectFactory = null) {
 		$this->vmwareService = $service;
 		$this->managedObjectFactory = $managedObjectFactory ? : new \Vmwarephp\Factory\ManagedObject();
 	}

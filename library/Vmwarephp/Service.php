@@ -10,7 +10,7 @@ class Service {
 	private $session;
 	private $clientFactory;
 
-	function __construct(Vhost $vhost, \Vmwarephp\Factory\SoapClient $soapClientFactory = null) {
+	function __construct(Vhost $vhost, ?\Vmwarephp\Factory\SoapClient $soapClientFactory = null) {
 		$this->vhost = $vhost;
 		$this->clientFactory = $soapClientFactory ? : new \Vmwarephp\Factory\SoapClient();
 		$this->soapClient = $this->clientFactory->make($this->vhost);
