@@ -52,11 +52,7 @@ class vSphereDatastoreCollector extends vSphereCollector
      */
     public function AttributeIsOptional($sAttCode)
     {
-        $sCbdVMwareDMVersion = $this->oCollectionPlan->GetCbdVMwareDMVersion() ;
-
-        if ($sAttCode == 'status') {
-            return !version_compare($sCbdVMwareDMVersion, '1.2.0','>=');
-        }
+        if ($sAttCode == 'status') return !Utils::CheckModuleInstallation('combodo-vsphere-datamodel/1.2.0');
 
         return parent::AttributeIsOptional($sAttCode);
     }
