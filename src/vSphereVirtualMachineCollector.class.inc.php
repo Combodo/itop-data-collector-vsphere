@@ -444,8 +444,19 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 		if (self::$oOSVersionMappings === null) {
 			self::$oOSVersionMappings = new MappingTable('os_version_mapping');
 		}
+
+		$sDetailedDataPrettyName = null;
+		foreach ($oVirtualMachine->config->extraConfig ?? [] as $oOption) {
+			if (isset($oOption) && $oOption->key === 'guestInfo.detailed.data') {
+				if (preg_match("/prettyName='([^']*)'/", $oOption->value, $aMatches)) {
+					$sDetailedDataPrettyName = $aMatches[1];
+				}
+				break;
+			}
+		}
+
 		// Read the "real time" name. Take the one defined by config if it is not available.
-		$sRawValue = $oVirtualMachine->guest->guestFullName;
+		$sRawValue = $sDetailedDataPrettyName ?? $oVirtualMachine->guest->guestFullName;
 		if (is_null($sRawValue)) {
 			$sRawValue = $oVirtualMachine->config->guestFullName;
 		}
