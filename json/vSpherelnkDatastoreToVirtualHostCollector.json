@@ -12,7 +12,7 @@
 	"action_on_zero": "create",
 	"action_on_one": "update",
 	"action_on_multiple": "error",
-	"delete_policy": "delete",
+	"delete_policy": "ignore",
 	"delete_policy_update": "",
 	"delete_policy_retention": "0",
 	"attribute_list": [
