@@ -12,8 +12,8 @@
     "action_on_zero": "create",
     "action_on_one": "update",
     "action_on_multiple": "error",
-    "delete_policy": "ignore",
-    "delete_policy_update": "",
+    "delete_policy": "update",
+    "delete_policy_update": "status:obsolete",
     "delete_policy_retention": "0",
     "attribute_list": [
         {
@@ -72,7 +72,7 @@
             "attcode": "status",
             "update": "1",
             "reconcile": "0",
-            "update_policy": "master_locked",
+            "update_policy": "write_if_empty",
             "finalclass": "SynchroAttribute"
         },
         {

@@ -12,9 +12,9 @@
 	"action_on_zero": "create",
 	"action_on_one": "update",
 	"action_on_multiple": "error",
-	"delete_policy": "ignore",
-	"delete_policy_update": "",
-	"delete_policy_retention": "0",
+	"delete_policy": "update_then_delete",
+	"delete_policy_update": "status:inactive",
+	"delete_policy_retention": "$full_load_interval$",
 	"attribute_list": [
 		{
 			"attcode": "comment",
