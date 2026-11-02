@@ -30,7 +30,7 @@ class vSphereVirtualMachineCollector extends vSphereCollector
 	{
 		if ($sAttCode == 'services_list') return true;
 		if ($sAttCode == 'providercontracts_list') return true;
-		if ($sAttCode == 'logicalvolumes_list') return $this->oCollectionPlan->IsAdvanceStorageMgmtInstalled();
+		if ($sAttCode == 'logicalvolumes_list') return !$this->oCollectionPlan->IsAdvanceStorageMgmtInstalled();
 		if ($sAttCode == 'uuid') return !$this->oCollectionPlan->IsCbdVMwareDMInstalled();
 		if ($sAttCode == 'power_state') return !Utils::CheckModuleInstallation('combodo-vsphere-datamodel/1.1.0');
 		if ($sAttCode == 'managementip') return $this->oCollectionPlan->IsTeemIpInstalled();
